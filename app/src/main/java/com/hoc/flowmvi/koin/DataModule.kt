@@ -19,7 +19,7 @@ val dataModule = module {
 
   single { provideRetrofit(get(named(BASE_URL))) }
 
-  single(named(BASE_URL)) { "https://hoc081098.github.io/hoc081098.github.io/users.json" }
+  single(named(BASE_URL)) { "https://hoc081098.github.io/hoc081098.github.io/users.json/" }
 }
 
 private fun provideRetrofit(baseUrl: String): Retrofit {
