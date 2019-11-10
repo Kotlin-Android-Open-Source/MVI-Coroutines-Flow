@@ -25,18 +25,21 @@ interface MainContract {
 
   sealed class ViewIntent {
     object Initial : ViewIntent()
+    object Refresh : ViewIntent()
   }
 
   data class ViewState(
     val userItems: List<UserItem>,
     val isLoading: Boolean,
-    val error: Throwable?
+    val error: Throwable?,
+    val isRefreshing: Boolean
   ) {
     companion object {
       fun initial() = ViewState(
         userItems = emptyList(),
         isLoading = true,
-        error = null
+        error = null,
+        isRefreshing = false
       )
     }
   }
@@ -48,7 +51,11 @@ interface MainContract {
       override fun reduce(vs: ViewState): ViewState {
         return when (this) {
           Loading -> vs.copy(isLoading = true)
-          is Data -> vs.copy(isLoading = false, error = null, userItems = users)
+          is Data -> vs.copy(
+            isLoading = false,
+            error = null,
+            userItems = users
+          )
           is Error -> vs.copy(isLoading = false, error = error)
         }
       }
@@ -57,7 +64,32 @@ interface MainContract {
       data class Data(val users: List<UserItem>) : GetUser()
       data class Error(val error: Throwable) : GetUser()
     }
+
+    sealed class Refresh : PartialChange() {
+      override fun reduce(vs: ViewState): ViewState {
+        return when (this) {
+          is Success -> vs.copy(
+            error = null,
+            userItems = users,
+            isRefreshing = false
+          )
+          is Failure -> vs.copy(isRefreshing = false)
+          Loading -> vs.copy(isRefreshing = true)
+        }
+      }
+
+      object Loading : Refresh()
+      data class Success(val users: List<UserItem>) : Refresh()
+      data class Failure(val error: Throwable) : Refresh()
+    }
   }
 
-  sealed class SingleEvent
+  sealed class SingleEvent {
+    sealed class Refresh : SingleEvent() {
+      object Success : Refresh()
+      data class Failure(val error: Throwable) : Refresh()
+    }
+
+    data class GetUsersError(val error: Throwable) : SingleEvent()
+  }
 }

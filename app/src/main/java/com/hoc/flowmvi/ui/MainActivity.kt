@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hoc.flowmvi.R
 import com.hoc.flowmvi.databinding.ActivityMainBinding
+import com.hoc.flowmvi.refreshes
 import com.hoc.flowmvi.ui.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -46,10 +47,32 @@ class MainActivity : AppCompatActivity(), View {
 
   private fun bindVM() {
     mainVM.viewState.observe(this, Observer { viewState ->
-      viewState ?: return@Observer
       Log.d("MainActivity", "$viewState")
+      viewState ?: return@Observer
+
       userAdapter.submitList(viewState.userItems)
       mainBinding.progressBar.isVisible = viewState.isLoading
+      if (viewState.isRefreshing) {
+        mainBinding.swipeRefreshLayout.post { mainBinding.swipeRefreshLayout.isRefreshing = true }
+      } else {
+        mainBinding.swipeRefreshLayout.isRefreshing = false
+      }
+    })
+
+    mainVM.singleEvent.observe(this, Observer {
+      when (it?.getContentIfNotHandled()) {
+        null -> Unit
+        SingleEvent.Refresh.Success -> {
+          Toast.makeText(this@MainActivity, "Refresh success", Toast.LENGTH_SHORT).show()
+        }
+        is SingleEvent.Refresh.Failure -> {
+          Toast.makeText(this@MainActivity, "Refresh failure", Toast.LENGTH_SHORT).show()
+
+        }
+        is SingleEvent.GetUsersError -> {
+          Toast.makeText(this@MainActivity, "Get user failure", Toast.LENGTH_SHORT).show()
+        }
+      }
     })
 
     intents()
@@ -59,7 +82,8 @@ class MainActivity : AppCompatActivity(), View {
 
   override fun intents(): Flow<ViewIntent> {
     val flows = listOf(
-      flowOf(ViewIntent.Initial)
+      flowOf(ViewIntent.Initial),
+      mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh }
     )
     return flows.asFlow().flattenMerge(flows.size)
   }
