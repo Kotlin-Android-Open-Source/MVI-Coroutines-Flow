@@ -5,6 +5,8 @@ import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.Mapper
 import com.hoc.flowmvi.domain.User
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -17,14 +19,23 @@ val dataModule = module {
 
   single { UserResponseToUserDomainMapper() as Mapper<UserResponse, User> }
 
-  single { provideRetrofit(get(named(BASE_URL))) }
+  single { provideRetrofit(get(named(BASE_URL)), get()) }
 
-  single(named(BASE_URL)) { "https://hoc081098.github.io/hoc081098.github.io/users.json/" }
+  single { provideMoshi() }
+
+  single(named(BASE_URL)) { "https://hoc081098.github.io/hoc081098.github.io/" }
 }
 
-private fun provideRetrofit(baseUrl: String): Retrofit {
+private fun provideMoshi(): Moshi {
+  return Moshi
+    .Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
+}
+
+private fun provideRetrofit(baseUrl: String, moshi: Moshi): Retrofit {
   return Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create())
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(baseUrl)
     .build()
 }
