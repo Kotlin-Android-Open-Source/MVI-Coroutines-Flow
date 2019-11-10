@@ -12,15 +12,13 @@ interface MainContract {
   data class UserItem(
     val id: Int,
     val email: String,
-    val firstName: String,
-    val lastName: String,
+    val fullName: String,
     val avatar: String
   ) {
     constructor(domain: User) : this(
       id = domain.id,
       email = domain.email,
-      lastName = domain.lastName,
-      firstName = domain.firstName,
+      fullName = "${domain.firstName} ${domain.lastName}",
       avatar = domain.avatar
     )
   }

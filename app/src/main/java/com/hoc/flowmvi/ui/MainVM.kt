@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.ui
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.hoc.flowmvi.domain.GetUsersUseCase
 import com.hoc.flowmvi.ui.MainContract.*
@@ -34,6 +35,7 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
       flows
         .asFlow()
         .flattenMerge(flows.size)
+        .onEach { Log.d("MainVM", "Intent $it") }
         .toPartialChangeFlow()
         .scan(initialVS) { vs, change -> change.reduce(vs) }
         .collect { _viewStateD.value = it }
