@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.domain
+package com.hoc.flowmvi.domain.entity
 
 data class User(
   val id: Int,

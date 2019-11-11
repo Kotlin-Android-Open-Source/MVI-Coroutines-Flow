@@ -3,14 +3,14 @@ package com.hoc.flowmvi.ui
 import android.util.Log
 import androidx.lifecycle.*
 import com.hoc.flowmvi.Event
-import com.hoc.flowmvi.domain.GetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.merge
 import com.hoc.flowmvi.ui.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -30,21 +30,16 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
   init {
     val intentFlow = _intentChannel.asFlow()
 
-    val flows = listOf(
+    merge(
       intentFlow.filterIsInstance<ViewIntent.Initial>().take(1),
       intentFlow.filterNot { it is ViewIntent.Initial }
     )
-
-    viewModelScope.launch {
-      flows
-        .asFlow()
-        .flattenMerge(flows.size)
-        .onEach { Log.d("MainVM", "Intent $it") }
-        .toPartialChangeFlow()
-        .sendSingleEvent()
-        .scan(initialVS) { vs, change -> change.reduce(vs) }
-        .collect { _viewStateD.value = it }
-    }
+      .onEach { Log.d("MainVM", "Intent $it") }
+      .toPartialChangeFlow()
+      .sendSingleEvent()
+      .scan(initialVS) { vs, change -> change.reduce(vs) }
+      .onEach { _viewStateD.value = it }
+      .launchIn(viewModelScope)
   }
 
   private fun <T> Flow<T>.sendSingleEvent(): Flow<T> {
@@ -82,12 +77,10 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
       }
     }
 
-    val flows = listOf(
+    return merge(
       filterIsInstance<ViewIntent.Initial>().flatMapConcat { getUserChanges },
       filterIsInstance<ViewIntent.Refresh>().flatMapConcat { refreshChanges }
     )
-
-    return flows.asFlow().flattenMerge(flows.size)
   }
 }
 

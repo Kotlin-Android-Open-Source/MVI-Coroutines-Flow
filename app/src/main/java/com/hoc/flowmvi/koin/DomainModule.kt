@@ -1,10 +1,10 @@
 package com.hoc.flowmvi.koin
 
 import com.hoc.flowmvi.data.UserRepositoryImpl
-import com.hoc.flowmvi.domain.CoroutineDispatchers
-import com.hoc.flowmvi.domain.CoroutineDispatchersImpl
-import com.hoc.flowmvi.domain.GetUsersUseCase
-import com.hoc.flowmvi.domain.UserRepository
+import com.hoc.flowmvi.domain.dispatchers.CoroutineDispatchers
+import com.hoc.flowmvi.domain.dispatchers.CoroutineDispatchersImpl
+import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.domain.repository.UserRepository
 import org.koin.dsl.module
 
 val domainModule = module {

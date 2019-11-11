@@ -4,7 +4,7 @@ import com.hoc.flowmvi.data.UserResponseToUserDomainMapper
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.Mapper
-import com.hoc.flowmvi.domain.User
+import com.hoc.flowmvi.domain.entity.User
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.core.qualifier.named

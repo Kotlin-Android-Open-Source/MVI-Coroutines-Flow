@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hoc.flowmvi.R
 import com.hoc.flowmvi.databinding.ActivityMainBinding
+import com.hoc.flowmvi.merge
 import com.hoc.flowmvi.refreshes
 import com.hoc.flowmvi.ui.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -81,10 +82,9 @@ class MainActivity : AppCompatActivity(), View {
   }
 
   override fun intents(): Flow<ViewIntent> {
-    val flows = listOf(
+    return merge(
       flowOf(ViewIntent.Initial),
       mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh }
     )
-    return flows.asFlow().flattenMerge(flows.size)
   }
 }

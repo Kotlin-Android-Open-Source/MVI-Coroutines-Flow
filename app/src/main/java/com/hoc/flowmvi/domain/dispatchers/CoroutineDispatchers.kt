@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.domain
+package com.hoc.flowmvi.domain.dispatchers
 
 import kotlinx.coroutines.CoroutineDispatcher
 

@@ -1,5 +1,6 @@
-package com.hoc.flowmvi.domain
+package com.hoc.flowmvi.domain.dispatchers
 
+import com.hoc.flowmvi.domain.dispatchers.CoroutineDispatchers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
