@@ -1,23 +1,25 @@
 package com.hoc.flowmvi.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hoc.flowmvi.R
 import com.hoc.flowmvi.databinding.ActivityMainBinding
 import com.hoc.flowmvi.merge
 import com.hoc.flowmvi.refreshes
 import com.hoc.flowmvi.ui.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -81,10 +83,8 @@ class MainActivity : AppCompatActivity(), View {
       .launchIn(lifecycleScope)
   }
 
-  override fun intents(): Flow<ViewIntent> {
-    return merge(
-      flowOf(ViewIntent.Initial),
-      mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh }
-    )
-  }
+  override fun intents() = merge(
+    flowOf(ViewIntent.Initial),
+    mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh }
+  )
 }
