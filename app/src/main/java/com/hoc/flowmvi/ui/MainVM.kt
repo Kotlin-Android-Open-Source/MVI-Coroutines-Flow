@@ -34,7 +34,6 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
       intentFlow.filterIsInstance<ViewIntent.Initial>().take(1),
       intentFlow.filterNot { it is ViewIntent.Initial }
     )
-      .onEach { Log.d("MainVM", "Intent $it") }
       .toPartialChangeFlow()
       .sendSingleEvent()
       .scan(initialVS) { vs, change -> change.reduce(vs) }
@@ -78,10 +77,16 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
     }
 
     return merge(
-      filterIsInstance<ViewIntent.Initial>().flatMapConcat { getUserChanges },
-      filterIsInstance<ViewIntent.Refresh>().flatMapConcat { refreshChanges }
+      filterIsInstance<ViewIntent.Initial>().logIntent().flatMapConcat { getUserChanges },
+      filterIsInstance<ViewIntent.Refresh>().logIntent().flatMapConcat { refreshChanges },
+      filterIsInstance<ViewIntent.Retry>()
+        .filter { viewState.value.let { it !== null && it.error === null } }
+        .logIntent()
+        .flatMapConcat { getUserChanges }
     )
   }
+
+  private fun Flow<ViewIntent>.logIntent() = onEach { Log.d("MainVM", "## Intent: $it") }
 }
 
 

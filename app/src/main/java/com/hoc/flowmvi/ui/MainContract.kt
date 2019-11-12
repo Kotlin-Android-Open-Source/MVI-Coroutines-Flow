@@ -26,6 +26,7 @@ interface MainContract {
   sealed class ViewIntent {
     object Initial : ViewIntent()
     object Refresh : ViewIntent()
+    object Retry : ViewIntent()
   }
 
   data class ViewState(
@@ -50,13 +51,19 @@ interface MainContract {
     sealed class GetUser : PartialChange() {
       override fun reduce(vs: ViewState): ViewState {
         return when (this) {
-          Loading -> vs.copy(isLoading = true)
+          Loading -> vs.copy(
+            isLoading = true,
+            error = null
+          )
           is Data -> vs.copy(
             isLoading = false,
             error = null,
             userItems = users
           )
-          is Error -> vs.copy(isLoading = false, error = error)
+          is Error -> vs.copy(
+            isLoading = false,
+            error = error
+          )
         }
       }
 

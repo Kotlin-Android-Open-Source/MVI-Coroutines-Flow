@@ -1,5 +1,6 @@
 package com.hoc.flowmvi
 
+import android.view.View
 import androidx.annotation.CheckResult
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,6 +17,15 @@ fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
   return callbackFlow {
     setOnRefreshListener { offer(Unit) }
     awaitClose { setOnRefreshListener(null) }
+  }
+}
+
+@ExperimentalCoroutinesApi
+@CheckResult
+fun View.clicks(): Flow<View> {
+  return callbackFlow {
+    setOnClickListener { offer(it) }
+    awaitClose { setOnClickListener(null) }
   }
 }
 
