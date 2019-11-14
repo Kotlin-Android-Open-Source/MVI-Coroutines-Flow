@@ -35,14 +35,18 @@ fun <T, R> Flow<T>.flatMapFirst(transform: suspend (value: T) -> Flow<R>): Flow<
   map(transform).flattenFirst()
 
 @ExperimentalCoroutinesApi
-fun <T> Flow<Flow<T>>.flattenFirst(): Flow<T> {
-  return channelFlow {
-    val busy = AtomicBoolean(false)
-    collect { inner ->
-      if (busy.compareAndSet(false, true)) {
-        launch(Dispatchers.Unconfined) {
-          inner.collect { send(it) }
+fun <T> Flow<Flow<T>>.flattenFirst(): Flow<T> = channelFlow {
+  val outerScope = this
+  val busy = AtomicBoolean(false)
+  collect { inner ->
+    if (busy.compareAndSet(false, true)) {
+      launch {
+        try {
+          inner.collect { outerScope.send(it) }
           busy.set(false)
+        } catch (e: CancellationException) {
+          // cancel outer scope on cancellation exception, too
+          outerScope.cancel(e)
         }
       }
     }
@@ -50,14 +54,15 @@ fun <T> Flow<Flow<T>>.flattenFirst(): Flow<T> {
 }
 
 suspend fun main() {
-  (1..10).asFlow()
-    .onEach { delay(100) }
+  (1..2000).asFlow()
+    .onEach { delay(50) }
     .flatMapFirst { v ->
-      println(">>>$v")
       flow {
         delay(500)
         emit(v)
       }
     }
-    .collect { println(it) }
+    .onEach { println("[*] $it") }
+    .catch { println("Error $it") }
+    .collect()
 }
