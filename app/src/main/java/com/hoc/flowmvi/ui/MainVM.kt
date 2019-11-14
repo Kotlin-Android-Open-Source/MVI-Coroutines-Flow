@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.hoc.flowmvi.Event
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.flatMapFirst
 import com.hoc.flowmvi.merge
 import com.hoc.flowmvi.ui.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -67,22 +68,21 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
       }
     }
 
-    val refreshChanges = flow {
-      emit(PartialChange.Refresh.Loading)
-      try {
-        emit(getUsersUseCase().map(::UserItem).let { PartialChange.Refresh.Success(it) })
-      } catch (e: Throwable) {
-        emit(PartialChange.Refresh.Failure(e))
+    val refreshChanges = flow { emit(getUsersUseCase()) }
+      .map {
+        val items = it.map(::UserItem)
+        PartialChange.Refresh.Success(items) as PartialChange.Refresh
       }
-    }
+      .onStart { emit(PartialChange.Refresh.Loading) }
+      .catch { emit(PartialChange.Refresh.Failure(it)) }
 
     return merge(
       filterIsInstance<ViewIntent.Initial>().logIntent().flatMapConcat { getUserChanges },
-      filterIsInstance<ViewIntent.Refresh>().logIntent().flatMapConcat { refreshChanges },
+      filterIsInstance<ViewIntent.Refresh>().logIntent().flatMapFirst { refreshChanges },
       filterIsInstance<ViewIntent.Retry>()
         .filter { viewState.value.let { it !== null && it.error === null } }
         .logIntent()
-        .flatMapConcat { getUserChanges }
+        .flatMapFirst { getUserChanges }
     )
   }
 
