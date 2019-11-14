@@ -80,7 +80,7 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
       filterIsInstance<ViewIntent.Initial>().logIntent().flatMapConcat { getUserChanges },
       filterIsInstance<ViewIntent.Refresh>().logIntent().flatMapFirst { refreshChanges },
       filterIsInstance<ViewIntent.Retry>()
-        .filter { viewState.value.let { it !== null && it.error === null } }
+        .filter { _viewStateD.value?.error != null }
         .logIntent()
         .flatMapFirst { getUserChanges }
     )
