@@ -11,6 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 @FlowPreview
@@ -73,12 +74,16 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
         val items = it.map(::UserItem)
         PartialChange.Refresh.Success(items) as PartialChange.Refresh
       }
+      .onEach { delay(2_000) }
       .onStart { emit(PartialChange.Refresh.Loading) }
       .catch { emit(PartialChange.Refresh.Failure(it)) }
 
     return merge(
       filterIsInstance<ViewIntent.Initial>().logIntent().flatMapConcat { getUserChanges },
-      filterIsInstance<ViewIntent.Refresh>().logIntent().flatMapFirst { refreshChanges },
+      filterIsInstance<ViewIntent.Refresh>()
+        .filter { _viewStateD.value?.let { !it.isLoading && it.error === null } ?: false }
+        .logIntent()
+        .flatMapFirst { refreshChanges },
       filterIsInstance<ViewIntent.Retry>()
         .filter { _viewStateD.value?.error != null }
         .logIntent()

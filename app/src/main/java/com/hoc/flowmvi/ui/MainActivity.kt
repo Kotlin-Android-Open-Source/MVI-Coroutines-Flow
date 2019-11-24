@@ -91,16 +91,19 @@ class MainActivity : AppCompatActivity(), View {
 
     userAdapter.submitList(viewState.userItems)
 
-    mainBinding.errorGroup.isVisible = viewState.error !== null
-    mainBinding.errorMessageTextView.text = viewState.error?.message
+    mainBinding.run {
+      errorGroup.isVisible = viewState.error !== null
+      errorMessageTextView.text = viewState.error?.message
 
-    mainBinding.progressBar.isVisible = viewState.isLoading
+      progressBar.isVisible = viewState.isLoading
 
-    if (viewState.isRefreshing) {
-      mainBinding.swipeRefreshLayout.post { mainBinding.swipeRefreshLayout.isRefreshing = true }
-    } else {
-      mainBinding.swipeRefreshLayout.isRefreshing = false
+      if (viewState.isRefreshing) {
+        swipeRefreshLayout.post { swipeRefreshLayout.isRefreshing = true }
+      } else {
+        swipeRefreshLayout.isRefreshing = false
+      }
+
+      swipeRefreshLayout.isEnabled = !viewState.isLoading && viewState.error === null
     }
   }
-
 }
