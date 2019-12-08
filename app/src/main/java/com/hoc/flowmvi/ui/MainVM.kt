@@ -26,7 +26,7 @@ class MainVM(
 
   private val _viewStateD = MutableLiveData<ViewState>()
     .apply { value = initialVS }
-  val viewState: LiveData<ViewState> get() = _viewStateD.distinctUntilChanged()
+  val viewState: LiveData<ViewState> = _viewStateD.distinctUntilChanged()
 
   private val _eventD = MutableLiveData<Event<SingleEvent>>()
   val singleEvent: LiveData<Event<SingleEvent>> get() = _eventD

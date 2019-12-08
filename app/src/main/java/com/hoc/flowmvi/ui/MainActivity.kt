@@ -2,7 +2,6 @@ package com.hoc.flowmvi.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -46,11 +45,12 @@ class MainActivity : AppCompatActivity(), View {
       adapter = userAdapter
       addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
 
-      ItemTouchHelper(SwipeLeftToDeleteCallback(context) cb@{
-        Toast.makeText(context, "Swipe $it", Toast.LENGTH_SHORT).show()
-        val element = mainVM.viewState.value?.userItems?.getOrNull(it)
-        removeChannel.offer(element ?: return@cb)
-      }).attachToRecyclerView(this)
+      ItemTouchHelper(
+        SwipeLeftToDeleteCallback(context) cb@{ position ->
+          val userItem = mainVM.viewState.value?.userItems?.get(position) ?: return@cb
+          removeChannel.offer(userItem)
+        }
+      ).attachToRecyclerView(this)
     }
   }
 

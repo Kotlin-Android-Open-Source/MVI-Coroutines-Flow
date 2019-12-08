@@ -61,7 +61,6 @@ class UserRepositoryImpl(
     withContext(dispatchers.io) {
       val response = userApiService.remove(domainToResponse(user).id)
       changesChannel.send(Change.Removed(responseToDomain(response)))
-      Log.d("###", "[USER_REPO] Removed response=$response")
     }
   }
 }
