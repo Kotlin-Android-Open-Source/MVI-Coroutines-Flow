@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.hoc.flowmvi.Event
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.flatMapFirst
 import com.hoc.flowmvi.merge
 import com.hoc.flowmvi.ui.MainContract.*
@@ -11,12 +12,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
+class MainVM(
+  private val getUsersUseCase: GetUsersUseCase,
+  private val refreshGetUsersUseCase: RefreshGetUsersUseCase
+) : ViewModel() {
   private val initialVS = ViewState.initial()
 
   private val _viewStateD = MutableLiveData<ViewState>()
@@ -60,21 +63,16 @@ class MainVM(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
   }
 
   private fun <T> Flow<T>.toPartialChangeFlow(): Flow<PartialChange> {
-    val getUserChanges = flow {
-      emit(PartialChange.GetUser.Loading)
-      try {
-        emit(getUsersUseCase().map(::UserItem).let { PartialChange.GetUser.Data(it) })
-      } catch (e: Throwable) {
-        emit(PartialChange.GetUser.Error(e))
-      }
-    }
-
-    val refreshChanges = flow { emit(getUsersUseCase()) }
+    val getUserChanges = getUsersUseCase()
       .map {
         val items = it.map(::UserItem)
-        PartialChange.Refresh.Success(items) as PartialChange.Refresh
+        PartialChange.GetUser.Data(items) as PartialChange.GetUser
       }
-      .onEach { delay(2_000) }
+      .onStart { emit(PartialChange.GetUser.Loading) }
+      .catch { emit(PartialChange.GetUser.Error(it)) }
+
+    val refreshChanges = flow { emit(refreshGetUsersUseCase()) }
+      .map { PartialChange.Refresh.Success as PartialChange.Refresh }
       .onStart { emit(PartialChange.Refresh.Loading) }
       .catch { emit(PartialChange.Refresh.Failure(it)) }
 

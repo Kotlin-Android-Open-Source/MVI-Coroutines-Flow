@@ -9,5 +9,5 @@ import org.koin.dsl.module
 @ExperimentalCoroutinesApi
 @FlowPreview
 val viewModelModule = module {
-  viewModel { MainVM(get()) }
+  viewModel { MainVM(get(), get()) }
 }

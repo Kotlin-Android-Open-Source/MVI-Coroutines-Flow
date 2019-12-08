@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.koin
 
+import com.hoc.flowmvi.data.UserDomainToUserResponseMapper
 import com.hoc.flowmvi.data.UserResponseToUserDomainMapper
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserResponse
@@ -17,7 +18,9 @@ private const val BASE_URL = "BASE_URL"
 val dataModule = module {
   single { UserApiService(get()) }
 
-  single { UserResponseToUserDomainMapper() as Mapper<UserResponse, User> }
+  single { UserResponseToUserDomainMapper() }
+
+  single { UserDomainToUserResponseMapper() }
 
   single { provideRetrofit(get(named(BASE_URL)), get()) }
 

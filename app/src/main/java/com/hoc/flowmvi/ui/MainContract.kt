@@ -75,18 +75,14 @@ interface MainContract {
     sealed class Refresh : PartialChange() {
       override fun reduce(vs: ViewState): ViewState {
         return when (this) {
-          is Success -> vs.copy(
-            error = null,
-            userItems = users,
-            isRefreshing = false
-          )
+          is Success -> vs.copy(isRefreshing = false)
           is Failure -> vs.copy(isRefreshing = false)
           Loading -> vs.copy(isRefreshing = true)
         }
       }
 
       object Loading : Refresh()
-      data class Success(val users: List<UserItem>) : Refresh()
+      object Success : Refresh()
       data class Failure(val error: Throwable) : Refresh()
     }
   }
