@@ -10,7 +10,7 @@ interface MainContract {
   }
 
   data class UserItem(
-    val id: Int,
+    val id: String,
     val email: String,
     val fullName: String,
     val avatar: String

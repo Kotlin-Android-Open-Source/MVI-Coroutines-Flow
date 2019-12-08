@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.domain.entity
 
 data class User(
-  val id: Int,
+  val id: String,
   val email: String,
   val firstName: String,
   val lastName: String,
