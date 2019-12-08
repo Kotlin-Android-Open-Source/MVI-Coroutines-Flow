@@ -23,7 +23,7 @@ val dataModule = module {
 
   single { provideMoshi() }
 
-  single(named(BASE_URL)) { "https://hoc081098.github.io/hoc081098.github.io/" }
+  single(named(BASE_URL)) { "https://5caad70369c15c001484956a.mockapi.io/hoc081098/" }
 }
 
 private fun provideMoshi(): Moshi {
