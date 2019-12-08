@@ -8,19 +8,16 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hoc.flowmvi.clicks
+import com.hoc.flowmvi.*
 import com.hoc.flowmvi.databinding.ActivityMainBinding
-import com.hoc.flowmvi.merge
-import com.hoc.flowmvi.refreshes
 import com.hoc.flowmvi.ui.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -31,6 +28,8 @@ class MainActivity : AppCompatActivity(), View {
 
   private val userAdapter = UserAdapter()
   private val mainBinding by lazy(NONE) { ActivityMainBinding.inflate(layoutInflater) }
+
+  private val removeChannel = Channel<UserItem>(Channel.UNLIMITED)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -46,6 +45,12 @@ class MainActivity : AppCompatActivity(), View {
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = userAdapter
       addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
+
+      ItemTouchHelper(SwipeLeftToDeleteCallback(context) cb@{
+        Toast.makeText(context, "Swipe $it", Toast.LENGTH_SHORT).show()
+        val element = mainVM.viewState.value?.userItems?.getOrNull(it)
+        removeChannel.offer(element ?: return@cb)
+      }).attachToRecyclerView(this)
     }
   }
 
@@ -66,23 +71,18 @@ class MainActivity : AppCompatActivity(), View {
   override fun intents() = merge(
     flowOf(ViewIntent.Initial),
     mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
-    mainBinding.retryButton.clicks().map { ViewIntent.Retry }
+    mainBinding.retryButton.clicks().map { ViewIntent.Retry },
+    removeChannel.consumeAsFlow().map { ViewIntent.RemoveUser(it) }
   )
 
   private fun handleSingleEvent(event: SingleEvent) {
     Log.d("MainActivity", "handleSingleEvent $event")
-
-    when (event) {
-      SingleEvent.Refresh.Success -> {
-        Toast.makeText(this@MainActivity, "Refresh success", Toast.LENGTH_SHORT).show()
-      }
-      is SingleEvent.Refresh.Failure -> {
-        Toast.makeText(this@MainActivity, "Refresh failure", Toast.LENGTH_SHORT).show()
-
-      }
-      is SingleEvent.GetUsersError -> {
-        Toast.makeText(this@MainActivity, "Get user failure", Toast.LENGTH_SHORT).show()
-      }
+    return when (event) {
+      SingleEvent.Refresh.Success -> toast("Refresh success")
+      is SingleEvent.Refresh.Failure -> toast("Refresh failure")
+      is SingleEvent.GetUsersError -> toast("Get user failure")
+      is SingleEvent.RemoveUser.Success -> toast("Removed '${event.user.fullName}'")
+      is SingleEvent.RemoveUser.Failure -> toast("Error when removing '${event.user.fullName}'")
     }
   }
 

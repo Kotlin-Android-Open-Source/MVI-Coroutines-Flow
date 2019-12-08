@@ -12,14 +12,26 @@ interface MainContract {
   data class UserItem(
     val id: String,
     val email: String,
-    val fullName: String,
-    val avatar: String
+    val avatar: String,
+    val firstName: String,
+    val lastName: String
   ) {
+    val fullName get() = "$firstName $lastName"
+
     constructor(domain: User) : this(
       id = domain.id,
       email = domain.email,
-      fullName = "${domain.firstName} ${domain.lastName}",
-      avatar = domain.avatar
+      avatar = domain.avatar,
+      firstName = domain.firstName,
+      lastName = domain.lastName
+    )
+
+    fun toDomain() = User(
+      id = id,
+      lastName = lastName,
+      firstName = firstName,
+      avatar = avatar,
+      email = email
     )
   }
 
@@ -27,6 +39,7 @@ interface MainContract {
     object Initial : ViewIntent()
     object Refresh : ViewIntent()
     object Retry : ViewIntent()
+    data class RemoveUser(val user: UserItem) : ViewIntent()
   }
 
   data class ViewState(
@@ -85,6 +98,13 @@ interface MainContract {
       object Success : Refresh()
       data class Failure(val error: Throwable) : Refresh()
     }
+
+    sealed class RemoveUser : PartialChange() {
+      data class Success(val user: UserItem) : RemoveUser()
+      data class Failure(val user: UserItem, val error: Throwable) : RemoveUser()
+
+      override fun reduce(vs: ViewState) = vs
+    }
   }
 
   sealed class SingleEvent {
@@ -94,5 +114,10 @@ interface MainContract {
     }
 
     data class GetUsersError(val error: Throwable) : SingleEvent()
+
+    sealed class RemoveUser : SingleEvent() {
+      data class Success(val user: UserItem) : RemoveUser()
+      data class Failure(val user: UserItem, val error: Throwable) : RemoveUser()
+    }
   }
 }

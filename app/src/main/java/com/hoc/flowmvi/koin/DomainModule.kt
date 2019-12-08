@@ -11,6 +11,7 @@ import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -29,4 +30,6 @@ val domainModule = module {
   single { GetUsersUseCase(get()) }
 
   single { RefreshGetUsersUseCase(get()) }
+
+  single { RemoveUserUseCase(get()) }
 }

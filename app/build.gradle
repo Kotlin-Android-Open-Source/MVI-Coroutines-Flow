@@ -57,6 +57,7 @@ dependencies {
     // retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.6.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
 
     // moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.8.0'
