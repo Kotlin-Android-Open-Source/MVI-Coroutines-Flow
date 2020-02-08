@@ -1,7 +1,10 @@
 package com.hoc.flowmvi.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -10,11 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hoc.flowmvi.SwipeLeftToDeleteCallback
-import com.hoc.flowmvi.clicks
+import com.hoc.flowmvi.*
 import com.hoc.flowmvi.databinding.ActivityMainBinding
-import com.hoc.flowmvi.refreshes
-import com.hoc.flowmvi.toast
+import com.hoc.flowmvi.ui.add.AddActivity
 import com.hoc.flowmvi.ui.main.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -39,6 +40,21 @@ class MainActivity : AppCompatActivity(), View {
 
     setupViews()
     bindVM()
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+      R.id.add_action -> {
+        startActivity(Intent(this, AddActivity::class.java))
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
+    }
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.menu_main, menu)
+    return true
   }
 
   private fun setupViews() {
