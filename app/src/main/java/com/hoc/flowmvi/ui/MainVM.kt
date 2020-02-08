@@ -7,7 +7,6 @@ import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.flatMapFirst
-import com.hoc.flowmvi.merge
 import com.hoc.flowmvi.ui.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -18,14 +17,14 @@ import kotlinx.coroutines.flow.*
 @FlowPreview
 @ExperimentalCoroutinesApi
 class MainVM(
-  private val getUsersUseCase: GetUsersUseCase,
-  private val refreshGetUsersUseCase: RefreshGetUsersUseCase,
-  private val removeUserUseCase: RemoveUserUseCase
+    private val getUsersUseCase: GetUsersUseCase,
+    private val refreshGetUsersUseCase: RefreshGetUsersUseCase,
+    private val removeUserUseCase: RemoveUserUseCase
 ) : ViewModel() {
   private val initialVS = ViewState.initial()
 
   private val _viewStateD = MutableLiveData<ViewState>()
-    .apply { value = initialVS }
+      .apply { value = initialVS }
   val viewState: LiveData<ViewState> = _viewStateD.distinctUntilChanged()
 
   private val _eventD = MutableLiveData<Event<SingleEvent>>()
@@ -38,14 +37,14 @@ class MainVM(
     val intentFlow = _intentChannel.asFlow()
 
     merge(
-      intentFlow.filterIsInstance<ViewIntent.Initial>().take(1),
-      intentFlow.filterNot { it is ViewIntent.Initial }
+        intentFlow.filterIsInstance<ViewIntent.Initial>().take(1),
+        intentFlow.filterNot { it is ViewIntent.Initial }
     )
-      .toPartialChangeFlow()
-      .sendSingleEvent()
-      .scan(initialVS) { vs, change -> change.reduce(vs) }
-      .onEach { _viewStateD.value = it }
-      .launchIn(viewModelScope)
+        .toPartialChangeFlow()
+        .sendSingleEvent()
+        .scan(initialVS) { vs, change -> change.reduce(vs) }
+        .onEach { _viewStateD.value = it }
+        .launchIn(viewModelScope)
   }
 
   private fun Flow<PartialChange>.sendSingleEvent(): Flow<PartialChange> {
@@ -56,10 +55,10 @@ class MainVM(
         is PartialChange.Refresh.Failure -> Event(SingleEvent.Refresh.Failure(it.error))
         is PartialChange.RemoveUser.Success -> Event(SingleEvent.RemoveUser.Success(it.user))
         is PartialChange.RemoveUser.Failure -> Event(
-          SingleEvent.RemoveUser.Failure(
-            it.user,
-            it.error
-          )
+            SingleEvent.RemoveUser.Failure(
+                user = it.user,
+                error = it.error
+            )
         )
         PartialChange.GetUser.Loading -> return@onEach
         is PartialChange.GetUser.Data -> return@onEach
@@ -70,44 +69,44 @@ class MainVM(
 
   private fun <T> Flow<T>.toPartialChangeFlow(): Flow<PartialChange> {
     val getUserChanges = getUsersUseCase()
-      .onEach { Log.d("###", "[MAIN_VM] Emit users.size=${it.size}") }
-      .map {
-        val items = it.map(::UserItem)
-        PartialChange.GetUser.Data(items) as PartialChange.GetUser
-      }
-      .onStart { emit(PartialChange.GetUser.Loading) }
-      .catch { emit(PartialChange.GetUser.Error(it)) }
+        .onEach { Log.d("###", "[MAIN_VM] Emit users.size=${it.size}") }
+        .map {
+          val items = it.map(::UserItem)
+          PartialChange.GetUser.Data(items) as PartialChange.GetUser
+        }
+        .onStart { emit(PartialChange.GetUser.Loading) }
+        .catch { emit(PartialChange.GetUser.Error(it)) }
 
     val refreshChanges = flow { emit(refreshGetUsersUseCase()) }
-      .map { PartialChange.Refresh.Success as PartialChange.Refresh }
-      .onStart { emit(PartialChange.Refresh.Loading) }
-      .catch { emit(PartialChange.Refresh.Failure(it)) }
+        .map { PartialChange.Refresh.Success as PartialChange.Refresh }
+        .onStart { emit(PartialChange.Refresh.Loading) }
+        .catch { emit(PartialChange.Refresh.Failure(it)) }
 
     return merge(
-      filterIsInstance<ViewIntent.Initial>()
-        .logIntent()
-        .flatMapConcat { getUserChanges },
-      filterIsInstance<ViewIntent.Refresh>()
-        .filter { _viewStateD.value?.let { !it.isLoading && it.error === null } ?: false }
-        .logIntent()
-        .flatMapFirst { refreshChanges },
-      filterIsInstance<ViewIntent.Retry>()
-        .filter { _viewStateD.value?.error != null }
-        .logIntent()
-        .flatMapFirst { getUserChanges },
-      filterIsInstance<ViewIntent.RemoveUser>()
-        .logIntent()
-        .map { it.user }
-        .flatMapMerge { userItem ->
-          flow {
-            try {
-              removeUserUseCase(userItem.toDomain())
-              emit(PartialChange.RemoveUser.Success(userItem))
-            } catch (e: Exception) {
-              emit(PartialChange.RemoveUser.Failure(userItem, e))
+        filterIsInstance<ViewIntent.Initial>()
+            .logIntent()
+            .flatMapConcat { getUserChanges },
+        filterIsInstance<ViewIntent.Refresh>()
+            .filter { _viewStateD.value?.let { !it.isLoading && it.error === null } ?: false }
+            .logIntent()
+            .flatMapFirst { refreshChanges },
+        filterIsInstance<ViewIntent.Retry>()
+            .filter { _viewStateD.value?.error != null }
+            .logIntent()
+            .flatMapFirst { getUserChanges },
+        filterIsInstance<ViewIntent.RemoveUser>()
+            .logIntent()
+            .map { it.user }
+            .flatMapMerge { userItem ->
+              flow {
+                try {
+                  removeUserUseCase(userItem.toDomain())
+                  emit(PartialChange.RemoveUser.Success(userItem))
+                } catch (e: Exception) {
+                  emit(PartialChange.RemoveUser.Failure(userItem, e))
+                }
+              }
             }
-          }
-        }
     )
   }
 

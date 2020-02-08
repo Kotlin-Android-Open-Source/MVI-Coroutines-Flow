@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hoc.flowmvi.*
+import com.hoc.flowmvi.SwipeLeftToDeleteCallback
+import com.hoc.flowmvi.clicks
 import com.hoc.flowmvi.databinding.ActivityMainBinding
+import com.hoc.flowmvi.refreshes
+import com.hoc.flowmvi.toast
 import com.hoc.flowmvi.ui.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -46,10 +49,10 @@ class MainActivity : AppCompatActivity(), View {
       addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
 
       ItemTouchHelper(
-        SwipeLeftToDeleteCallback(context) cb@{ position ->
-          val userItem = mainVM.viewState.value?.userItems?.get(position) ?: return@cb
-          removeChannel.offer(userItem)
-        }
+          SwipeLeftToDeleteCallback(context) cb@{ position ->
+            val userItem = mainVM.viewState.value?.userItems?.get(position) ?: return@cb
+            removeChannel.offer(userItem)
+          }
       ).attachToRecyclerView(this)
     }
   }
@@ -58,21 +61,21 @@ class MainActivity : AppCompatActivity(), View {
     // observe view model
     mainVM.viewState.observe(this, Observer { render(it ?: return@Observer) })
     mainVM.singleEvent.observe(
-      this,
-      Observer { handleSingleEvent(it?.getContentIfNotHandled() ?: return@Observer) }
+        this,
+        Observer { handleSingleEvent(it?.getContentIfNotHandled() ?: return@Observer) }
     )
 
     // pass view intent to view model
     intents()
-      .onEach { mainVM.processIntent(it) }
-      .launchIn(lifecycleScope)
+        .onEach { mainVM.processIntent(it) }
+        .launchIn(lifecycleScope)
   }
 
   override fun intents() = merge(
-    flowOf(ViewIntent.Initial),
-    mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
-    mainBinding.retryButton.clicks().map { ViewIntent.Retry },
-    removeChannel.consumeAsFlow().map { ViewIntent.RemoveUser(it) }
+      flowOf(ViewIntent.Initial),
+      mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
+      mainBinding.retryButton.clicks().map { ViewIntent.Retry },
+      removeChannel.consumeAsFlow().map { ViewIntent.RemoveUser(it) }
   )
 
   private fun handleSingleEvent(event: SingleEvent) {

@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId "com.hoc.flowmvi"
@@ -41,30 +41,31 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
 
     // viewModelScope
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     // lifecycleScope
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc02'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
 
     // Extensions for LiveData
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc02'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
 
     // retrofit2
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.7.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
 
     // moshi
     implementation 'com.squareup.moshi:moshi-kotlin:1.8.0'
 
     // coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
 
     // koin
     implementation 'org.koin:koin-androidx-viewmodel:2.0.0'
@@ -72,7 +73,7 @@ dependencies {
     // coil
     implementation 'io.coil-kt:coil:0.8.0'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
