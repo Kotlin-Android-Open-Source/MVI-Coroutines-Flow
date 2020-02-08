@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.data
+package com.hoc.flowmvi.data.mapper
 
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.Mapper

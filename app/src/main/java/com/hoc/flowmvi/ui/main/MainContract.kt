@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.ui
+package com.hoc.flowmvi.ui.main
 
 import com.hoc.flowmvi.domain.entity.User
 import kotlinx.coroutines.flow.Flow

@@ -1,8 +1,9 @@
 package com.hoc.flowmvi.koin
 
 import com.hoc.flowmvi.BuildConfig
-import com.hoc.flowmvi.data.UserDomainToUserResponseMapper
-import com.hoc.flowmvi.data.UserResponseToUserDomainMapper
+import com.hoc.flowmvi.data.mapper.UserDomainToUserBodyMapper
+import com.hoc.flowmvi.data.mapper.UserDomainToUserResponseMapper
+import com.hoc.flowmvi.data.mapper.UserResponseToUserDomainMapper
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -23,6 +24,8 @@ val dataModule = module {
   single { UserResponseToUserDomainMapper() }
 
   single { UserDomainToUserResponseMapper() }
+
+  single { UserDomainToUserBodyMapper() }
 
   single { provideRetrofit(get(named(BASE_URL)), get(), get()) }
 

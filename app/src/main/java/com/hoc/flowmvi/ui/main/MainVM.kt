@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.ui
+package com.hoc.flowmvi.ui.main
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -7,7 +7,7 @@ import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.flatMapFirst
-import com.hoc.flowmvi.ui.MainContract.*
+import com.hoc.flowmvi.ui.main.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel

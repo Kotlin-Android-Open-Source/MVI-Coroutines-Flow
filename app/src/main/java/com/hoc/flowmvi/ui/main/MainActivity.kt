@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.ui
+package com.hoc.flowmvi.ui.main
 
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +15,7 @@ import com.hoc.flowmvi.clicks
 import com.hoc.flowmvi.databinding.ActivityMainBinding
 import com.hoc.flowmvi.refreshes
 import com.hoc.flowmvi.toast
-import com.hoc.flowmvi.ui.MainContract.*
+import com.hoc.flowmvi.ui.main.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel

@@ -9,4 +9,6 @@ interface UserRepository {
   suspend fun refresh()
 
   suspend fun remove(user: User)
+
+  suspend fun add(user: User)
 }

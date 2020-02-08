@@ -2,6 +2,7 @@ package com.hoc.flowmvi.data
 
 import android.util.Log
 import com.hoc.flowmvi.data.remote.UserApiService
+import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.Mapper
 import com.hoc.flowmvi.domain.dispatchers.CoroutineDispatchers
@@ -20,12 +21,14 @@ class UserRepositoryImpl(
     private val userApiService: UserApiService,
     private val dispatchers: CoroutineDispatchers,
     private val responseToDomain: Mapper<UserResponse, User>,
-    private val domainToResponse: Mapper<User, UserResponse>
+    private val domainToResponse: Mapper<User, UserResponse>,
+    private val domainToBody: Mapper<User, UserBody>
 ) : UserRepository {
 
   private sealed class Change {
     data class Removed(val removed: User) : Change()
     data class Refreshed(val user: List<User>) : Change()
+    class Added(val user: User) : Change()
   }
 
   private val changesChannel = BroadcastChannel<Change>(Channel.CONFLATED)
@@ -47,6 +50,7 @@ class UserRepositoryImpl(
             when (change) {
               is Change.Removed -> acc.filter { it.id != change.removed.id }
               is Change.Refreshed -> change.user
+              is Change.Added -> acc + change.user
             }
           }
           .onEach { Log.d("###", "[USER_REPO] Emit users.size=${it.size} ") }
@@ -61,6 +65,13 @@ class UserRepositoryImpl(
     withContext(dispatchers.io) {
       val response = userApiService.remove(domainToResponse(user).id)
       changesChannel.send(Change.Removed(responseToDomain(response)))
+    }
+  }
+
+  override suspend fun add(user: User) {
+    withContext(dispatchers.io) {
+      val response = userApiService.add(domainToBody(user))
+      changesChannel.send(Change.Added(responseToDomain(response)))
     }
   }
 }
