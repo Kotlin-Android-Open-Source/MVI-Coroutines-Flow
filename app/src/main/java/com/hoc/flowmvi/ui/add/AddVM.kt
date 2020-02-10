@@ -22,11 +22,12 @@ class AddVM : ViewModel() {
   private val _eventD = MutableLiveData<Event<SingleEvent>>()
   val singleEvent: LiveData<Event<SingleEvent>> get() = _eventD
 
-  private val _intentChannel = BroadcastChannel<ViewIntent>(capacity = Channel.CONFLATED)
+  private val _intentChannel = BroadcastChannel<ViewIntent>(capacity = Channel.BUFFERED)
   suspend fun processIntent(intent: ViewIntent) = _intentChannel.send(intent)
 
   init {
-    _intentChannel.asFlow()
+    _intentChannel
+      .asFlow()
       .toPartialStateChangesFlow()
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
@@ -48,31 +49,17 @@ class AddVM : ViewModel() {
     val emailErrors = filterIsInstance<ViewIntent.EmailChanged>()
       .map { it.email }
       .map { validateEmail(it) }
-      .onEach { Log.d("###", "Email error $it") }
 
     val firstNameErrors = filterIsInstance<ViewIntent.FirstNameChanged>()
       .map { it.firstName }
-      .map {
-        val a = validateFirstName(it)
-        Log.d("###", ">>> $a")
-        a
-      }
-      .onEach { Log.d("###", "First name error $it") }
+      .map { validateFirstName(it) }
 
     val lastNameErrors = filterIsInstance<ViewIntent.LastNameChanged>()
       .map { it.lastName }
       .map { validateLastName(it) }
-      .onEach { Log.d("###", "Last name error $it") }
 
-    val errorChanges = combine(
-      emailErrors,
-      firstNameErrors,
-      lastNameErrors
-    ) { s1, s2, s3 -> s1 + s2 + s3 }
+    return combine(emailErrors, firstNameErrors, lastNameErrors) { s1, s2, s3 -> s1 + s2 + s3 }
       .map { PartialStateChange.ErrorsChanged(it) }
-      .onEach { Log.d("###", "Errors change $it") }
-
-    return errorChanges
   }
 
   private companion object {

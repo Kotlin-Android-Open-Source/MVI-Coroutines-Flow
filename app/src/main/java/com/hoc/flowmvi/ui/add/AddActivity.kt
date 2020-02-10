@@ -78,6 +78,6 @@ class AddActivity : AppCompatActivity(), View {
         .lastNameEditText
         .textChanges()
         .map { ViewIntent.LastNameChanged(it?.toString()) }
-    ).onEach { Log.d("###", "Intent $it") }
+    )
   }
 }
