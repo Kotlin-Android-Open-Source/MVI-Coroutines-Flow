@@ -4,7 +4,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.CheckResult
 import androidx.core.content.ContextCompat
@@ -32,6 +35,21 @@ fun View.clicks(): Flow<View> {
     setOnClickListener { offer(it) }
     awaitClose { setOnClickListener(null) }
   }
+}
+
+@ExperimentalCoroutinesApi
+fun EditText.textChanges(): Flow<CharSequence?> {
+  return callbackFlow {
+    val listener = object : TextWatcher {
+      override fun afterTextChanged(s: Editable?) = Unit
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        offer(s)
+      }
+    }
+    addTextChangedListener(listener)
+    awaitClose { removeTextChangedListener(listener) }
+  }.onStart { emit(text) }
 }
 
 @ExperimentalCoroutinesApi

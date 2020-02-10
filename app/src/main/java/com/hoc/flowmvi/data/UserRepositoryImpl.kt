@@ -70,8 +70,16 @@ class UserRepositoryImpl(
 
   override suspend fun add(user: User) {
     withContext(dispatchers.io) {
-      val response = userApiService.add(domainToBody(user))
+      val body = domainToBody(user).copy(avatar = avatarUrls.random())
+      val response = userApiService.add(body)
       changesChannel.send(Change.Added(responseToDomain(response)))
     }
+  }
+
+  companion object {
+    private val avatarUrls =
+        (0 until 100).map { "https://randomuser.me/api/portraits/men/$it.jpg" } +
+            (0 until 100).map { "https://randomuser.me/api/portraits/women/$it.jpg" } +
+            (0 until 10).map { "https://randomuser.me/api/portraits/lego/$it.jpg" }
   }
 }
