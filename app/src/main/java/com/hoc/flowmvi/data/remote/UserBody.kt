@@ -2,9 +2,7 @@ package com.hoc.flowmvi.data.remote
 
 import com.squareup.moshi.Json
 
-data class UserResponse(
-    @Json(name = "id")
-    val id: String,
+data class UserBody(
     @Json(name = "email")
     val email: String,
     @Json(name = "first_name")

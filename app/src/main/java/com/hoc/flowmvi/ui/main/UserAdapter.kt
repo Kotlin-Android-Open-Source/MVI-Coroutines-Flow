@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.ui
+package com.hoc.flowmvi.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,19 +9,21 @@ import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.hoc.flowmvi.R
 import com.hoc.flowmvi.databinding.ItemRecyclerUserBinding
-import com.hoc.flowmvi.ui.MainContract.UserItem
+import com.hoc.flowmvi.ui.main.MainContract.UserItem
 
 class UserAdapter :
-  ListAdapter<UserItem, UserAdapter.VH>(object : DiffUtil.ItemCallback<UserItem>() {
-    override fun areItemsTheSame(oldItem: UserItem, newItem: UserItem) = oldItem.id == newItem.id
-    override fun areContentsTheSame(oldItem: UserItem, newItem: UserItem) = oldItem == newItem
-  }) {
+    ListAdapter<UserItem, UserAdapter.VH>(object : DiffUtil.ItemCallback<UserItem>() {
+      override fun areItemsTheSame(oldItem: UserItem, newItem: UserItem) =
+          oldItem.id == newItem.id
+
+      override fun areContentsTheSame(oldItem: UserItem, newItem: UserItem) = oldItem == newItem
+    }) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
     val binding = ItemRecyclerUserBinding.inflate(
-      LayoutInflater.from(parent.context),
-      parent,
-      false
+        LayoutInflater.from(parent.context),
+        parent,
+        false
     )
     return VH(binding)
   }
