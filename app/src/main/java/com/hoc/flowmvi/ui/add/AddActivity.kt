@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.hoc.flowmvi.clicks
 import com.hoc.flowmvi.databinding.ActivityAddBinding
 import com.hoc.flowmvi.textChanges
+import com.hoc.flowmvi.toast
 import com.hoc.flowmvi.ui.add.AddContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -24,7 +27,6 @@ class AddActivity : AppCompatActivity(), View {
     super.onCreate(savedInstanceState)
     setContentView(addBinding.root)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
 
     setupViews()
     bindVM()
@@ -52,11 +54,45 @@ class AddActivity : AppCompatActivity(), View {
   }
 
   private fun handleSingleEvent(event: SingleEvent) {
+    Log.d("###", "Event=$event")
 
+    return when (event) {
+      is SingleEvent.AddUserSuccess -> toast("Add success")
+      is SingleEvent.AddUserFailure -> toast("Add failure")
+    }
   }
 
   private fun render(viewState: ViewState) {
-    Log.d("###", viewState.toString())
+    Log.d("###", "ViewState=$viewState")
+
+    val emailErrorMessage = if (ValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) {
+      "Invalid email"
+    } else {
+      null
+    }
+    if (addBinding.emailEditText.error != emailErrorMessage) {
+      addBinding.emailEditText.error = emailErrorMessage
+    }
+
+    val firstNameErrorMessage = if (ValidationError.TOO_SHORT_FIRST_NAME in viewState.errors) {
+      "Too short first name"
+    } else {
+      null
+    }
+    if (addBinding.firstNameEditText.error != firstNameErrorMessage) {
+      addBinding.firstNameEditText.error = firstNameErrorMessage
+    }
+
+    val lastNameErrorMessage = if (ValidationError.TOO_SHORT_LAST_NAME in viewState.errors) {
+      "Too short last name"
+    } else {
+      null
+    }
+    if (addBinding.lastNameEditText.error != lastNameErrorMessage) {
+      addBinding.lastNameEditText.error = lastNameErrorMessage
+    }
+
+    addBinding.progressBar.isInvisible = !viewState.isLoading
   }
 
   private fun setupViews() {
@@ -68,16 +104,23 @@ class AddActivity : AppCompatActivity(), View {
     return merge(
       addBinding
         .emailEditText
+        .editText!!
         .textChanges()
         .map { ViewIntent.EmailChanged(it?.toString()) },
       addBinding
         .firstNameEditText
+        .editText!!
         .textChanges()
         .map { ViewIntent.FirstNameChanged(it?.toString()) },
       addBinding
         .lastNameEditText
+        .editText!!
         .textChanges()
-        .map { ViewIntent.LastNameChanged(it?.toString()) }
+        .map { ViewIntent.LastNameChanged(it?.toString()) },
+      addBinding
+        .addButton
+        .clicks()
+        .map { ViewIntent.Submit }
     )
   }
 }

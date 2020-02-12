@@ -1,10 +1,13 @@
 package com.hoc.flowmvi.ui.add
 
-import android.util.Log
 import androidx.core.util.PatternsCompat
 import androidx.lifecycle.*
 import com.hoc.flowmvi.Event
+import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.usecase.AddUserUseCase
+import com.hoc.flowmvi.flatMapFirst
 import com.hoc.flowmvi.ui.add.AddContract.*
+import com.hoc.flowmvi.withLatestFrom
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -13,7 +16,7 @@ import kotlinx.coroutines.flow.*
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class AddVM : ViewModel() {
+class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
   private val initialVS = ViewState.initial()
 
   private val _viewStateD = MutableLiveData<ViewState>().apply { value = initialVS }
@@ -39,32 +42,74 @@ class AddVM : ViewModel() {
 
   private fun Flow<PartialStateChange>.sendSingleEvent(): Flow<PartialStateChange> {
     return onEach { change ->
-      _eventD.value = when (change) {
-        is PartialStateChange.ErrorsChanged -> return@onEach
-      }
+      _eventD.value = Event(
+        when (change) {
+          is PartialStateChange.ErrorsChanged -> return@onEach
+          PartialStateChange.AddUser.Loading -> return@onEach
+          is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(change.user)
+          is PartialStateChange.AddUser.AddUserFailure -> SingleEvent.AddUserFailure(
+            change.user,
+            change.throwable
+          )
+        }
+      )
     }
   }
 
   private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val emailErrors = filterIsInstance<ViewIntent.EmailChanged>()
       .map { it.email }
-      .map { validateEmail(it) }
+      .map { validateEmail(it) to it }
 
     val firstNameErrors = filterIsInstance<ViewIntent.FirstNameChanged>()
       .map { it.firstName }
-      .map { validateFirstName(it) }
+      .map { validateFirstName(it) to it }
 
     val lastNameErrors = filterIsInstance<ViewIntent.LastNameChanged>()
       .map { it.lastName }
-      .map { validateLastName(it) }
+      .map { validateLastName(it) to it }
 
-    return combine(emailErrors, firstNameErrors, lastNameErrors) { s1, s2, s3 -> s1 + s2 + s3 }
-      .map { PartialStateChange.ErrorsChanged(it) }
+    val userFormFlow =
+      combine(emailErrors, firstNameErrors, lastNameErrors) { email, firstName, lastName ->
+        UserForm(
+          errors = email.first + firstName.first + lastName.first,
+          user = User(
+            firstName = firstName.second ?: "",
+            email = email.second ?: "",
+            lastName = lastName.second ?: "",
+            id = "",
+            avatar = ""
+          )
+        )
+      }
+
+    val addUserChanges = filterIsInstance<ViewIntent.Submit>()
+      .withLatestFrom(userFormFlow) { _, userForm -> userForm }
+      .filter { it.errors.isEmpty() }
+      .map { it.user }
+      .flatMapFirst { user ->
+        flow { emit(addUser(user)) }
+          .map { PartialStateChange.AddUser.AddUserSuccess(user) as PartialStateChange.AddUser }
+          .onStart { emit(PartialStateChange.AddUser.Loading) }
+          .catch { emit(PartialStateChange.AddUser.AddUserFailure(user, it)) }
+      }
+
+    return merge(
+      userFormFlow
+        .map { it.errors }
+        .map { PartialStateChange.ErrorsChanged(it) },
+      addUserChanges
+    )
   }
 
   private companion object {
     const val MIN_LENGTH_FIRST_NAME = 3
     const val MIN_LENGTH_LAST_NAME = 3
+
+    private data class UserForm(
+      val errors: Set<ValidationError>,
+      val user: User
+    )
 
     fun validateFirstName(firstName: String?): Set<ValidationError> {
       val errors = mutableSetOf<ValidationError>()

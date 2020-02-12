@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.ui.add
 
+import com.hoc.flowmvi.domain.entity.User
 import kotlinx.coroutines.flow.Flow
 
 interface AddContract {
@@ -38,9 +39,24 @@ interface AddContract {
     data class ErrorsChanged(val errors: Set<ValidationError>) : PartialStateChange() {
       override fun reduce(viewState: ViewState) = viewState.copy(errors = errors)
     }
+
+    sealed class AddUser : PartialStateChange() {
+      object Loading : AddUser()
+      data class AddUserSuccess(val user: User) : AddUser()
+      data class AddUserFailure(val user: User, val throwable: Throwable) : AddUser()
+
+      override fun reduce(viewState: ViewState): ViewState {
+        return when (this) {
+          Loading -> viewState.copy(isLoading = true)
+          is AddUserSuccess -> viewState.copy(isLoading = false)
+          is AddUserFailure -> viewState.copy(isLoading = false)
+        }
+      }
+    }
   }
 
   sealed class SingleEvent {
-
+    data class AddUserSuccess(val user: User) : SingleEvent()
+    data class AddUserFailure(val user: User, val throwable: Throwable) : SingleEvent()
   }
 }

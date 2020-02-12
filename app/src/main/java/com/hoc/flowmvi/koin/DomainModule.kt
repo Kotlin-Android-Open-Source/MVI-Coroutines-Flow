@@ -7,6 +7,7 @@ import com.hoc.flowmvi.data.mapper.UserResponseToUserDomainMapper
 import com.hoc.flowmvi.domain.dispatchers.CoroutineDispatchers
 import com.hoc.flowmvi.domain.dispatchers.CoroutineDispatchersImpl
 import com.hoc.flowmvi.domain.repository.UserRepository
+import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
@@ -34,4 +35,6 @@ val domainModule = module {
   single { RefreshGetUsersUseCase(get()) }
 
   single { RemoveUserUseCase(get()) }
+
+  single { AddUserUseCase(get()) }
 }
