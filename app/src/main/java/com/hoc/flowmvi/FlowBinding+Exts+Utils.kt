@@ -39,8 +39,9 @@ fun View.clicks(): Flow<View> {
 }
 
 @ExperimentalCoroutinesApi
+@CheckResult
 fun EditText.textChanges(): Flow<CharSequence?> {
-  return callbackFlow {
+  return callbackFlow<CharSequence?> {
     val listener = object : TextWatcher {
       override fun afterTextChanged(s: Editable?) = Unit
       override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -55,7 +56,7 @@ fun EditText.textChanges(): Flow<CharSequence?> {
 
 @ExperimentalCoroutinesApi
 fun <T, R> Flow<T>.flatMapFirst(transform: suspend (value: T) -> Flow<R>): Flow<R> =
-  map(transform).flattenFirst()
+    map(transform).flattenFirst()
 
 @ExperimentalCoroutinesApi
 fun <T> Flow<Flow<T>>.flattenFirst(): Flow<T> = channelFlow {
@@ -105,47 +106,48 @@ fun <A, B, R> Flow<A>.withLatestFrom(other: Flow<B>, transform: suspend (A, B) -
 
 fun Context.toast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 
+@ExperimentalCoroutinesApi
 suspend fun main() {
   (1..2000).asFlow()
-    .onEach { delay(50) }
-    .flatMapFirst { v ->
-      flow {
-        delay(500)
-        emit(v)
+      .onEach { delay(50) }
+      .flatMapFirst { v ->
+        flow {
+          delay(500)
+          emit(v)
+        }
       }
-    }
-    .onEach { println("[*] $it") }
-    .catch { println("Error $it") }
-    .collect()
+      .onEach { println("[*] $it") }
+      .catch { println("Error $it") }
+      .collect()
 }
 
 class SwipeLeftToDeleteCallback(context: Context, private val onSwipedCallback: (Int) -> Unit) :
-  ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
   private val background: ColorDrawable = ColorDrawable(Color.parseColor("#f44336"))
   private val iconDelete =
-    ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_white_24)!!
+      ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_white_24)!!
 
   override fun onMove(
-    recyclerView: RecyclerView,
-    viewHolder: RecyclerView.ViewHolder,
-    target: RecyclerView.ViewHolder
+      recyclerView: RecyclerView,
+      viewHolder: RecyclerView.ViewHolder,
+      target: RecyclerView.ViewHolder
   ) = false
 
   override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-    val position = viewHolder.adapterPosition
+    val position = viewHolder.bindingAdapterPosition
     if (position != RecyclerView.NO_POSITION) {
       onSwipedCallback(position)
     }
   }
 
   override fun onChildDraw(
-    c: Canvas,
-    recyclerView: RecyclerView,
-    viewHolder: RecyclerView.ViewHolder,
-    dX: Float,
-    dY: Float,
-    actionState: Int,
-    isCurrentlyActive: Boolean
+      c: Canvas,
+      recyclerView: RecyclerView,
+      viewHolder: RecyclerView.ViewHolder,
+      dX: Float,
+      dY: Float,
+      actionState: Int,
+      isCurrentlyActive: Boolean
   ) {
     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     val itemView = viewHolder.itemView
@@ -161,10 +163,10 @@ class SwipeLeftToDeleteCallback(context: Context, private val onSwipedCallback: 
 
         iconDelete.setBounds(iconLeft, iconTop, iconRight, iconBottom)
         background.setBounds(
-          itemView.right + dX.toInt() - 8,
-          itemView.top,
-          itemView.right,
-          itemView.bottom
+            itemView.right + dX.toInt() - 8,
+            itemView.top,
+            itemView.right,
+            itemView.bottom
         )
       }
       else -> background.setBounds(0, 0, 0, 0)

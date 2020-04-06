@@ -15,7 +15,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
-@FlowPreview
 @ExperimentalCoroutinesApi
 class UserRepositoryImpl(
     private val userApiService: UserApiService,
@@ -39,6 +38,7 @@ class UserRepositoryImpl(
     }
   }
 
+  @FlowPreview
   override fun getUsers(): Flow<List<User>> {
     return flow {
       val initial = getUsersFromRemote()

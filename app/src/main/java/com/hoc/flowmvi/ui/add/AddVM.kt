@@ -30,75 +30,78 @@ class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
 
   init {
     _intentChannel
-      .asFlow()
-      .toPartialStateChangesFlow()
-      .sendSingleEvent()
-      .scan(initialVS) { state, change -> change.reduce(state) }
-      .onEach { _viewStateD.value = it }
-      .catch { }
-      .launchIn(viewModelScope)
+        .asFlow()
+        .toPartialStateChangesFlow()
+        .sendSingleEvent()
+        .scan(initialVS) { state, change -> change.reduce(state) }
+        .onEach { _viewStateD.value = it }
+        .catch { }
+        .launchIn(viewModelScope)
   }
 
 
   private fun Flow<PartialStateChange>.sendSingleEvent(): Flow<PartialStateChange> {
     return onEach { change ->
       _eventD.value = Event(
-        when (change) {
-          is PartialStateChange.ErrorsChanged -> return@onEach
-          PartialStateChange.AddUser.Loading -> return@onEach
-          is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(change.user)
-          is PartialStateChange.AddUser.AddUserFailure -> SingleEvent.AddUserFailure(
-            change.user,
-            change.throwable
-          )
-        }
+          when (change) {
+            is PartialStateChange.ErrorsChanged -> return@onEach
+            PartialStateChange.AddUser.Loading -> return@onEach
+            is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(change.user)
+            is PartialStateChange.AddUser.AddUserFailure -> SingleEvent.AddUserFailure(
+                change.user,
+                change.throwable
+            )
+          }
       )
     }
   }
 
   private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val emailErrors = filterIsInstance<ViewIntent.EmailChanged>()
-      .map { it.email }
-      .map { validateEmail(it) to it }
+        .map { it.email }
+        .map { validateEmail(it) to it }
 
     val firstNameErrors = filterIsInstance<ViewIntent.FirstNameChanged>()
-      .map { it.firstName }
-      .map { validateFirstName(it) to it }
+        .map { it.firstName }
+        .map { validateFirstName(it) to it }
 
     val lastNameErrors = filterIsInstance<ViewIntent.LastNameChanged>()
-      .map { it.lastName }
-      .map { validateLastName(it) to it }
+        .map { it.lastName }
+        .map { validateLastName(it) to it }
 
     val userFormFlow =
-      combine(emailErrors, firstNameErrors, lastNameErrors) { email, firstName, lastName ->
-        UserForm(
-          errors = email.first + firstName.first + lastName.first,
-          user = User(
-            firstName = firstName.second ?: "",
-            email = email.second ?: "",
-            lastName = lastName.second ?: "",
-            id = "",
-            avatar = ""
+        combine(emailErrors, firstNameErrors, lastNameErrors) { email, firstName, lastName ->
+          UserForm(
+              errors = email.first + firstName.first + lastName.first,
+              user = User(
+                  firstName = firstName.second ?: "",
+                  email = email.second ?: "",
+                  lastName = lastName.second ?: "",
+                  id = "",
+                  avatar = ""
+              )
           )
-        )
-      }
+        }
 
     val addUserChanges = filterIsInstance<ViewIntent.Submit>()
-      .withLatestFrom(userFormFlow) { _, userForm -> userForm }
-      .filter { it.errors.isEmpty() }
-      .map { it.user }
-      .flatMapFirst { user ->
-        flow { emit(addUser(user)) }
-          .map { PartialStateChange.AddUser.AddUserSuccess(user) as PartialStateChange.AddUser }
-          .onStart { emit(PartialStateChange.AddUser.Loading) }
-          .catch { emit(PartialStateChange.AddUser.AddUserFailure(user, it)) }
-      }
+        .withLatestFrom(userFormFlow) { _, userForm -> userForm }
+        .filter { it.errors.isEmpty() }
+        .map { it.user }
+        .flatMapFirst { user ->
+          flow { emit(addUser(user)) }
+              .map {
+                @Suppress("USELESS_CAST")
+                PartialStateChange.AddUser.AddUserSuccess(user) as PartialStateChange.AddUser
+              }
+              .onStart { emit(PartialStateChange.AddUser.Loading) }
+              .catch { emit(PartialStateChange.AddUser.AddUserFailure(user, it)) }
+        }
 
     return merge(
-      userFormFlow
-        .map { it.errors }
-        .map { PartialStateChange.ErrorsChanged(it) },
-      addUserChanges
+        userFormFlow
+            .map { it.errors }
+            .map { PartialStateChange.ErrorsChanged(it) },
+        addUserChanges
     )
   }
 
@@ -107,8 +110,8 @@ class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
     const val MIN_LENGTH_LAST_NAME = 3
 
     private data class UserForm(
-      val errors: Set<ValidationError>,
-      val user: User
+        val errors: Set<ValidationError>,
+        val user: User
     )
 
     fun validateFirstName(firstName: String?): Set<ValidationError> {

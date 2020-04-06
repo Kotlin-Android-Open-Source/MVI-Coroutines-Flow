@@ -72,13 +72,17 @@ class MainVM(
         .onEach { Log.d("###", "[MAIN_VM] Emit users.size=${it.size}") }
         .map {
           val items = it.map(::UserItem)
+          @Suppress("USELESS_CAST")
           PartialChange.GetUser.Data(items) as PartialChange.GetUser
         }
         .onStart { emit(PartialChange.GetUser.Loading) }
         .catch { emit(PartialChange.GetUser.Error(it)) }
 
     val refreshChanges = flow { emit(refreshGetUsersUseCase()) }
-        .map { PartialChange.Refresh.Success as PartialChange.Refresh }
+        .map {
+          @Suppress("USELESS_CAST")
+          PartialChange.Refresh.Success as PartialChange.Refresh
+        }
         .onStart { emit(PartialChange.Refresh.Loading) }
         .catch { emit(PartialChange.Refresh.Failure(it)) }
 
