@@ -15,13 +15,13 @@ interface AddContract {
   }
 
   data class ViewState(
-    val errors: Set<ValidationError>,
-    val isLoading: Boolean
+      val errors: Set<ValidationError>,
+      val isLoading: Boolean
   ) {
     companion object {
       fun initial() = ViewState(
-        errors = emptySet(),
-        isLoading = false
+          errors = emptySet(),
+          isLoading = false
       )
     }
   }

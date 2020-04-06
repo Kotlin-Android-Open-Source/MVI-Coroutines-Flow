@@ -18,23 +18,23 @@ import org.koin.dsl.module
 @ExperimentalCoroutinesApi
 @FlowPreview
 val domainModule = module {
-  single { CoroutineDispatchersImpl() as CoroutineDispatchers }
+  single<CoroutineDispatchers> { CoroutineDispatchersImpl() }
 
-  single {
+  single<UserRepository> {
     UserRepositoryImpl(
         get(),
         get(),
         responseToDomain = get<UserResponseToUserDomainMapper>(),
         domainToResponse = get<UserDomainToUserResponseMapper>(),
         domainToBody = get<UserDomainToUserBodyMapper>()
-    ) as UserRepository
+    )
   }
 
-  single { GetUsersUseCase(get()) }
+  factory { GetUsersUseCase(get()) }
 
-  single { RefreshGetUsersUseCase(get()) }
+  factory { RefreshGetUsersUseCase(get()) }
 
-  single { RemoveUserUseCase(get()) }
+  factory { RemoveUserUseCase(get()) }
 
-  single { AddUserUseCase(get()) }
+  factory { AddUserUseCase(get()) }
 }

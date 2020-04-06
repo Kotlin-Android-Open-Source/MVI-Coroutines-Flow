@@ -43,14 +43,14 @@ class AddActivity : AppCompatActivity(), View {
     // observe view model
     addVM.viewState.observe(this, Observer { render(it ?: return@Observer) })
     addVM.singleEvent.observe(
-      this,
-      Observer { handleSingleEvent(it?.getContentIfNotHandled() ?: return@Observer) }
+        this,
+        Observer { handleSingleEvent(it?.getContentIfNotHandled() ?: return@Observer) }
     )
 
     // pass view intent to view model
     intents()
-      .onEach { addVM.processIntent(it) }
-      .launchIn(lifecycleScope)
+        .onEach { addVM.processIntent(it) }
+        .launchIn(lifecycleScope)
   }
 
   private fun handleSingleEvent(event: SingleEvent) {
@@ -102,25 +102,25 @@ class AddActivity : AppCompatActivity(), View {
 
   override fun intents(): Flow<ViewIntent> {
     return merge(
-      addBinding
-        .emailEditText
-        .editText!!
-        .textChanges()
-        .map { ViewIntent.EmailChanged(it?.toString()) },
-      addBinding
-        .firstNameEditText
-        .editText!!
-        .textChanges()
-        .map { ViewIntent.FirstNameChanged(it?.toString()) },
-      addBinding
-        .lastNameEditText
-        .editText!!
-        .textChanges()
-        .map { ViewIntent.LastNameChanged(it?.toString()) },
-      addBinding
-        .addButton
-        .clicks()
-        .map { ViewIntent.Submit }
+        addBinding
+            .emailEditText
+            .editText!!
+            .textChanges()
+            .map { ViewIntent.EmailChanged(it?.toString()) },
+        addBinding
+            .firstNameEditText
+            .editText!!
+            .textChanges()
+            .map { ViewIntent.FirstNameChanged(it?.toString()) },
+        addBinding
+            .lastNameEditText
+            .editText!!
+            .textChanges()
+            .map { ViewIntent.LastNameChanged(it?.toString()) },
+        addBinding
+            .addButton
+            .clicks()
+            .map { ViewIntent.Submit }
     )
   }
 }
