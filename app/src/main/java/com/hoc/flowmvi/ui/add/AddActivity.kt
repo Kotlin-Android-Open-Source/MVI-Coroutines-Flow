@@ -57,7 +57,10 @@ class AddActivity : AppCompatActivity(), View {
     Log.d("###", "Event=$event")
 
     return when (event) {
-      is SingleEvent.AddUserSuccess -> toast("Add success")
+      is SingleEvent.AddUserSuccess -> {
+        toast("Add success")
+        finish()
+      }
       is SingleEvent.AddUserFailure -> toast("Add failure")
     }
   }

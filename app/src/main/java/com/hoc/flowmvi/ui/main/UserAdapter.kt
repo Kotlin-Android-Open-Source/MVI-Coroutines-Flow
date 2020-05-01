@@ -36,7 +36,7 @@ class UserAdapter :
         nameTextView.text = item.fullName
         emailTextView.text = item.email
         avatarImage.load(item.avatar) {
-          crossfade(true)
+          crossfade(200)
           placeholder(R.drawable.ic_baseline_person_24)
           error(R.drawable.ic_baseline_person_24)
           transformations(CircleCropTransformation())
