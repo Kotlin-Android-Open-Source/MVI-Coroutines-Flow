@@ -1,4 +1,5 @@
 # MVI-Coroutines-Flow
+# Coroutine + Flow = MVI :heart:
 Play MVI with Kotlin Coroutines Flow
 
 | List view state | Error view state | Add new user |
