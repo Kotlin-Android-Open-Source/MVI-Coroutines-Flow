@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.hoc.flowmvi.clicks
 import com.hoc.flowmvi.databinding.ActivityAddBinding
@@ -41,11 +40,18 @@ class AddActivity : AppCompatActivity(), View {
 
   private fun bindVM() {
     // observe view model
-    addVM.viewState.observe(this, Observer { render(it ?: return@Observer) })
-    addVM.singleEvent.observe(
-        this,
-        Observer { handleSingleEvent(it?.getContentIfNotHandled() ?: return@Observer) }
-    )
+    lifecycleScope.launchWhenStarted {
+      addVM.viewState
+          .onEach { render(it) }
+          .catch { }
+          .collect()
+    }
+    lifecycleScope.launchWhenStarted {
+      addVM.singleEvent
+          .onEach { handleSingleEvent(it) }
+          .catch { }
+          .collect()
+    }
 
     // pass view intent to view model
     intents()

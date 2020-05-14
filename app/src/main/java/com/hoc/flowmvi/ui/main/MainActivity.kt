@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity(), View {
 
       ItemTouchHelper(
           SwipeLeftToDeleteCallback(context) cb@{ position ->
-            val userItem = mainVM.viewState.value?.userItems?.get(position) ?: return@cb
+            val userItem = mainVM.viewState.value.userItems[position]
             removeChannel.offer(userItem)
           }
       ).attachToRecyclerView(this)
@@ -75,11 +74,18 @@ class MainActivity : AppCompatActivity(), View {
 
   private fun bindVM() {
     // observe view model
-    mainVM.viewState.observe(this, Observer { render(it ?: return@Observer) })
-    mainVM.singleEvent.observe(
-        this,
-        Observer { handleSingleEvent(it?.getContentIfNotHandled() ?: return@Observer) }
-    )
+    lifecycleScope.launchWhenStarted {
+      mainVM.viewState
+          .onEach { render(it) }
+          .catch { }
+          .collect()
+    }
+    lifecycleScope.launchWhenStarted {
+      mainVM.singleEvent
+          .onEach { handleSingleEvent(it) }
+          .catch { }
+          .collect()
+    }
 
     // pass view intent to view model
     intents()
