@@ -1,8 +1,8 @@
 package com.hoc.flowmvi.ui.add
 
 import androidx.core.util.PatternsCompat
-import androidx.lifecycle.*
-import com.hoc.flowmvi.Event
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.flatMapFirst
@@ -17,42 +17,43 @@ import kotlinx.coroutines.flow.*
 @FlowPreview
 @ExperimentalCoroutinesApi
 class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
-  private val initialVS = ViewState.initial()
-
-  private val _viewStateD = MutableLiveData<ViewState>().apply { value = initialVS }
-  val viewState: LiveData<ViewState> = _viewStateD.distinctUntilChanged()
-
-  private val _eventD = MutableLiveData<Event<SingleEvent>>()
-  val singleEvent: LiveData<Event<SingleEvent>> get() = _eventD
-
+  private val _eventChannel = BroadcastChannel<SingleEvent>(capacity = Channel.BUFFERED)
   private val _intentChannel = BroadcastChannel<ViewIntent>(capacity = Channel.BUFFERED)
+
+  val viewState: StateFlow<ViewState>
+
+  val singleEvent: Flow<SingleEvent>
+
   suspend fun processIntent(intent: ViewIntent) = _intentChannel.send(intent)
 
   init {
+    val initialVS = ViewState.initial()
+
+    viewState = MutableStateFlow(initialVS)
+    singleEvent = _eventChannel.asFlow()
+
     _intentChannel
         .asFlow()
         .toPartialStateChangesFlow()
         .sendSingleEvent()
         .scan(initialVS) { state, change -> change.reduce(state) }
-        .onEach { _viewStateD.value = it }
+        .onEach { viewState.value = it }
         .catch { }
         .launchIn(viewModelScope)
   }
 
-
   private fun Flow<PartialStateChange>.sendSingleEvent(): Flow<PartialStateChange> {
     return onEach { change ->
-      _eventD.value = Event(
-          when (change) {
-            is PartialStateChange.ErrorsChanged -> return@onEach
-            PartialStateChange.AddUser.Loading -> return@onEach
-            is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(change.user)
-            is PartialStateChange.AddUser.AddUserFailure -> SingleEvent.AddUserFailure(
-                change.user,
-                change.throwable
-            )
-          }
-      )
+      val event = when (change) {
+        is PartialStateChange.ErrorsChanged -> return@onEach
+        PartialStateChange.AddUser.Loading -> return@onEach
+        is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(change.user)
+        is PartialStateChange.AddUser.AddUserFailure -> SingleEvent.AddUserFailure(
+            change.user,
+            change.throwable
+        )
+      }
+      _eventChannel.send(event)
     }
   }
 
