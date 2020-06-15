@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.ui.main
 
 import android.util.Log
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.*
 @Suppress("USELESS_CAST")
 @FlowPreview
 @ExperimentalCoroutinesApi
-class MainVM(
+class MainVM @ViewModelInject constructor(
     private val getUsersUseCase: GetUsersUseCase,
     private val refreshGetUsers: RefreshGetUsersUseCase,
     private val removeUser: RemoveUserUseCase,

@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.ui.add
 
 import androidx.core.util.PatternsCompat
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.entity.User
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.*
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
+class AddVM @ViewModelInject constructor(private val addUser: AddUserUseCase) : ViewModel() {
   private val _eventChannel = BroadcastChannel<SingleEvent>(capacity = Channel.BUFFERED)
   private val _intentChannel = BroadcastChannel<ViewIntent>(capacity = Channel.BUFFERED)
 

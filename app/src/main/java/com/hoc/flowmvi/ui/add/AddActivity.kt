@@ -3,6 +3,7 @@ package com.hoc.flowmvi.ui.add
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
@@ -13,15 +14,16 @@ import com.hoc.flowmvi.databinding.ActivityAddBinding
 import com.hoc.flowmvi.textChanges
 import com.hoc.flowmvi.toast
 import com.hoc.flowmvi.ui.add.AddContract.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @FlowPreview
 @ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class AddActivity : AppCompatActivity(), View {
-  private val addVM by viewModel<AddVM>()
+  private val addVM by viewModels<AddVM>()
   private val addBinding by lazy { ActivityAddBinding.inflate(layoutInflater) }
 
   override fun onCreate(savedInstanceState: Bundle?) {

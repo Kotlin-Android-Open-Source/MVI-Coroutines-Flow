@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -16,18 +17,19 @@ import com.hoc.flowmvi.*
 import com.hoc.flowmvi.databinding.ActivityMainBinding
 import com.hoc.flowmvi.ui.add.AddActivity
 import com.hoc.flowmvi.ui.main.MainContract.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), View {
-  private val mainVM by viewModel<MainVM>()
+  private val mainVM by viewModels<MainVM>()
 
   private val userAdapter = UserAdapter()
   private val mainBinding by lazy(NONE) { ActivityMainBinding.inflate(layoutInflater) }
