@@ -18,6 +18,7 @@ import com.hoc.flowmvi.ui.add.AddActivity
 import com.hoc.flowmvi.ui.main.MainContract.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,14 +32,14 @@ class MainActivity : AppCompatActivity(), View {
   private val userAdapter = UserAdapter()
   private val mainBinding by lazy(NONE) { ActivityMainBinding.inflate(layoutInflater) }
 
-  private val removeChannel = Channel<UserItem>(Channel.UNLIMITED)
+  private val removeChannel = BroadcastChannel<UserItem>(Channel.BUFFERED)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(mainBinding.root)
 
     setupViews()
-    bindVM()
+    bindVM(mainVM)
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity(), View {
     }
   }
 
-  private fun bindVM() {
+  private fun bindVM(mainVM: MainVM) {
     // observe view model
     lifecycleScope.launchWhenStarted {
       mainVM.viewState
@@ -97,7 +98,7 @@ class MainActivity : AppCompatActivity(), View {
       flowOf(ViewIntent.Initial),
       mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
       mainBinding.retryButton.clicks().map { ViewIntent.Retry },
-      removeChannel.consumeAsFlow().map { ViewIntent.RemoveUser(it) }
+      removeChannel.asFlow().map { ViewIntent.RemoveUser(it) }
   )
 
   private fun handleSingleEvent(event: SingleEvent) {

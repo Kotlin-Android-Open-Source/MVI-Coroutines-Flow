@@ -12,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
@@ -73,6 +74,7 @@ class UserRepositoryImpl(
       val body = domainToBody(user).copy(avatar = avatarUrls.random())
       val response = userApiService.add(body)
       changesChannel.send(Change.Added(responseToDomain(response)))
+      delay(400)
     }
   }
 

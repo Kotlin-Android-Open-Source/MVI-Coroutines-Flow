@@ -23,7 +23,7 @@ class MainVM(
     private val removeUser: RemoveUserUseCase,
 ) : ViewModel() {
   private val _eventChannel = BroadcastChannel<SingleEvent>(capacity = Channel.BUFFERED)
-  private val _intentChannel = BroadcastChannel<ViewIntent>(capacity = Channel.CONFLATED)
+  private val _intentChannel = BroadcastChannel<ViewIntent>(capacity = Channel.BUFFERED)
 
   val viewState: StateFlow<ViewState>
 
