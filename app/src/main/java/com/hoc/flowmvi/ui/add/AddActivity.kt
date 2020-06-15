@@ -6,6 +6,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.hoc.flowmvi.clicks
 import com.hoc.flowmvi.databinding.ActivityAddBinding
 import com.hoc.flowmvi.textChanges
@@ -28,7 +30,7 @@ class AddActivity : AppCompatActivity(), View {
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     setupViews()
-    bindVM()
+    bindVM(addVM)
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -38,7 +40,7 @@ class AddActivity : AppCompatActivity(), View {
     }
   }
 
-  private fun bindVM() {
+  private fun bindVM(addVM: AddVM) {
     // observe view model
     lifecycleScope.launchWhenStarted {
       addVM.viewState
@@ -101,13 +103,18 @@ class AddActivity : AppCompatActivity(), View {
       addBinding.lastNameEditText.error = lastNameErrorMessage
     }
 
+    TransitionManager.beginDelayedTransition(
+        addBinding.root,
+        AutoTransition()
+            .addTarget(addBinding.progressBar)
+            .addTarget(addBinding.addButton)
+            .setDuration(200)
+    )
     addBinding.progressBar.isInvisible = !viewState.isLoading
+    addBinding.addButton.isInvisible = viewState.isLoading
   }
 
-  private fun setupViews() {
-
-  }
-
+  private fun setupViews() = Unit
 
   override fun intents(): Flow<ViewIntent> {
     return merge(

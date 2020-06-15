@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.add.AddActivity" />
+        <activity
+            android:name=".ui.add.AddActivity"
+            android:label="Add user" />
 
         <meta-data
             android:name="preloaded_fonts"
