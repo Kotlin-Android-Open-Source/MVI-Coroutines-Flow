@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.koin
+package com.hoc.flowmvi.di
 
 import com.hoc.flowmvi.BuildConfig
 import com.hoc.flowmvi.data.remote.UserApiService
