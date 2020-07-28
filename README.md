@@ -1,6 +1,8 @@
 # MVI-Coroutines-Flow
-# Coroutine + Flow = MVI :heart:
-Play MVI with Kotlin Coroutines Flow
+## Coroutine + Flow = MVI :heart:
+* Play MVI with Kotlin Coroutines Flow
+* Master branch using Koin for DI
+* **Checkout [dagger_hilt branch](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/tree/dagger_hilt), using Dagger Hilt for DI**
 
 | List view state | Error view state | Add new user |
 | --------------- | ---------------- | ------------ |
