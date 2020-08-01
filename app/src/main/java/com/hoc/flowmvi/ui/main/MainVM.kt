@@ -79,7 +79,8 @@ class MainVM(
         .onStart { emit(PartialChange.GetUser.Loading) }
         .catch { emit(PartialChange.GetUser.Error(it)) }
 
-    val refreshChanges = flow { emit(refreshGetUsers()) }
+    val refreshChanges = refreshGetUsers::invoke
+        .asFlow()
         .map { PartialChange.Refresh.Success as PartialChange.Refresh }
         .onStart { emit(PartialChange.Refresh.Loading) }
         .catch { emit(PartialChange.Refresh.Failure(it)) }
@@ -101,18 +102,16 @@ class MainVM(
             .map { it.user }
             .flatMapMerge { userItem ->
               flow {
-                try {
-                  removeUser(userItem.toDomain())
-                  emit(PartialChange.RemoveUser.Success(userItem))
-                } catch (e: Exception) {
-                  emit(PartialChange.RemoveUser.Failure(userItem, e))
-                }
+                userItem
+                    .toDomain()
+                    .let { removeUser(it) }
+                    .let { emit(it) }
               }
+                  .map { PartialChange.RemoveUser.Success(userItem) as PartialChange.RemoveUser }
+                  .catch { emit(PartialChange.RemoveUser.Failure(userItem, it)) }
             }
     )
   }
 
   private fun <T : ViewIntent> Flow<T>.logIntent() = onEach { Log.d("MainVM", "## Intent: $it") }
 }
-
-
