@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -19,6 +20,27 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
+import kotlin.coroutines.EmptyCoroutineContext
+
+@ExperimentalCoroutinesApi
+fun EditText.firstChange(): Flow<Unit> {
+  return callbackFlow<Unit> {
+    val listener = object : TextWatcher {
+      override fun afterTextChanged(s: Editable?) = Unit
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        offer(Unit)
+      }
+    }.also { addTextChangedListener(it) }
+
+    awaitClose {
+      Dispatchers.Main.dispatch(EmptyCoroutineContext) {
+        removeTextChangedListener(listener)
+        Log.d("###", "removeTextChangedListener $listener ${this@firstChange}")
+      }
+    }
+  }.take(1)
+}
 
 @ExperimentalCoroutinesApi
 @CheckResult

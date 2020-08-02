@@ -52,6 +52,9 @@ class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
             change.user,
             change.throwable
         )
+        PartialStateChange.FirstChange.EmailChangedFirstTime -> return@onEach
+        PartialStateChange.FirstChange.FirstNameChangedFirstTime -> return@onEach
+        PartialStateChange.FirstChange.LastNameChangedFirstTime -> return@onEach
       }
       _eventChannel.send(event)
     }
@@ -98,11 +101,21 @@ class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
               .catch { emit(PartialStateChange.AddUser.AddUserFailure(user, it)) }
         }
 
+    val firstChanges = merge(
+        filterIsInstance<ViewIntent.EmailChangedFirstTime>()
+            .map { PartialStateChange.FirstChange.EmailChangedFirstTime },
+        filterIsInstance<ViewIntent.FirstNameChangedFirstTime>()
+            .map { PartialStateChange.FirstChange.FirstNameChangedFirstTime },
+        filterIsInstance<ViewIntent.LastNameChangedFirstTime>()
+            .map { PartialStateChange.FirstChange.LastNameChangedFirstTime }
+    )
+
     return merge(
         userFormFlow
             .map { it.errors }
             .map { PartialStateChange.ErrorsChanged(it) },
-        addUserChanges
+        addUserChanges,
+        firstChanges,
     )
   }
 
