@@ -70,7 +70,10 @@ class AddActivity : AppCompatActivity(), View {
         toast("Add success")
         finish()
       }
-      is SingleEvent.AddUserFailure -> toast("Add failure")
+      is SingleEvent.AddUserFailure -> {
+        Log.d("###", event.toString())
+        toast("Add failure")
+      }
     }
   }
 

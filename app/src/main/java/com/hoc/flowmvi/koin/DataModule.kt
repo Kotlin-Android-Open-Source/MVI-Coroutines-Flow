@@ -19,21 +19,27 @@ import java.util.concurrent.TimeUnit
 private const val BASE_URL = "BASE_URL"
 
 val dataModule = module {
-  single { UserApiService(get()) }
+  single { UserApiService(retrofit = get()) }
 
-  single { UserResponseToUserDomainMapper() }
-
-  single { UserDomainToUserResponseMapper() }
-
-  single { UserDomainToUserBodyMapper() }
-
-  single { provideRetrofit(get(named(BASE_URL)), get(), get()) }
+  single {
+    provideRetrofit(
+        baseUrl = get(named(BASE_URL)),
+        moshi = get(),
+        client = get()
+    )
+  }
 
   single { provideMoshi() }
 
   single { provideOkHttpClient() }
 
-  single(named(BASE_URL)) { "https://5caad70369c15c001484956a.mockapi.io/hoc081098/" }
+  factory(named(BASE_URL)) { "https://mvi-coroutines-flow-server.herokuapp.com/" }
+
+  factory { UserResponseToUserDomainMapper() }
+
+  factory { UserDomainToUserResponseMapper() }
+
+  factory { UserDomainToUserBodyMapper() }
 }
 
 private fun provideMoshi(): Moshi {

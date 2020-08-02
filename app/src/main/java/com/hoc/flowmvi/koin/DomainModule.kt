@@ -22,19 +22,19 @@ val domainModule = module {
 
   single<UserRepository> {
     UserRepositoryImpl(
-        get(),
-        get(),
+        userApiService = get(),
+        dispatchers = get(),
         responseToDomain = get<UserResponseToUserDomainMapper>(),
         domainToResponse = get<UserDomainToUserResponseMapper>(),
         domainToBody = get<UserDomainToUserBodyMapper>()
     )
   }
 
-  factory { GetUsersUseCase(get()) }
+  factory { GetUsersUseCase(userRepository = get()) }
 
-  factory { RefreshGetUsersUseCase(get()) }
+  factory { RefreshGetUsersUseCase(userRepository = get()) }
 
-  factory { RemoveUserUseCase(get()) }
+  factory { RemoveUserUseCase(userRepository = get()) }
 
-  factory { AddUserUseCase(get()) }
+  factory { AddUserUseCase(userRepository = get()) }
 }
