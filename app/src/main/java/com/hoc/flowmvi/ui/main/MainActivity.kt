@@ -126,7 +126,9 @@ class MainActivity : AppCompatActivity(), View {
       progressBar.isVisible = viewState.isLoading
 
       if (viewState.isRefreshing) {
-        swipeRefreshLayout.post { swipeRefreshLayout.isRefreshing = true }
+        if (!swipeRefreshLayout.isRefreshing) {
+          swipeRefreshLayout.post { swipeRefreshLayout.isRefreshing = true }
+        }
       } else {
         swipeRefreshLayout.isRefreshing = false
       }

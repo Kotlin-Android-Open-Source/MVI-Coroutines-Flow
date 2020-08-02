@@ -11,6 +11,7 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.hoc.flowmvi.clicks
 import com.hoc.flowmvi.databinding.ActivityAddBinding
+import com.hoc.flowmvi.firstChange
 import com.hoc.flowmvi.textChanges
 import com.hoc.flowmvi.toast
 import com.hoc.flowmvi.ui.add.AddContract.*
@@ -71,7 +72,10 @@ class AddActivity : AppCompatActivity(), View {
         toast("Add success")
         finish()
       }
-      is SingleEvent.AddUserFailure -> toast("Add failure")
+      is SingleEvent.AddUserFailure -> {
+        Log.d("###", event.toString())
+        toast("Add failure")
+      }
     }
   }
 
@@ -83,7 +87,7 @@ class AddActivity : AppCompatActivity(), View {
     } else {
       null
     }
-    if (addBinding.emailEditText.error != emailErrorMessage) {
+    if (viewState.emailChanged && addBinding.emailEditText.error != emailErrorMessage) {
       addBinding.emailEditText.error = emailErrorMessage
     }
 
@@ -92,7 +96,7 @@ class AddActivity : AppCompatActivity(), View {
     } else {
       null
     }
-    if (addBinding.firstNameEditText.error != firstNameErrorMessage) {
+    if (viewState.firstNameChanged && addBinding.firstNameEditText.error != firstNameErrorMessage) {
       addBinding.firstNameEditText.error = firstNameErrorMessage
     }
 
@@ -101,7 +105,7 @@ class AddActivity : AppCompatActivity(), View {
     } else {
       null
     }
-    if (addBinding.lastNameEditText.error != lastNameErrorMessage) {
+    if (viewState.lastNameChanged && addBinding.lastNameEditText.error != lastNameErrorMessage) {
       addBinding.lastNameEditText.error = lastNameErrorMessage
     }
 
@@ -118,27 +122,35 @@ class AddActivity : AppCompatActivity(), View {
 
   private fun setupViews() = Unit
 
-  override fun intents(): Flow<ViewIntent> {
-    return merge(
-        addBinding
-            .emailEditText
+  override fun intents(): Flow<ViewIntent> = addBinding.run {
+    merge(
+        emailEditText
             .editText!!
             .textChanges()
             .map { ViewIntent.EmailChanged(it?.toString()) },
-        addBinding
-            .firstNameEditText
+        firstNameEditText
             .editText!!
             .textChanges()
             .map { ViewIntent.FirstNameChanged(it?.toString()) },
-        addBinding
-            .lastNameEditText
+        lastNameEditText
             .editText!!
             .textChanges()
             .map { ViewIntent.LastNameChanged(it?.toString()) },
-        addBinding
-            .addButton
+        addButton
             .clicks()
-            .map { ViewIntent.Submit }
+            .map { ViewIntent.Submit },
+        emailEditText
+            .editText!!
+            .firstChange()
+            .map { ViewIntent.EmailChangedFirstTime },
+        firstNameEditText
+            .editText!!
+            .firstChange()
+            .map { ViewIntent.FirstNameChangedFirstTime },
+        lastNameEditText
+            .editText!!
+            .firstChange()
+            .map { ViewIntent.LastNameChangedFirstTime },
     )
   }
 }

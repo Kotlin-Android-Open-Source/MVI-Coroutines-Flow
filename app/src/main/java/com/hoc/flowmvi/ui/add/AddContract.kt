@@ -16,12 +16,18 @@ interface AddContract {
 
   data class ViewState(
       val errors: Set<ValidationError>,
-      val isLoading: Boolean
+      val isLoading: Boolean,
+      val emailChanged: Boolean,
+      val firstNameChanged: Boolean,
+      val lastNameChanged: Boolean,
   ) {
     companion object {
       fun initial() = ViewState(
           errors = emptySet(),
-          isLoading = false
+          isLoading = false,
+          emailChanged = false,
+          firstNameChanged = false,
+          lastNameChanged = false,
       )
     }
   }
@@ -30,7 +36,12 @@ interface AddContract {
     data class EmailChanged(val email: String?) : ViewIntent()
     data class FirstNameChanged(val firstName: String?) : ViewIntent()
     data class LastNameChanged(val lastName: String?) : ViewIntent()
+
     object Submit : ViewIntent()
+
+    object EmailChangedFirstTime : ViewIntent()
+    object FirstNameChangedFirstTime : ViewIntent()
+    object LastNameChangedFirstTime : ViewIntent()
   }
 
   sealed class PartialStateChange {
@@ -50,6 +61,20 @@ interface AddContract {
           Loading -> viewState.copy(isLoading = true)
           is AddUserSuccess -> viewState.copy(isLoading = false)
           is AddUserFailure -> viewState.copy(isLoading = false)
+        }
+      }
+    }
+
+    sealed class FirstChange : PartialStateChange() {
+      object EmailChangedFirstTime : FirstChange()
+      object FirstNameChangedFirstTime : FirstChange()
+      object LastNameChangedFirstTime : FirstChange()
+
+      override fun reduce(viewState: ViewState): ViewState {
+        return when (this) {
+          EmailChangedFirstTime -> viewState.copy(emailChanged = true)
+          FirstNameChangedFirstTime -> viewState.copy(firstNameChanged = true)
+          LastNameChangedFirstTime -> viewState.copy(lastNameChanged = true)
         }
       }
     }

@@ -62,5 +62,5 @@ class DataModule {
 
   @Provides
   @BaseUrl
-  fun provideBaseUrl(): String = "https://5caad70369c15c001484956a.mockapi.io/hoc081098/"
+  fun provideBaseUrl(): String = "https://mvi-coroutines-flow-server.herokuapp.com/"
 }
