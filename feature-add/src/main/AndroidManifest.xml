@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hoc.flowmvi.core">
+  package="com.hoc.flowmvi.ui.add">
 
   <application>
 
-    <meta-data
-      android:name="preloaded_fonts"
-      android:resource="@array/preloaded_fonts" />
+    <activity
+      android:name=".AddActivity"
+      android:label="Add user" />
 
   </application>
 

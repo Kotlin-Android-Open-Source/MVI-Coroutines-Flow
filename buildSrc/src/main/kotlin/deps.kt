@@ -1,7 +1,6 @@
 @file:Suppress("unused", "ClassName", "SpellCheckingInspection")
 
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.kotlin.dsl.kotlin
 import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
@@ -32,8 +31,10 @@ object deps {
   }
 
   object lifecycle {
-    const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha07"
-    const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha07"
+    private const val version = "2.3.0-alpha07"
+
+    const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
+    const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
   }
 
   object squareup {
@@ -44,14 +45,20 @@ object deps {
   }
 
   object jetbrains {
-    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
-    const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+    private const val version = "1.3.9"
+
+    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+    const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
   }
 
   object koin {
-    const val androidXViewModel = "org.koin:koin-androidx-viewmodel:2.1.6"
-    const val core = "org.koin:koin-core:2.1.6"
+    private const val version = "2.2.0-beta-1"
+
+    const val androidXViewModel = "org.koin:koin-androidx-viewmodel:$version"
+    const val core = "org.koin:koin-core:$version"
+    const val android = "org.koin:koin-android:$version"
   }
+
   const val coil = "io.coil-kt:coil:0.11.0"
 
   object test {
@@ -66,10 +73,11 @@ private typealias PDS = PluginDependencySpec
 
 inline val PDsS.androidApplication: PDS get() = id("com.android.application")
 inline val PDsS.androidLib: PDS get() = id("com.android.library")
-
 inline val PDsS.kotlinAndroid: PDS get() = id("kotlin-android")
 inline val PDsS.kotlin: PDS get() = id("kotlin")
 
 inline val DependencyHandler.domain get() = project(":domain")
 inline val DependencyHandler.core get() = project(":core")
 inline val DependencyHandler.data get() = project(":data")
+inline val DependencyHandler.featureMain get() = project(":feature-main")
+inline val DependencyHandler.featureAdd get() = project(":feature-add")

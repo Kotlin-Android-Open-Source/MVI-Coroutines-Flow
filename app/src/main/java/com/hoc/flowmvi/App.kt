@@ -1,7 +1,11 @@
 package com.hoc.flowmvi
 
 import android.app.Application
-import com.hoc.flowmvi.koin.allModules
+import com.hoc.flowmvi.core.coreModule
+import com.hoc.flowmvi.data.dataModule
+import com.hoc.flowmvi.domain.domainModule
+import com.hoc.flowmvi.ui.add.addModule
+import com.hoc.flowmvi.ui.main.mainModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.koin.androidContext
@@ -19,10 +23,15 @@ class App : Application() {
     startKoin {
       androidContext(this@App)
 
-      // https://github.com/InsertKoinIO/koin/issues/847
-      androidLogger(level = Level.ERROR)
+      androidLogger(level = Level.DEBUG)
 
-      modules(allModules)
+      modules(
+        coreModule,
+        dataModule,
+        domainModule,
+        mainModule,
+        addModule,
+      )
     }
   }
 }

@@ -49,29 +49,11 @@ dependencies {
   implementation(domain)
   implementation(data)
   implementation(core)
+  implementation(featureMain)
+  implementation(featureAdd)
 
-  implementation(deps.androidx.appCompat)
-  implementation(deps.androidx.coreKtx)
-  implementation(deps.androidx.constraintLayout)
-  implementation(deps.androidx.recyclerView)
-  implementation(deps.androidx.swipeRefreshLayout)
-  implementation(deps.androidx.material)
-
-  // viewModelScope
-  implementation(deps.lifecycle.viewModelKtx)
-
-  // lifecycleScope
-  implementation(deps.lifecycle.runtimeKtx)
-
-  // coroutines
-  implementation(deps.jetbrains.coroutinesCore)
   implementation(deps.jetbrains.coroutinesAndroid)
-
-  // koin
-  implementation(deps.koin.androidXViewModel)
-
-  // coil
-  implementation(deps.coil)
+  implementation(deps.koin.android)
 
   testImplementation(deps.test.junit)
   androidTestImplementation(deps.test.androidxJunit)
