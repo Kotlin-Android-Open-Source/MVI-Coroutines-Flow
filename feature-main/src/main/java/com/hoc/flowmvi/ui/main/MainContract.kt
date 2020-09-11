@@ -1,7 +1,6 @@
 package com.hoc.flowmvi.ui.main
 
 import com.hoc.flowmvi.domain.entity.User
-import kotlinx.coroutines.flow.Flow
 
 internal data class UserItem(
   val id: String,
