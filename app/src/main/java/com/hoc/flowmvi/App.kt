@@ -25,9 +25,9 @@ class App : Application() {
       androidLogger(level = Level.ERROR)
 
       modules(
-          dataModule,
-          domainModule,
-          viewModelModule
+        dataModule,
+        domainModule,
+        viewModelModule
       )
     }
   }

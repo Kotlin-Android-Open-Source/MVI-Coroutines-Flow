@@ -15,19 +15,19 @@ interface AddContract {
   }
 
   data class ViewState(
-      val errors: Set<ValidationError>,
-      val isLoading: Boolean,
-      val emailChanged: Boolean,
-      val firstNameChanged: Boolean,
-      val lastNameChanged: Boolean,
+    val errors: Set<ValidationError>,
+    val isLoading: Boolean,
+    val emailChanged: Boolean,
+    val firstNameChanged: Boolean,
+    val lastNameChanged: Boolean,
   ) {
     companion object {
       fun initial() = ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
+        errors = emptySet(),
+        isLoading = false,
+        emailChanged = false,
+        firstNameChanged = false,
+        lastNameChanged = false,
       )
     }
   }

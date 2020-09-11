@@ -12,17 +12,32 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hoc.flowmvi.*
+import com.hoc.flowmvi.R
+import com.hoc.flowmvi.SwipeLeftToDeleteCallback
+import com.hoc.flowmvi.clicks
 import com.hoc.flowmvi.databinding.ActivityMainBinding
+import com.hoc.flowmvi.refreshes
+import com.hoc.flowmvi.toast
 import com.hoc.flowmvi.ui.add.AddActivity
-import com.hoc.flowmvi.ui.main.MainContract.*
+import com.hoc.flowmvi.ui.main.MainContract.SingleEvent
+import com.hoc.flowmvi.ui.main.MainContract.UserItem
+import com.hoc.flowmvi.ui.main.MainContract.View
+import com.hoc.flowmvi.ui.main.MainContract.ViewIntent
+import com.hoc.flowmvi.ui.main.MainContract.ViewState
+import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -65,10 +80,10 @@ class MainActivity : AppCompatActivity(), View {
       addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
 
       ItemTouchHelper(
-          SwipeLeftToDeleteCallback(context) cb@{ position ->
-            val userItem = mainVM.viewState.value.userItems[position]
-            removeChannel.offer(userItem)
-          }
+        SwipeLeftToDeleteCallback(context) cb@{ position ->
+          val userItem = mainVM.viewState.value.userItems[position]
+          removeChannel.offer(userItem)
+        }
       ).attachToRecyclerView(this)
     }
   }
@@ -77,28 +92,28 @@ class MainActivity : AppCompatActivity(), View {
     // observe view model
     lifecycleScope.launchWhenStarted {
       mainVM.viewState
-          .onEach { render(it) }
-          .catch { }
-          .collect()
+        .onEach { render(it) }
+        .catch { }
+        .collect()
     }
     lifecycleScope.launchWhenStarted {
       mainVM.singleEvent
-          .onEach { handleSingleEvent(it) }
-          .catch { }
-          .collect()
+        .onEach { handleSingleEvent(it) }
+        .catch { }
+        .collect()
     }
 
     // pass view intent to view model
     intents()
-        .onEach { mainVM.processIntent(it) }
-        .launchIn(lifecycleScope)
+      .onEach { mainVM.processIntent(it) }
+      .launchIn(lifecycleScope)
   }
 
   override fun intents() = merge(
-      flowOf(ViewIntent.Initial),
-      mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
-      mainBinding.retryButton.clicks().map { ViewIntent.Retry },
-      removeChannel.asFlow().map { ViewIntent.RemoveUser(it) }
+    flowOf(ViewIntent.Initial),
+    mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
+    mainBinding.retryButton.clicks().map { ViewIntent.Retry },
+    removeChannel.asFlow().map { ViewIntent.RemoveUser(it) }
   )
 
   private fun handleSingleEvent(event: SingleEvent) {

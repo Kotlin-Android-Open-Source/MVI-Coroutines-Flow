@@ -13,16 +13,21 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
 
 @ExperimentalCoroutinesApi
 class UserRepositoryImpl(
-    private val userApiService: UserApiService,
-    private val dispatchers: CoroutineDispatchers,
-    private val responseToDomain: Mapper<UserResponse, User>,
-    private val domainToResponse: Mapper<User, UserResponse>,
-    private val domainToBody: Mapper<User, UserBody>
+  private val userApiService: UserApiService,
+  private val dispatchers: CoroutineDispatchers,
+  private val responseToDomain: Mapper<UserResponse, User>,
+  private val domainToResponse: Mapper<User, UserResponse>,
+  private val domainToBody: Mapper<User, UserBody>
 ) : UserRepository {
 
   private sealed class Change {
@@ -45,22 +50,22 @@ class UserRepositoryImpl(
       val initial = getUsersFromRemote()
 
       changesChannel
-          .asFlow()
-          .onEach { Log.d("###", "[USER_REPO] Change=$it") }
-          .scan(initial) { acc, change ->
-            when (change) {
-              is Change.Removed -> acc.filter { it.id != change.removed.id }
-              is Change.Refreshed -> change.user
-              is Change.Added -> acc + change.user
-            }
+        .asFlow()
+        .onEach { Log.d("###", "[USER_REPO] Change=$it") }
+        .scan(initial) { acc, change ->
+          when (change) {
+            is Change.Removed -> acc.filter { it.id != change.removed.id }
+            is Change.Refreshed -> change.user
+            is Change.Added -> acc + change.user
           }
-          .onEach { Log.d("###", "[USER_REPO] Emit users.size=${it.size} ") }
-          .let { emitAll(it) }
+        }
+        .onEach { Log.d("###", "[USER_REPO] Emit users.size=${it.size} ") }
+        .let { emitAll(it) }
     }
   }
 
   override suspend fun refresh() =
-      getUsersFromRemote().let { changesChannel.send(Change.Refreshed(it)) }
+    getUsersFromRemote().let { changesChannel.send(Change.Refreshed(it)) }
 
   override suspend fun remove(user: User) {
     withContext(dispatchers.io) {
@@ -80,8 +85,8 @@ class UserRepositoryImpl(
 
   companion object {
     private val avatarUrls =
-        (0 until 100).map { "https://randomuser.me/api/portraits/men/$it.jpg" } +
-            (0 until 100).map { "https://randomuser.me/api/portraits/women/$it.jpg" } +
-            (0 until 10).map { "https://randomuser.me/api/portraits/lego/$it.jpg" }
+      (0 until 100).map { "https://randomuser.me/api/portraits/men/$it.jpg" } +
+        (0 until 100).map { "https://randomuser.me/api/portraits/women/$it.jpg" } +
+        (0 until 10).map { "https://randomuser.me/api/portraits/lego/$it.jpg" }
   }
 }

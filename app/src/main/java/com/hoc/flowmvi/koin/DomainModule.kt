@@ -22,11 +22,11 @@ val domainModule = module {
 
   single<UserRepository> {
     UserRepositoryImpl(
-        userApiService = get(),
-        dispatchers = get(),
-        responseToDomain = get<UserResponseToUserDomainMapper>(),
-        domainToResponse = get<UserDomainToUserResponseMapper>(),
-        domainToBody = get<UserDomainToUserBodyMapper>()
+      userApiService = get(),
+      dispatchers = get(),
+      responseToDomain = get<UserResponseToUserDomainMapper>(),
+      domainToResponse = get<UserDomainToUserResponseMapper>(),
+      domainToBody = get<UserDomainToUserBodyMapper>()
     )
   }
 

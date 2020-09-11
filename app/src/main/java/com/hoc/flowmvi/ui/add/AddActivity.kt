@@ -13,10 +13,20 @@ import com.hoc.flowmvi.databinding.ActivityAddBinding
 import com.hoc.flowmvi.firstChange
 import com.hoc.flowmvi.textChanges
 import com.hoc.flowmvi.toast
-import com.hoc.flowmvi.ui.add.AddContract.*
+import com.hoc.flowmvi.ui.add.AddContract.SingleEvent
+import com.hoc.flowmvi.ui.add.AddContract.ValidationError
+import com.hoc.flowmvi.ui.add.AddContract.View
+import com.hoc.flowmvi.ui.add.AddContract.ViewIntent
+import com.hoc.flowmvi.ui.add.AddContract.ViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @FlowPreview
@@ -45,21 +55,21 @@ class AddActivity : AppCompatActivity(), View {
     // observe view model
     lifecycleScope.launchWhenStarted {
       addVM.viewState
-          .onEach { render(it) }
-          .catch { }
-          .collect()
+        .onEach { render(it) }
+        .catch { }
+        .collect()
     }
     lifecycleScope.launchWhenStarted {
       addVM.singleEvent
-          .onEach { handleSingleEvent(it) }
-          .catch { }
-          .collect()
+        .onEach { handleSingleEvent(it) }
+        .catch { }
+        .collect()
     }
 
     // pass view intent to view model
     intents()
-        .onEach { addVM.processIntent(it) }
-        .launchIn(lifecycleScope)
+      .onEach { addVM.processIntent(it) }
+      .launchIn(lifecycleScope)
   }
 
   private fun handleSingleEvent(event: SingleEvent) {
@@ -108,11 +118,11 @@ class AddActivity : AppCompatActivity(), View {
     }
 
     TransitionManager.beginDelayedTransition(
-        addBinding.root,
-        AutoTransition()
-            .addTarget(addBinding.progressBar)
-            .addTarget(addBinding.addButton)
-            .setDuration(200)
+      addBinding.root,
+      AutoTransition()
+        .addTarget(addBinding.progressBar)
+        .addTarget(addBinding.addButton)
+        .setDuration(200)
     )
     addBinding.progressBar.isInvisible = !viewState.isLoading
     addBinding.addButton.isInvisible = viewState.isLoading
@@ -122,33 +132,33 @@ class AddActivity : AppCompatActivity(), View {
 
   override fun intents(): Flow<ViewIntent> = addBinding.run {
     merge(
-        emailEditText
-            .editText!!
-            .textChanges()
-            .map { ViewIntent.EmailChanged(it?.toString()) },
-        firstNameEditText
-            .editText!!
-            .textChanges()
-            .map { ViewIntent.FirstNameChanged(it?.toString()) },
-        lastNameEditText
-            .editText!!
-            .textChanges()
-            .map { ViewIntent.LastNameChanged(it?.toString()) },
-        addButton
-            .clicks()
-            .map { ViewIntent.Submit },
-        emailEditText
-            .editText!!
-            .firstChange()
-            .map { ViewIntent.EmailChangedFirstTime },
-        firstNameEditText
-            .editText!!
-            .firstChange()
-            .map { ViewIntent.FirstNameChangedFirstTime },
-        lastNameEditText
-            .editText!!
-            .firstChange()
-            .map { ViewIntent.LastNameChangedFirstTime },
+      emailEditText
+        .editText!!
+        .textChanges()
+        .map { ViewIntent.EmailChanged(it?.toString()) },
+      firstNameEditText
+        .editText!!
+        .textChanges()
+        .map { ViewIntent.FirstNameChanged(it?.toString()) },
+      lastNameEditText
+        .editText!!
+        .textChanges()
+        .map { ViewIntent.LastNameChanged(it?.toString()) },
+      addButton
+        .clicks()
+        .map { ViewIntent.Submit },
+      emailEditText
+        .editText!!
+        .firstChange()
+        .map { ViewIntent.EmailChangedFirstTime },
+      firstNameEditText
+        .editText!!
+        .firstChange()
+        .map { ViewIntent.FirstNameChangedFirstTime },
+      lastNameEditText
+        .editText!!
+        .firstChange()
+        .map { ViewIntent.LastNameChangedFirstTime },
     )
   }
 }

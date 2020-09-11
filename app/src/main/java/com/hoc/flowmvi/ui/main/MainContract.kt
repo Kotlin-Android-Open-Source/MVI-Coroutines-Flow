@@ -3,35 +3,34 @@ package com.hoc.flowmvi.ui.main
 import com.hoc.flowmvi.domain.entity.User
 import kotlinx.coroutines.flow.Flow
 
-
 interface MainContract {
   interface View {
     fun intents(): Flow<ViewIntent>
   }
 
   data class UserItem(
-      val id: String,
-      val email: String,
-      val avatar: String,
-      val firstName: String,
-      val lastName: String
+    val id: String,
+    val email: String,
+    val avatar: String,
+    val firstName: String,
+    val lastName: String
   ) {
     val fullName get() = "$firstName $lastName"
 
     constructor(domain: User) : this(
-        id = domain.id,
-        email = domain.email,
-        avatar = domain.avatar,
-        firstName = domain.firstName,
-        lastName = domain.lastName
+      id = domain.id,
+      email = domain.email,
+      avatar = domain.avatar,
+      firstName = domain.firstName,
+      lastName = domain.lastName
     )
 
     fun toDomain() = User(
-        id = id,
-        lastName = lastName,
-        firstName = firstName,
-        avatar = avatar,
-        email = email
+      id = id,
+      lastName = lastName,
+      firstName = firstName,
+      avatar = avatar,
+      email = email
     )
   }
 
@@ -43,17 +42,17 @@ interface MainContract {
   }
 
   data class ViewState(
-      val userItems: List<UserItem>,
-      val isLoading: Boolean,
-      val error: Throwable?,
-      val isRefreshing: Boolean
+    val userItems: List<UserItem>,
+    val isLoading: Boolean,
+    val error: Throwable?,
+    val isRefreshing: Boolean
   ) {
     companion object {
       fun initial() = ViewState(
-          userItems = emptyList(),
-          isLoading = true,
-          error = null,
-          isRefreshing = false
+        userItems = emptyList(),
+        isLoading = true,
+        error = null,
+        isRefreshing = false
       )
     }
   }
@@ -65,17 +64,17 @@ interface MainContract {
       override fun reduce(vs: ViewState): ViewState {
         return when (this) {
           Loading -> vs.copy(
-              isLoading = true,
-              error = null
+            isLoading = true,
+            error = null
           )
           is Data -> vs.copy(
-              isLoading = false,
-              error = null,
-              userItems = users
+            isLoading = false,
+            error = null,
+            userItems = users
           )
           is Error -> vs.copy(
-              isLoading = false,
-              error = error
+            isLoading = false,
+            error = error
           )
         }
       }

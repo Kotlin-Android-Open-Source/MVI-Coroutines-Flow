@@ -12,18 +12,20 @@ import com.hoc.flowmvi.databinding.ItemRecyclerUserBinding
 import com.hoc.flowmvi.ui.main.MainContract.UserItem
 
 class UserAdapter :
-    ListAdapter<UserItem, UserAdapter.VH>(object : DiffUtil.ItemCallback<UserItem>() {
+  ListAdapter<UserItem, UserAdapter.VH>(
+    object : DiffUtil.ItemCallback<UserItem>() {
       override fun areItemsTheSame(oldItem: UserItem, newItem: UserItem) =
-          oldItem.id == newItem.id
+        oldItem.id == newItem.id
 
       override fun areContentsTheSame(oldItem: UserItem, newItem: UserItem) = oldItem == newItem
-    }) {
+    }
+  ) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
     val binding = ItemRecyclerUserBinding.inflate(
-        LayoutInflater.from(parent.context),
-        parent,
-        false
+      LayoutInflater.from(parent.context),
+      parent,
+      false
     )
     return VH(binding)
   }

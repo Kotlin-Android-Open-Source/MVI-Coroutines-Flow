@@ -7,10 +7,10 @@ import com.hoc.flowmvi.domain.entity.User
 class UserDomainToUserBodyMapper : Mapper<User, UserBody> {
   override fun invoke(domain: User): UserBody {
     return UserBody(
-        email = domain.email,
-        avatar = domain.avatar,
-        firstName = domain.firstName,
-        lastName = domain.lastName
+      email = domain.email,
+      avatar = domain.avatar,
+      firstName = domain.firstName,
+      lastName = domain.lastName
     )
   }
 }

@@ -1,5 +1,7 @@
 @file:Suppress("unused", "ClassName", "SpellCheckingInspection")
 
+const val ktlintVersion = "0.38.1"
+
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
 
