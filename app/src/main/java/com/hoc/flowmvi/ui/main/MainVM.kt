@@ -3,10 +3,10 @@ package com.hoc.flowmvi.ui.main
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hoc.flowmvi.core.flatMapFirst
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
-import com.hoc.flowmvi.flatMapFirst
 import com.hoc.flowmvi.ui.main.MainContract.PartialChange
 import com.hoc.flowmvi.ui.main.MainContract.SingleEvent
 import com.hoc.flowmvi.ui.main.MainContract.UserItem

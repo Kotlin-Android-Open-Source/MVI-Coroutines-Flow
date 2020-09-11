@@ -8,11 +8,11 @@ import androidx.core.view.isInvisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import com.hoc.flowmvi.clicks
+import com.hoc.flowmvi.core.clicks
+import com.hoc.flowmvi.core.firstChange
+import com.hoc.flowmvi.core.textChanges
+import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.databinding.ActivityAddBinding
-import com.hoc.flowmvi.firstChange
-import com.hoc.flowmvi.textChanges
-import com.hoc.flowmvi.toast
 import com.hoc.flowmvi.ui.add.AddContract.SingleEvent
 import com.hoc.flowmvi.ui.add.AddContract.ValidationError
 import com.hoc.flowmvi.ui.add.AddContract.View

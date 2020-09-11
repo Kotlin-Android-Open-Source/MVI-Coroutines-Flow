@@ -3,15 +3,15 @@ package com.hoc.flowmvi.ui.add
 import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hoc.flowmvi.core.flatMapFirst
+import com.hoc.flowmvi.core.withLatestFrom
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
-import com.hoc.flowmvi.flatMapFirst
 import com.hoc.flowmvi.ui.add.AddContract.PartialStateChange
 import com.hoc.flowmvi.ui.add.AddContract.SingleEvent
 import com.hoc.flowmvi.ui.add.AddContract.ValidationError
 import com.hoc.flowmvi.ui.add.AddContract.ViewIntent
 import com.hoc.flowmvi.ui.add.AddContract.ViewState
-import com.hoc.flowmvi.withLatestFrom
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel

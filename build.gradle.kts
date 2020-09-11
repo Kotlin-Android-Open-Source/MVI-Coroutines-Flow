@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+  val kotlinVersion by extra("1.4.0-rc")
   repositories {
     google()
     jcenter()
@@ -9,7 +10,7 @@ buildscript {
   }
   dependencies {
     classpath("com.android.tools.build:gradle:4.0.1")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     classpath("com.diffplug.spotless:spotless-plugin-gradle:5.3.0")
   }
 }
@@ -60,6 +61,14 @@ subprojects {
 }
 
 allprojects {
+  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+      jvmTarget = JavaVersion.VERSION_1_8.toString()
+      sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+      targetCompatibility = JavaVersion.VERSION_1_8.toString()
+    }
+  }
+
   repositories {
     google()
     jcenter()

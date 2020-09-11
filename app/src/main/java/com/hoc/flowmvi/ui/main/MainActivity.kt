@@ -13,18 +13,17 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hoc.flowmvi.R
-import com.hoc.flowmvi.SwipeLeftToDeleteCallback
-import com.hoc.flowmvi.clicks
+import com.hoc.flowmvi.core.SwipeLeftToDeleteCallback
+import com.hoc.flowmvi.core.clicks
+import com.hoc.flowmvi.core.refreshes
+import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.databinding.ActivityMainBinding
-import com.hoc.flowmvi.refreshes
-import com.hoc.flowmvi.toast
 import com.hoc.flowmvi.ui.add.AddActivity
 import com.hoc.flowmvi.ui.main.MainContract.SingleEvent
 import com.hoc.flowmvi.ui.main.MainContract.UserItem
 import com.hoc.flowmvi.ui.main.MainContract.View
 import com.hoc.flowmvi.ui.main.MainContract.ViewIntent
 import com.hoc.flowmvi.ui.main.MainContract.ViewState
-import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -38,6 +37,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi

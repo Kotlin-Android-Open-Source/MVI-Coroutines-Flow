@@ -1,4 +1,4 @@
-package com.hoc.flowmvi
+package com.hoc.flowmvi.core
 
 import android.content.Context
 import android.graphics.Canvas

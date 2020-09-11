@@ -1,6 +1,13 @@
 @file:Suppress("unused", "ClassName", "SpellCheckingInspection")
 
+import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.project
+import org.gradle.plugin.use.PluginDependenciesSpec
+import org.gradle.plugin.use.PluginDependencySpec
+
 const val ktlintVersion = "0.38.1"
+const val kotlinVersion = "1.4.10"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -50,3 +57,15 @@ object deps {
     const val androidXSspresso = "androidx.test.espresso:espresso-core:3.3.0"
   }
 }
+
+private typealias PDsS = PluginDependenciesSpec
+private typealias PDS = PluginDependencySpec
+
+inline val PDsS.androidApplication: PDS get() = id("com.android.application")
+inline val PDsS.androidLib: PDS get() = id("com.android.library")
+
+inline val PDsS.kotlinAndroid: PDS get() = id("kotlin-android")
+inline val PDsS.kotlin: PDS get() = id("kotlin")
+
+inline val DependencyHandler.domain get() = project(":domain")
+inline val DependencyHandler.core get() = project(":core")

@@ -1,6 +1,6 @@
 plugins {
-  id("com.android.application")
-  id("kotlin-android")
+  androidApplication
+  kotlinAndroid
 }
 
 android {
@@ -45,6 +45,9 @@ dependencies {
       )
     )
   )
+
+  implementation(domain)
+  implementation(core)
 
   implementation(deps.androidx.appCompat)
   implementation(deps.androidx.coreKtx)

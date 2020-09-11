@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.data.mapper
 
+import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.UserResponse
-import com.hoc.flowmvi.domain.Mapper
 import com.hoc.flowmvi.domain.entity.User
 
 class UserDomainToUserResponseMapper : Mapper<User, UserResponse> {
