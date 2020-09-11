@@ -24,6 +24,7 @@ import com.hoc.flowmvi.ui.main.MainContract.UserItem
 import com.hoc.flowmvi.ui.main.MainContract.View
 import com.hoc.flowmvi.ui.main.MainContract.ViewIntent
 import com.hoc.flowmvi.ui.main.MainContract.ViewState
+import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -37,7 +38,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi

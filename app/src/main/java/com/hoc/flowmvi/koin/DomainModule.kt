@@ -1,11 +1,11 @@
 package com.hoc.flowmvi.koin
 
+import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
+import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchersImpl
 import com.hoc.flowmvi.data.UserRepositoryImpl
 import com.hoc.flowmvi.data.mapper.UserDomainToUserBodyMapper
 import com.hoc.flowmvi.data.mapper.UserDomainToUserResponseMapper
 import com.hoc.flowmvi.data.mapper.UserResponseToUserDomainMapper
-import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
-import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchersImpl
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
