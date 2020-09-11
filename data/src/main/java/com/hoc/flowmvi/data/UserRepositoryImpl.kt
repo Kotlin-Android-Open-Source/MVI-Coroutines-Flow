@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
 
 @ExperimentalCoroutinesApi
-class UserRepositoryImpl(
+internal class UserRepositoryImpl constructor(
   private val userApiService: UserApiService,
   private val dispatchers: CoroutineDispatchers,
   private val responseToDomain: Mapper<UserResponse, User>,

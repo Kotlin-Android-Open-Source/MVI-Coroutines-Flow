@@ -47,6 +47,7 @@ dependencies {
   )
 
   implementation(domain)
+  implementation(data)
   implementation(core)
 
   implementation(deps.androidx.appCompat)
@@ -62,20 +63,12 @@ dependencies {
   // lifecycleScope
   implementation(deps.lifecycle.runtimeKtx)
 
-  // retrofit2
-  implementation(deps.squareup.retrofit)
-  implementation(deps.squareup.converterMoshi)
-  implementation(deps.squareup.loggingInterceptor)
-
-  // moshi
-  implementation(deps.squareup.moshiKotlin)
-
   // coroutines
   implementation(deps.jetbrains.coroutinesCore)
   implementation(deps.jetbrains.coroutinesAndroid)
 
   // koin
-  implementation(deps.koinAndroidXViewModel)
+  implementation(deps.koin.androidXViewModel)
 
   // coil
   implementation(deps.coil)

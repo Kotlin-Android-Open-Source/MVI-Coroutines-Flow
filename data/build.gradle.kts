@@ -34,12 +34,15 @@ android {
 }
 
 dependencies {
-  implementation(deps.jetbrains.coroutinesCore)
-  implementation(deps.jetbrains.coroutinesAndroid)
+  implementation(core)
+  implementation(domain)
 
-  implementation(deps.androidx.coreKtx)
-  implementation(deps.androidx.swipeRefreshLayout)
-  implementation(deps.androidx.recyclerView)
+  implementation(deps.jetbrains.coroutinesCore)
+
+  implementation(deps.squareup.retrofit)
+  implementation(deps.squareup.moshiKotlin)
+  implementation(deps.squareup.converterMoshi)
+  implementation(deps.squareup.loggingInterceptor)
 
   implementation(deps.koin.core)
 }

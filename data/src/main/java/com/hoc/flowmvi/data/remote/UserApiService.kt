@@ -9,7 +9,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface UserApiService {
+internal interface UserApiService {
   @GET("users")
   suspend fun getUsers(): List<UserResponse>
 

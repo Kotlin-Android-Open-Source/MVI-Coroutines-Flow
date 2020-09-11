@@ -48,7 +48,10 @@ object deps {
     const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
   }
 
-  const val koinAndroidXViewModel = "org.koin:koin-androidx-viewmodel:2.1.6"
+  object koin {
+    const val androidXViewModel = "org.koin:koin-androidx-viewmodel:2.1.6"
+    const val core = "org.koin:koin-core:2.1.6"
+  }
   const val coil = "io.coil-kt:coil:0.11.0"
 
   object test {
@@ -69,3 +72,4 @@ inline val PDsS.kotlin: PDS get() = id("kotlin")
 
 inline val DependencyHandler.domain get() = project(":domain")
 inline val DependencyHandler.core get() = project(":core")
+inline val DependencyHandler.data get() = project(":data")

@@ -4,7 +4,7 @@ import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.domain.entity.User
 
-class UserDomainToUserBodyMapper : Mapper<User, UserBody> {
+internal class UserDomainToUserBodyMapper : Mapper<User, UserBody> {
   override fun invoke(domain: User): UserBody {
     return UserBody(
       email = domain.email,

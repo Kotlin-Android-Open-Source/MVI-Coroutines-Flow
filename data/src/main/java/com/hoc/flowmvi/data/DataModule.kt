@@ -1,13 +1,14 @@
-package com.hoc.flowmvi.koin
+package com.hoc.flowmvi.data
 
-import com.hoc.flowmvi.BuildConfig
 import com.hoc.flowmvi.data.mapper.UserDomainToUserBodyMapper
 import com.hoc.flowmvi.data.mapper.UserDomainToUserResponseMapper
 import com.hoc.flowmvi.data.mapper.UserResponseToUserDomainMapper
 import com.hoc.flowmvi.data.remote.UserApiService
+import com.hoc.flowmvi.domain.repository.UserRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -15,9 +16,12 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 private const val BASE_URL = "BASE_URL"
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 val dataModule = module {
   single { UserApiService(retrofit = get()) }
 
@@ -40,6 +44,16 @@ val dataModule = module {
   factory { UserDomainToUserResponseMapper() }
 
   factory { UserDomainToUserBodyMapper() }
+
+  single<UserRepository> {
+    UserRepositoryImpl(
+      userApiService = get(),
+      dispatchers = get(),
+      responseToDomain = get<UserResponseToUserDomainMapper>(),
+      domainToResponse = get<UserDomainToUserResponseMapper>(),
+      domainToBody = get<UserDomainToUserBodyMapper>()
+    )
+  }
 }
 
 private fun provideMoshi(): Moshi {
