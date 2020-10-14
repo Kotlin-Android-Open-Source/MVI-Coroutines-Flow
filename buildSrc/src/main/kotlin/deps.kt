@@ -45,7 +45,7 @@ object deps {
   }
 
   object jetbrains {
-    private const val version = "1.3.9"
+    private const val version = "1.4.0-M1"
 
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"

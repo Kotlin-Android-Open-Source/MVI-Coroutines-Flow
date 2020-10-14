@@ -10,11 +10,9 @@ import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
@@ -36,7 +34,7 @@ internal class UserRepositoryImpl constructor(
     class Added(val user: User) : Change()
   }
 
-  private val changesChannel = BroadcastChannel<Change>(Channel.CONFLATED)
+  private val changesFlow = MutableSharedFlow<Change>()
 
   private suspend fun getUsersFromRemote(): List<User> {
     return withContext(dispatchers.io) {
@@ -49,8 +47,7 @@ internal class UserRepositoryImpl constructor(
     return flow {
       val initial = getUsersFromRemote()
 
-      changesChannel
-        .asFlow()
+      changesFlow
         .onEach { Log.d("###", "[USER_REPO] Change=$it") }
         .scan(initial) { acc, change ->
           when (change) {
@@ -65,12 +62,12 @@ internal class UserRepositoryImpl constructor(
   }
 
   override suspend fun refresh() =
-    getUsersFromRemote().let { changesChannel.send(Change.Refreshed(it)) }
+    getUsersFromRemote().let { changesFlow.emit(Change.Refreshed(it)) }
 
   override suspend fun remove(user: User) {
     withContext(dispatchers.io) {
       val response = userApiService.remove(domainToResponse(user).id)
-      changesChannel.send(Change.Removed(responseToDomain(response)))
+      changesFlow.emit(Change.Removed(responseToDomain(response)))
     }
   }
 
@@ -78,7 +75,7 @@ internal class UserRepositoryImpl constructor(
     withContext(dispatchers.io) {
       val body = domainToBody(user).copy(avatar = avatarUrls.random())
       val response = userApiService.add(body)
-      changesChannel.send(Change.Added(responseToDomain(response)))
+      changesFlow.emit(Change.Added(responseToDomain(response)))
       delay(400)
     }
   }
