@@ -30,8 +30,8 @@ import kotlinx.coroutines.flow.stateIn
 @FlowPreview
 @ExperimentalCoroutinesApi
 internal class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
-  private val _eventFlow = MutableSharedFlow<SingleEvent>()
-  private val _intentFlow = MutableSharedFlow<ViewIntent>()
+  private val _eventFlow = MutableSharedFlow<SingleEvent>(extraBufferCapacity = 64)
+  private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
 
   val viewState: StateFlow<ViewState>
   val singleEvent: Flow<SingleEvent> get() = _eventFlow
