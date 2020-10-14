@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.ui.add
 
+import android.util.Log
 import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,50 +10,42 @@ import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 internal class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
-  private val _eventChannel = BroadcastChannel<SingleEvent>(capacity = Channel.BUFFERED)
-  private val _intentChannel = BroadcastChannel<ViewIntent>(capacity = Channel.BUFFERED)
+  private val _eventFlow = MutableSharedFlow<SingleEvent>()
+  private val _intentFlow = MutableSharedFlow<ViewIntent>()
 
   val viewState: StateFlow<ViewState>
+  val singleEvent: Flow<SingleEvent> get() = _eventFlow
 
-  val singleEvent: Flow<SingleEvent>
-
-  suspend fun processIntent(intent: ViewIntent) = _intentChannel.send(intent)
+  suspend fun processIntent(intent: ViewIntent) = _intentFlow.emit(intent)
 
   init {
     val initialVS = ViewState.initial()
-
-    viewState = MutableStateFlow(initialVS)
-    singleEvent = _eventChannel.asFlow()
-
-    _intentChannel
-      .asFlow()
+    viewState = _intentFlow
       .toPartialStateChangesFlow()
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
-      .onEach { viewState.value = it }
-      .catch { }
-      .launchIn(viewModelScope)
+      .catch { Log.d("###", "[ADD_VM] Throwable: $it") }
+      .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 
   private fun Flow<PartialStateChange>.sendSingleEvent(): Flow<PartialStateChange> {
@@ -69,7 +62,7 @@ internal class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
         PartialStateChange.FirstChange.FirstNameChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.LastNameChangedFirstTime -> return@onEach
       }
-      _eventChannel.send(event)
+      _eventFlow.emit(event)
     }
   }
 
@@ -99,6 +92,10 @@ internal class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
           )
         )
       }
+        .shareIn(
+          scope = viewModelScope,
+          started = SharingStarted.WhileSubscribed()
+        )
 
     val addUserChanges = filterIsInstance<ViewIntent.Submit>()
       .withLatestFrom(userFormFlow) { _, userForm -> userForm }
