@@ -31,7 +31,7 @@ object deps {
   }
 
   object lifecycle {
-    private const val version = "2.3.0-alpha07"
+    private const val version = "2.3.0-beta01"
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
@@ -45,21 +45,21 @@ object deps {
   }
 
   object jetbrains {
-    private const val version = "1.4.0-M1"
+    private const val version = "1.4.0"
 
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
   }
 
   object koin {
-    private const val version = "2.2.0-beta-1"
+    private const val version = "2.2.0-rc-4"
 
     const val androidXViewModel = "org.koin:koin-androidx-viewmodel:$version"
     const val core = "org.koin:koin-core:$version"
     const val android = "org.koin:koin-android:$version"
   }
 
-  const val coil = "io.coil-kt:coil:0.11.0"
+  const val coil = "io.coil-kt:coil:1.0.0"
 
   object test {
     const val junit = "junit:junit:4.13"
