@@ -87,13 +87,11 @@ class MainActivity : AppCompatActivity() {
     lifecycleScope.launchWhenStarted {
       mainVM.viewState
         .onEach { render(it) }
-        .catch { }
         .collect()
     }
     lifecycleScope.launchWhenStarted {
       mainVM.singleEvent
         .onEach { handleSingleEvent(it) }
-        .catch { }
         .collect()
     }
 

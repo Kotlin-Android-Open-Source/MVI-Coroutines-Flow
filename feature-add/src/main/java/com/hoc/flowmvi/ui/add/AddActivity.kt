@@ -54,13 +54,11 @@ class AddActivity : AppCompatActivity() {
     lifecycleScope.launchWhenStarted {
       addVM.viewState
         .onEach { render(it) }
-        .catch { }
         .collect()
     }
     lifecycleScope.launchWhenStarted {
       addVM.singleEvent
         .onEach { handleSingleEvent(it) }
-        .catch { }
         .collect()
     }
 
