@@ -13,16 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hoc.flowmvi.core.SwipeLeftToDeleteCallback
 import com.hoc.flowmvi.core.clicks
+import com.hoc.flowmvi.core.launchWhenStartedUntilStopped
 import com.hoc.flowmvi.core.navigator.Navigator
 import com.hoc.flowmvi.core.refreshes
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.main.databinding.ActivityMainBinding
-import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -31,6 +29,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -84,16 +83,14 @@ class MainActivity : AppCompatActivity() {
 
   private fun bindVM(mainVM: MainVM) {
     // observe view model
-    lifecycleScope.launchWhenStarted {
-      mainVM.viewState
-        .onEach { render(it) }
-        .collect()
-    }
-    lifecycleScope.launchWhenStarted {
-      mainVM.singleEvent
-        .onEach { handleSingleEvent(it) }
-        .collect()
-    }
+    mainVM.viewState
+      .onEach { render(it) }
+      .launchWhenStartedUntilStopped(this)
+
+    // observe single event
+    mainVM.singleEvent
+      .onEach { handleSingleEvent(it) }
+      .launchWhenStartedUntilStopped(this)
 
     // pass view intent to view model
     intents()

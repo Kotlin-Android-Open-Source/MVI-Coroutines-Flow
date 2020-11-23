@@ -19,13 +19,12 @@ import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.hoc.flowmvi.core.launchWhenStartedUntilStopped
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -51,16 +50,14 @@ class AddActivity : AppCompatActivity() {
 
   private fun bindVM(addVM: AddVM) {
     // observe view model
-    lifecycleScope.launchWhenStarted {
-      addVM.viewState
-        .onEach { render(it) }
-        .collect()
-    }
-    lifecycleScope.launchWhenStarted {
-      addVM.singleEvent
-        .onEach { handleSingleEvent(it) }
-        .collect()
-    }
+    addVM.viewState
+      .onEach { render(it) }
+      .launchWhenStartedUntilStopped(this)
+
+    // observe single event
+    addVM.singleEvent
+      .onEach { handleSingleEvent(it) }
+      .launchWhenStartedUntilStopped(this)
 
     // pass view intent to view model
     intents()
