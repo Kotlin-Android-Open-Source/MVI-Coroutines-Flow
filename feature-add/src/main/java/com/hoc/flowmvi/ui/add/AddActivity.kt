@@ -25,11 +25,12 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.hoc.flowmvi.core.launchWhenStartedUntilStopped
+import org.koin.androidx.viewmodel.scope.emptyState
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 class AddActivity : AppCompatActivity() {
-  private val addVM by viewModel<AddVM>()
+  private val addVM by viewModel<AddVM>(state = emptyState())
   private val addBinding by lazy { ActivityAddBinding.inflate(layoutInflater) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ class AddActivity : AppCompatActivity() {
     setContentView(addBinding.root)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    setupViews()
+    setupViews(savedInstanceState != null)
     bindVM(addVM)
   }
 
@@ -121,7 +122,12 @@ class AddActivity : AppCompatActivity() {
     addBinding.addButton.isInvisible = viewState.isLoading
   }
 
-  private fun setupViews() = Unit
+  private fun setupViews(reInitialized: Boolean) {
+    if (reInitialized) {
+      val state = addVM.viewState.value
+      addBinding.emailEditText.editText!!.setText(state.email)
+    }
+  }
 
   private fun intents(): Flow<ViewIntent> = addBinding.run {
     merge(

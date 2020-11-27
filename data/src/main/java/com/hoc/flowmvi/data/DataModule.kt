@@ -17,9 +17,11 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import kotlin.time.ExperimentalTime
 
 private const val BASE_URL = "BASE_URL"
 
+@ExperimentalTime
 @ExperimentalCoroutinesApi
 @FlowPreview
 val dataModule = module {

@@ -14,6 +14,7 @@ internal data class ViewState(
   val emailChanged: Boolean,
   val firstNameChanged: Boolean,
   val lastNameChanged: Boolean,
+  val email: String?
 ) {
   companion object {
     fun initial() = ViewState(
@@ -22,6 +23,7 @@ internal data class ViewState(
       emailChanged = false,
       firstNameChanged = false,
       lastNameChanged = false,
+      email = null,
     )
   }
 }
@@ -71,6 +73,20 @@ internal sealed class PartialStateChange {
         LastNameChangedFirstTime -> viewState.copy(lastNameChanged = true)
       }
     }
+  }
+
+  sealed class FormValueChange : PartialStateChange() {
+    override fun reduce(viewState: ViewState): ViewState {
+      return when (this) {
+        is EmailChanged -> viewState.copy(email = email)
+        is FirstNameChanged -> TODO()
+        is LastNameChanged -> TODO()
+      }
+    }
+
+    data class EmailChanged(val email: String?) : FormValueChange()
+    data class FirstNameChanged(val firstName: String?) : FormValueChange()
+    data class LastNameChanged(val lastName: String?) : FormValueChange()
   }
 }
 

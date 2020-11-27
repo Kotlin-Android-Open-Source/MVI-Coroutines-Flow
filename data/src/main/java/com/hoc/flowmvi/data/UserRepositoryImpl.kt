@@ -3,6 +3,7 @@ package com.hoc.flowmvi.data
 import android.util.Log
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
+import com.hoc.flowmvi.core.retrySuspend
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
@@ -18,7 +19,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
+import kotlin.time.ExperimentalTime
+import kotlin.time.milliseconds
 
+@ExperimentalTime
 @ExperimentalCoroutinesApi
 internal class UserRepositoryImpl constructor(
   private val userApiService: UserApiService,
@@ -34,11 +38,18 @@ internal class UserRepositoryImpl constructor(
     class Added(val user: User) : Change()
   }
 
-  private val changesFlow = MutableSharedFlow<Change>()
+  private val changesFlow = MutableSharedFlow<Change>(extraBufferCapacity = 64)
 
   private suspend fun getUsersFromRemote(): List<User> {
     return withContext(dispatchers.io) {
-      userApiService.getUsers().map(responseToDomain)
+      retrySuspend(
+        times = 3,
+        initialDelay = 500.milliseconds,
+        factor = 2.0,
+      ) {
+        Log.d("###", "[USER_REPO] Retry times=$it")
+        userApiService.getUsers().map(responseToDomain)
+      }
     }
   }
 

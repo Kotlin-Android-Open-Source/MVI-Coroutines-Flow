@@ -2,7 +2,9 @@ package com.hoc.flowmvi.ui.add
 
 import android.util.Log
 import androidx.core.util.PatternsCompat
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.core.flatMapFirst
 import com.hoc.flowmvi.core.withLatestFrom
@@ -29,7 +31,10 @@ import kotlinx.coroutines.flow.stateIn
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
+internal class AddVM(
+  private val addUser: AddUserUseCase,
+  private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
   private val _eventFlow = MutableSharedFlow<SingleEvent>(extraBufferCapacity = 64)
   private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
 
@@ -40,8 +45,14 @@ internal class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
 
   init {
     val initialVS = ViewState.initial()
-    viewState = _intentFlow
-      .toPartialStateChangesFlow()
+    viewState = merge(
+      _intentFlow
+        .toPartialStateChangesFlow(),
+      savedStateHandle
+        .getLiveData<String>(PartialStateChange.FormValueChange.EmailChanged::class.java.name)
+        .asFlow()
+        .map { PartialStateChange.FormValueChange.EmailChanged(it) },
+    )
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
       .catch { Log.d("###", "[ADD_VM] Throwable: $it") }
@@ -61,6 +72,9 @@ internal class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
         PartialStateChange.FirstChange.EmailChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.FirstNameChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.LastNameChangedFirstTime -> return@onEach
+        is PartialStateChange.FormValueChange.EmailChanged -> return@onEach
+        is PartialStateChange.FormValueChange.FirstNameChanged -> return@onEach
+        is PartialStateChange.FormValueChange.LastNameChanged -> return@onEach
       }
       _eventFlow.emit(event)
     }
@@ -69,6 +83,12 @@ internal class AddVM(private val addUser: AddUserUseCase) : ViewModel() {
   private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val emailErrors = filterIsInstance<ViewIntent.EmailChanged>()
       .map { it.email }
+      .onEach {
+        savedStateHandle.set(
+          PartialStateChange.FormValueChange.EmailChanged::class.java.name,
+          it
+        )
+      }
       .map { validateEmail(it) to it }
 
     val firstNameErrors = filterIsInstance<ViewIntent.FirstNameChanged>()
