@@ -36,7 +36,6 @@ object deps {
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
     const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:$version"
-    const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
   }
 
   object squareup {
