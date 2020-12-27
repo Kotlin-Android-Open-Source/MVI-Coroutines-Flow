@@ -12,6 +12,7 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.hoc.flowmvi.core.clicks
 import com.hoc.flowmvi.core.firstChange
+import com.hoc.flowmvi.core.launchWhenStartedUntilStopped
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
@@ -19,18 +20,17 @@ import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.scope.emptyState
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 class AddActivity : AppCompatActivity() {
-  private val addVM by viewModel<AddVM>()
+  private val addVM by viewModel<AddVM>(state = emptyState())
   private val addBinding by lazy { ActivityAddBinding.inflate(layoutInflater) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,16 +51,14 @@ class AddActivity : AppCompatActivity() {
 
   private fun bindVM(addVM: AddVM) {
     // observe view model
-    lifecycleScope.launchWhenStarted {
-      addVM.viewState
-        .onEach { render(it) }
-        .collect()
-    }
-    lifecycleScope.launchWhenStarted {
-      addVM.singleEvent
-        .onEach { handleSingleEvent(it) }
-        .collect()
-    }
+    addVM.viewState
+      .onEach { render(it) }
+      .launchWhenStartedUntilStopped(this)
+
+    // observe single event
+    addVM.singleEvent
+      .onEach { handleSingleEvent(it) }
+      .launchWhenStartedUntilStopped(this)
 
     // pass view intent to view model
     intents()
@@ -124,7 +122,15 @@ class AddActivity : AppCompatActivity() {
     addBinding.addButton.isInvisible = viewState.isLoading
   }
 
-  private fun setupViews() = Unit
+  private fun setupViews() {
+    val state = addVM.viewState.value
+
+    addBinding.run {
+      emailEditText.editText!!.setText(state.email)
+      firstNameEditText.editText!!.setText(state.firstName)
+      lastNameEditText.editText!!.setText(state.lastName)
+    }
+  }
 
   private fun intents(): Flow<ViewIntent> = addBinding.run {
     merge(

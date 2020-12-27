@@ -35,6 +35,7 @@ object deps {
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
+    const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:$version"
   }
 
   object squareup {
@@ -52,7 +53,7 @@ object deps {
   }
 
   object koin {
-    private const val version = "2.2.0-rc-4"
+    private const val version = "2.2.2"
 
     const val androidXViewModel = "org.koin:koin-androidx-viewmodel:$version"
     const val core = "org.koin:koin-core:$version"

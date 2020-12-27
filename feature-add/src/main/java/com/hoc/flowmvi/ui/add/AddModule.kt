@@ -9,7 +9,12 @@ import org.koin.dsl.module
 @ExperimentalCoroutinesApi
 @FlowPreview
 val addModule = module {
-  viewModel { AddVM(addUser = get()) }
+  viewModel {
+    AddVM(
+      addUser = get(),
+      savedStateHandle = it.get(),
+    )
+  }
 
   single<IntentProviders.Add> { AddActivity.IntentProvider() }
 }

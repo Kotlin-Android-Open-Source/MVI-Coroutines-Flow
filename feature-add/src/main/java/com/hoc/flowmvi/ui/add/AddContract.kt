@@ -11,17 +11,29 @@ internal enum class ValidationError {
 internal data class ViewState(
   val errors: Set<ValidationError>,
   val isLoading: Boolean,
+  //
   val emailChanged: Boolean,
   val firstNameChanged: Boolean,
   val lastNameChanged: Boolean,
+  //
+  val email: String?,
+  val firstName: String?,
+  val lastName: String?
 ) {
   companion object {
-    fun initial() = ViewState(
+    fun initial(
+      email: String?,
+      firstName: String?,
+      lastName: String?
+    ) = ViewState(
       errors = emptySet(),
       isLoading = false,
       emailChanged = false,
       firstNameChanged = false,
       lastNameChanged = false,
+      email = email,
+      firstName = firstName,
+      lastName = lastName,
     )
   }
 }
@@ -71,6 +83,20 @@ internal sealed class PartialStateChange {
         LastNameChangedFirstTime -> viewState.copy(lastNameChanged = true)
       }
     }
+  }
+
+  sealed class FormValueChange : PartialStateChange() {
+    override fun reduce(viewState: ViewState): ViewState {
+      return when (this) {
+        is EmailChanged -> viewState.copy(email = email)
+        is FirstNameChanged -> viewState.copy(firstName = firstName)
+        is LastNameChanged -> viewState.copy(lastName = lastName)
+      }
+    }
+
+    data class EmailChanged(val email: String?) : FormValueChange()
+    data class FirstNameChanged(val firstName: String?) : FormValueChange()
+    data class LastNameChanged(val lastName: String?) : FormValueChange()
   }
 }
 

@@ -41,4 +41,7 @@ dependencies {
   implementation(deps.androidx.swipeRefreshLayout)
   implementation(deps.androidx.recyclerView)
   implementation(deps.androidx.material)
+
+  implementation(deps.lifecycle.commonJava8)
+  implementation(deps.lifecycle.runtimeKtx)
 }
