@@ -49,6 +49,7 @@ internal class AddVM(
       firstName = savedStateHandle.get<String?>("first_name"),
       lastName = savedStateHandle.get<String?>("last_name"),
     )
+    Log.d("###", "[ADD_VM] initialVS: $initialVS")
 
     viewState = _intentFlow
       .toPartialStateChangesFlow()
@@ -162,8 +163,12 @@ internal class AddVM(
 
     return merge(
       userFormFlow
-        .mapNotNull { it.leftOrNull() }
-        .map { PartialStateChange.ErrorsChanged(it) },
+        .map {
+          PartialStateChange.ErrorsChanged(
+            it.leftOrNull()
+              ?: emptySet()
+          )
+        },
       addUserChanges,
       firstChanges,
       formValuesChanges,

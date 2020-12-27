@@ -12,6 +12,7 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.hoc.flowmvi.core.clicks
 import com.hoc.flowmvi.core.firstChange
+import com.hoc.flowmvi.core.launchWhenStartedUntilStopped
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.hoc.flowmvi.core.launchWhenStartedUntilStopped
 import org.koin.androidx.viewmodel.scope.emptyState
 
 @FlowPreview
@@ -38,7 +38,7 @@ class AddActivity : AppCompatActivity() {
     setContentView(addBinding.root)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    setupViews(savedInstanceState != null)
+    setupViews()
     bindVM(addVM)
   }
 
@@ -122,10 +122,13 @@ class AddActivity : AppCompatActivity() {
     addBinding.addButton.isInvisible = viewState.isLoading
   }
 
-  private fun setupViews(reInitialized: Boolean) {
-    if (reInitialized) {
-      val state = addVM.viewState.value
-      addBinding.emailEditText.editText!!.setText(state.email)
+  private fun setupViews() {
+    val state = addVM.viewState.value
+
+    addBinding.run {
+      emailEditText.editText!!.setText(state.email)
+      firstNameEditText.editText!!.setText(state.firstName)
+      lastNameEditText.editText!!.setText(state.lastName)
     }
   }
 

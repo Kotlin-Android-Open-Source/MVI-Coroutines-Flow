@@ -13,8 +13,4 @@ sealed class Either<out L, out R> {
     is Left -> l
     is Right -> null
   }
-
-  val isRight get() = this is Right
-
-  val isLeft get() = !isRight
 }
