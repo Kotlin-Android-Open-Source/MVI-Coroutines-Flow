@@ -15,13 +15,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -37,6 +35,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import kotlin.coroutines.EmptyCoroutineContext
+
+internal fun <T> SendChannel<T>.safeOffer(element: T): Boolean {
+  return runCatching { offer(element) }.getOrDefault(false)
+}
 
 @ExperimentalCoroutinesApi
 fun EditText.firstChange(): Flow<Unit> {
@@ -45,7 +50,7 @@ fun EditText.firstChange(): Flow<Unit> {
       override fun afterTextChanged(s: Editable?) = Unit
       override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
       override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        offer(Unit)
+        safeOffer(Unit)
       }
     }.also { addTextChangedListener(it) }
 
@@ -62,7 +67,7 @@ fun EditText.firstChange(): Flow<Unit> {
 @CheckResult
 fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
   return callbackFlow {
-    setOnRefreshListener { offer(Unit) }
+    setOnRefreshListener { safeOffer(Unit) }
     awaitClose { setOnRefreshListener(null) }
   }
 }
@@ -71,7 +76,7 @@ fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
 @CheckResult
 fun View.clicks(): Flow<View> {
   return callbackFlow {
-    setOnClickListener { offer(it) }
+    setOnClickListener { safeOffer(it) }
     awaitClose { setOnClickListener(null) }
   }
 }
@@ -84,7 +89,7 @@ fun EditText.textChanges(): Flow<CharSequence?> {
       override fun afterTextChanged(s: Editable?) = Unit
       override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
       override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        offer(s)
+        safeOffer(s)
       }
     }
     addTextChangedListener(listener)
