@@ -9,6 +9,7 @@ import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
@@ -38,11 +40,11 @@ internal class MainVM(
   private val refreshGetUsers: RefreshGetUsersUseCase,
   private val removeUser: RemoveUserUseCase,
 ) : ViewModel() {
-  private val _eventFlow = MutableSharedFlow<SingleEvent>(extraBufferCapacity = 64)
+  private val _eventChannel = Channel<SingleEvent>(Channel.BUFFERED)
   private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
 
   val viewState: StateFlow<ViewState>
-  val singleEvent: Flow<SingleEvent> get() = _eventFlow
+  val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
 
   suspend fun processIntent(intent: ViewIntent) = _intentFlow.emit(intent)
 
@@ -80,7 +82,7 @@ internal class MainVM(
         is PartialChange.GetUser.Data -> return@onEach
         PartialChange.Refresh.Loading -> return@onEach
       }
-      _eventFlow.emit(event)
+      _eventChannel.send(event)
     }
   }
 
