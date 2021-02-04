@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.publish
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
@@ -41,7 +42,11 @@ internal class AddVM(
   private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
 
   val viewState: StateFlow<ViewState>
-  val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
+  val singleEvent: Flow<SingleEvent> = _eventChannel.receiveAsFlow().shareIn(
+    viewModelScope,
+    started = SharingStarted.WhileSubscribed(),
+    replay = 0,
+  )
 
   suspend fun processIntent(intent: ViewIntent) = _intentFlow.emit(intent)
 

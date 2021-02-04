@@ -44,7 +44,11 @@ internal class MainVM(
   private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
 
   val viewState: StateFlow<ViewState>
-  val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
+  val singleEvent: Flow<SingleEvent> = _eventChannel.receiveAsFlow().shareIn(
+    viewModelScope,
+    started = SharingStarted.WhileSubscribed(),
+    replay = 0,
+  )
 
   suspend fun processIntent(intent: ViewIntent) = _intentFlow.emit(intent)
 
