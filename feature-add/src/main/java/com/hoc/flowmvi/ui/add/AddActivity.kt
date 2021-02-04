@@ -26,12 +26,13 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.androidx.viewmodel.scope.emptyState
+import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 class AddActivity : AppCompatActivity() {
   private val addVM by viewModel<AddVM>(state = emptyState())
-  private val addBinding by lazy { ActivityAddBinding.inflate(layoutInflater) }
+  private val addBinding by lazy(NONE) { ActivityAddBinding.inflate(layoutInflater) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

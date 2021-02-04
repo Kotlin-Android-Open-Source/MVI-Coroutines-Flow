@@ -16,6 +16,7 @@ import com.hoc.flowmvi.core.clicks
 import com.hoc.flowmvi.core.launchWhenStartedUntilStopped
 import com.hoc.flowmvi.core.navigator.Navigator
 import com.hoc.flowmvi.core.refreshes
+import com.hoc.flowmvi.core.safeOffer
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.main.databinding.ActivityMainBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
       ItemTouchHelper(
         SwipeLeftToDeleteCallback(context) cb@{ position ->
           val userItem = mainVM.viewState.value.userItems[position]
-          removeChannel.offer(userItem)
+          removeChannel.safeOffer(userItem)
         }
       ).attachToRecyclerView(this)
     }

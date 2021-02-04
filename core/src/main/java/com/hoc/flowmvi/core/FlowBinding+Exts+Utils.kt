@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.CheckResult
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -39,21 +38,14 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.EmptyCoroutineContext
 
-internal fun <T> SendChannel<T>.safeOffer(element: T): Boolean {
+fun <T> SendChannel<T>.safeOffer(element: T): Boolean {
   return runCatching { offer(element) }.getOrDefault(false)
 }
 
 @ExperimentalCoroutinesApi
 fun EditText.firstChange(): Flow<Unit> {
-  return callbackFlow<Unit> {
-    val listener = object : TextWatcher {
-      override fun afterTextChanged(s: Editable?) = Unit
-      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        safeOffer(Unit)
-      }
-    }.also { addTextChangedListener(it) }
-
+  return callbackFlow {
+    val listener = doOnTextChanged { _, _, _, _ -> safeOffer(Unit) }
     awaitClose {
       Dispatchers.Main.dispatch(EmptyCoroutineContext) {
         removeTextChangedListener(listener)
@@ -85,13 +77,7 @@ fun View.clicks(): Flow<View> {
 @CheckResult
 fun EditText.textChanges(): Flow<CharSequence?> {
   return callbackFlow<CharSequence?> {
-    val listener = object : TextWatcher {
-      override fun afterTextChanged(s: Editable?) = Unit
-      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        safeOffer(s)
-      }
-    }
+    val listener = doOnTextChanged { text, _, _, _ -> safeOffer(text) }
     addTextChangedListener(listener)
     awaitClose { removeTextChangedListener(listener) }
   }.onStart { emit(text) }
