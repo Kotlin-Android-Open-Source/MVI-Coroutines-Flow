@@ -52,7 +52,7 @@ dependencies {
   implementation(featureMain)
   implementation(featureAdd)
 
-  implementation(deps.jetbrains.coroutinesAndroid)
+  implementation(deps.coroutines.android)
   implementation(deps.koin.android)
 
   testImplementation(deps.test.junit)

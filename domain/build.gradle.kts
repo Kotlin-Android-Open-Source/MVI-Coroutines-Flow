@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-  implementation(deps.jetbrains.coroutinesCore)
+  implementation(deps.coroutines.core)
   implementation(deps.koin.core)
 }

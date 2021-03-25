@@ -34,8 +34,8 @@ android {
 }
 
 dependencies {
-  implementation(deps.jetbrains.coroutinesCore)
-  implementation(deps.jetbrains.coroutinesAndroid)
+  implementation(deps.coroutines.core)
+  implementation(deps.coroutines.android)
 
   implementation(deps.androidx.coreKtx)
   implementation(deps.androidx.swipeRefreshLayout)
