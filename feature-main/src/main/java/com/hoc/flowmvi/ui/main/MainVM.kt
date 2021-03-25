@@ -55,7 +55,6 @@ internal class MainVM(
       _intentFlow.filterIsInstance<ViewIntent.Initial>().take(1),
       _intentFlow.filterNot { it is ViewIntent.Initial }
     )
-      .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
       .toPartialChangeFlow()
       .sendSingleEvent()
       .scan(initialVS) { vs, change -> change.reduce(vs) }
@@ -86,7 +85,7 @@ internal class MainVM(
     }
   }
 
-  private fun Flow<ViewIntent>.toPartialChangeFlow(): Flow<PartialChange> {
+  private fun Flow<ViewIntent>.toPartialChangeFlow(): Flow<PartialChange> = shareIn(viewModelScope, SharingStarted.WhileSubscribed()).run {
     val getUserChanges = getUsersUseCase()
       .onEach { Log.d("###", "[MAIN_VM] Emit users.size=${it.size}") }
       .map {
