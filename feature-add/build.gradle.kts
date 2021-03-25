@@ -48,6 +48,6 @@ dependencies {
   implementation(deps.androidx.constraintLayout)
   implementation(deps.androidx.material)
 
-  implementation(deps.jetbrains.coroutinesCore)
-  implementation(deps.koin.androidXViewModel)
+  implementation(deps.coroutines.core)
+  implementation(deps.koin.android)
 }

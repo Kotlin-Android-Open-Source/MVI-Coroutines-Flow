@@ -1,17 +1,17 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-  val kotlinVersion by extra("1.4.0-rc")
   repositories {
     google()
-    jcenter()
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+    mavenCentral()
     gradlePluginPortal()
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:4.0.1")
+    classpath("com.android.tools.build:gradle:4.0.2")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-    classpath("com.diffplug.spotless:spotless-plugin-gradle:5.3.0")
+    classpath("com.diffplug.spotless:spotless-plugin-gradle:5.10.0")
   }
 }
 
@@ -61,19 +61,20 @@ subprojects {
 }
 
 allprojects {
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  tasks.withType<KotlinCompile> {
     kotlinOptions {
-      jvmTarget = JavaVersion.VERSION_1_8.toString()
-      sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-      targetCompatibility = JavaVersion.VERSION_1_8.toString()
+      useIR = true
+
+      val version = JavaVersion.VERSION_1_8.toString()
+      jvmTarget = version
+      sourceCompatibility = version
+      targetCompatibility = version
     }
   }
 
   repositories {
     google()
-    jcenter()
     mavenCentral()
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
   }
 }
 

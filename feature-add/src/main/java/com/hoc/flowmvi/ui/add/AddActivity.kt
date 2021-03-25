@@ -7,12 +7,13 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.hoc.flowmvi.core.clicks
 import com.hoc.flowmvi.core.firstChange
-import com.hoc.flowmvi.core.launchWhenStartedUntilStopped
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
@@ -24,14 +25,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.androidx.viewmodel.scope.emptyState
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 class AddActivity : AppCompatActivity() {
-  private val addVM by viewModel<AddVM>(state = emptyState())
+  private val addVM by stateViewModel<AddVM>()
   private val addBinding by lazy(NONE) { ActivityAddBinding.inflate(layoutInflater) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,12 +54,14 @@ class AddActivity : AppCompatActivity() {
     // observe view model
     addVM.viewState
       .onEach { render(it) }
-      .launchWhenStartedUntilStopped(this)
+      .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+      .launchIn(lifecycleScope)
 
     // observe single event
     addVM.singleEvent
       .onEach { handleSingleEvent(it) }
-      .launchWhenStartedUntilStopped(this)
+      .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+      .launchIn(lifecycleScope)
 
     // pass view intent to view model
     intents()

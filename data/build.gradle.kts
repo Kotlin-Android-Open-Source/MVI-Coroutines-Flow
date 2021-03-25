@@ -37,7 +37,7 @@ dependencies {
   implementation(core)
   implementation(domain)
 
-  implementation(deps.jetbrains.coroutinesCore)
+  implementation(deps.coroutines.core)
 
   implementation(deps.squareup.retrofit)
   implementation(deps.squareup.moshiKotlin)

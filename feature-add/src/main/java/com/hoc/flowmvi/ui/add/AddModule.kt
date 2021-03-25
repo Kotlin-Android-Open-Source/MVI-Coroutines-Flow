@@ -9,10 +9,10 @@ import org.koin.dsl.module
 @ExperimentalCoroutinesApi
 @FlowPreview
 val addModule = module {
-  viewModel {
+  viewModel { params ->
     AddVM(
       addUser = get(),
-      savedStateHandle = it.get(),
+      savedStateHandle = params.get(),
     )
   }
 
