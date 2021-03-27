@@ -7,17 +7,17 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.hoc.flowmvi.core.clicks
+import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.firstChange
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
+import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -53,15 +52,11 @@ class AddActivity : AppCompatActivity() {
   private fun bindVM(addVM: AddVM) {
     // observe view model
     addVM.viewState
-      .onEach { render(it) }
-      .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-      .launchIn(lifecycleScope)
+      .collectIn(this) { render(it) }
 
     // observe single event
     addVM.singleEvent
-      .onEach { handleSingleEvent(it) }
-      .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-      .launchIn(lifecycleScope)
+      .collectIn(this) { handleSingleEvent(it) }
 
     // pass view intent to view model
     intents()

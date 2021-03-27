@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -85,6 +86,7 @@ internal class AddVM(
   private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val emailErrors = filterIsInstance<ViewIntent.EmailChanged>()
       .map { it.email }
+      .distinctUntilChanged()
       .map { validateEmail(it) to it }
       .shareIn(
         scope = viewModelScope,
@@ -93,6 +95,7 @@ internal class AddVM(
 
     val firstNameErrors = filterIsInstance<ViewIntent.FirstNameChanged>()
       .map { it.firstName }
+      .distinctUntilChanged()
       .map { validateFirstName(it) to it }
       .shareIn(
         scope = viewModelScope,
@@ -101,6 +104,7 @@ internal class AddVM(
 
     val lastNameErrors = filterIsInstance<ViewIntent.LastNameChanged>()
       .map { it.lastName }
+      .distinctUntilChanged()
       .map { validateLastName(it) to it }
       .shareIn(
         scope = viewModelScope,
