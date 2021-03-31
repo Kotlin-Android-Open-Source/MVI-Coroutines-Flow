@@ -19,7 +19,6 @@ import com.hoc.flowmvi.core.refreshes
 import com.hoc.flowmvi.core.safeOffer
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.main.databinding.ActivityMainBinding
-import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -31,6 +30,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi

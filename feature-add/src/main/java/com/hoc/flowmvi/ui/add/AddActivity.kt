@@ -17,7 +17,6 @@ import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
-import kotlin.LazyThreadSafetyMode.NONE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +25,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
