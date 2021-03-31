@@ -48,9 +48,9 @@ internal class AddVM(
 
   init {
     val initialVS = ViewState.initial(
-      email = savedStateHandle.get<String?>("email"),
-      firstName = savedStateHandle.get<String?>("first_name"),
-      lastName = savedStateHandle.get<String?>("last_name"),
+      email = savedStateHandle.get<String?>(EMAIL_KEY),
+      firstName = savedStateHandle.get<String?>(FIRST_NAME_KEY),
+      lastName = savedStateHandle.get<String?>(LAST_NAME_KEY),
     )
     Log.d("###", "[ADD_VM] initialVS: $initialVS")
 
@@ -155,15 +155,15 @@ internal class AddVM(
     val formValuesChanges = merge(
       emailErrors
         .map { it.second }
-        .onEach { savedStateHandle.set("email", it) }
+        .onEach { savedStateHandle.set(EMAIL_KEY, it) }
         .map { PartialStateChange.FormValueChange.EmailChanged(it) },
       firstNameErrors
         .map { it.second }
-        .onEach { savedStateHandle.set("first_name", it) }
+        .onEach { savedStateHandle.set(FIRST_NAME_KEY, it) }
         .map { PartialStateChange.FormValueChange.FirstNameChanged(it) },
       lastNameErrors
         .map { it.second }
-        .onEach { savedStateHandle.set("last_name", it) }
+        .onEach { savedStateHandle.set(LAST_NAME_KEY, it) }
         .map { PartialStateChange.FormValueChange.LastNameChanged(it) },
     )
 
@@ -182,6 +182,10 @@ internal class AddVM(
   }
 
   private companion object {
+    const val EMAIL_KEY = "email"
+    const val FIRST_NAME_KEY = "first_name"
+    const val LAST_NAME_KEY = "last_name"
+
     const val MIN_LENGTH_FIRST_NAME = 3
     const val MIN_LENGTH_LAST_NAME = 3
 
