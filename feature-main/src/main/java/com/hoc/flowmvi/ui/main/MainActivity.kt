@@ -6,8 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -15,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hoc.flowmvi.core.SwipeLeftToDeleteCallback
 import com.hoc.flowmvi.core.clicks
+import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.navigator.Navigator
 import com.hoc.flowmvi.core.refreshes
 import com.hoc.flowmvi.core.safeOffer
@@ -86,15 +85,11 @@ class MainActivity : AppCompatActivity() {
   private fun bindVM(mainVM: MainVM) {
     // observe view model
     mainVM.viewState
-      .onEach { render(it) }
-      .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-      .launchIn(lifecycleScope)
+      .collectIn(this) { render(it) }
 
     // observe single event
     mainVM.singleEvent
-      .onEach { handleSingleEvent(it) }
-      .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-      .launchIn(lifecycleScope)
+      .collectIn(this) { handleSingleEvent(it) }
 
     // pass view intent to view model
     intents()
