@@ -39,53 +39,29 @@ internal data class ViewState(
   val userItems: List<UserItem>,
   val isLoading: Boolean,
   val error: Throwable?,
-  val isRefreshing: Boolean
-) {
+  val isRefreshing: Boolean,
+  val shouldOpenNextScreen: Boolean
+) : MviState {
   companion object {
     fun initial() = ViewState(
       userItems = emptyList(),
-      isLoading = true,
+      isLoading = false,
       error = null,
-      isRefreshing = false
+      isRefreshing = false,
+      shouldOpenNextScreen = false
     )
   }
 }
 
 internal sealed class PartialChange {
-  abstract fun reduce(vs: ViewState): ViewState
 
   sealed class GetUser : PartialChange() {
-    override fun reduce(vs: ViewState): ViewState {
-      return when (this) {
-        Loading -> vs.copy(
-          isLoading = true,
-          error = null
-        )
-        is Data -> vs.copy(
-          isLoading = false,
-          error = null,
-          userItems = users
-        )
-        is Error -> vs.copy(
-          isLoading = false,
-          error = error
-        )
-      }
-    }
-
     object Loading : GetUser()
     data class Data(val users: List<UserItem>) : GetUser()
     data class Error(val error: Throwable) : GetUser()
   }
 
   sealed class Refresh : PartialChange() {
-    override fun reduce(vs: ViewState): ViewState {
-      return when (this) {
-        is Success -> vs.copy(isRefreshing = false)
-        is Failure -> vs.copy(isRefreshing = false)
-        Loading -> vs.copy(isRefreshing = true)
-      }
-    }
 
     object Loading : Refresh()
     object Success : Refresh()
@@ -93,22 +69,6 @@ internal sealed class PartialChange {
   }
 
   sealed class RemoveUser : PartialChange() {
-    data class Success(val user: UserItem) : RemoveUser()
-    data class Failure(val user: UserItem, val error: Throwable) : RemoveUser()
-
-    override fun reduce(vs: ViewState) = vs
-  }
-}
-
-internal sealed class SingleEvent {
-  sealed class Refresh : SingleEvent() {
-    object Success : Refresh()
-    data class Failure(val error: Throwable) : Refresh()
-  }
-
-  data class GetUsersError(val error: Throwable) : SingleEvent()
-
-  sealed class RemoveUser : SingleEvent() {
     data class Success(val user: UserItem) : RemoveUser()
     data class Failure(val user: UserItem, val error: Throwable) : RemoveUser()
   }

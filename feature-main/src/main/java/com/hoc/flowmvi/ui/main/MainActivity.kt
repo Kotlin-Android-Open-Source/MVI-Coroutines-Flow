@@ -87,10 +87,6 @@ class MainActivity : AppCompatActivity() {
     mainVM.viewState
       .collectIn(this) { render(it) }
 
-    // observe single event
-    mainVM.singleEvent
-      .collectIn(this) { handleSingleEvent(it) }
-
     // pass view intent to view model
     intents()
       .onEach { mainVM.processIntent(it) }
@@ -103,17 +99,6 @@ class MainActivity : AppCompatActivity() {
     mainBinding.retryButton.clicks().map { ViewIntent.Retry },
     removeChannel.consumeAsFlow().map { ViewIntent.RemoveUser(it) }
   )
-
-  private fun handleSingleEvent(event: SingleEvent) {
-    Log.d("MainActivity", "handleSingleEvent $event")
-    return when (event) {
-      SingleEvent.Refresh.Success -> toast("Refresh success")
-      is SingleEvent.Refresh.Failure -> toast("Refresh failure")
-      is SingleEvent.GetUsersError -> toast("Get user failure")
-      is SingleEvent.RemoveUser.Success -> toast("Removed '${event.user.fullName}'")
-      is SingleEvent.RemoveUser.Failure -> toast("Error when removing '${event.user.fullName}'")
-    }
-  }
 
   private fun render(viewState: ViewState) {
     Log.d("MainActivity", "render $viewState")
