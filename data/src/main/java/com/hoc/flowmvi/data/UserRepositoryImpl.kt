@@ -9,6 +9,7 @@ import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserRepository
+import kotlin.time.Duration
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
@@ -44,7 +45,7 @@ internal class UserRepositoryImpl constructor(
     return withContext(dispatchers.io) {
       retrySuspend(
         times = 3,
-        initialDelay = 500.milliseconds,
+        initialDelay = Duration.milliseconds(500),
         factor = 2.0,
       ) {
         Log.d("###", "[USER_REPO] Retry times=$it")

@@ -38,14 +38,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.EmptyCoroutineContext
 
-fun <T> SendChannel<T>.safeOffer(element: T): Boolean {
-  return runCatching { offer(element) }.getOrDefault(false)
-}
-
 @ExperimentalCoroutinesApi
 fun EditText.firstChange(): Flow<Unit> {
   return callbackFlow {
-    val listener = doOnTextChanged { _, _, _, _ -> safeOffer(Unit) }
+    val listener = doOnTextChanged { _, _, _, _ -> trySend(Unit) }
     awaitClose {
       Dispatchers.Main.dispatch(EmptyCoroutineContext) {
         removeTextChangedListener(listener)
@@ -59,7 +55,7 @@ fun EditText.firstChange(): Flow<Unit> {
 @CheckResult
 fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
   return callbackFlow {
-    setOnRefreshListener { safeOffer(Unit) }
+    setOnRefreshListener { trySend(Unit) }
     awaitClose { setOnRefreshListener(null) }
   }
 }
@@ -68,7 +64,7 @@ fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
 @CheckResult
 fun View.clicks(): Flow<View> {
   return callbackFlow {
-    setOnClickListener { safeOffer(it) }
+    setOnClickListener { trySend(it) }
     awaitClose { setOnClickListener(null) }
   }
 }
@@ -77,7 +73,7 @@ fun View.clicks(): Flow<View> {
 @CheckResult
 fun EditText.textChanges(): Flow<CharSequence?> {
   return callbackFlow<CharSequence?> {
-    val listener = doOnTextChanged { text, _, _, _ -> safeOffer(text) }
+    val listener = doOnTextChanged { text, _, _, _ -> trySend(text) }
     addTextChangedListener(listener)
     awaitClose { removeTextChangedListener(listener) }
   }.onStart { emit(text) }
