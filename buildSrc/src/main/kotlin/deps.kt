@@ -60,6 +60,7 @@ object deps {
   }
 
   const val coil = "io.coil-kt:coil:1.2.1"
+  const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.0.0"
 
   object test {
     const val junit = "junit:junit:4.13"

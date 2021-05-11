@@ -7,17 +7,13 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
+import com.hoc081098.viewbindingdelegate.viewBinding
 
-class SearchActivity : AppCompatActivity() {
-  private val addBinding by lazy(LazyThreadSafetyMode.NONE) {
-    ActivitySearchBinding.inflate(
-      layoutInflater
-    )
-  }
+class SearchActivity : AppCompatActivity(R.layout.activity_search) {
+  private val binding by viewBinding<ActivitySearchBinding>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(addBinding.root)
     supportActionBar!!.setDisplayHomeAsUpEnabled(true)
   }
 

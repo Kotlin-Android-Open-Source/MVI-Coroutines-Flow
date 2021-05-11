@@ -53,4 +53,5 @@ dependencies {
   implementation(deps.coroutines.core)
   implementation(deps.koin.android)
   implementation(deps.coil)
+  implementation(deps.viewBindingDelegate)
 }

@@ -18,6 +18,7 @@ import com.hoc.flowmvi.core.navigator.Navigator
 import com.hoc.flowmvi.core.refreshes
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.main.databinding.ActivityMainBinding
+import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -33,18 +34,17 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
   private val mainVM by viewModel<MainVM>()
   private val navigator by inject<Navigator>()
 
   private val userAdapter = UserAdapter()
-  private val mainBinding by lazy(NONE) { ActivityMainBinding.inflate(layoutInflater) }
+  private val mainBinding by viewBinding<ActivityMainBinding>()
 
   private val removeChannel = Channel<UserItem>(Channel.BUFFERED)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(mainBinding.root)
 
     setupViews()
     bindVM(mainVM)

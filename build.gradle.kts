@@ -63,8 +63,6 @@ subprojects {
 allprojects {
   tasks.withType<KotlinCompile> {
     kotlinOptions {
-      useIR = true
-
       val version = JavaVersion.VERSION_1_8.toString()
       jvmTarget = version
       sourceCompatibility = version
@@ -75,6 +73,7 @@ allprojects {
   repositories {
     google()
     mavenCentral()
+    maven(url = "https://jitpack.io")
   }
 }
 

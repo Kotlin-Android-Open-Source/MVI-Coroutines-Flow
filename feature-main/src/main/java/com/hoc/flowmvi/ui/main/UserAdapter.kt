@@ -1,6 +1,5 @@
 package com.hoc.flowmvi.ui.main
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -8,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.hoc.flowmvi.ui.main.databinding.ItemRecyclerUserBinding
+import com.hoc081098.viewbindingdelegate.inflateViewBinding
 
 internal class UserAdapter :
   ListAdapter<UserItem, UserAdapter.VH>(
@@ -19,14 +19,8 @@ internal class UserAdapter :
     }
   ) {
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-    val binding = ItemRecyclerUserBinding.inflate(
-      LayoutInflater.from(parent.context),
-      parent,
-      false
-    )
-    return VH(binding)
-  }
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
+    VH(parent inflateViewBinding false)
 
   override fun onBindViewHolder(holder: VH, position: Int) = holder.bind(getItem(position))
 
