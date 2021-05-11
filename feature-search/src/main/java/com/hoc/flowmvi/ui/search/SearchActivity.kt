@@ -2,9 +2,9 @@ package com.hoc.flowmvi.ui.search
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 
