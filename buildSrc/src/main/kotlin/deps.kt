@@ -23,11 +23,11 @@ object appConfig {
 object deps {
   object androidx {
     const val appCompat = "androidx.appcompat:appcompat:1.3.0-rc01"
-    const val coreKtx = "androidx.core:core-ktx:1.6.0-alpha01"
-    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.0-beta01"
-    const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0-rc01"
+    const val coreKtx = "androidx.core:core-ktx:1.6.0-alpha03"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.0-beta02"
+    const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-    const val material = "com.google.android.material:material:1.4.0-alpha01"
+    const val material = "com.google.android.material:material:1.4.0-beta01"
   }
 
   object lifecycle {
@@ -53,13 +53,13 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.0.1-beta-2"
+    private const val version = "3.0.1"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
   }
 
-  const val coil = "io.coil-kt:coil:1.1.1"
+  const val coil = "io.coil-kt:coil:1.2.1"
 
   object test {
     const val junit = "junit:junit:4.13"
