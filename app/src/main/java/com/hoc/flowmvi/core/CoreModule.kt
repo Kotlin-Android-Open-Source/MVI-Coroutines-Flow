@@ -11,5 +11,5 @@ import org.koin.dsl.module
 val coreModule = module {
   single<CoroutineDispatchers> { CoroutineDispatchersImpl() }
 
-  single<Navigator> { NavigatorImpl(add = get()) }
+  single<Navigator> { NavigatorImpl(add = get(), search = get()) }
 }

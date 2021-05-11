@@ -56,6 +56,10 @@ class MainActivity : AppCompatActivity() {
         navigator.run { navigateToAdd() }
         true
       }
+      R.id.search_action -> {
+        navigator.run { navigateToSearch() }
+        true
+      }
       else -> super.onOptionsItemSelected(item)
     }
   }

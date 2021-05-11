@@ -51,6 +51,7 @@ dependencies {
   implementation(core)
   implementation(featureMain)
   implementation(featureAdd)
+  implementation(featureSearch)
 
   implementation(deps.coroutines.android)
   implementation(deps.koin.android)

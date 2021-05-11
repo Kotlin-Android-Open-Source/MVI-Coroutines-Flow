@@ -3,7 +3,9 @@
   package="com.hoc.flowmvi.ui.search">
 
   <application>
-    <activity android:name=".SearchActivity"></activity>
+    <activity
+      android:name=".SearchActivity"
+      android:label="Search" />
   </application>
 
 </manifest>

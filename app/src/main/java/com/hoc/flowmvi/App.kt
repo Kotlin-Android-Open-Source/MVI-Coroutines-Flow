@@ -6,6 +6,7 @@ import com.hoc.flowmvi.data.dataModule
 import com.hoc.flowmvi.domain.domainModule
 import com.hoc.flowmvi.ui.add.addModule
 import com.hoc.flowmvi.ui.main.mainModule
+import com.hoc.flowmvi.ui.search.searchModule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.koin.androidContext
@@ -34,6 +35,7 @@ class App : Application() {
         domainModule,
         mainModule,
         addModule,
+        searchModule,
       )
     }
   }
