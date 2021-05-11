@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/feature-add" />
             <option value="$PROJECT_DIR$/feature-main" />
+            <option value="$PROJECT_DIR$/feature-search" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
