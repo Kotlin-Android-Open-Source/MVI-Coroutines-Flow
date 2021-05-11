@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
+import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.milliseconds
 
@@ -44,7 +45,7 @@ internal class UserRepositoryImpl constructor(
     return withContext(dispatchers.io) {
       retrySuspend(
         times = 3,
-        initialDelay = 500.milliseconds,
+        initialDelay = Duration.milliseconds(500),
         factor = 2.0,
       ) {
         Log.d("###", "[USER_REPO] Retry times=$it")

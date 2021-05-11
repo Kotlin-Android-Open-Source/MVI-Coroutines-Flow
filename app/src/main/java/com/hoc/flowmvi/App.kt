@@ -25,7 +25,8 @@ class App : Application() {
     startKoin {
       androidContext(this@App)
 
-      androidLogger(level = Level.DEBUG)
+      // TODO: Koin
+      androidLogger(level = Level.NONE)
 
       modules(
         coreModule,
