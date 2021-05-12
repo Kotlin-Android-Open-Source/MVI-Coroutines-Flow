@@ -28,11 +28,11 @@ internal data class UserItem(
   )
 }
 
-internal sealed class ViewIntent {
-  object Initial : ViewIntent()
-  object Refresh : ViewIntent()
-  object Retry : ViewIntent()
-  data class RemoveUser(val user: UserItem) : ViewIntent()
+internal sealed interface ViewIntent {
+  object Initial : ViewIntent
+  object Refresh : ViewIntent
+  object Retry : ViewIntent
+  data class RemoveUser(val user: UserItem) : ViewIntent
 }
 
 internal data class ViewState(

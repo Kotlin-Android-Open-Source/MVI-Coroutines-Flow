@@ -11,4 +11,6 @@ interface UserRepository {
   suspend fun remove(user: User)
 
   suspend fun add(user: User)
+
+  suspend fun search(query: String): List<User>
 }
