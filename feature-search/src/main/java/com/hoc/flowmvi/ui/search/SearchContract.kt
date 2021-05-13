@@ -38,3 +38,7 @@ internal sealed interface PartialStateChange {
     }
   }
 }
+
+internal sealed interface SingleEvent {
+  data class SearchFailure(val error: Throwable) : SingleEvent
+}

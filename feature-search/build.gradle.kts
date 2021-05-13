@@ -36,8 +36,8 @@ android {
 }
 
 dependencies {
-  implementation(domain)
-  implementation(core)
+  api(domain)
+  api(core)
 
   implementation(deps.androidx.appCompat)
   implementation(deps.androidx.coreKtx)
