@@ -22,7 +22,7 @@ internal interface UserApiService {
   suspend fun add(@Body user: UserBody): UserResponse
 
   @GET("users/search")
-  suspend fun search(@Query("query") query: String): List<UserResponse>
+  suspend fun search(@Query("q") query: String): List<UserResponse>
 
   companion object {
     operator fun invoke(retrofit: Retrofit) = retrofit.create<UserApiService>()
