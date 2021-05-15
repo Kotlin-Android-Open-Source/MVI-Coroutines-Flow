@@ -4,7 +4,7 @@
 *   Play MVI with Kotlin Coroutines Flow
 *   Master branch using Koin for DI
 *   **Checkout [dagger_hilt branch](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/tree/dagger_hilt), using Dagger Hilt for DI**
-*   **[Download apk here](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/raw/master/app/release/app-release.apk)**
+*   **[Download debug apk here](https://nightly.link/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/artifacts/60811689.zip)**
 
 | List view state | Error view state | Add new user |
 | --------------- | ---------------- | ------------ |
