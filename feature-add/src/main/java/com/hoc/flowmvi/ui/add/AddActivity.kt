@@ -129,7 +129,8 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
     }
   }
 
-  private fun intents(): Flow<ViewIntent> = addBinding.run {
+  @Suppress("NOTHING_TO_INLINE")
+  private inline fun intents(): Flow<ViewIntent> = addBinding.run {
     merge(
       emailEditText
         .editText!!
