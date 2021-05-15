@@ -53,7 +53,6 @@ internal class UserRepositoryImpl constructor(
     }
   }
 
-  @FlowPreview
   override fun getUsers(): Flow<List<User>> {
     return flow {
       val initial = getUsersFromRemote()

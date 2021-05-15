@@ -19,7 +19,6 @@ import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -27,7 +26,6 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
-@FlowPreview
 @ExperimentalCoroutinesApi
 class AddActivity : AppCompatActivity(R.layout.activity_add) {
   private val addVM by stateViewModel<AddVM>()
@@ -162,8 +160,6 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
     )
   }
 
-  @ExperimentalCoroutinesApi
-  @FlowPreview
   internal class IntentProvider : IntentProviders.Add {
     override fun makeIntent(context: Context): Intent =
       Intent(context, AddActivity::class.java)
