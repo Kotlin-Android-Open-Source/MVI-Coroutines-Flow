@@ -4,18 +4,26 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
+import com.hoc.flowmvi.core.SearchViewQueryTextEvent
 import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.navigator.IntentProviders
+import com.hoc.flowmvi.core.queryTextEvents
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,6 +33,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   private val binding by viewBinding<ActivitySearchBinding>()
   private val vm by viewModel<SearchVM>()
+
+  private val searchViewQueryTextEventChannel = Channel<SearchViewQueryTextEvent>(Channel.BUFFERED)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -43,10 +53,17 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
       Log.d("SearchActivity", it.toString())
     }
 
-    flowOf(ViewIntent.Search("hoc"))
+    intents()
       .onEach { vm.processIntent(it) }
       .launchIn(lifecycleScope)
   }
+
+  @Suppress("NOTHING_TO_INLINE")
+  private inline fun intents(): Flow<ViewIntent> = merge(
+    searchViewQueryTextEventChannel
+      .consumeAsFlow()
+      .map { ViewIntent.Search(it.query.toString()) }
+  )
 
   private fun setupViews() {
   }
@@ -56,6 +73,21 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
       android.R.id.home -> finish().let { true }
       else -> super.onOptionsItemSelected(item)
     }
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    menuInflater.inflate(R.menu.menu_search, menu)
+
+    (menu.findItem(R.id.action_search)!!.actionView as SearchView).run {
+      isIconified = false
+      queryHint = "Search user..."
+
+      queryTextEvents()
+        .onEach { searchViewQueryTextEventChannel.trySend(it) }
+        .launchIn(lifecycleScope)
+    }
+
+    return true
   }
 
   internal class IntentProvider : IntentProviders.Search {

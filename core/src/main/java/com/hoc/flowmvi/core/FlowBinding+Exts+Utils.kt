@@ -1,19 +1,18 @@
 package com.hoc.flowmvi.core
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.CheckResult
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.SearchView
 import androidx.core.widget.doOnTextChanged
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,13 +32,19 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
-import kotlin.coroutines.EmptyCoroutineContext
+
+internal fun checkMainThread() {
+  check(Looper.myLooper() == Looper.getMainLooper()) {
+    "Expected to be called on the main thread but was " + Thread.currentThread().name
+  }
+}
 
 @ExperimentalCoroutinesApi
+@CheckResult
 fun EditText.firstChange(): Flow<Unit> {
   return callbackFlow {
+    checkMainThread()
+
     val listener = doOnTextChanged { _, _, _, _ -> trySend(Unit) }
     awaitClose {
       Dispatchers.Main.dispatch(EmptyCoroutineContext) {
@@ -54,6 +59,8 @@ fun EditText.firstChange(): Flow<Unit> {
 @CheckResult
 fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
   return callbackFlow {
+    checkMainThread()
+
     setOnRefreshListener { trySend(Unit) }
     awaitClose { setOnRefreshListener(null) }
   }
@@ -63,15 +70,65 @@ fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
 @CheckResult
 fun View.clicks(): Flow<View> {
   return callbackFlow {
+    checkMainThread()
+
     setOnClickListener { trySend(it) }
     awaitClose { setOnClickListener(null) }
+  }
+}
+
+data class SearchViewQueryTextEvent(
+  val view: SearchView,
+  val query: CharSequence,
+  val isSubmitted: Boolean,
+)
+
+@ExperimentalCoroutinesApi
+@CheckResult
+fun SearchView.queryTextEvents(): Flow<SearchViewQueryTextEvent> {
+  return callbackFlow {
+    checkMainThread()
+
+    setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+      override fun onQueryTextSubmit(query: String): Boolean {
+        return trySend(
+          SearchViewQueryTextEvent(
+            view = this@queryTextEvents,
+            query = query,
+            isSubmitted = true,
+          )
+        ).isSuccess
+      }
+
+      override fun onQueryTextChange(newText: String): Boolean {
+        return trySend(
+          SearchViewQueryTextEvent(
+            view = this@queryTextEvents,
+            query = newText,
+            isSubmitted = false,
+          )
+        ).isSuccess
+      }
+    })
+
+    awaitClose { setOnQueryTextListener(null) }
+  }.onStart {
+    emit(
+      SearchViewQueryTextEvent(
+        view = this@queryTextEvents,
+        query = query,
+        isSubmitted = false,
+      )
+    )
   }
 }
 
 @ExperimentalCoroutinesApi
 @CheckResult
 fun EditText.textChanges(): Flow<CharSequence?> {
-  return callbackFlow<CharSequence?> {
+  return callbackFlow {
+    checkMainThread()
+
     val listener = doOnTextChanged { text, _, _, _ -> trySend(text) }
     addTextChangedListener(listener)
     awaitClose { removeTextChangedListener(listener) }
@@ -145,57 +202,3 @@ suspend fun main() {
     .collect()
 }
 
-class SwipeLeftToDeleteCallback(context: Context, private val onSwipedCallback: (Int) -> Unit) :
-  ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-  private val background: ColorDrawable = ColorDrawable(Color.parseColor("#f44336"))
-  private val iconDelete =
-    ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_white_24)!!
-
-  override fun onMove(
-    recyclerView: RecyclerView,
-    viewHolder: RecyclerView.ViewHolder,
-    target: RecyclerView.ViewHolder
-  ) = false
-
-  override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-    val position = viewHolder.bindingAdapterPosition
-    if (position != RecyclerView.NO_POSITION) {
-      onSwipedCallback(position)
-    }
-  }
-
-  override fun onChildDraw(
-    c: Canvas,
-    recyclerView: RecyclerView,
-    viewHolder: RecyclerView.ViewHolder,
-    dX: Float,
-    dY: Float,
-    actionState: Int,
-    isCurrentlyActive: Boolean
-  ) {
-    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-    val itemView = viewHolder.itemView
-
-    when {
-      dX < 0 -> {
-        val iconMargin = (itemView.height - iconDelete.intrinsicHeight) / 2
-        val iconTop = itemView.top + iconMargin
-        val iconBottom = iconTop + iconDelete.intrinsicHeight
-
-        val iconRight = itemView.right - iconMargin
-        val iconLeft = iconRight - iconDelete.intrinsicWidth
-
-        iconDelete.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-        background.setBounds(
-          itemView.right + dX.toInt() - 8,
-          itemView.top,
-          itemView.right,
-          itemView.bottom
-        )
-      }
-      else -> background.setBounds(0, 0, 0, 0)
-    }
-    background.draw(c)
-    iconDelete.draw(c)
-  }
-}
