@@ -1,5 +1,7 @@
 # MVI-Coroutines-Flow
 
+[![Build CI](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/workflows/build.yml/badge.svg)](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/workflows/build.yml)
+
 ## Coroutine + Flow = MVI :heart:
 *   Play MVI with Kotlin Coroutines Flow
 *   Master branch using Koin for DI
