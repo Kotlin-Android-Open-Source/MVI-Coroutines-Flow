@@ -34,7 +34,7 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   private val binding by viewBinding<ActivitySearchBinding>()
   private val vm by viewModel<SearchVM>()
 
-  private val searchViewQueryTextEventChannel = Channel<SearchViewQueryTextEvent>(Channel.BUFFERED)
+  private val searchViewQueryTextEventChannel = Channel<SearchViewQueryTextEvent>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
