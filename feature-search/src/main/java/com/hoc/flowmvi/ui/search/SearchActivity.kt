@@ -62,6 +62,7 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   private inline fun intents(): Flow<ViewIntent> = merge(
     searchViewQueryTextEventChannel
       .consumeAsFlow()
+      .onEach { Log.d("SearchActivity", "Query $it") }
       .map { ViewIntent.Search(it.query.toString()) }
   )
 
@@ -83,7 +84,7 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
       queryHint = "Search user..."
 
       queryTextEvents()
-        .onEach { searchViewQueryTextEventChannel.trySend(it) }
+        .onEach { searchViewQueryTextEventChannel.send(it) }
         .launchIn(lifecycleScope)
     }
 

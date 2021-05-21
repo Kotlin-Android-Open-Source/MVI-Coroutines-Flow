@@ -91,23 +91,25 @@ fun SearchView.queryTextEvents(): Flow<SearchViewQueryTextEvent> {
 
     setOnQueryTextListener(object : SearchView.OnQueryTextListener {
       override fun onQueryTextSubmit(query: String): Boolean {
-        return trySend(
+        trySend(
           SearchViewQueryTextEvent(
             view = this@queryTextEvents,
             query = query,
             isSubmitted = true,
           )
-        ).isSuccess
+        )
+        return false
       }
 
       override fun onQueryTextChange(newText: String): Boolean {
-        return trySend(
+        trySend(
           SearchViewQueryTextEvent(
             view = this@queryTextEvents,
             query = newText,
             isSubmitted = false,
           )
-        ).isSuccess
+        )
+        return true
       }
     })
 
