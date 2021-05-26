@@ -12,6 +12,7 @@ buildscript {
     classpath("com.android.tools.build:gradle:4.2.1")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     classpath("com.diffplug.spotless:spotless-plugin-gradle:5.12.4")
+    classpath("dev.ahmedmourad.nocopy:nocopy-gradle-plugin:1.4.0")
   }
 }
 

@@ -3,14 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Admin/Documents/Android/MVICoroutinesFlow/feature-search/src/main/res/drawable/ic_baseline_person_24.xml" value="0.19315068493150686" />
         <entry key="..\:/Admin/Documents/Android/MVICoroutinesFlow/feature-search/src/main/res/drawable/ic_baseline_search_24.xml" value="0.18082191780821918" />
         <entry key="..\:/Admin/Documents/Android/MVICoroutinesFlow/feature-search/src/main/res/layout/activity_search.xml" value="0.22" />
+        <entry key="..\:/Admin/Documents/Android/MVICoroutinesFlow/feature-search/src/main/res/layout/item_recycler_user.xml" value="0.17346014492753623" />
         <entry key="..\:/Admin/Documents/Android/MVICoroutinesFlow/feature-search/src/main/res/menu/menu_search.xml" value="0.1814814814814815" />
         <entry key="..\:/Admin/Documents/Android/MVICoroutinesFlow/feature-search/src/main/res/menu/search.xml" value="0.1550925925925926" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_13" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

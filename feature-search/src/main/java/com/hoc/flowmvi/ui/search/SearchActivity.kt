@@ -2,19 +2,26 @@ package com.hoc.flowmvi.ui.search
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hoc.flowmvi.core.SearchViewQueryTextEvent
 import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.queryTextEvents
+import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -25,7 +32,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -35,6 +41,7 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   private val vm by viewModel<SearchVM>()
 
   private val searchViewQueryTextEventChannel = Channel<SearchViewQueryTextEvent>()
+  private val searchAdapter = SearchAdapter()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -45,12 +52,20 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   }
 
   private fun bindVM() {
-    vm.viewState.collectIn(this) {
-      Log.d("SearchActivity", it.toString())
+    vm.viewState.collectIn(this) { viewState ->
+      searchAdapter.submitList(viewState.users)
+      binding.run {
+        errorGroup.isVisible = viewState.error !== null
+        errorMessageTextView.text = viewState.error?.message
+
+        progressBar.isVisible = viewState.isLoading
+      }
     }
 
-    vm.singleEvent.collectIn(this) {
-      Log.d("SearchActivity", it.toString())
+    vm.singleEvent.collectIn(this) { event ->
+      when (event) {
+        is SingleEvent.SearchFailure -> toast("Failed to search")
+      }
     }
 
     intents()
@@ -67,6 +82,17 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   )
 
   private fun setupViews() {
+    binding.run {
+      usersRecycler.run {
+        setHasFixedSize(true)
+        layoutManager = GridLayoutManager(
+          context,
+          if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 4,
+        )
+        adapter = searchAdapter
+        addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
+      }
+    }
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {

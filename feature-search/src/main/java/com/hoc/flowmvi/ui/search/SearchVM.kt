@@ -62,7 +62,7 @@ internal class SearchVM(
         flow { emit(searchUsersUseCase(query)) }
           .map {
             @Suppress("USELESS_CAST")
-            PartialStateChange.Search.Success(it) as PartialStateChange.Search
+            PartialStateChange.Search.Success(it.map(UserItem::from)) as PartialStateChange.Search
           }
           .onStart { emit(PartialStateChange.Search.Loading) }
           .catch { emit(PartialStateChange.Search.Failure(it)) }

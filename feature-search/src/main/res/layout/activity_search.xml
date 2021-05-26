@@ -6,21 +6,14 @@
   android:layout_height="match_parent"
   android:background="@android:color/white">
 
-  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/swipeRefreshLayout"
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/usersRecycler"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/usersRecycler"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:clipToPadding="false"
-      android:scrollbars="vertical"
-      tools:itemCount="4"
-      tools:listitem="@layout/item_recycler_user" />
-
-  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:scrollbars="vertical"
+    tools:itemCount="4"
+    tools:listitem="@layout/item_recycler_user" />
 
   <ProgressBar
     android:id="@+id/progressBar"
