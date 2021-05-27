@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.core.flatMapFirst
+import com.hoc.flowmvi.core.takeUntil
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -68,17 +70,22 @@ internal class SearchVM(
         .catch { emit(PartialStateChange.Failure(it, query)) }
     }
 
+    val queryFlow = filterIsInstance<ViewIntent.Search>()
+      .debounce(Duration.milliseconds(400))
+      .map { it.query }
+      .filter { it.isNotBlank() }
+      .distinctUntilChanged()
+      .shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+      )
+
     return merge(
-      filterIsInstance<ViewIntent.Search>()
-        .debounce(Duration.milliseconds(400))
-        .map { it.query }
-        .filter { it.isNotBlank() }
-        .distinctUntilChanged()
-        .flatMapLatest(executeSearch),
+      queryFlow.flatMapLatest(executeSearch),
       filterIsInstance<ViewIntent.Retry>()
         .flatMapFirst {
           viewState.value.let { vs ->
-            if (vs.error !== null) executeSearch(vs.query)
+            if (vs.error !== null) executeSearch(vs.query).takeUntil(queryFlow)
             else emptyFlow()
           }
         },

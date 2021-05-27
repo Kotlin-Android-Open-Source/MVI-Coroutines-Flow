@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
-import kotlinx.coroutines.flow.take
 
 @ExperimentalCoroutinesApi
 fun <T, R> Flow<T>.takeUntil(notifier: Flow<R>): Flow<T> = channelFlow {
@@ -97,7 +97,6 @@ suspend fun main() {
     .collect { println(">>>>> $it") }
 
   println("Done")
-  return
 
   (1..2000).asFlow()
     .onEach { delay(50) }
