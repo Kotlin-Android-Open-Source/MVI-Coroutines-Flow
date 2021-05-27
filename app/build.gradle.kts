@@ -56,6 +56,8 @@ dependencies {
   implementation(deps.coroutines.android)
   implementation(deps.koin.android)
 
+  debugImplementation(deps.squareup.leakCanary)
+
   testImplementation(deps.test.junit)
   androidTestImplementation(deps.test.androidxJunit)
   androidTestImplementation(deps.test.androidXSspresso)

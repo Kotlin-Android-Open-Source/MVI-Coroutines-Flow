@@ -43,6 +43,7 @@ object deps {
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.11.0"
+    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.7"
   }
 
   object coroutines {
