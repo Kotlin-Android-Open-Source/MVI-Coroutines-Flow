@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -21,7 +22,6 @@ import com.hoc.flowmvi.core.queryTextEvents
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -54,7 +55,11 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   private fun bindVM() {
     vm.viewState.collectIn(this) { viewState ->
       searchAdapter.submitList(viewState.users)
+
       binding.run {
+        textQuery.isInvisible = viewState.isLoading
+        textQuery.text = "Search results for '${viewState.query}'"
+
         errorGroup.isVisible = viewState.error !== null
         errorMessageTextView.text = viewState.error?.message
 
@@ -87,10 +92,9 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
         setHasFixedSize(true)
         layoutManager = GridLayoutManager(
           context,
-          if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 4,
+          if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 3 else 4,
         )
         adapter = searchAdapter
-        addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
       }
     }
   }

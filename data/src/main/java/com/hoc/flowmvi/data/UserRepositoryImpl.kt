@@ -90,6 +90,7 @@ internal class UserRepositoryImpl constructor(
   }
 
   override suspend fun search(query: String) = withContext(dispatchers.io) {
+    delay(400)
     userApiService.search(query).map(responseToDomain)
   }
 

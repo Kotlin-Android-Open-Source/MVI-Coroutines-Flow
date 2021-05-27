@@ -3,6 +3,7 @@ package com.hoc.flowmvi.ui.search
 import com.hoc.flowmvi.domain.entity.User
 import dev.ahmedmourad.nocopy.annotations.NoCopy
 
+@Suppress("DataClassPrivateConstructor")
 @NoCopy
 internal data class UserItem private constructor(
   val id: String,
@@ -10,7 +11,7 @@ internal data class UserItem private constructor(
   val avatar: String,
   val fullName: String,
 ) {
-  companion object {
+  companion object Factory {
     fun from(domain: User): UserItem {
       return UserItem(
         id = domain.id,
@@ -30,7 +31,8 @@ internal sealed interface ViewIntent {
 internal data class ViewState(
   val users: List<UserItem>,
   val isLoading: Boolean,
-  val error: Throwable?
+  val error: Throwable?,
+  val query: String,
 ) {
   companion object Factory {
     fun initial(): ViewState {
@@ -38,6 +40,7 @@ internal data class ViewState(
         users = emptyList(),
         isLoading = false,
         error = null,
+        query = "",
       )
     }
   }
@@ -48,13 +51,22 @@ internal sealed interface PartialStateChange {
 
   sealed class Search : PartialStateChange {
     object Loading : Search()
-    data class Success(val users: List<UserItem>) : Search()
-    data class Failure(val error: Throwable) : Search()
+    data class Success(val users: List<UserItem>, val query: String) : Search()
+    data class Failure(val error: Throwable, val query: String) : Search()
 
     override fun reduce(state: ViewState) = when (this) {
-      is Failure -> state.copy(isLoading = false, error = error)
+      is Failure -> state.copy(
+        isLoading = false,
+        error = error,
+        query = query,
+      )
       Loading -> state.copy(isLoading = true, error = null)
-      is Success -> state.copy(isLoading = false, error = null, users = users)
+      is Success -> state.copy(
+        isLoading = false,
+        error = null,
+        users = users,
+        query = query,
+      )
     }
   }
 }

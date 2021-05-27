@@ -5,8 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.CircleCropTransformation
-import com.hoc.flowmvi.ui.search.databinding.ItemRecyclerUserBinding
+import com.hoc.flowmvi.ui.search.databinding.ItemRecyclerSearchUserBinding
 import com.hoc081098.viewbindingdelegate.inflateViewBinding
 
 internal class SearchAdapter :
@@ -20,7 +19,7 @@ internal class SearchAdapter :
 
   override fun onBindViewHolder(holder: VH, position: Int) = holder.bind(getItem(position))
 
-  class VH(private val binding: ItemRecyclerUserBinding) : RecyclerView.ViewHolder(binding.root) {
+  class VH(private val binding: ItemRecyclerSearchUserBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: UserItem) {
       binding.run {
         nameTextView.text = item.fullName
@@ -29,7 +28,6 @@ internal class SearchAdapter :
           crossfade(200)
           placeholder(R.drawable.ic_baseline_person_24)
           error(R.drawable.ic_baseline_person_24)
-          transformations(CircleCropTransformation())
         }
       }
     }

@@ -6,14 +6,30 @@
   android:layout_height="match_parent"
   android:background="@android:color/white">
 
+  <TextView
+    android:id="@+id/text_query"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:textColor="#424242"
+    android:textSize="18sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Search result for '123'" />
+
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/usersRecycler"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="0dp"
     android:clipToPadding="false"
     android:scrollbars="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/text_query"
     tools:itemCount="4"
-    tools:listitem="@layout/item_recycler_user" />
+    tools:listitem="@layout/item_recycler_search_user" />
 
   <ProgressBar
     android:id="@+id/progressBar"
@@ -23,7 +39,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.5"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintTop_toTopOf="@id/usersRecycler" />
 
 
   <com.google.android.material.button.MaterialButton
@@ -46,7 +62,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.5"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintTop_toTopOf="@id/usersRecycler"
     app:layout_constraintVertical_chainStyle="packed" />
 
   <TextView
