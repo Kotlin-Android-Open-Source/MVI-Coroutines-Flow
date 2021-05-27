@@ -12,10 +12,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.hoc.flowmvi.core.SearchViewQueryTextEvent
+import com.hoc.flowmvi.core.clicks
 import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.queryTextEvents
@@ -57,7 +56,7 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
       searchAdapter.submitList(viewState.users)
 
       binding.run {
-        textQuery.isInvisible = viewState.isLoading
+        textQuery.isInvisible = viewState.isLoading || viewState.query.isBlank()
         textQuery.text = "Search results for '${viewState.query}'"
 
         errorGroup.isVisible = viewState.error !== null
@@ -83,7 +82,8 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
     searchViewQueryTextEventChannel
       .consumeAsFlow()
       .onEach { Log.d("SearchActivity", "Query $it") }
-      .map { ViewIntent.Search(it.query.toString()) }
+      .map { ViewIntent.Search(it.query.toString()) },
+    binding.retryButton.clicks().map { ViewIntent.Retry },
   )
 
   private fun setupViews() {

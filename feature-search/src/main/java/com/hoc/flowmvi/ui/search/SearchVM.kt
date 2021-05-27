@@ -3,6 +3,7 @@ package com.hoc.flowmvi.ui.search
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hoc.flowmvi.core.flatMapFirst
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
@@ -53,35 +55,42 @@ internal class SearchVM(
   }
 
   private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
-    val searchChange = filterIsInstance<ViewIntent.Search>()
-      .debounce(Duration.milliseconds(400))
-      .map { it.query }
-      .filter { it.isNotBlank() }
-      .distinctUntilChanged()
-      .flatMapLatest { query ->
-        flow { emit(searchUsersUseCase(query)) }
-          .map {
-            @Suppress("USELESS_CAST")
-            PartialStateChange.Search.Success(
-              it.map(UserItem::from),
-              query,
-            ) as PartialStateChange.Search
-          }
-          .onStart { emit(PartialStateChange.Search.Loading) }
-          .catch { emit(PartialStateChange.Search.Failure(it, query)) }
-      }
+    val executeSearch: suspend (String) -> Flow<PartialStateChange> = { query: String ->
+      flow { emit(searchUsersUseCase(query)) }
+        .map {
+          @Suppress("USELESS_CAST")
+          PartialStateChange.Success(
+            it.map(UserItem::from),
+            query,
+          ) as PartialStateChange
+        }
+        .onStart { emit(PartialStateChange.Loading) }
+        .catch { emit(PartialStateChange.Failure(it, query)) }
+    }
 
     return merge(
-      searchChange
+      filterIsInstance<ViewIntent.Search>()
+        .debounce(Duration.milliseconds(400))
+        .map { it.query }
+        .filter { it.isNotBlank() }
+        .distinctUntilChanged()
+        .flatMapLatest(executeSearch),
+      filterIsInstance<ViewIntent.Retry>()
+        .flatMapFirst {
+          viewState.value.let { vs ->
+            if (vs.error !== null) executeSearch(vs.query)
+            else emptyFlow()
+          }
+        },
     )
   }
 
   private fun Flow<PartialStateChange>.sendSingleEvent(): Flow<PartialStateChange> =
     onEach { change ->
       when (change) {
-        is PartialStateChange.Search.Failure -> _singleEvent.send(SingleEvent.SearchFailure(change.error))
-        PartialStateChange.Search.Loading -> return@onEach
-        is PartialStateChange.Search.Success -> return@onEach
+        is PartialStateChange.Failure -> _singleEvent.send(SingleEvent.SearchFailure(change.error))
+        PartialStateChange.Loading -> return@onEach
+        is PartialStateChange.Success -> return@onEach
       }
     }
 }

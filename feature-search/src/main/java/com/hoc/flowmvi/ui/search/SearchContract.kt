@@ -47,27 +47,24 @@ internal data class ViewState(
 }
 
 internal sealed interface PartialStateChange {
-  fun reduce(state: ViewState): ViewState
+  object Loading : PartialStateChange
+  data class Success(val users: List<UserItem>, val query: String) : PartialStateChange
+  data class Failure(val error: Throwable, val query: String) : PartialStateChange
 
-  sealed class Search : PartialStateChange {
-    object Loading : Search()
-    data class Success(val users: List<UserItem>, val query: String) : Search()
-    data class Failure(val error: Throwable, val query: String) : Search()
-
-    override fun reduce(state: ViewState) = when (this) {
-      is Failure -> state.copy(
-        isLoading = false,
-        error = error,
-        query = query,
-      )
-      Loading -> state.copy(isLoading = true, error = null)
-      is Success -> state.copy(
-        isLoading = false,
-        error = null,
-        users = users,
-        query = query,
-      )
-    }
+  fun reduce(state: ViewState) = when (this) {
+    is Failure -> state.copy(
+      isLoading = false,
+      error = error,
+      query = query,
+      users = emptyList()
+    )
+    Loading -> state.copy(isLoading = true, error = null)
+    is Success -> state.copy(
+      isLoading = false,
+      error = null,
+      users = users,
+      query = query,
+    )
   }
 }
 
