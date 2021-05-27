@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 internal interface UserApiService {
   @GET("users")
@@ -19,6 +20,9 @@ internal interface UserApiService {
   @Headers("Content-Type: application/json")
   @POST("users")
   suspend fun add(@Body user: UserBody): UserResponse
+
+  @GET("users/search")
+  suspend fun search(@Query("q") query: String): List<UserResponse>
 
   companion object {
     operator fun invoke(retrofit: Retrofit) = retrofit.create<UserApiService>()

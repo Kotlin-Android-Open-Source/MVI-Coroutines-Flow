@@ -18,9 +18,11 @@ import com.hoc.flowmvi.core.navigator.Navigator
 import com.hoc.flowmvi.core.refreshes
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.main.databinding.ActivityMainBinding
+import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -29,22 +31,20 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.LazyThreadSafetyMode.NONE
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
   private val mainVM by viewModel<MainVM>()
   private val navigator by inject<Navigator>()
 
   private val userAdapter = UserAdapter()
-  private val mainBinding by lazy(NONE) { ActivityMainBinding.inflate(layoutInflater) }
+  private val mainBinding by viewBinding<ActivityMainBinding>()
 
   private val removeChannel = Channel<UserItem>(Channel.BUFFERED)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(mainBinding.root)
 
     setupViews()
     bindVM(mainVM)
@@ -56,14 +56,16 @@ class MainActivity : AppCompatActivity() {
         navigator.run { navigateToAdd() }
         true
       }
+      R.id.search_action -> {
+        navigator.run { navigateToSearch() }
+        true
+      }
       else -> super.onOptionsItemSelected(item)
     }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-    menuInflater.inflate(R.menu.menu_main, menu)
-    return true
-  }
+  override fun onCreateOptionsMenu(menu: Menu?) =
+    menuInflater.inflate(R.menu.menu_main, menu).let { true }
 
   private fun setupViews() {
     mainBinding.usersRecycler.run {
@@ -96,7 +98,8 @@ class MainActivity : AppCompatActivity() {
       .launchIn(lifecycleScope)
   }
 
-  private fun intents() = merge(
+  @Suppress("NOTHING_TO_INLINE")
+  private inline fun intents(): Flow<ViewIntent> = merge(
     flowOf(ViewIntent.Initial),
     mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
     mainBinding.retryButton.clicks().map { ViewIntent.Retry },

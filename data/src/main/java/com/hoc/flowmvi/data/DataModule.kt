@@ -8,7 +8,6 @@ import com.hoc.flowmvi.domain.repository.UserRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -23,7 +22,6 @@ private const val BASE_URL = "BASE_URL"
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-@FlowPreview
 val dataModule = module {
   single { UserApiService(retrofit = get()) }
 

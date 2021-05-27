@@ -11,7 +11,6 @@ import com.hoc.flowmvi.core.withLatestFrom
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,7 +31,6 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 
-@FlowPreview
 @ExperimentalCoroutinesApi
 internal class AddVM(
   private val addUser: AddUserUseCase,
@@ -44,7 +42,7 @@ internal class AddVM(
   val viewState: StateFlow<ViewState>
   val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
 
-  suspend fun processIntent(intent: ViewIntent) = _intentFlow.emit(intent)
+  fun processIntent(intent: ViewIntent) = _intentFlow.tryEmit(intent)
 
   init {
     val initialVS = ViewState.initial(

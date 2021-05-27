@@ -10,7 +10,6 @@ import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +20,6 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
-import kotlin.time.milliseconds
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
@@ -54,7 +52,6 @@ internal class UserRepositoryImpl constructor(
     }
   }
 
-  @FlowPreview
   override fun getUsers(): Flow<List<User>> {
     return flow {
       val initial = getUsersFromRemote()
@@ -90,6 +87,11 @@ internal class UserRepositoryImpl constructor(
       changesFlow.emit(Change.Added(responseToDomain(response)))
       delay(400)
     }
+  }
+
+  override suspend fun search(query: String) = withContext(dispatchers.io) {
+    delay(400)
+    userApiService.search(query).map(responseToDomain)
   }
 
   companion object {

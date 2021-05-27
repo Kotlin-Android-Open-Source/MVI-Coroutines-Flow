@@ -46,7 +46,7 @@ internal class MainVM(
   val viewState: StateFlow<ViewState>
   val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
 
-  suspend fun processIntent(intent: ViewIntent) = _intentFlow.emit(intent)
+  fun processIntent(intent: ViewIntent) = _intentFlow.tryEmit(intent)
 
   init {
     val initialVS = ViewState.initial()

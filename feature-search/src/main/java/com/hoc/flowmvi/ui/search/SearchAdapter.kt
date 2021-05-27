@@ -1,0 +1,35 @@
+package com.hoc.flowmvi.ui.search
+
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.hoc.flowmvi.ui.search.databinding.ItemRecyclerSearchUserBinding
+import com.hoc081098.viewbindingdelegate.inflateViewBinding
+
+internal class SearchAdapter :
+  ListAdapter<UserItem, SearchAdapter.VH>(object : DiffUtil.ItemCallback<UserItem>() {
+    override fun areItemsTheSame(oldItem: UserItem, newItem: UserItem) = oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: UserItem, newItem: UserItem) = oldItem == newItem
+  }) {
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+    VH(parent inflateViewBinding false)
+
+  override fun onBindViewHolder(holder: VH, position: Int) = holder.bind(getItem(position))
+
+  class VH(private val binding: ItemRecyclerSearchUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: UserItem) {
+      binding.run {
+        nameTextView.text = item.fullName
+        emailTextView.text = item.email
+        avatarImage.load(item.avatar) {
+          crossfade(200)
+          placeholder(R.drawable.ic_baseline_person_24)
+          error(R.drawable.ic_baseline_person_24)
+        }
+      }
+    }
+  }
+}

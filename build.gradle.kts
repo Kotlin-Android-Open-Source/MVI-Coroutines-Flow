@@ -9,9 +9,10 @@ buildscript {
     gradlePluginPortal()
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:4.2.0")
+    classpath("com.android.tools.build:gradle:4.2.1")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     classpath("com.diffplug.spotless:spotless-plugin-gradle:5.12.4")
+    classpath("dev.ahmedmourad.nocopy:nocopy-gradle-plugin:1.4.0")
   }
 }
 
@@ -63,8 +64,6 @@ subprojects {
 allprojects {
   tasks.withType<KotlinCompile> {
     kotlinOptions {
-      useIR = true
-
       val version = JavaVersion.VERSION_1_8.toString()
       jvmTarget = version
       sourceCompatibility = version
@@ -75,6 +74,7 @@ allprojects {
   repositories {
     google()
     mavenCentral()
+    maven(url = "https://jitpack.io")
   }
 }
 

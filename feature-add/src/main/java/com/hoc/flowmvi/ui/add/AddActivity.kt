@@ -17,25 +17,22 @@ import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
+import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import kotlin.LazyThreadSafetyMode.NONE
 
-@FlowPreview
 @ExperimentalCoroutinesApi
-class AddActivity : AppCompatActivity() {
+class AddActivity : AppCompatActivity(R.layout.activity_add) {
   private val addVM by stateViewModel<AddVM>()
-  private val addBinding by lazy(NONE) { ActivityAddBinding.inflate(layoutInflater) }
+  private val addBinding by viewBinding<ActivityAddBinding>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(addBinding.root)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     setupViews()
@@ -130,7 +127,8 @@ class AddActivity : AppCompatActivity() {
     }
   }
 
-  private fun intents(): Flow<ViewIntent> = addBinding.run {
+  @Suppress("NOTHING_TO_INLINE")
+  private inline fun intents(): Flow<ViewIntent> = addBinding.run {
     merge(
       emailEditText
         .editText!!
@@ -162,8 +160,6 @@ class AddActivity : AppCompatActivity() {
     )
   }
 
-  @ExperimentalCoroutinesApi
-  @FlowPreview
   internal class IntentProvider : IntentProviders.Add {
     override fun makeIntent(context: Context): Intent =
       Intent(context, AddActivity::class.java)

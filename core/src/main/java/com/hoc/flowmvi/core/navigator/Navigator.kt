@@ -7,8 +7,14 @@ interface IntentProviders {
   interface Add {
     fun makeIntent(context: Context): Intent
   }
+
+  interface Search {
+    fun makeIntent(context: Context): Intent
+  }
 }
 
 interface Navigator {
   fun Context.navigateToAdd()
+
+  fun Context.navigateToSearch()
 }
