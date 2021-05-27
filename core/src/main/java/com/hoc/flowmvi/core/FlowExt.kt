@@ -16,6 +16,28 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
+import kotlinx.coroutines.flow.take
+
+@ExperimentalCoroutinesApi
+fun <T, R> Flow<T>.takeUntil(notifier: Flow<R>): Flow<T> = channelFlow {
+  val outerScope = this
+
+  launch {
+    try {
+      notifier.take(1).collect()
+      close()
+    } catch (e: CancellationException) {
+      outerScope.cancel(e) // cancel outer scope on cancellation exception, too
+    }
+  }
+  launch {
+    try {
+      collect { send(it) }
+    } catch (e: CancellationException) {
+      outerScope.cancel(e) // cancel outer scope on cancellation exception, too
+    }
+  }
+}
 
 @ExperimentalCoroutinesApi
 fun <T, R> Flow<T>.flatMapFirst(transform: suspend (value: T) -> Flow<R>): Flow<R> =
@@ -69,6 +91,14 @@ fun <A, B, R> Flow<A>.withLatestFrom(other: Flow<B>, transform: suspend (A, B) -
 
 @ExperimentalCoroutinesApi
 suspend fun main() {
+  (1..100).asFlow()
+    .onEach { delay(50) }
+    .takeUntil(flow { delay(200); emit(Unit) })
+    .collect { println(">>>>> $it") }
+
+  println("Done")
+  return
+
   (1..2000).asFlow()
     .onEach { delay(50) }
     .flatMapFirst { v ->
