@@ -6,7 +6,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "0.41.0"
-const val kotlinVersion = "1.5.0"
+const val kotlinVersion = "1.5.10"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -54,7 +54,7 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.0.1"
+    private const val version = "3.0.2"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
