@@ -20,6 +20,9 @@ jobs:
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
+      
+    - name: Spotless check
+      run: ./gradlew spotlessCheck
     
     - name: Build debug APK
       run: ./gradlew assembleDebug --warning-mode all --stacktrace
