@@ -33,6 +33,7 @@ fun <T, R> Flow<T>.takeUntil(notifier: Flow<R>): Flow<T> = channelFlow {
   launch {
     try {
       collect { send(it) }
+      close()
     } catch (e: CancellationException) {
       outerScope.cancel(e) // cancel outer scope on cancellation exception, too
     }
@@ -91,9 +92,9 @@ fun <A, B, R> Flow<A>.withLatestFrom(other: Flow<B>, transform: suspend (A, B) -
 
 @ExperimentalCoroutinesApi
 suspend fun main() {
-  (1..100).asFlow()
+  (1..2).asFlow()
     .onEach { delay(50) }
-    .takeUntil(flow { delay(200); emit(Unit) })
+    .takeUntil(flow { delay(100000); emit(Unit) })
     .collect { println(">>>>> $it") }
 
   println("Done")
