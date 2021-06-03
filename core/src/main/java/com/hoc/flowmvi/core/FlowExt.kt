@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.core
 
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.coroutineScope
@@ -48,9 +49,10 @@ fun <T, R> Flow<T>.flatMapFirst(transform: suspend (value: T) -> Flow<R>): Flow<
 fun <T> Flow<Flow<T>>.flattenFirst(): Flow<T> = channelFlow {
   val outerScope = this
   val busy = AtomicBoolean(false)
+
   collect { inner ->
     if (busy.compareAndSet(false, true)) {
-      launch {
+      outerScope.launch(start = CoroutineStart.UNDISPATCHED) {
         try {
           inner.collect { outerScope.send(it) }
           busy.set(false)
