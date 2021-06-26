@@ -9,6 +9,8 @@
 *   **Checkout [dagger_hilt branch](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/tree/dagger_hilt), using Dagger Hilt for DI** (_obsolete_).
 *   **[Download latest debug APK here](https://nightly.link/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/workflows/build/master/app-debug.zip)**.
 
+> **Jetpack Compose Version** 👉 https://github.com/Kotlin-Android-Open-Source/Jetpack-Compose-MVI-Coroutines-Flow
+
 | List view state | Error view state |
 | --------------- | ---------------- |
 | <img src="Screenshot_01.png" height="480" /> | <img src="Screenshot_02.png" height="480"> |
