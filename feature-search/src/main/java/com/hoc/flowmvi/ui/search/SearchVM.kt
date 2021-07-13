@@ -3,9 +3,9 @@ package com.hoc.flowmvi.ui.search
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hoc.flowmvi.core.flatMapFirst
-import com.hoc.flowmvi.core.takeUntil
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
+import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.takeUntil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
