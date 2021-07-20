@@ -54,4 +54,5 @@ dependencies {
   implementation(deps.koin.android)
   implementation(deps.coil)
   implementation(deps.viewBindingDelegate)
+  implementation(deps.flowExt)
 }
