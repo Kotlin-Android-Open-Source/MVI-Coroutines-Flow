@@ -9,7 +9,7 @@ buildscript {
     gradlePluginPortal()
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:4.2.2")
+    classpath("com.android.tools.build:gradle:7.0.0")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     classpath("com.diffplug.spotless:spotless-plugin-gradle:5.14.2")
     classpath("dev.ahmedmourad.nocopy:nocopy-gradle-plugin:1.4.0")
