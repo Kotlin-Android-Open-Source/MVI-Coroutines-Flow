@@ -6,7 +6,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "0.41.0"
-const val kotlinVersion = "1.5.10"
+const val kotlinVersion = "1.5.21"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -61,7 +61,7 @@ object deps {
   }
 
   const val coil = "io.coil-kt:coil:1.2.1"
-  const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.1.0"
+  const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.2.0"
   const val flowExt = "io.github.hoc081098:FlowExt:0.0.7-SNAPSHOT"
 
   object test {
