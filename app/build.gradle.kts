@@ -1,7 +1,9 @@
 plugins {
   androidApplication
   kotlinAndroid
+  jacoco
 }
+apply(from = "$rootDir/coverage.gradle.kts")
 
 android {
   compileSdk = appConfig.compileSdkVersion
@@ -25,6 +27,10 @@ android {
         getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"
       )
+    }
+
+    getByName("debug") {
+      isTestCoverageEnabled = true
     }
   }
 

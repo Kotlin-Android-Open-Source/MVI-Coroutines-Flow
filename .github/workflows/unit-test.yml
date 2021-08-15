@@ -10,16 +10,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'zulu'
-        java-version: '11'
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
 
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
-    - name: Run Debug Unit Test
-      run: ./gradlew testDebugUnitTest --warning-mode all --stacktrace
+      - name: Run Debug Unit Test
+        run: ./gradlew testDebugUnitTest --warning-mode all --stacktrace
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: report
+          path: app/build/reports/jacoco/test/
+
+      - name: Download Test Reports Folder
+        uses: actions/download-artifact@v2
+        with:
+          name: report
+          path: app/build/reports/jacoco/test/
+
+      - name: Upload Test Report
+        run: bash <(curl -s https://codecov.io/bash) -f "app/build/reports/jacoco/test/jacocoTestReport.xml"

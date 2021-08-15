@@ -22,6 +22,10 @@ android {
         "proguard-rules.pro"
       )
     }
+
+    getByName("debug") {
+      isTestCoverageEnabled = true
+    }
   }
 
   compileOptions {
