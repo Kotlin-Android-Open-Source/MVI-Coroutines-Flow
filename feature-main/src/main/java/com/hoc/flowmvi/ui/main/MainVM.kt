@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNot
@@ -85,49 +86,52 @@ internal class MainVM(
     }
   }
 
-  private fun Flow<ViewIntent>.toPartialChangeFlow(): Flow<PartialChange> = shareIn(viewModelScope, SharingStarted.WhileSubscribed()).run {
-    val getUserChanges = getUsersUseCase()
-      .onEach { Log.d("###", "[MAIN_VM] Emit users.size=${it.size}") }
-      .map {
-        val items = it.map(::UserItem)
-        PartialChange.GetUser.Data(items) as PartialChange.GetUser
-      }
-      .onStart { emit(PartialChange.GetUser.Loading) }
-      .catch { emit(PartialChange.GetUser.Error(it)) }
-
-    val refreshChanges = refreshGetUsers::invoke
-      .asFlow()
-      .map { PartialChange.Refresh.Success as PartialChange.Refresh }
-      .onStart { emit(PartialChange.Refresh.Loading) }
-      .catch { emit(PartialChange.Refresh.Failure(it)) }
-
-    return merge(
-      filterIsInstance<ViewIntent.Initial>()
-        .logIntent()
-        .flatMapConcat { getUserChanges },
-      filterIsInstance<ViewIntent.Refresh>()
-        .filter { viewState.value.let { !it.isLoading && it.error === null } }
-        .logIntent()
-        .flatMapFirst { refreshChanges },
-      filterIsInstance<ViewIntent.Retry>()
-        .filter { viewState.value.error != null }
-        .logIntent()
-        .flatMapFirst { getUserChanges },
-      filterIsInstance<ViewIntent.RemoveUser>()
-        .logIntent()
-        .map { it.user }
-        .flatMapMerge { userItem ->
-          flow {
-            userItem
-              .toDomain()
-              .let { removeUser(it) }
-              .let { emit(it) }
-          }
-            .map { PartialChange.RemoveUser.Success(userItem) as PartialChange.RemoveUser }
-            .catch { emit(PartialChange.RemoveUser.Failure(userItem, it)) }
+  private fun Flow<ViewIntent>.toPartialChangeFlow(): Flow<PartialChange> =
+    shareIn(viewModelScope, SharingStarted.WhileSubscribed()).run {
+      val getUserChanges = defer(getUsersUseCase::invoke)
+        .onEach { Log.d("###", "[MAIN_VM] Emit users.size=${it.size}") }
+        .map {
+          val items = it.map(::UserItem)
+          PartialChange.GetUser.Data(items) as PartialChange.GetUser
         }
-    )
-  }
+        .onStart { emit(PartialChange.GetUser.Loading) }
+        .catch { emit(PartialChange.GetUser.Error(it)) }
+
+      val refreshChanges = refreshGetUsers::invoke
+        .asFlow()
+        .map { PartialChange.Refresh.Success as PartialChange.Refresh }
+        .onStart { emit(PartialChange.Refresh.Loading) }
+        .catch { emit(PartialChange.Refresh.Failure(it)) }
+
+      return merge(
+        filterIsInstance<ViewIntent.Initial>()
+          .logIntent()
+          .flatMapConcat { getUserChanges },
+        filterIsInstance<ViewIntent.Refresh>()
+          .filter { viewState.value.let { !it.isLoading && it.error === null } }
+          .logIntent()
+          .flatMapFirst { refreshChanges },
+        filterIsInstance<ViewIntent.Retry>()
+          .filter { viewState.value.error != null }
+          .logIntent()
+          .flatMapFirst { getUserChanges },
+        filterIsInstance<ViewIntent.RemoveUser>()
+          .logIntent()
+          .map { it.user }
+          .flatMapMerge { userItem ->
+            flow {
+              userItem
+                .toDomain()
+                .let { removeUser(it) }
+                .let { emit(it) }
+            }
+              .map { PartialChange.RemoveUser.Success(userItem) as PartialChange.RemoveUser }
+              .catch { emit(PartialChange.RemoveUser.Failure(userItem, it)) }
+          }
+      )
+    }
 
   private fun <T : ViewIntent> Flow<T>.logIntent() = onEach { Log.d("MainVM", "## Intent: $it") }
 }
+
+private fun <T> defer(flowFactory: () -> Flow<T>): Flow<T> = flow { emitAll(flowFactory()) }

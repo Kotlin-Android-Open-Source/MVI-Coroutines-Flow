@@ -51,6 +51,7 @@ object deps {
 
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+    const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
   }
 
   object koin {
@@ -68,6 +69,9 @@ object deps {
     const val junit = "junit:junit:4.13"
     const val androidxJunit = "androidx.test.ext:junit:1.1.2"
     const val androidXSspresso = "androidx.test.espresso:espresso-core:3.3.0"
+
+    const val mockk = "io.mockk:mockk:1.12.0"
+    const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
   }
 }
 
