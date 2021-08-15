@@ -7,11 +7,13 @@ import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
@@ -20,10 +22,15 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
+import java.io.IOException
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 val users = listOf(
   User(
@@ -85,6 +92,13 @@ class MainVMTest {
       emit(users)
     }
 
+    val hasEvent = AtomicBoolean(false)
+    val eventJob = launch(start = CoroutineStart.UNDISPATCHED) {
+      vm.singleEvent.collect {
+        hasEvent.set(true)
+      }
+    }
+
     launch(start = CoroutineStart.UNDISPATCHED) {
       vm.viewState
         .take(2)
@@ -103,6 +117,60 @@ class MainVMTest {
             )
           )
         }
+
+      eventJob.cancel()
+      assertFalse(hasEvent.get())
+      verify(exactly = 1) { getUserUseCase() }
+    }
+
+    vm.processIntent(ViewIntent.Initial)
+  }
+
+  @Test
+  fun `ViewIntent_Initial returns failure`() = testDispatcher.runBlockingTest {
+    val ioException = IOException()
+
+    every { getUserUseCase() } returns flow {
+      delay(100)
+      throw ioException
+    }
+
+    val events = AtomicReference(emptyList<SingleEvent>())
+    val eventJob = launch(start = CoroutineStart.UNDISPATCHED) {
+      vm.singleEvent.collect { e ->
+        events.updateAndGet { it + e }
+      }
+    }
+
+    launch(start = CoroutineStart.UNDISPATCHED) {
+      vm.viewState
+        .take(2)
+        .toList()
+        .let {
+          assertContentEquals(
+            it,
+            listOf(
+              ViewState.initial(),
+              ViewState(
+                userItems = emptyList(),
+                isLoading = false,
+                error = ioException,
+                isRefreshing = false
+              )
+            )
+          )
+        }
+
+      eventJob.cancel()
+
+      assertEquals(
+        events.get().single(),
+        SingleEvent.GetUsersError(
+          error = ioException,
+        ),
+      )
+
+      verify(exactly = 1) { getUserUseCase() }
     }
 
     vm.processIntent(ViewIntent.Initial)
