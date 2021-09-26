@@ -65,7 +65,5 @@ dependencies {
   implementation(deps.viewBindingDelegate)
   implementation(deps.flowExt)
 
-  testImplementation(deps.test.mockk)
-  testImplementation(deps.test.kotlinJUnit)
-  testImplementation(deps.coroutines.test)
+  addUnitTest()
 }

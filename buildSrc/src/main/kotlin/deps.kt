@@ -1,6 +1,7 @@
 @file:Suppress("unused", "ClassName", "SpellCheckingInspection")
 
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
@@ -89,3 +90,9 @@ inline val DependencyHandler.data get() = project(":data")
 inline val DependencyHandler.featureMain get() = project(":feature-main")
 inline val DependencyHandler.featureAdd get() = project(":feature-add")
 inline val DependencyHandler.featureSearch get() = project(":feature-search")
+
+fun DependencyHandler.addUnitTest() {
+  add("testImplementation", deps.test.mockk)
+  add("testImplementation", deps.test.kotlinJUnit)
+  add("testImplementation", deps.coroutines.test)
+}

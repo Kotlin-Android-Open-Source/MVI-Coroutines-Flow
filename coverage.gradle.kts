@@ -3,7 +3,7 @@ apply(plugin = "jacoco")
 tasks {
   val debugCoverageReport by registering(JacocoReport::class)
   debugCoverageReport {
-    dependsOn("testDebugUnitTest", "connectedDebugAndroidTest")
+    dependsOn("testDebugUnitTest")
 
     reports {
       xml.run {

@@ -3,7 +3,6 @@ plugins {
   kotlinAndroid
   jacoco
 }
-apply(from = "$rootDir/coverage.gradle.kts")
 
 android {
   compileSdk = appConfig.compileSdkVersion
@@ -40,6 +39,11 @@ android {
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
   buildFeatures { viewBinding = true }
+
+  testOptions {
+    unitTests.isIncludeAndroidResources = true
+    unitTests.isReturnDefaultValues = true
+  }
 }
 
 dependencies {
