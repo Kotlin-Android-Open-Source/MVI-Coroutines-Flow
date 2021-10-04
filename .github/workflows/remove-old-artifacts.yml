@@ -1,0 +1,22 @@
+name: Remove old artifacts
+
+on:
+#   push:
+#     branches: [ main ]
+  
+  schedule:
+    # Runs at 01:00 UTC on the 1, 8, 15, 22 and 29th of every month.
+    - cron: '0 1 */7 * *'
+
+jobs:
+  remove-old-artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - name: Remove old artifacts
+      uses: c-hive/gha-remove-artifacts@v1
+      with:
+        age: '1 month'
+        skip-tags: true
+        skip-recent: 5
