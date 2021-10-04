@@ -20,7 +20,6 @@ buildscript {
 }
 
 subprojects {
-  tasks.withType<Test> { useJUnitPlatform() }
   apply(plugin = "com.diffplug.spotless")
   apply(plugin = "com.vanniktech.android.junit.jacoco")
 

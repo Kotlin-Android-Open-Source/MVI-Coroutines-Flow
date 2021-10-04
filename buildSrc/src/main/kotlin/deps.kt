@@ -67,7 +67,7 @@ object deps {
   const val flowExt = "io.github.hoc081098:FlowExt:0.0.7-SNAPSHOT"
 
   object test {
-    const val junit = "junit:junit:4.13"
+    const val junit = "junit:junit:4.13.2"
     const val androidxJunit = "androidx.test.ext:junit:1.1.2"
     const val androidXSspresso = "androidx.test.espresso:espresso-core:3.3.0"
 
