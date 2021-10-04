@@ -12,8 +12,8 @@ const val kotlinVersion = "1.5.21"
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
 
-  const val compileSdkVersion = 30
-  const val buildToolsVersion = "30.0.3"
+  const val compileSdkVersion = 31
+  const val buildToolsVersion = "31.0.0"
 
   const val minSdkVersion = 21
   const val targetSdkVersion = 30
@@ -92,6 +92,7 @@ inline val DependencyHandler.featureAdd get() = project(":feature-add")
 inline val DependencyHandler.featureSearch get() = project(":feature-search")
 
 fun DependencyHandler.addUnitTest() {
+  add("testImplementation", deps.test.junit)
   add("testImplementation", deps.test.mockk)
   add("testImplementation", deps.test.kotlinJUnit)
   add("testImplementation", deps.coroutines.test)

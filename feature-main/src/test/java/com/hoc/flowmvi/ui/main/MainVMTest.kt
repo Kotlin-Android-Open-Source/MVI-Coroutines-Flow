@@ -82,6 +82,7 @@ class MainVMTest {
   @AfterTest
   fun teardown() {
     Dispatchers.resetMain()
+    testDispatcher.cleanupTestCoroutines()
     clearAllMocks()
   }
 

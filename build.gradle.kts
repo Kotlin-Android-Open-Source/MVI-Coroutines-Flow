@@ -14,6 +14,7 @@ buildscript {
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     classpath("com.diffplug.spotless:spotless-plugin-gradle:5.15.1")
     classpath("dev.ahmedmourad.nocopy:nocopy-gradle-plugin:1.4.0")
+    classpath("org.jacoco:org.jacoco.core:0.8.7")
     classpath("com.vanniktech:gradle-android-junit-jacoco-plugin:0.17.0-SNAPSHOT")
   }
 }
@@ -65,11 +66,23 @@ subprojects {
   }
 
   configure<com.vanniktech.android.junit.jacoco.JunitJacocoExtension> {
-    jacocoVersion = "0.8.3"
+    jacocoVersion = "0.8.7"
     includeNoLocationClasses = true
+    includeInstrumentationCoverageInMergedReport = true
     csv.isEnabled = false
     xml.isEnabled = true
     html.isEnabled = true
+  }
+
+  afterEvaluate {
+    tasks.withType<Test> {
+      extensions
+        .getByType<JacocoTaskExtension>()
+        .run {
+          isIncludeNoLocationClasses = true
+          excludes = listOf("jdk.internal.*")
+        }
+    }
   }
 }
 
