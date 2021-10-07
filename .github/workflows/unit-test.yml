@@ -2,7 +2,7 @@ name: Unit Tests CI
 
 on:
   push:
-    branches: [ master, add-unit-test ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
