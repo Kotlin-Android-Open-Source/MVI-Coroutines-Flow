@@ -31,6 +31,7 @@ import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlinx.coroutines.cancel
 
 val users = listOf(
   User(
@@ -122,6 +123,9 @@ class MainVMTest {
       eventJob.cancel()
       assertFalse(hasEvent.get())
       verify(exactly = 1) { getUserUseCase() }
+
+      print("DONE")
+      cancel()
     }
 
     vm.processIntent(ViewIntent.Initial)
@@ -172,6 +176,9 @@ class MainVMTest {
       )
 
       verify(exactly = 1) { getUserUseCase() }
+
+      print("DONE")
+      cancel()
     }
 
     vm.processIntent(ViewIntent.Initial)

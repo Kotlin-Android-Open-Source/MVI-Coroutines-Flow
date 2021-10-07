@@ -28,9 +28,9 @@ android {
       )
     }
 
-    getByName("debug") {
-      isTestCoverageEnabled = true
-    }
+//    getByName("debug") {
+//      isTestCoverageEnabled = true
+//    }
   }
 
   compileOptions {
@@ -71,4 +71,6 @@ dependencies {
   testImplementation(deps.test.junit)
   androidTestImplementation(deps.test.androidxJunit)
   androidTestImplementation(deps.test.androidXSspresso)
+
+  addUnitTest()
 }

@@ -23,9 +23,9 @@ android {
       )
     }
 
-    getByName("debug") {
-      isTestCoverageEnabled = true
-    }
+//    getByName("debug") {
+//      isTestCoverageEnabled = true
+//    }
   }
 
   compileOptions {
