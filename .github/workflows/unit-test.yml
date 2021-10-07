@@ -35,12 +35,6 @@ jobs:
 #        with:
 #          name: jacoco
 #          path: app/build/reports/jacoco/debug
-#
-#      - name: Upload Test Report
-#        run: bash <(curl -s https://codecov.io/bash) -f "app/build/reports/jacoco/debug/jacoco.xml"
 
-      - name: Upload coverage to Codecov
-        run: |
-          curl -Os https://uploader.codecov.io/latest/macos/codecov
-          chmod +x codecov
-          ./codecov
+      - name: Upload Test Report
+        uses: codecov/codecov-action@v2.1.0
