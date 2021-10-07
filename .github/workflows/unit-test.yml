@@ -24,17 +24,23 @@ jobs:
       - name: Run Debug Unit Test
         run: ./gradlew jacocoTestReportDebug --warning-mode all --stacktrace
 
-      - name: Upload Test Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: jacoco
-          path: app/build/reports/jacoco/debug
+#      - name: Upload Test Report
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: jacoco
+#          path: app/build/reports/jacoco/debug
+#
+#      - name: Download Test Reports Folder
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: jacoco
+#          path: app/build/reports/jacoco/debug
+#
+#      - name: Upload Test Report
+#        run: bash <(curl -s https://codecov.io/bash) -f "app/build/reports/jacoco/debug/jacoco.xml"
 
-      - name: Download Test Reports Folder
-        uses: actions/download-artifact@v2
-        with:
-          name: jacoco
-          path: app/build/reports/jacoco/debug
-
-      - name: Upload Test Report
-        run: bash <(curl -s https://codecov.io/bash) -f "app/build/reports/jacoco/debug/jacoco.xml"
+      - name: Upload coverage to Codecov
+        run: |
+          curl -Os https://uploader.codecov.io/latest/macos/codecov
+          chmod +x codecov
+          ./codecov
