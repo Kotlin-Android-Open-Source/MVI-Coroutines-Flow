@@ -24,17 +24,5 @@ jobs:
       - name: Run Debug Unit Test
         run: ./gradlew jacocoTestReportDebug --warning-mode all --stacktrace
 
-#      - name: Upload Test Report
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: jacoco
-#          path: app/build/reports/jacoco/debug
-#
-#      - name: Download Test Reports Folder
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: jacoco
-#          path: app/build/reports/jacoco/debug
-
       - name: Upload Test Report
         uses: codecov/codecov-action@v2.1.0
