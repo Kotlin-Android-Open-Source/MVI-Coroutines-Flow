@@ -1,6 +1,7 @@
 # MVI-Coroutines-Flow
 
 [![Build CI](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/workflows/build.yml/badge.svg)](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/branch/master/graph/badge.svg?token=QBV7IE7RU6)](https://codecov.io/gh/Kotlin-Android-Open-Source/MVI-Coroutines-Flow)
 
 ## Coroutine + Flow = MVI :heart:
 *   Play MVI with Kotlin Coroutines Flow.
