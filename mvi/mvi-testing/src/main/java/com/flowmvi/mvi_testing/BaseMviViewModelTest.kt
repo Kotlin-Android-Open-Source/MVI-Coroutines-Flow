@@ -46,7 +46,7 @@ abstract class BaseMviViewModelTest<
     intents: Flow<I>,
     expectedStates: List<S>,
     expectedEvents: List<E>,
-    delayAfterDispatchingIntents: Duration = Duration.ZERO,
+    delayAfterDispatchingIntents: Duration = Duration.milliseconds(50),
     otherAssertions: (suspend () -> Unit)? = null,
   ) = testDispatcher.runBlockingTest {
     val vm = vmProducer()

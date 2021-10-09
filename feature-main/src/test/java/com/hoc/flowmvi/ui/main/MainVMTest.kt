@@ -8,18 +8,15 @@ import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import java.io.IOException
+import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Test
-import java.io.IOException
-import java.util.concurrent.TimeUnit
-import kotlin.time.ExperimentalTime
-import kotlin.time.toDuration
 
-val users = listOf(
+private val USERS = listOf(
   User(
     id = "1",
     email = "email1@gmail.com",
@@ -43,7 +40,7 @@ val users = listOf(
   ),
 )
 
-internal val usersItems = users.map { UserItem(it) }
+private val USER_ITEMS = USERS.map(::UserItem)
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
@@ -78,24 +75,20 @@ class MainVMTest : BaseMviViewModelTest<
   @Test
   fun `ViewIntent_Initial returns success`() = test(
     vmProducer = {
-      every { getUserUseCase() } returns flow {
-        delay(50)
-        emit(users)
-      }
+      every { getUserUseCase() } returns flowOf(USERS)
       vm
     },
     intents = flowOf(ViewIntent.Initial),
     expectedStates = listOf(
       ViewState.initial(),
       ViewState(
-        userItems = usersItems,
+        userItems = USER_ITEMS,
         isLoading = false,
         error = null,
         isRefreshing = false
       )
     ),
     expectedEvents = emptyList(),
-    delayAfterDispatchingIntents = 100.toDuration(TimeUnit.MILLISECONDS)
   ) { verify(exactly = 1) { getUserUseCase() } }
 
   @Test
@@ -104,10 +97,7 @@ class MainVMTest : BaseMviViewModelTest<
 
     test(
       vmProducer = {
-        every { getUserUseCase() } returns flow {
-          delay(100)
-          throw ioException
-        }
+        every { getUserUseCase() } returns flow { throw ioException }
         vm
       },
       intents = flowOf(ViewIntent.Initial),
@@ -125,7 +115,16 @@ class MainVMTest : BaseMviViewModelTest<
           error = ioException,
         ),
       ),
-      delayAfterDispatchingIntents = 100.toDuration(TimeUnit.MILLISECONDS)
     ) { verify(exactly = 1) { getUserUseCase() } }
+  }
+
+  @Test
+  fun `ViewIntent_Refresh returns success`() {
+    test(
+      vmProducer = { vm },
+      intents = flowOf(ViewIntent.Refresh),
+      expectedStates = listOf(ViewState.initial()),
+      expectedEvents = emptyList(),
+    )
   }
 }
