@@ -41,6 +41,7 @@ android {
 dependencies {
   implementation(domain)
   implementation(core)
+  implementation(mviBase)
 
   implementation(deps.androidx.appCompat)
   implementation(deps.androidx.coreKtx)

@@ -40,8 +40,9 @@ android {
 }
 
 dependencies {
-  api(domain)
-  api(core)
+  implementation(domain)
+  implementation(core)
+  implementation(mviBase)
 
   implementation(deps.androidx.appCompat)
   implementation(deps.androidx.coreKtx)

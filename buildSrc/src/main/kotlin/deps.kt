@@ -93,6 +93,7 @@ inline val DependencyHandler.data get() = project(":data")
 inline val DependencyHandler.featureMain get() = project(":feature-main")
 inline val DependencyHandler.featureAdd get() = project(":feature-add")
 inline val DependencyHandler.featureSearch get() = project(":feature-search")
+inline val DependencyHandler.mviBase get() = project(":mvi-base")
 
 fun DependencyHandler.addUnitTest() {
   add("testImplementation", deps.test.junit)
