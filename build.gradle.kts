@@ -7,17 +7,21 @@ buildscript {
     google()
     mavenCentral()
     gradlePluginPortal()
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
   }
   dependencies {
     classpath("com.android.tools.build:gradle:7.0.2")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     classpath("com.diffplug.spotless:spotless-plugin-gradle:5.16.0")
     classpath("dev.ahmedmourad.nocopy:nocopy-gradle-plugin:1.4.0")
+    classpath("org.jacoco:org.jacoco.core:0.8.7")
+    classpath("com.vanniktech:gradle-android-junit-jacoco-plugin:0.17.0-SNAPSHOT")
   }
 }
 
 subprojects {
   apply(plugin = "com.diffplug.spotless")
+  apply(plugin = "com.vanniktech.android.junit.jacoco")
 
   configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
@@ -57,6 +61,26 @@ subprojects {
       trimTrailingWhitespace()
       indentWithSpaces()
       endWithNewline()
+    }
+  }
+
+  configure<com.vanniktech.android.junit.jacoco.JunitJacocoExtension> {
+    jacocoVersion = "0.8.7"
+    includeNoLocationClasses = true
+    includeInstrumentationCoverageInMergedReport = true
+    csv.isEnabled = false
+    xml.isEnabled = true
+    html.isEnabled = true
+  }
+
+  afterEvaluate {
+    tasks.withType<Test> {
+      extensions
+        .getByType<JacocoTaskExtension>()
+        .run {
+          isIncludeNoLocationClasses = true
+          excludes = listOf("jdk.internal.*")
+        }
     }
   }
 }

@@ -22,6 +22,10 @@ android {
         "proguard-rules.pro"
       )
     }
+
+//    getByName("debug") {
+//      isTestCoverageEnabled = true
+//    }
   }
 
   compileOptions {
@@ -31,6 +35,13 @@ android {
   kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
 
   buildFeatures { viewBinding = true }
+
+  testOptions {
+    unitTests {
+      isReturnDefaultValues = true
+      isIncludeAndroidResources = true
+    }
+  }
 }
 
 dependencies {
@@ -53,4 +64,6 @@ dependencies {
   implementation(deps.coil)
   implementation(deps.viewBindingDelegate)
   implementation(deps.flowExt)
+
+  addUnitTest()
 }

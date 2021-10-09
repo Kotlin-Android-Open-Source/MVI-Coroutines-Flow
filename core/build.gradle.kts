@@ -29,6 +29,11 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
+
+  testOptions {
+    unitTests.isIncludeAndroidResources = true
+    unitTests.isReturnDefaultValues = true
+  }
 }
 
 dependencies {
@@ -42,4 +47,6 @@ dependencies {
 
   implementation(deps.lifecycle.commonJava8)
   implementation(deps.lifecycle.runtimeKtx)
+
+  addUnitTest()
 }

@@ -30,8 +30,12 @@ android {
     targetCompatibility = JavaVersion.VERSION_1_8
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
-
   buildFeatures { viewBinding = true }
+
+  testOptions {
+    unitTests.isIncludeAndroidResources = true
+    unitTests.isReturnDefaultValues = true
+  }
 }
 
 dependencies {
@@ -54,4 +58,6 @@ dependencies {
   implementation(deps.coil)
   implementation(deps.viewBindingDelegate)
   implementation(deps.flowExt)
+
+  addUnitTest()
 }

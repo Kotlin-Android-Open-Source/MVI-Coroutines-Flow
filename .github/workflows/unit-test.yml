@@ -1,0 +1,31 @@
+name: Unit Tests CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Run Android Debug Unit Test
+        run: ./gradlew jacocoTestReportDebug --warning-mode all --stacktrace
+
+      - name: Run Java/Kotlin Unit Test
+        run: ./gradlew jacocoTestReport --warning-mode all --stacktrace
+
+      - name: Upload Test Report
+        uses: codecov/codecov-action@v2.1.0

@@ -1,6 +1,7 @@
 @file:Suppress("unused", "ClassName", "SpellCheckingInspection")
 
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
@@ -11,8 +12,8 @@ const val kotlinVersion = "1.5.21"
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
 
-  const val compileSdkVersion = 30
-  const val buildToolsVersion = "30.0.3"
+  const val compileSdkVersion = 31
+  const val buildToolsVersion = "31.0.0"
 
   const val minSdkVersion = 21
   const val targetSdkVersion = 30
@@ -51,6 +52,7 @@ object deps {
 
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+    const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
   }
 
   object koin {
@@ -65,9 +67,12 @@ object deps {
   const val flowExt = "io.github.hoc081098:FlowExt:0.0.7-SNAPSHOT"
 
   object test {
-    const val junit = "junit:junit:4.13"
+    const val junit = "junit:junit:4.13.2"
     const val androidxJunit = "androidx.test.ext:junit:1.1.2"
     const val androidXSspresso = "androidx.test.espresso:espresso-core:3.3.0"
+
+    const val mockk = "io.mockk:mockk:1.12.0"
+    const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
   }
 }
 
@@ -85,3 +90,10 @@ inline val DependencyHandler.data get() = project(":data")
 inline val DependencyHandler.featureMain get() = project(":feature-main")
 inline val DependencyHandler.featureAdd get() = project(":feature-add")
 inline val DependencyHandler.featureSearch get() = project(":feature-search")
+
+fun DependencyHandler.addUnitTest() {
+  add("testImplementation", deps.test.junit)
+  add("testImplementation", deps.test.mockk)
+  add("testImplementation", deps.test.kotlinJUnit)
+  add("testImplementation", deps.coroutines.test)
+}

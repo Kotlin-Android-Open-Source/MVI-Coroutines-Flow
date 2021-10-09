@@ -1,6 +1,7 @@
 plugins {
   androidApplication
   kotlinAndroid
+  jacoco
 }
 
 android {
@@ -26,6 +27,10 @@ android {
         "proguard-rules.pro"
       )
     }
+
+//    getByName("debug") {
+//      isTestCoverageEnabled = true
+//    }
   }
 
   compileOptions {
@@ -34,6 +39,11 @@ android {
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
   buildFeatures { viewBinding = true }
+
+  testOptions {
+    unitTests.isIncludeAndroidResources = true
+    unitTests.isReturnDefaultValues = true
+  }
 }
 
 dependencies {
@@ -61,4 +71,6 @@ dependencies {
   testImplementation(deps.test.junit)
   androidTestImplementation(deps.test.androidxJunit)
   androidTestImplementation(deps.test.androidXSspresso)
+
+  addUnitTest()
 }
