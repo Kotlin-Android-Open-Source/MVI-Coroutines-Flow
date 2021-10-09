@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/feature-add" />
             <option value="$PROJECT_DIR$/feature-main" />
             <option value="$PROJECT_DIR$/feature-search" />
+            <option value="$PROJECT_DIR$/mvi-base" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
