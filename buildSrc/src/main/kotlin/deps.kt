@@ -1,7 +1,6 @@
 @file:Suppress("unused", "ClassName", "SpellCheckingInspection")
 
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
@@ -16,9 +15,13 @@ object appConfig {
   const val buildToolsVersion = "31.0.0"
 
   const val minSdkVersion = 21
-  const val targetSdkVersion = 30
-  const val versionCode = 1
-  const val versionName = "1.0"
+  const val targetSdkVersion = 31
+
+  private const val MAJOR = 2
+  private const val MINOR = 0
+  private const val PATCH = 0
+  const val versionCode = MAJOR * 10000 + MINOR * 100 + PATCH
+  const val versionName = "$MAJOR.$MINOR.$PATCH"
 }
 
 object deps {

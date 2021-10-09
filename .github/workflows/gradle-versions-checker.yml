@@ -1,0 +1,28 @@
+name: Gradle version checker
+
+on:
+   push:
+     branches: [ master ]
+
+  schedule:
+    # Runs at 01:00 UTC on the 1, 8, 15, 22 and 29th of every month.
+    - cron: '0 1 */7 * *'
+
+jobs:
+  gradle-versions-checker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Dependency updates
+        run: ./gradlew dependencyUpdates
