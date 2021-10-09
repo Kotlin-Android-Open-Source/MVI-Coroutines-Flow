@@ -94,10 +94,13 @@ inline val DependencyHandler.featureMain get() = project(":feature-main")
 inline val DependencyHandler.featureAdd get() = project(":feature-add")
 inline val DependencyHandler.featureSearch get() = project(":feature-search")
 inline val DependencyHandler.mviBase get() = project(":mvi-base")
+inline val DependencyHandler.mviTesting get() = project(":mvi-testing")
 
-fun DependencyHandler.addUnitTest() {
-  add("testImplementation", deps.test.junit)
-  add("testImplementation", deps.test.mockk)
-  add("testImplementation", deps.test.kotlinJUnit)
-  add("testImplementation", deps.coroutines.test)
+fun DependencyHandler.addUnitTest(testImplementation: Boolean = true) {
+  val configName = if (testImplementation) "testImplementation" else "implementation"
+
+  add(configName, deps.test.junit)
+  add(configName, deps.test.mockk)
+  add(configName, deps.test.kotlinJUnit)
+  add(configName, deps.coroutines.test)
 }

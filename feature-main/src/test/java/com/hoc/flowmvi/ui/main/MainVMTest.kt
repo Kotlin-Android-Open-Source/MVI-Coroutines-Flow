@@ -1,37 +1,23 @@
 package com.hoc.flowmvi.ui.main
 
+import com.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
-import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.flow.flowOf
+import org.junit.Test
 import java.io.IOException
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicReference
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertContentEquals
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import java.util.concurrent.TimeUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.toDuration
 
 val users = listOf(
   User(
@@ -59,128 +45,87 @@ val users = listOf(
 
 internal val usersItems = users.map { UserItem(it) }
 
+@ExperimentalTime
 @ExperimentalCoroutinesApi
 @FlowPreview
-class MainVMTest {
-  private val testDispatcher = TestCoroutineDispatcher()
-
+class MainVMTest : BaseMviViewModelTest<
+  ViewIntent,
+  ViewState,
+  SingleEvent,
+  MainVM
+  >() {
   private lateinit var vm: MainVM
   private val getUserUseCase: GetUsersUseCase = mockk(relaxed = true)
   private val refreshGetUsersUseCase: RefreshGetUsersUseCase = mockk(relaxed = true)
   private val removeUser: RemoveUserUseCase = mockk(relaxed = true)
 
-  @BeforeTest
-  fun setup() {
-    Dispatchers.setMain(testDispatcher)
+  override fun setup() {
+    super.setup()
 
     vm = MainVM(
       getUsersUseCase = getUserUseCase,
       refreshGetUsers = refreshGetUsersUseCase,
       removeUser = removeUser,
     )
+    println("DONE setup $vm")
   }
 
-  @AfterTest
-  fun teardown() {
-    Dispatchers.resetMain()
-    testDispatcher.cleanupTestCoroutines()
-    clearAllMocks()
+  override fun tearDown() {
+    super.tearDown()
+    println("DONE tearDown")
   }
 
   @Test
-  fun `ViewIntent_Initial returns success`() = testDispatcher.runBlockingTest {
-    every { getUserUseCase() } returns flow {
-      delay(100)
-      emit(users)
-    }
-
-    val hasEvent = AtomicBoolean(false)
-    val eventJob = launch(start = CoroutineStart.UNDISPATCHED) {
-      vm.singleEvent.collect {
-        hasEvent.set(true)
+  fun `ViewIntent_Initial returns success`() = test(
+    vmProducer = {
+      every { getUserUseCase() } returns flow {
+        delay(50)
+        emit(users)
       }
-    }
-
-    launch(start = CoroutineStart.UNDISPATCHED) {
-      vm.viewState
-        .take(2)
-        .toList()
-        .let {
-          assertContentEquals(
-            it,
-            listOf(
-              ViewState.initial(),
-              ViewState(
-                userItems = usersItems,
-                isLoading = false,
-                error = null,
-                isRefreshing = false
-              )
-            )
-          )
-        }
-
-      eventJob.cancel()
-      assertFalse(hasEvent.get())
-      verify(exactly = 1) { getUserUseCase() }
-
-      print("DONE")
-      cancel()
-    }
-
-    vm.processIntent(ViewIntent.Initial)
-  }
+      vm
+    },
+    intents = flowOf(ViewIntent.Initial),
+    expectedStates = listOf(
+      ViewState.initial(),
+      ViewState(
+        userItems = usersItems,
+        isLoading = false,
+        error = null,
+        isRefreshing = false
+      )
+    ),
+    expectedEvents = emptyList(),
+    delayAfterDispatchingIntents = 100.toDuration(TimeUnit.MILLISECONDS)
+  ) { verify(exactly = 1) { getUserUseCase() } }
 
   @Test
-  fun `ViewIntent_Initial returns failure`() = testDispatcher.runBlockingTest {
+  fun `ViewIntent_Initial returns failure`() {
     val ioException = IOException()
 
-    every { getUserUseCase() } returns flow {
-      delay(100)
-      throw ioException
-    }
-
-    val events = AtomicReference(emptyList<SingleEvent>())
-    val eventJob = launch(start = CoroutineStart.UNDISPATCHED) {
-      vm.singleEvent.collect { e ->
-        events.updateAndGet { it + e }
-      }
-    }
-
-    launch(start = CoroutineStart.UNDISPATCHED) {
-      vm.viewState
-        .take(2)
-        .toList()
-        .let {
-          assertContentEquals(
-            it,
-            listOf(
-              ViewState.initial(),
-              ViewState(
-                userItems = emptyList(),
-                isLoading = false,
-                error = ioException,
-                isRefreshing = false
-              )
-            )
-          )
+    test(
+      vmProducer = {
+        every { getUserUseCase() } returns flow {
+          delay(100)
+          throw ioException
         }
-
-      eventJob.cancel()
-
-      assertEquals(
-        events.get().single(),
+        vm
+      },
+      intents = flowOf(ViewIntent.Initial),
+      expectedStates = listOf(
+        ViewState.initial(),
+        ViewState(
+          userItems = emptyList(),
+          isLoading = false,
+          error = ioException,
+          isRefreshing = false
+        )
+      ),
+      expectedEvents = listOf(
         SingleEvent.GetUsersError(
           error = ioException,
         ),
-      )
-
-      verify(exactly = 1) { getUserUseCase() }
-
-      print("DONE")
-      cancel()
-    }
-
-    vm.processIntent(ViewIntent.Initial)
+      ),
+      delayAfterDispatchingIntents = 100.toDuration(TimeUnit.MILLISECONDS)
+    ) { verify(exactly = 1) { getUserUseCase() } }
   }
 }

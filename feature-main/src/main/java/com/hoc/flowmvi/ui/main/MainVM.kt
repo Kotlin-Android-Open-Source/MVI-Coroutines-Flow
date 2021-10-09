@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.take
 @Suppress("USELESS_CAST")
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal class MainVM(
+class MainVM(
   private val getUsersUseCase: GetUsersUseCase,
   private val refreshGetUsers: RefreshGetUsersUseCase,
   private val removeUser: RemoveUserUseCase,

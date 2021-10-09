@@ -68,4 +68,5 @@ dependencies {
   implementation(deps.flowExt)
 
   addUnitTest()
+  testImplementation(mviTesting)
 }
