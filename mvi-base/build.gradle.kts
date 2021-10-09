@@ -33,6 +33,7 @@ android {
 
 dependencies {
   implementation(deps.lifecycle.viewModelKtx)
+  implementation(deps.coroutines.core)
 
   addUnitTest()
 }

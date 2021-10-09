@@ -17,6 +17,7 @@ import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.navigator.Navigator
 import com.hoc.flowmvi.core.refreshes
 import com.hoc.flowmvi.core.toast
+import com.hoc.flowmvi.mvi_base.MviView
 import com.hoc.flowmvi.ui.main.databinding.ActivityMainBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,7 +35,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity :
+  AppCompatActivity(R.layout.activity_main),
+  MviView<ViewIntent, ViewState, SingleEvent> {
   private val mainVM by viewModel<MainVM>()
   private val navigator by inject<Navigator>()
 
@@ -93,20 +96,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
       .collectIn(this) { handleSingleEvent(it) }
 
     // pass view intent to view model
-    intents()
+    viewIntents()
       .onEach { mainVM.processIntent(it) }
       .launchIn(lifecycleScope)
   }
 
-  @Suppress("NOTHING_TO_INLINE")
-  private inline fun intents(): Flow<ViewIntent> = merge(
+  override fun viewIntents(): Flow<ViewIntent> = merge(
     flowOf(ViewIntent.Initial),
     mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
     mainBinding.retryButton.clicks().map { ViewIntent.Retry },
     removeChannel.consumeAsFlow().map { ViewIntent.RemoveUser(it) }
   )
 
-  private fun handleSingleEvent(event: SingleEvent) {
+  override fun handleSingleEvent(event: SingleEvent) {
     Log.d("MainActivity", "handleSingleEvent $event")
     return when (event) {
       SingleEvent.Refresh.Success -> toast("Refresh success")
@@ -117,7 +119,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
   }
 
-  private fun render(viewState: ViewState) {
+  override fun render(viewState: ViewState) {
     Log.d("MainActivity", "render $viewState")
 
     userAdapter.submitList(viewState.userItems)
