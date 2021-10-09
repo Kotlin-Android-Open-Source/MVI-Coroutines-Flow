@@ -21,8 +21,11 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Run Debug Unit Test
+      - name: Run Android Debug Unit Test
         run: ./gradlew jacocoTestReportDebug --warning-mode all --stacktrace
+
+      - name: Run Java/Kotlin Unit Test
+        run: ./gradlew jacocoTestReport --warning-mode all --stacktrace
 
       - name: Upload Test Report
         uses: codecov/codecov-action@v2.1.0
