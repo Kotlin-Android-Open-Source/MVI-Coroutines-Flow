@@ -121,40 +121,38 @@ class MainVMTest : BaseMviViewModelTest<
   }
 
   @Test
-  fun test_withRefreshIntentWhenSuccess_isNotRefreshing() {
-    test(
-      vmProducer = {
-        every { getUserUseCase() } returns flowOf(USERS)
-        coEvery { refreshGetUsersUseCase() } returns Unit
-        vm
-      },
-      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
-      intents = flowOf(ViewIntent.Refresh),
-      expectedStates = listOf(
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false
-        ),
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = true,
-        ),
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false
-        ),
+  fun test_withRefreshIntentWhenSuccess_isNotRefreshing() = test(
+    vmProducer = {
+      every { getUserUseCase() } returns flowOf(USERS)
+      coEvery { refreshGetUsersUseCase() } returns Unit
+      vm
+    },
+    intentsBeforeCollecting = flowOf(ViewIntent.Initial),
+    intents = flowOf(ViewIntent.Refresh),
+    expectedStates = listOf(
+      ViewState(
+        userItems = USER_ITEMS,
+        isLoading = false,
+        error = null,
+        isRefreshing = false
       ),
-      expectedEvents = listOf(
-        SingleEvent.Refresh.Success
+      ViewState(
+        userItems = USER_ITEMS,
+        isLoading = false,
+        error = null,
+        isRefreshing = true,
       ),
-    ) { coVerify(exactly = 1) { refreshGetUsersUseCase() } }
-  }
+      ViewState(
+        userItems = USER_ITEMS,
+        isLoading = false,
+        error = null,
+        isRefreshing = false
+      ),
+    ),
+    expectedEvents = listOf(
+      SingleEvent.Refresh.Success
+    ),
+  ) { coVerify(exactly = 1) { refreshGetUsersUseCase() } }
 
   @Test
   fun test_withRefreshIntentWhenFailure_isNotRefreshing() {
