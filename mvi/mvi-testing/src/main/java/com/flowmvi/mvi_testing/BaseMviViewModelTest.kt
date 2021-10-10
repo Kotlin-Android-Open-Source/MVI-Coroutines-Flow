@@ -47,9 +47,12 @@ abstract class BaseMviViewModelTest<
     expectedStates: List<S>,
     expectedEvents: List<E>,
     delayAfterDispatchingIntents: Duration = Duration.milliseconds(50),
+    intentsBeforeCollecting: Flow<I>? = null,
     otherAssertions: (suspend () -> Unit)? = null,
   ) = testDispatcher.runBlockingTest {
     val vm = vmProducer()
+    intentsBeforeCollecting?.collect { vm.processIntent(it) }
+
     val states = mutableListOf<S>()
     val events = mutableListOf<E>()
 
@@ -58,6 +61,9 @@ abstract class BaseMviViewModelTest<
 
     intents.collect { vm.processIntent(it) }
     delay(delayAfterDispatchingIntents)
+
+    println(states)
+    println(events)
 
     assertEquals(expectedStates.size, states.size)
     assertContentEquals(

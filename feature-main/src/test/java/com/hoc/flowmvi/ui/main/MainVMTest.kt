@@ -5,16 +5,18 @@ import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import java.io.IOException
-import kotlin.test.Test
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import java.io.IOException
+import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
 private val USERS = listOf(
   User(
@@ -73,7 +75,7 @@ class MainVMTest : BaseMviViewModelTest<
   }
 
   @Test
-  fun `ViewIntent_Initial returns success`() = test(
+  fun test_withInitialIntentWhenSuccess_returnsUserItems() = test(
     vmProducer = {
       every { getUserUseCase() } returns flowOf(USERS)
       vm
@@ -92,7 +94,7 @@ class MainVMTest : BaseMviViewModelTest<
   ) { verify(exactly = 1) { getUserUseCase() } }
 
   @Test
-  fun `ViewIntent_Initial returns failure`() {
+  fun test_withInitialIntentWhenError_returnsErrorState() {
     val ioException = IOException()
 
     test(
@@ -119,12 +121,76 @@ class MainVMTest : BaseMviViewModelTest<
   }
 
   @Test
-  fun `ViewIntent_Refresh returns success`() {
+  fun test_withRefreshIntentWhenSuccess_isNotRefreshing() {
     test(
-      vmProducer = { vm },
+      vmProducer = {
+        every { getUserUseCase() } returns flowOf(USERS)
+        coEvery { refreshGetUsersUseCase() } returns Unit
+        vm
+      },
+      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
       intents = flowOf(ViewIntent.Refresh),
-      expectedStates = listOf(ViewState.initial()),
-      expectedEvents = emptyList(),
-    )
+      expectedStates = listOf(
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false
+        ),
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = true,
+        ),
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false
+        ),
+      ),
+      expectedEvents = listOf(
+        SingleEvent.Refresh.Success
+      ),
+    ) { coVerify(exactly = 1) { refreshGetUsersUseCase() } }
+  }
+
+  @Test
+  fun test_withRefreshIntentWhenFailure_isNotRefreshing() {
+    val ioException = IOException()
+
+    test(
+      vmProducer = {
+        coEvery { getUserUseCase() } returns flowOf(USERS)
+        coEvery { refreshGetUsersUseCase() } throws ioException
+        vm
+      },
+      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
+      intents = flowOf(ViewIntent.Refresh),
+      expectedStates = listOf(
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false
+        ),
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = true,
+        ),
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false
+        ),
+      ),
+      expectedEvents = listOf(
+        SingleEvent.Refresh.Failure(ioException)
+      ),
+    ) { coVerify(exactly = 1) { refreshGetUsersUseCase() } }
   }
 }
