@@ -12,6 +12,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import java.io.IOException
@@ -231,5 +232,19 @@ class MainVMTest : BaseMviViewModelTest<
       ),
       delayAfterDispatchingIntents = Duration.milliseconds(100),
     ) { coVerify(exactly = 0) { refreshGetUsersUseCase() } }
+  }
+
+  @Test
+  fun test_withRetryIntent_ignoredWhenHavingNoError() {
+    test(
+      vmProducer = {
+        every { getUserUseCase() } returns emptyFlow()
+        vm
+      },
+      intents = flowOf(ViewIntent.Retry),
+      expectedStates = listOf(ViewState.initial()),
+      expectedEvents = emptyList(),
+      delayAfterDispatchingIntents = Duration.milliseconds(100),
+    ) { coVerify(exactly = 0) { getUserUseCase() } }
   }
 }
