@@ -54,6 +54,7 @@ dependencies {
 
   implementation(deps.coroutines.core)
   implementation(deps.koin.android)
+  implementation(deps.arrow.core)
 
   implementation(deps.viewBindingDelegate)
   implementation(deps.flowExt)

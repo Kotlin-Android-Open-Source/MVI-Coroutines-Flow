@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.ui.main
 
 import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
@@ -41,7 +42,7 @@ sealed interface ViewIntent : MviIntent {
 data class ViewState(
   val userItems: List<UserItem>,
   val isLoading: Boolean,
-  val error: Throwable?,
+  val error: UserError?,
   val isRefreshing: Boolean
 ) : MviViewState {
   companion object {
@@ -78,7 +79,7 @@ internal sealed interface PartialChange {
 
     object Loading : GetUser()
     data class Data(val users: List<UserItem>) : GetUser()
-    data class Error(val error: Throwable) : GetUser()
+    data class Error(val error: UserError) : GetUser()
   }
 
   sealed class Refresh : PartialChange {
@@ -92,12 +93,12 @@ internal sealed interface PartialChange {
 
     object Loading : Refresh()
     object Success : Refresh()
-    data class Failure(val error: Throwable) : Refresh()
+    data class Failure(val error: UserError) : Refresh()
   }
 
   sealed class RemoveUser : PartialChange {
     data class Success(val user: UserItem) : RemoveUser()
-    data class Failure(val user: UserItem, val error: Throwable) : RemoveUser()
+    data class Failure(val user: UserItem, val error: UserError) : RemoveUser()
 
     override fun reduce(vs: ViewState) = vs
   }
@@ -106,13 +107,13 @@ internal sealed interface PartialChange {
 sealed interface SingleEvent : MviSingleEvent {
   sealed interface Refresh : SingleEvent {
     object Success : Refresh
-    data class Failure(val error: Throwable) : Refresh
+    data class Failure(val error: UserError) : Refresh
   }
 
-  data class GetUsersError(val error: Throwable) : SingleEvent
+  data class GetUsersError(val error: UserError) : SingleEvent
 
   sealed interface RemoveUser : SingleEvent {
     data class Success(val user: UserItem) : RemoveUser
-    data class Failure(val user: UserItem, val error: Throwable) : RemoveUser
+    data class Failure(val user: UserItem, val error: UserError) : RemoveUser
   }
 }

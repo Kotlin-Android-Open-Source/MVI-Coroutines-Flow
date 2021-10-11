@@ -59,15 +59,18 @@ internal class SearchVM(
   private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val executeSearch: suspend (String) -> Flow<PartialStateChange> = { query: String ->
       flow { emit(searchUsersUseCase(query)) }
-        .map {
-          @Suppress("USELESS_CAST")
-          PartialStateChange.Success(
-            it.map(UserItem::from),
-            query,
-          ) as PartialStateChange
+        .map { result ->
+          result.fold(
+            ifLeft = { PartialStateChange.Failure(it, query) },
+            ifRight = {
+              PartialStateChange.Success(
+                it.map(UserItem::from),
+                query
+              )
+            }
+          )
         }
         .onStart { emit(PartialStateChange.Loading) }
-        .catch { emit(PartialStateChange.Failure(it, query)) }
     }
 
     val queryFlow = filterIsInstance<ViewIntent.Search>()

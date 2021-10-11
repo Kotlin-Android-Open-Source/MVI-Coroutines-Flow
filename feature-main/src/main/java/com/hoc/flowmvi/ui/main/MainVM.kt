@@ -35,7 +35,6 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
 
-@Suppress("USELESS_CAST")
 @FlowPreview
 @ExperimentalCoroutinesApi
 class MainVM(
@@ -90,19 +89,24 @@ class MainVM(
   private fun Flow<ViewIntent>.toPartialChangeFlow(): Flow<PartialChange> =
     shareIn(viewModelScope, SharingStarted.WhileSubscribed()).run {
       val getUserChanges = defer(getUsersUseCase::invoke)
-        .onEach { Log.d("###", "[MAIN_VM] Emit users.size=${it.size}") }
-        .map {
-          val items = it.map(::UserItem)
-          PartialChange.GetUser.Data(items) as PartialChange.GetUser
+        .onEach { either -> Log.d("###", "[MAIN_VM] Emit users.size=${either.map { it.size }}") }
+        .map { result ->
+          result.fold(
+            ifLeft = { PartialChange.GetUser.Error(it) },
+            ifRight = { PartialChange.GetUser.Data(it.map(::UserItem)) }
+          )
         }
         .onStart { emit(PartialChange.GetUser.Loading) }
-        .catch { emit(PartialChange.GetUser.Error(it)) }
 
       val refreshChanges = refreshGetUsers::invoke
         .asFlow()
-        .map { PartialChange.Refresh.Success as PartialChange.Refresh }
+        .map { result ->
+          result.fold(
+            ifLeft = { PartialChange.Refresh.Failure(it) },
+            ifRight = { PartialChange.Refresh.Success }
+          )
+        }
         .onStart { emit(PartialChange.Refresh.Loading) }
-        .catch { emit(PartialChange.Refresh.Failure(it)) }
 
       return merge(
         filterIsInstance<ViewIntent.Initial>()
@@ -126,8 +130,12 @@ class MainVM(
                 .let { removeUser(it) }
                 .let { emit(it) }
             }
-              .map { PartialChange.RemoveUser.Success(userItem) as PartialChange.RemoveUser }
-              .catch { emit(PartialChange.RemoveUser.Failure(userItem, it)) }
+              .map { result ->
+                result.fold(
+                  ifLeft = { PartialChange.RemoveUser.Failure(userItem, it) },
+                  ifRight = { PartialChange.RemoveUser.Success(userItem) },
+                )
+              }
           }
       )
     }

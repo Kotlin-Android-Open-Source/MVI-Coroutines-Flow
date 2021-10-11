@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.ui.add
 
 import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.repository.UserError
 
 internal enum class ValidationError {
   INVALID_EMAIL_ADDRESS,
@@ -61,7 +62,7 @@ internal sealed interface PartialStateChange {
   sealed class AddUser : PartialStateChange {
     object Loading : AddUser()
     data class AddUserSuccess(val user: User) : AddUser()
-    data class AddUserFailure(val user: User, val throwable: Throwable) : AddUser()
+    data class AddUserFailure(val user: User, val error: UserError) : AddUser()
 
     override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
@@ -103,5 +104,5 @@ internal sealed interface PartialStateChange {
 
 internal sealed interface SingleEvent {
   data class AddUserSuccess(val user: User) : SingleEvent
-  data class AddUserFailure(val user: User, val throwable: Throwable) : SingleEvent
+  data class AddUserFailure(val user: User, val error: UserError) : SingleEvent
 }
