@@ -7,14 +7,17 @@ import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.update
 import java.io.IOException
 import kotlin.test.Test
 import kotlin.time.Duration
@@ -326,5 +329,93 @@ class MainVMTest : BaseMviViewModelTest<
         SingleEvent.GetUsersError(ioException2),
       ),
     ) { verify(exactly = 2) { getUserUseCase() } }
+  }
+
+  @Test
+  fun test_withRemoveUserIntentWhenSuccess_returnsUserItemsExceptRemovedUserItems() {
+    val user1 = USERS[0]
+    val user2 = USERS[1]
+    val item1 = USER_ITEMS[0]
+    val item2 = USER_ITEMS[1]
+    val usersFlow = MutableStateFlow(USERS)
+
+    test(
+      vmProducer = {
+        every { getUserUseCase() } returns usersFlow
+        coEvery { removeUser(any()) } coAnswers {
+          usersFlow.update { users ->
+            users.filter { it.id != firstArg<User>().id }
+          }
+        }
+        vm
+      },
+      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
+      intents = flowOf(
+        ViewIntent.RemoveUser(item1),
+        ViewIntent.RemoveUser(item2),
+      ),
+      expectedStates = listOf(
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false,
+        ),
+        ViewState(
+          userItems = USER_ITEMS.toMutableList().apply { remove(item1) },
+          isLoading = false,
+          error = null,
+          isRefreshing = false,
+        ),
+        ViewState(
+          userItems = USER_ITEMS.toMutableList().apply {
+            remove(item1)
+            remove(item2)
+          },
+          isLoading = false,
+          error = null,
+          isRefreshing = false,
+        ),
+      ),
+      expectedEvents = listOf(
+        SingleEvent.RemoveUser.Success(item1),
+        SingleEvent.RemoveUser.Success(item2),
+      )
+    ) {
+      coVerifySequence {
+        removeUser(user1)
+        removeUser(user2)
+      }
+    }
+  }
+
+  @Test
+  fun test_withRemoveUserIntentWhenError_stateDoNotChange() {
+    val user = USERS[0]
+    val item = USER_ITEMS[0]
+    val ioException = IOException()
+
+    test(
+      vmProducer = {
+        every { getUserUseCase() } returns flowOf(USERS)
+        coEvery { removeUser(any()) } throws ioException
+        vm
+      },
+      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
+      intents = flowOf(ViewIntent.RemoveUser(item)),
+      expectedStates = listOf(
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false,
+        ),
+      ),
+      expectedEvents = listOf(
+        SingleEvent.RemoveUser.Failure(item, ioException),
+      )
+    ) {
+      coVerify(exactly = 1) { removeUser(user) }
+    }
   }
 }
