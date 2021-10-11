@@ -23,32 +23,6 @@ import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-private val USERS = listOf(
-  User(
-    id = "1",
-    email = "email1@gmail.com",
-    firstName = "first1",
-    lastName = "last1",
-    avatar = "1.png"
-  ),
-  User(
-    id = "2",
-    email = "email1@gmail.com",
-    firstName = "first2",
-    lastName = "last2",
-    avatar = "2.png"
-  ),
-  User(
-    id = "3",
-    email = "email1@gmail.com",
-    firstName = "first3",
-    lastName = "last3",
-    avatar = "3.png"
-  ),
-)
-
-private val USER_ITEMS = USERS.map(::UserItem)
-
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 @FlowPreview

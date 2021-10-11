@@ -68,16 +68,18 @@ abstract class BaseMviViewModelTest<
       println(events)
     }
 
-    assertEquals(expectedStates.size, states.size)
+    assertEquals(expectedStates.size, states.size, "States size")
     assertContentEquals(
       expectedStates,
       states,
+      "States content"
     )
 
-    assertEquals(expectedEvents.size, events.size)
+    assertEquals(expectedEvents.size, events.size, "Events size")
     assertContentEquals(
       expectedEvents,
       events,
+      "Evens content",
     )
 
     otherAssertions?.invoke()
