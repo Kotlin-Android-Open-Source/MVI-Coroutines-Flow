@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import java.io.IOException
 import kotlin.test.Test
+import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 private val USERS = listOf(
@@ -190,5 +191,19 @@ class MainVMTest : BaseMviViewModelTest<
         SingleEvent.Refresh.Failure(ioException)
       ),
     ) { coVerify(exactly = 1) { refreshGetUsersUseCase() } }
+  }
+
+  @Test
+  fun test_withRefreshIntent_ignoredWhenIsLoading() {
+    test(
+      vmProducer = {
+        coEvery { refreshGetUsersUseCase() } returns Unit
+        vm
+      },
+      intents = flowOf(ViewIntent.Refresh),
+      expectedStates = listOf(ViewState.initial()),
+      expectedEvents = emptyList(),
+      delayAfterDispatchingIntents = Duration.milliseconds(100),
+    ) { coVerify(exactly = 0) { refreshGetUsersUseCase() } }
   }
 }
