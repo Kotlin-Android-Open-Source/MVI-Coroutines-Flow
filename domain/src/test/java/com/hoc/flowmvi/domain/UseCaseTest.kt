@@ -3,6 +3,10 @@ package com.hoc.flowmvi.domain
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -12,6 +16,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
+import java.io.IOException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -46,6 +51,8 @@ class UseCaseTest {
 
   private val userRepository: UserRepository = mockk(relaxed = true)
   private val getUsersUseCase: GetUsersUseCase = GetUsersUseCase(userRepository)
+  private val refreshUseCase: RefreshGetUsersUseCase = RefreshGetUsersUseCase(userRepository)
+  private val removeUserUseCase: RemoveUserUseCase = RemoveUserUseCase(userRepository)
 
   @Test
   fun test_getUsersUseCase_whenSuccess_emitsUsers() = testDispatcher.runBlockingTest {
@@ -65,5 +72,43 @@ class UseCaseTest {
 
     verify { userRepository.getUsers() }
     assertFailsWith<Exception> { result.first() }
+  }
+
+  @Test
+  fun test_refreshUseCase_whenSuccess_returnsUnit() = testDispatcher.runBlockingTest {
+    coEvery { userRepository.refresh() } returns Unit
+
+    val result = refreshUseCase()
+
+    coVerify { userRepository.refresh() }
+    assertEquals(Unit, result)
+  }
+
+  @Test
+  fun test_refreshUseCase_whenError_throwsError() = testDispatcher.runBlockingTest {
+    coEvery { userRepository.refresh() } throws IOException()
+
+    assertFailsWith<IOException> { refreshUseCase() }
+
+    coVerify { userRepository.refresh() }
+  }
+
+  @Test
+  fun test_removeUserUseCase_whenSuccess_returnsUnit() = testDispatcher.runBlockingTest {
+    coEvery { userRepository.remove(any()) } returns Unit
+
+    val result = removeUserUseCase(USERS[0])
+
+    coVerify { userRepository.remove(USERS[0]) }
+    assertEquals(Unit, result)
+  }
+
+  @Test
+  fun test_removeUserUseCase_whenError_throwsError() = testDispatcher.runBlockingTest {
+    coEvery { userRepository.remove(any()) } throws IOException()
+
+    assertFailsWith<IOException> { removeUserUseCase(USERS[0]) }
+
+    coVerify { userRepository.remove(USERS[0]) }
   }
 }
