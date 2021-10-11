@@ -2,6 +2,7 @@ package com.hoc.flowmvi.domain
 
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserRepository
+import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
@@ -53,6 +54,7 @@ class UseCaseTest {
   private val getUsersUseCase: GetUsersUseCase = GetUsersUseCase(userRepository)
   private val refreshUseCase: RefreshGetUsersUseCase = RefreshGetUsersUseCase(userRepository)
   private val removeUserUseCase: RemoveUserUseCase = RemoveUserUseCase(userRepository)
+  private val addUserUseCase: AddUserUseCase = AddUserUseCase(userRepository)
 
   @Test
   fun test_getUsersUseCase_whenSuccess_emitsUsers() = testDispatcher.runBlockingTest {
@@ -110,5 +112,24 @@ class UseCaseTest {
     assertFailsWith<IOException> { removeUserUseCase(USERS[0]) }
 
     coVerify { userRepository.remove(USERS[0]) }
+  }
+
+  @Test
+  fun test_addUserUseCase_whenSuccess_returnsUnit() = testDispatcher.runBlockingTest {
+    coEvery { userRepository.add(any()) } returns Unit
+
+    val result = addUserUseCase(USERS[0])
+
+    coVerify { userRepository.add(USERS[0]) }
+    assertEquals(Unit, result)
+  }
+
+  @Test
+  fun test_addUserUseCase_whenError_throwsError() = testDispatcher.runBlockingTest {
+    coEvery { userRepository.add(any()) } throws IOException()
+
+    assertFailsWith<IOException> { addUserUseCase(USERS[0]) }
+
+    coVerify { userRepository.add(USERS[0]) }
   }
 }
