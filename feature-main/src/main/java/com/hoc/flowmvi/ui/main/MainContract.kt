@@ -1,8 +1,11 @@
 package com.hoc.flowmvi.ui.main
 
 import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.mvi_base.MviIntent
+import com.hoc.flowmvi.mvi_base.MviSingleEvent
+import com.hoc.flowmvi.mvi_base.MviViewState
 
-internal data class UserItem(
+data class UserItem(
   val id: String,
   val email: String,
   val avatar: String,
@@ -28,19 +31,19 @@ internal data class UserItem(
   )
 }
 
-internal sealed interface ViewIntent {
+sealed interface ViewIntent : MviIntent {
   object Initial : ViewIntent
   object Refresh : ViewIntent
   object Retry : ViewIntent
   data class RemoveUser(val user: UserItem) : ViewIntent
 }
 
-internal data class ViewState(
+data class ViewState(
   val userItems: List<UserItem>,
   val isLoading: Boolean,
   val error: Throwable?,
   val isRefreshing: Boolean
-) {
+) : MviViewState {
   companion object {
     fun initial() = ViewState(
       userItems = emptyList(),
@@ -100,7 +103,7 @@ internal sealed interface PartialChange {
   }
 }
 
-internal sealed interface SingleEvent {
+sealed interface SingleEvent : MviSingleEvent {
   sealed interface Refresh : SingleEvent {
     object Success : Refresh
     data class Failure(val error: Throwable) : Refresh

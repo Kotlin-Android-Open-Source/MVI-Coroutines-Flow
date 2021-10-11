@@ -13,10 +13,11 @@ android {
     targetSdk = appConfig.targetSdkVersion
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles("consumer-rules.pro")
   }
 
   buildTypes {
-    getByName("release") {
+    release {
       isMinifyEnabled = true
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -39,8 +40,9 @@ android {
 }
 
 dependencies {
-  api(domain)
-  api(core)
+  implementation(domain)
+  implementation(core)
+  implementation(mviBase)
 
   implementation(deps.androidx.appCompat)
   implementation(deps.androidx.coreKtx)

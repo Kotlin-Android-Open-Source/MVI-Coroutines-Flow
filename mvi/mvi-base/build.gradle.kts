@@ -17,38 +17,23 @@ android {
 
   buildTypes {
     release {
-      isMinifyEnabled = true
+      isMinifyEnabled = false
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"
       )
     }
   }
-
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
-
-  testOptions {
-    unitTests.isIncludeAndroidResources = true
-    unitTests.isReturnDefaultValues = true
-  }
 }
 
 dependencies {
-  implementation(core)
-  implementation(domain)
-
+  implementation(deps.lifecycle.viewModelKtx)
   implementation(deps.coroutines.core)
-
-  implementation(deps.squareup.retrofit)
-  implementation(deps.squareup.moshiKotlin)
-  implementation(deps.squareup.converterMoshi)
-  implementation(deps.squareup.loggingInterceptor)
-
-  implementation(deps.koin.core)
 
   addUnitTest()
 }

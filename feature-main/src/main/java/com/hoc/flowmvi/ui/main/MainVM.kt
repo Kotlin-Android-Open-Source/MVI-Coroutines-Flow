@@ -3,9 +3,11 @@ package com.hoc.flowmvi.ui.main
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hoc.flowmvi.core.unit
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
+import com.hoc.flowmvi.mvi_base.MviViewModel
 import com.hoc081098.flowext.flatMapFirst
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -36,18 +38,17 @@ import kotlinx.coroutines.flow.take
 @Suppress("USELESS_CAST")
 @FlowPreview
 @ExperimentalCoroutinesApi
-internal class MainVM(
+class MainVM(
   private val getUsersUseCase: GetUsersUseCase,
   private val refreshGetUsers: RefreshGetUsersUseCase,
   private val removeUser: RemoveUserUseCase,
-) : ViewModel() {
+) : ViewModel(), MviViewModel<ViewIntent, ViewState, SingleEvent> {
   private val _eventChannel = Channel<SingleEvent>(Channel.BUFFERED)
   private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
 
-  val viewState: StateFlow<ViewState>
-  val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
-
-  fun processIntent(intent: ViewIntent) = _intentFlow.tryEmit(intent)
+  override val viewState: StateFlow<ViewState>
+  override val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
+  override fun processIntent(intent: ViewIntent) = _intentFlow.tryEmit(intent).unit
 
   init {
     val initialVS = ViewState.initial()
