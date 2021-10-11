@@ -286,4 +286,45 @@ class MainVMTest : BaseMviViewModelTest<
       ),
     ) { verify(exactly = 2) { getUserUseCase() } }
   }
+
+  @Test
+  fun test_withRetryIntentWhenSuccess_returnsErrorState() {
+    val ioException1 = IOException()
+    val ioException2 = IOException()
+    test(
+      vmProducer = {
+        every { getUserUseCase() } returnsMany listOf(
+          flow { throw ioException1 },
+          flow { throw ioException2 },
+        )
+        vm
+      },
+      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
+      intents = flowOf(ViewIntent.Retry),
+      expectedStates = listOf(
+        ViewState(
+          userItems = emptyList(),
+          isLoading = false,
+          error = ioException1,
+          isRefreshing = false,
+        ),
+        ViewState(
+          userItems = emptyList(),
+          isLoading = true,
+          error = null,
+          isRefreshing = false,
+        ),
+        ViewState(
+          userItems = emptyList(),
+          isLoading = false,
+          error = ioException2,
+          isRefreshing = false,
+        )
+      ),
+      expectedEvents = listOf(
+        SingleEvent.GetUsersError(ioException1),
+        SingleEvent.GetUsersError(ioException2),
+      ),
+    ) { verify(exactly = 2) { getUserUseCase() } }
+  }
 }
