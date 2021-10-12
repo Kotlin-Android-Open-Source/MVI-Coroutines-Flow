@@ -1,7 +1,6 @@
 package com.hoc.flowmvi.data
 
 import com.hoc.flowmvi.data.mapper.UserDomainToUserBodyMapper
-import com.hoc.flowmvi.data.mapper.UserDomainToUserResponseMapper
 import com.hoc.flowmvi.data.mapper.UserErrorMapper
 import com.hoc.flowmvi.data.mapper.UserResponseToUserDomainMapper
 import com.hoc.flowmvi.data.remote.ErrorResponse
@@ -45,8 +44,6 @@ val dataModule = module {
 
   factory { UserResponseToUserDomainMapper() }
 
-  factory { UserDomainToUserResponseMapper() }
-
   factory { UserDomainToUserBodyMapper() }
 
   factory { get<Moshi>().adapter<ErrorResponse>() }
@@ -58,7 +55,6 @@ val dataModule = module {
       userApiService = get(),
       dispatchers = get(),
       responseToDomain = get<UserResponseToUserDomainMapper>(),
-      domainToResponse = get<UserDomainToUserResponseMapper>(),
       domainToBody = get<UserDomainToUserBodyMapper>(),
       errorMapper = get<UserErrorMapper>(),
     )

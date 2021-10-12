@@ -12,11 +12,13 @@ import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter<ErrorResponse>) :
+internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter<ErrorResponse>) :
   Mapper<Throwable, UserError> {
-  override fun invoke(throwable: Throwable): UserError {
+  override fun invoke(t: Throwable): UserError {
+    t.nonFatalOrThrow()
+
     return runCatching {
-      when (val t = throwable.nonFatalOrThrow()) {
+      when (t) {
         is IOException -> when (t) {
           is UnknownHostException -> UserError.NetworkError
           is SocketTimeoutException -> UserError.NetworkError
@@ -31,7 +33,10 @@ class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter<ErrorRes
             .let { mapResponseError(it) }
         else -> UserError.Unexpected
       }
-    }.getOrElse { UserError.Unexpected }
+    }.getOrElse {
+      t.nonFatalOrThrow()
+      UserError.Unexpected
+    }
   }
 
   @Throws(Throwable::class)

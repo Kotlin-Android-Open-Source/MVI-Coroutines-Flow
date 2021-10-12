@@ -32,7 +32,6 @@ internal class UserRepositoryImpl(
   private val userApiService: UserApiService,
   private val dispatchers: CoroutineDispatchers,
   private val responseToDomain: Mapper<UserResponse, User>,
-  private val domainToResponse: Mapper<User, UserResponse>,
   private val domainToBody: Mapper<User, UserBody>,
   private val errorMapper: Mapper<Throwable, UserError>,
 ) : UserRepository {
@@ -85,7 +84,7 @@ internal class UserRepositoryImpl(
 
   override suspend fun remove(user: User) = Either.catch(errorMapper) {
     withContext(dispatchers.io) {
-      val response = userApiService.remove(domainToResponse(user).id)
+      val response = userApiService.remove(user.id)
       changesFlow.emit(Change.Removed(responseToDomain(response)))
     }
   }
