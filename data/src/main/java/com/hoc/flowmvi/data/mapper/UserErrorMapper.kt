@@ -14,19 +14,19 @@ import java.net.UnknownHostException
 
 internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter<ErrorResponse>) :
   Mapper<Throwable, UserError> {
-  override fun invoke(t: Throwable): UserError {
-    t.nonFatalOrThrow()
+  override fun invoke(throwable: Throwable): UserError {
+    throwable.nonFatalOrThrow()
 
     return runCatching {
-      when (t) {
-        is IOException -> when (t) {
+      when (throwable) {
+        is IOException -> when (throwable) {
           is UnknownHostException -> UserError.NetworkError
           is SocketTimeoutException -> UserError.NetworkError
           is SocketException -> UserError.NetworkError
           else -> UserError.NetworkError
         }
         is HttpException ->
-          t.response()!!
+          throwable.response()!!
             .takeUnless { it.isSuccessful }!!
             .errorBody()!!
             .use(ResponseBody::string)
@@ -34,7 +34,7 @@ internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter
         else -> UserError.Unexpected
       }
     }.getOrElse {
-      t.nonFatalOrThrow()
+      it.nonFatalOrThrow()
       UserError.Unexpected
     }
   }
