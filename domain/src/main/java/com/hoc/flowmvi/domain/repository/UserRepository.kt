@@ -4,16 +4,13 @@ import arrow.core.Either
 import com.hoc.flowmvi.domain.entity.User
 import kotlinx.coroutines.flow.Flow
 
-sealed class UserError(message: String?, cause: Throwable?) : Exception(message, cause) {
-  data class NetworkError(
-    override val cause: Throwable?,
-    override val message: String? = cause?.message,
-  ) : UserError(message, cause)
-
-  data class Unexpected(
-    override val cause: Throwable?,
-    override val message: String? = cause?.message,
-  ) : UserError(message, cause)
+sealed interface UserError {
+  object NetworkError : UserError
+  data class UserNotFound(val id: String) : UserError
+  data class InvalidId(val id: String) : UserError
+  object ValidationFailed : UserError
+  object ServerError : UserError
+  object Unexpected : UserError
 }
 
 interface UserRepository {

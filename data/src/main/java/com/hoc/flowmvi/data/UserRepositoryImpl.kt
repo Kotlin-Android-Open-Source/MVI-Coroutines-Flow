@@ -28,7 +28,7 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-internal class UserRepositoryImpl constructor(
+internal class UserRepositoryImpl(
   private val userApiService: UserApiService,
   private val dispatchers: CoroutineDispatchers,
   private val responseToDomain: Mapper<UserResponse, User>,

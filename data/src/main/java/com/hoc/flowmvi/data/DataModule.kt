@@ -4,10 +4,11 @@ import com.hoc.flowmvi.data.mapper.UserDomainToUserBodyMapper
 import com.hoc.flowmvi.data.mapper.UserDomainToUserResponseMapper
 import com.hoc.flowmvi.data.mapper.UserErrorMapper
 import com.hoc.flowmvi.data.mapper.UserResponseToUserDomainMapper
-import com.hoc.flowmvi.data.remote.ErrorResponseJsonAdapter
+import com.hoc.flowmvi.data.remote.ErrorResponse
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
@@ -22,6 +23,7 @@ import kotlin.time.ExperimentalTime
 
 private const val BASE_URL = "BASE_URL"
 
+@ExperimentalStdlibApi
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 val dataModule = module {
@@ -47,9 +49,9 @@ val dataModule = module {
 
   factory { UserDomainToUserBodyMapper() }
 
-  factory { UserErrorMapper(errorResponseJsonAdapter = get()) }
+  factory { get<Moshi>().adapter<ErrorResponse>() }
 
-  factory { ErrorResponseJsonAdapter(moshi = get()) }
+  factory { UserErrorMapper(errorResponseJsonAdapter = get()) }
 
   single<UserRepository> {
     UserRepositoryImpl(

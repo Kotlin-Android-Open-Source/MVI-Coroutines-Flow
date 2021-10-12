@@ -48,7 +48,6 @@ dependencies {
   implementation(deps.squareup.moshiKotlin)
   implementation(deps.squareup.converterMoshi)
   implementation(deps.squareup.loggingInterceptor)
-  kapt(deps.squareup.moshiCodegen)
 
   implementation(deps.koin.core)
   implementation(deps.arrow.core)

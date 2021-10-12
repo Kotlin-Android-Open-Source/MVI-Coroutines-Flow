@@ -171,8 +171,7 @@ internal class AddVM(
       userFormFlow
         .map {
           PartialStateChange.ErrorsChanged(
-            it.fold(::identity) { null }
-              ?: emptySet()
+            it.fold(::identity) { emptySet() }
           )
         },
       addUserChanges,
