@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.data.mapper
 
+import arrow.core.nonFatalOrThrow
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.ErrorResponse
 import com.hoc.flowmvi.domain.repository.UserError
@@ -13,9 +14,9 @@ import java.net.UnknownHostException
 
 class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter<ErrorResponse>) :
   Mapper<Throwable, UserError> {
-  override fun invoke(t: Throwable): UserError {
+  override fun invoke(throwable: Throwable): UserError {
     return runCatching {
-      when (t) {
+      when (val t = throwable.nonFatalOrThrow()) {
         is IOException -> when (t) {
           is UnknownHostException -> UserError.NetworkError
           is SocketTimeoutException -> UserError.NetworkError
@@ -33,7 +34,7 @@ class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter<ErrorRes
     }.getOrElse { UserError.Unexpected }
   }
 
-  @Throws
+  @Throws(Throwable::class)
   private fun mapResponseError(json: String): UserError {
     val errorResponse = errorResponseJsonAdapter.fromJson(json)!!
 
