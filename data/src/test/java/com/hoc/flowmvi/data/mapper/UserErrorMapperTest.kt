@@ -28,7 +28,7 @@ class UserErrorMapperTest {
   private val errorResponseJsonAdapter = moshi.adapter<ErrorResponse>()
   private val errorMapper = UserErrorMapper(errorResponseJsonAdapter)
 
-  private fun getBuildError(error: String, data: Any?) =
+  private fun buildHttpException(error: String, data: Any?) =
     HttpException(
       Response.error<Any>(
         400,
@@ -99,7 +99,7 @@ class UserErrorMapperTest {
     assertEquals(
       UserError.Unexpected,
       errorMapper(
-        getBuildError(
+        buildHttpException(
           "hello",
           mapOf(
             "1" to mapOf(
@@ -120,11 +120,11 @@ class UserErrorMapperTest {
     val id = mapOf("1" to "2")
     assertEquals(
       UserError.Unexpected,
-      errorMapper(getBuildError("invalid-id", id)),
+      errorMapper(buildHttpException("invalid-id", id)),
     )
     assertEquals(
       UserError.Unexpected,
-      errorMapper(getBuildError("user-not-found", id)),
+      errorMapper(buildHttpException("user-not-found", id)),
     )
   }
 
@@ -132,21 +132,21 @@ class UserErrorMapperTest {
   fun test_withHttpException_returnsCorrespondingUserError() {
     assertEquals(
       UserError.ServerError,
-      errorMapper(getBuildError("internal-error", null)),
+      errorMapper(buildHttpException("internal-error", null)),
     )
 
     val id = "id"
     assertEquals(
       UserError.InvalidId(id),
-      errorMapper(getBuildError("invalid-id", id)),
+      errorMapper(buildHttpException("invalid-id", id)),
     )
     assertEquals(
       UserError.UserNotFound(id),
-      errorMapper(getBuildError("user-not-found", id)),
+      errorMapper(buildHttpException("user-not-found", id)),
     )
     assertEquals(
       UserError.ValidationFailed,
-      errorMapper(getBuildError("validation-failed", null)),
+      errorMapper(buildHttpException("validation-failed", null)),
     )
   }
 }
