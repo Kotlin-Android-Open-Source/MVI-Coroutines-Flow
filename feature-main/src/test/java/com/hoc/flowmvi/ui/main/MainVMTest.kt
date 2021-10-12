@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
-import java.io.IOException
 import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -76,7 +75,7 @@ class MainVMTest : BaseMviViewModelTest<
 
   @Test
   fun test_withInitialIntentWhenError_returnsErrorState() {
-    val userError = UserError.NetworkError(IOException())
+    val userError = UserError.NetworkError
 
     test(
       vmProducer = {
@@ -137,7 +136,7 @@ class MainVMTest : BaseMviViewModelTest<
 
   @Test
   fun test_withRefreshIntentWhenFailure_isNotRefreshing() {
-    val userError = UserError.NetworkError(IOException())
+    val userError = UserError.NetworkError
 
     test(
       vmProducer = {
@@ -189,7 +188,7 @@ class MainVMTest : BaseMviViewModelTest<
 
   @Test
   fun test_withRefreshIntent_ignoredWhenHavingError() {
-    val userError = UserError.NetworkError(IOException())
+    val userError = UserError.NetworkError
 
     test(
       vmProducer = {
@@ -230,7 +229,7 @@ class MainVMTest : BaseMviViewModelTest<
 
   @Test
   fun test_withRetryIntentWhenSuccess_returnsUserItems() {
-    val userError = UserError.NetworkError(IOException())
+    val userError = UserError.NetworkError
 
     test(
       vmProducer = {
@@ -270,8 +269,8 @@ class MainVMTest : BaseMviViewModelTest<
 
   @Test
   fun test_withRetryIntentWhenSuccess_returnsErrorState() {
-    val userError1 = UserError.NetworkError(IOException())
-    val userError2 = UserError.NetworkError(IOException())
+    val userError1 = UserError.NetworkError
+    val userError2 = UserError.Unexpected
 
     test(
       vmProducer = {
@@ -375,7 +374,7 @@ class MainVMTest : BaseMviViewModelTest<
   fun test_withRemoveUserIntentWhenError_stateDoNotChange() {
     val user = USERS[0]
     val item = USER_ITEMS[0]
-    val userError = UserError.NetworkError(IOException())
+    val userError = UserError.NetworkError
 
     test(
       vmProducer = {

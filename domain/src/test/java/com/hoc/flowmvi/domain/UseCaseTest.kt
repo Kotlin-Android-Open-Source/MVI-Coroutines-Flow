@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
-import java.io.IOException
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -62,7 +61,7 @@ class UseCaseTest {
   private val addUserUseCase: AddUserUseCase = AddUserUseCase(userRepository)
   private val searchUsersUseCase: SearchUsersUseCase = SearchUsersUseCase(userRepository)
 
-  private val errorLeft = UserError.NetworkError(IOException()).left()
+  private val errorLeft = UserError.NetworkError.left()
 
   @BeforeTest
   fun setup() {
