@@ -5,7 +5,7 @@ import com.hoc.flowmvi.core.navigator.Navigator
 import org.koin.dsl.module
 
 val coreModule = module {
-  single<CoroutineDispatchers> { CoroutineDispatchersImpl() }
+  single<CoroutineDispatchers> { DefaultCoroutineDispatchers() }
 
   single<Navigator> { NavigatorImpl(add = get(), search = get()) }
 }
