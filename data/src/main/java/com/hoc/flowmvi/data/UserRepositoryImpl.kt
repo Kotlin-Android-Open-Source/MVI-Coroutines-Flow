@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
@@ -50,6 +51,7 @@ internal class UserRepositoryImpl(
         times = 3,
         initialDelay = Duration.milliseconds(500),
         factor = 2.0,
+        shouldRetry = { it is IOException }
       ) {
         Log.d("###", "[USER_REPO] Retry times=$it")
         userApiService.getUsers().map(responseToDomain)

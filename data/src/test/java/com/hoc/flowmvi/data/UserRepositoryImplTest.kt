@@ -2,7 +2,7 @@ package com.hoc.flowmvi.data
 
 import arrow.core.identity
 import com.hoc.flowmvi.core.Mapper
-import com.hoc.flowmvi.core.dispatchers.ImmediateDispatchersImpl
+import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
@@ -16,9 +16,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifySequence
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
@@ -81,6 +81,13 @@ private val USERS = listOf(
 )
 
 @ExperimentalCoroutinesApi
+class TestDispatchersImpl(private val testDispatcher: TestCoroutineDispatcher) :
+  CoroutineDispatchers {
+  override val main: CoroutineDispatcher = testDispatcher
+  override val io: CoroutineDispatcher = testDispatcher
+}
+
+@ExperimentalCoroutinesApi
 @ExperimentalTime
 class UserRepositoryImplTest {
   private val testDispatcher = TestCoroutineDispatcher()
@@ -102,7 +109,7 @@ class UserRepositoryImplTest {
 
     repo = UserRepositoryImpl(
       userApiService = userApiService,
-      dispatchers = ImmediateDispatchersImpl(),
+      dispatchers = TestDispatchersImpl(testDispatcher),
       responseToDomain = responseToDomain,
       domainToBody = domainToBody,
       errorMapper = errorMapper
@@ -153,6 +160,5 @@ class UserRepositoryImplTest {
       userApiService,
       errorMapper,
     )
-    cancel()
   }
 }
