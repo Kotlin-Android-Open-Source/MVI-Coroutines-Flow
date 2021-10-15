@@ -3,6 +3,7 @@ package com.hoc.flowmvi.data
 import android.util.Log
 import arrow.core.Either
 import arrow.core.left
+import arrow.core.leftWiden
 import arrow.core.right
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
@@ -74,10 +75,7 @@ internal class UserRepositoryImpl(
       .onEach { Log.d("###", "[USER_REPO] Emit users.size=${it.size} ") }
       .let { emitAll(it) }
   }
-    .map {
-      @Suppress("USELESS_CAST")
-      it.right() as Either<UserError, List<User>>
-    }
+    .map { it.right().leftWiden<UserError, Nothing, List<User>>() }
     .catch { emit(errorMapper(it).left()) }
 
   override suspend fun refresh() = Either.catch(errorMapper) {
