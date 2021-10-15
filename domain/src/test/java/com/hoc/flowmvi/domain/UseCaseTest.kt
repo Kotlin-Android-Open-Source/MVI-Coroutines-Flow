@@ -13,6 +13,7 @@ import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -54,21 +55,29 @@ private val USERS = listOf(
 class UseCaseTest {
   private val testDispatcher = TestCoroutineDispatcher()
 
-  private val userRepository: UserRepository = mockk(relaxed = true)
-  private val getUsersUseCase: GetUsersUseCase = GetUsersUseCase(userRepository)
-  private val refreshUseCase: RefreshGetUsersUseCase = RefreshGetUsersUseCase(userRepository)
-  private val removeUserUseCase: RemoveUserUseCase = RemoveUserUseCase(userRepository)
-  private val addUserUseCase: AddUserUseCase = AddUserUseCase(userRepository)
-  private val searchUsersUseCase: SearchUsersUseCase = SearchUsersUseCase(userRepository)
+  private lateinit var userRepository: UserRepository
+  private lateinit var getUsersUseCase: GetUsersUseCase
+  private lateinit var refreshUseCase: RefreshGetUsersUseCase
+  private lateinit var removeUserUseCase: RemoveUserUseCase
+  private lateinit var addUserUseCase: AddUserUseCase
+  private lateinit var searchUsersUseCase: SearchUsersUseCase
 
   private val errorLeft = UserError.NetworkError.left()
 
   @BeforeTest
   fun setup() {
+    userRepository = mockk()
+
+    getUsersUseCase = GetUsersUseCase(userRepository)
+    refreshUseCase = RefreshGetUsersUseCase(userRepository)
+    removeUserUseCase = RemoveUserUseCase(userRepository)
+    addUserUseCase = AddUserUseCase(userRepository)
+    searchUsersUseCase = SearchUsersUseCase(userRepository)
   }
 
   @AfterTest
   fun tearDown() {
+    confirmVerified(userRepository)
     clearAllMocks()
   }
 

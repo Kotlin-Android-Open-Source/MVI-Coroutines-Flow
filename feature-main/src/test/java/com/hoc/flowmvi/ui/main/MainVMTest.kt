@@ -11,6 +11,7 @@ import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -34,24 +35,32 @@ class MainVMTest : BaseMviViewModelTest<
   MainVM
   >() {
   private lateinit var vm: MainVM
-  private val getUserUseCase: GetUsersUseCase = mockk(relaxed = true)
-  private val refreshGetUsersUseCase: RefreshGetUsersUseCase = mockk(relaxed = true)
-  private val removeUser: RemoveUserUseCase = mockk(relaxed = true)
+  private lateinit var getUserUseCase: GetUsersUseCase
+  private lateinit var refreshGetUsersUseCase: RefreshGetUsersUseCase
+  private lateinit var removeUser: RemoveUserUseCase
 
   override fun setup() {
     super.setup()
+
+    getUserUseCase = mockk()
+    refreshGetUsersUseCase = mockk()
+    removeUser = mockk()
 
     vm = MainVM(
       getUsersUseCase = getUserUseCase,
       refreshGetUsers = refreshGetUsersUseCase,
       removeUser = removeUser,
     )
-    println("DONE setup $vm")
   }
 
   override fun tearDown() {
+    confirmVerified(
+      getUserUseCase,
+      refreshGetUsersUseCase,
+      removeUser,
+    )
+
     super.tearDown()
-    println("DONE tearDown")
   }
 
   @Test
@@ -132,7 +141,10 @@ class MainVMTest : BaseMviViewModelTest<
     expectedEvents = listOf(
       SingleEvent.Refresh.Success
     ),
-  ) { coVerify(exactly = 1) { refreshGetUsersUseCase() } }
+  ) {
+    coVerify(exactly = 1) { getUserUseCase() }
+    coVerify(exactly = 1) { refreshGetUsersUseCase() }
+  }
 
   @Test
   fun test_withRefreshIntentWhenFailure_isNotRefreshing() {
@@ -169,7 +181,10 @@ class MainVMTest : BaseMviViewModelTest<
       expectedEvents = listOf(
         SingleEvent.Refresh.Failure(userError)
       ),
-    ) { coVerify(exactly = 1) { refreshGetUsersUseCase() } }
+    ) {
+      coVerify(exactly = 1) { getUserUseCase() }
+      coVerify(exactly = 1) { refreshGetUsersUseCase() }
+    }
   }
 
   @Test
@@ -210,7 +225,10 @@ class MainVMTest : BaseMviViewModelTest<
         SingleEvent.GetUsersError(userError),
       ),
       delayAfterDispatchingIntents = Duration.milliseconds(100),
-    ) { coVerify(exactly = 0) { refreshGetUsersUseCase() } }
+    ) {
+      coVerify(exactly = 1) { getUserUseCase() }
+      coVerify(exactly = 0) { refreshGetUsersUseCase() }
+    }
   }
 
   @Test
@@ -363,6 +381,7 @@ class MainVMTest : BaseMviViewModelTest<
         SingleEvent.RemoveUser.Success(item2),
       )
     ) {
+      coVerify(exactly = 1) { getUserUseCase() }
       coVerifySequence {
         removeUser(user1)
         removeUser(user2)
@@ -396,6 +415,7 @@ class MainVMTest : BaseMviViewModelTest<
         SingleEvent.RemoveUser.Failure(item, userError),
       )
     ) {
+      coVerify(exactly = 1) { getUserUseCase() }
       coVerify(exactly = 1) { removeUser(user) }
     }
   }

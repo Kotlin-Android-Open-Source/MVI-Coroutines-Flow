@@ -120,6 +120,13 @@ class UserRepositoryImplTest {
   fun tearDown() {
     testDispatcher.cleanupTestCoroutines()
     Dispatchers.resetMain()
+
+    confirmVerified(
+      userApiService,
+      responseToDomain,
+      domainToBody,
+      errorMapper,
+    )
     clearAllMocks()
   }
 
@@ -156,9 +163,5 @@ class UserRepositoryImplTest {
     )
     coVerify(exactly = 3) { userApiService.getUsers() } // retry 3 times
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
-    confirmVerified(
-      userApiService,
-      errorMapper,
-    )
   }
 }
