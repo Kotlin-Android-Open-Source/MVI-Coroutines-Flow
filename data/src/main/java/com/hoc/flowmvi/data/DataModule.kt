@@ -20,7 +20,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import kotlin.time.ExperimentalTime
 
-private const val BASE_URL = "BASE_URL"
+val BASE_URL_QUALIFIER = named("BASE_URL")
 
 @ExperimentalStdlibApi
 @ExperimentalTime
@@ -30,7 +30,7 @@ val dataModule = module {
 
   single {
     provideRetrofit(
-      baseUrl = get(named(BASE_URL)),
+      baseUrl = get(BASE_URL_QUALIFIER),
       moshi = get(),
       client = get()
     )
@@ -40,7 +40,7 @@ val dataModule = module {
 
   single { provideOkHttpClient() }
 
-  factory(named(BASE_URL)) { "https://mvi-coroutines-flow-server.herokuapp.com/" }
+  factory(BASE_URL_QUALIFIER) { "https://mvi-coroutines-flow-server.herokuapp.com/" }
 
   factory { UserResponseToUserDomainMapper() }
 
