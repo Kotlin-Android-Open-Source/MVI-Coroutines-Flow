@@ -39,8 +39,8 @@ internal class UserRepositoryImpl(
 ) : UserRepository {
 
   private sealed class Change {
-    data class Removed(val removed: User) : Change()
-    data class Refreshed(val user: List<User>) : Change()
+    class Removed(val removed: User) : Change()
+    class Refreshed(val user: List<User>) : Change()
     class Added(val user: User) : Change()
   }
 
@@ -94,18 +94,20 @@ internal class UserRepositoryImpl(
       val body = domainToBody(user).copy(avatar = avatarUrls.random())
       val response = userApiService.add(body)
       changesFlow.emit(Change.Added(responseToDomain(response)))
-      delay(400)
+      extraDelay()
     }
   }
 
   override suspend fun search(query: String) = Either.catch(errorMapper) {
     withContext(dispatchers.io) {
-      delay(400)
+      extraDelay()
       userApiService.search(query).map(responseToDomain)
     }
   }
 
-  companion object {
+  private companion object {
+    private suspend inline fun extraDelay() = delay(400)
+
     private val avatarUrls =
       (0 until 100).map { "https://randomuser.me/api/portraits/men/$it.jpg" } +
         (0 until 100).map { "https://randomuser.me/api/portraits/women/$it.jpg" } +
