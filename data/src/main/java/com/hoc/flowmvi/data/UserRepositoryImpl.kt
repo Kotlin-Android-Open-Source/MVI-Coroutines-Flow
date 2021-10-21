@@ -91,7 +91,7 @@ internal class UserRepositoryImpl(
 
   override suspend fun add(user: User) = Either.catch(errorMapper) {
     withContext(dispatchers.io) {
-      val body = domainToBody(user).copy(avatar = avatarUrls.random())
+      val body = domainToBody(user).copy(avatar = AVATAR_URLS.random())
       val response = userApiService.add(body)
       changesFlow.emit(Change.Added(responseToDomain(response)))
       extraDelay()
@@ -108,7 +108,7 @@ internal class UserRepositoryImpl(
   private companion object {
     private suspend inline fun extraDelay() = delay(400)
 
-    private val avatarUrls =
+    private val AVATAR_URLS =
       (0 until 100).map { "https://randomuser.me/api/portraits/men/$it.jpg" } +
         (0 until 100).map { "https://randomuser.me/api/portraits/women/$it.jpg" } +
         (0 until 10).map { "https://randomuser.me/api/portraits/lego/$it.jpg" }
