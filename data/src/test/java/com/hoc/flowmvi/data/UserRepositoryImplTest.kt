@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.data
 
+import arrow.core.Either
 import arrow.core.identity
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
@@ -156,10 +157,7 @@ class UserRepositoryImplTest {
     val result = repo.refresh()
 
     assertTrue(result.isLeft())
-    assertEquals(
-      UserError.NetworkError,
-      result.fold(::identity) { error("Should not reach here!") }
-    )
+    assertEquals(UserError.NetworkError, result.leftOrThrow)
     coVerify(exactly = 3) { userApiService.getUsers() } // retry 3 times
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
@@ -190,11 +188,14 @@ class UserRepositoryImplTest {
     val result = repo.remove(user)
 
     assertTrue(result.isLeft())
-    assertEquals(
-      UserError.NetworkError,
-      result.fold(::identity) { error("Should not reach here!") }
-    )
+    assertEquals(UserError.NetworkError, result.leftOrThrow)
     coVerify(exactly = 1) { userApiService.remove(user.id) }
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
 }
+
+private inline val <L, R> Either<L, R>.leftOrThrow: L
+  get() = fold(::identity) {
+    if (it is Throwable) throw it
+    else error("$this - Should not reach here!")
+  }
