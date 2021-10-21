@@ -81,8 +81,7 @@ private val USERS = listOf(
 )
 
 @ExperimentalCoroutinesApi
-class TestDispatchersImpl(private val testDispatcher: TestCoroutineDispatcher) :
-  CoroutineDispatchers {
+class TestDispatchersImpl(testDispatcher: TestCoroutineDispatcher) : CoroutineDispatchers {
   override val main: CoroutineDispatcher = testDispatcher
   override val io: CoroutineDispatcher = testDispatcher
 }
@@ -162,6 +161,40 @@ class UserRepositoryImplTest {
       result.fold(::identity) { error("Should not reach here!") }
     )
     coVerify(exactly = 3) { userApiService.getUsers() } // retry 3 times
+    verify(exactly = 1) { errorMapper(ofType<IOException>()) }
+  }
+
+  @Test
+  fun test_remove_withApiCallSuccess_returnsRight() = testDispatcher.runBlockingTest {
+    val user = USERS[0]
+    val userResponse = USER_RESPONSES[0]
+
+    coEvery { userApiService.remove(user.id) } returns userResponse
+    every { responseToDomain(userResponse) } returns user
+
+    val result = repo.remove(user)
+
+    assertTrue(result.isRight())
+    assertNotNull(result.orNull())
+
+    coVerify { userApiService.remove(user.id) }
+    coVerify { responseToDomain(userResponse) }
+  }
+
+  @Test
+  fun test_remove_withApiCallError_returnsLeft() = testDispatcher.runBlockingTest {
+    val user = USERS[0]
+    coEvery { userApiService.remove(user.id) } throws IOException()
+    every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
+
+    val result = repo.remove(user)
+
+    assertTrue(result.isLeft())
+    assertEquals(
+      UserError.NetworkError,
+      result.fold(::identity) { error("Should not reach here!") }
+    )
+    coVerify(exactly = 1) { userApiService.remove(user.id) }
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
 }
