@@ -25,7 +25,6 @@ class UserDomainToUserBodyMapperTest {
         email = "email@gmail.com",
         firstName = "first",
         lastName = "last",
-        avatar = "avatar",
       ),
       body
     )

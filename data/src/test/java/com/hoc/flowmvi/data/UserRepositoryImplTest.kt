@@ -40,7 +40,6 @@ private val USER_BODY = UserBody(
   email = "email1@gmail.com",
   firstName = "first",
   lastName = "last",
-  avatar = "avatar1",
 )
 
 private val USER_RESPONSES = listOf(

@@ -8,7 +8,6 @@ internal class UserDomainToUserBodyMapper : Mapper<User, UserBody> {
   override fun invoke(domain: User): UserBody {
     return UserBody(
       email = domain.email,
-      avatar = domain.avatar,
       firstName = domain.firstName,
       lastName = domain.lastName
     )

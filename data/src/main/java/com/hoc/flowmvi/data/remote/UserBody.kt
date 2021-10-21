@@ -9,6 +9,4 @@ internal data class UserBody(
   val firstName: String,
   @Json(name = "last_name")
   val lastName: String,
-  @Json(name = "avatar")
-  val avatar: String
 )
