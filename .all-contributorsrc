@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "hoc081098",
+      "name": "Petrus Nguyễn Thái Học",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36917223?v=4",
+      "profile": "https://www.linkedin.com/in/hoc081098/",
+      "contributions": [
+        "code",
+        "maintenance",
+        "ideas",
+        "design",
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "MVI-Coroutines-Flow",
+  "projectOwner": "Kotlin-Android-Open-Source",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
