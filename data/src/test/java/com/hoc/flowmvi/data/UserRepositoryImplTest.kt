@@ -20,8 +20,12 @@ import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifySequence
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
@@ -248,10 +252,7 @@ class UserRepositoryImplTest {
 
     assertTrue(result.isRight())
     assertNotNull(result.orNull())
-    assertContentEquals(
-      USERS,
-      result.getOrHandle { error("$result - $it - Should not reach here!") },
-    )
+    assertContentEquals(USERS, result.getOrThrow)
 
     coVerify { userApiService.search(q) }
     coVerifySequence {
@@ -275,6 +276,32 @@ class UserRepositoryImplTest {
     coVerify(exactly = 1) { userApiService.search(q) }
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
+
+  @Test
+  fun test_getUsers_withApiCallSuccess_emitsInitial() = testDispatcher.runBlockingTest {
+    coEvery { userApiService.getUsers() } returns USER_RESPONSES
+    every { responseToDomain(any()) } returnsMany USERS
+
+    val events = mutableListOf<Either<UserError, List<User>>>()
+    val job = launch(start = CoroutineStart.UNDISPATCHED) {
+      repo.getUsers().toList(events)
+    }
+    delay(1_000)
+    job.cancel()
+
+    assertEquals(1, events.size)
+    val result = events.single()
+    assertTrue(result.isRight())
+    assertNotNull(result.orNull())
+    assertEquals(USERS, result.getOrThrow)
+
+    coVerify { userApiService.getUsers() }
+    verifySequence {
+      USER_RESPONSES.forEach {
+        responseToDomain(it)
+      }
+    }
+  }
 }
 
 private inline val <L, R> Either<L, R>.leftOrThrow: L
@@ -282,3 +309,6 @@ private inline val <L, R> Either<L, R>.leftOrThrow: L
     if (it is Throwable) throw it
     else error("$this - $it - Should not reach here!")
   }
+
+private inline val <L, R> Either<L, R>.getOrThrow: R
+  get() = getOrHandle { error("$this - $it - Should not reach here!") }
