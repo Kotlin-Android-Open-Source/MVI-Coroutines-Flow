@@ -149,4 +149,16 @@ class UserErrorMapperTest {
       errorMapper(buildHttpException("validation-failed", null)),
     )
   }
+
+  @Test
+  fun test_withOtherwiseExceptions_returnsUnexpectedError() {
+    assertEquals(
+      UserError.Unexpected,
+      errorMapper(RuntimeException("Test 1")),
+    )
+    assertEquals(
+      UserError.Unexpected,
+      errorMapper(IndexOutOfBoundsException("Test 2")),
+    )
+  }
 }
