@@ -37,6 +37,7 @@ import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.ExperimentalTime
 
@@ -286,7 +287,7 @@ class UserRepositoryImplTest {
     val job = launch(start = CoroutineStart.UNDISPATCHED) {
       repo.getUsers().toList(events)
     }
-    delay(1_000)
+    delay(5_000)
     job.cancel()
 
     assertEquals(1, events.size)
@@ -302,6 +303,67 @@ class UserRepositoryImplTest {
       }
     }
   }
+
+  @Test
+  fun test_getUsers_withApiCallError_rethrows() = testDispatcher.runBlockingTest {
+    coEvery { userApiService.getUsers() } throws IOException()
+    every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
+
+    val events = mutableListOf<Either<UserError, List<User>>>()
+    val job = launch(start = CoroutineStart.UNDISPATCHED) {
+      repo.getUsers().toList(events)
+    }
+    delay(20_000)
+    job.cancel()
+
+    assertEquals(1, events.size)
+    val result = events.single()
+    assertTrue(result.isLeft())
+    assertNull(result.orNull())
+    assertEquals(UserError.NetworkError, result.leftOrThrow)
+
+    coVerify(exactly = 3) { userApiService.getUsers() } // retry 3 times.
+    verify(exactly = 1) { errorMapper(ofType<IOException>()) }
+  }
+
+  @Test
+  fun test_getUsers_withApiCallSuccess_emitsInitialAndUpdatedUsers() =
+    testDispatcher.runBlockingTest {
+      val user = USERS.last()
+      val userResponse = USER_RESPONSES.last()
+      coEvery { userApiService.getUsers() } returns USER_RESPONSES.dropLast(1)
+      coEvery { userApiService.add(USER_BODY) } returns userResponse
+      coEvery { userApiService.remove(user.id) } returns userResponse
+      every { domainToBody(user) } returns USER_BODY
+      USER_RESPONSES.zip(USERS).forEach { (r, u) -> every { responseToDomain(r) } returns u }
+
+      val events = mutableListOf<Either<UserError, List<User>>>()
+      val job = launch(start = CoroutineStart.UNDISPATCHED) {
+        repo.getUsers().toList(events)
+      }
+      repo.add(user)
+      repo.remove(user)
+      delay(120_000)
+      job.cancel()
+
+      assertContentEquals(
+        events.map { it.getOrThrow },
+        listOf(
+          USERS.dropLast(1),
+          USERS,
+          USERS.dropLast(1),
+        )
+      )
+
+      coVerify { userApiService.getUsers() }
+      coVerify { userApiService.add(USER_BODY) }
+      coVerify { userApiService.remove(user.id) }
+      verify { domainToBody(user) }
+      verifySequence {
+        USER_RESPONSES.forEach { responseToDomain(it) }
+        responseToDomain(USER_RESPONSES.last())
+      }
+    }
 }
 
 private inline val <L, R> Either<L, R>.leftOrThrow: L
