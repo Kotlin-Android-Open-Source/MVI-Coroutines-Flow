@@ -1,11 +1,13 @@
 package com.hoc.flowmvi.data
 
 import com.hoc.flowmvi.data.mapper.UserDomainToUserBodyMapper
-import com.hoc.flowmvi.data.mapper.UserDomainToUserResponseMapper
+import com.hoc.flowmvi.data.mapper.UserErrorMapper
 import com.hoc.flowmvi.data.mapper.UserResponseToUserDomainMapper
+import com.hoc.flowmvi.data.remote.ErrorResponse
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.OkHttpClient
@@ -18,8 +20,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import kotlin.time.ExperimentalTime
 
-private const val BASE_URL = "BASE_URL"
+val BASE_URL_QUALIFIER = named("BASE_URL")
 
+@ExperimentalStdlibApi
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 val dataModule = module {
@@ -27,7 +30,7 @@ val dataModule = module {
 
   single {
     provideRetrofit(
-      baseUrl = get(named(BASE_URL)),
+      baseUrl = get(BASE_URL_QUALIFIER),
       moshi = get(),
       client = get()
     )
@@ -37,21 +40,23 @@ val dataModule = module {
 
   single { provideOkHttpClient() }
 
-  factory(named(BASE_URL)) { "https://mvi-coroutines-flow-server.herokuapp.com/" }
+  factory(BASE_URL_QUALIFIER) { "https://mvi-coroutines-flow-server.herokuapp.com/" }
 
   factory { UserResponseToUserDomainMapper() }
 
-  factory { UserDomainToUserResponseMapper() }
-
   factory { UserDomainToUserBodyMapper() }
+
+  factory { get<Moshi>().adapter<ErrorResponse>() }
+
+  factory { UserErrorMapper(errorResponseJsonAdapter = get()) }
 
   single<UserRepository> {
     UserRepositoryImpl(
       userApiService = get(),
       dispatchers = get(),
       responseToDomain = get<UserResponseToUserDomainMapper>(),
-      domainToResponse = get<UserDomainToUserResponseMapper>(),
-      domainToBody = get<UserDomainToUserBodyMapper>()
+      domainToBody = get<UserDomainToUserBodyMapper>(),
+      errorMapper = get<UserErrorMapper>(),
     )
   }
 }

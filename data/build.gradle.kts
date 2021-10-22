@@ -1,6 +1,7 @@
 plugins {
   androidLib
   kotlinAndroid
+  kotlinKapt
 }
 
 android {
@@ -49,6 +50,7 @@ dependencies {
   implementation(deps.squareup.loggingInterceptor)
 
   implementation(deps.koin.core)
+  implementation(deps.arrow.core)
 
   addUnitTest()
 }

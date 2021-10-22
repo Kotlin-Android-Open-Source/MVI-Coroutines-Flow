@@ -10,6 +10,7 @@
 ## Coroutine + Flow = MVI :heart:
 *   Play MVI with Kotlin Coroutines Flow.
 *   Multiple modules, Clean Architecture.
+*   Unit tests for MVI ViewModel, domain and data layer.
 *   Master branch using Koin for DI.
 *   **Checkout [dagger_hilt branch](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/tree/dagger_hilt), using Dagger Hilt for DI** (_obsolete_).
 *   **[Download latest debug APK here](https://nightly.link/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/workflows/build/master/app-debug.zip)**.

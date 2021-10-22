@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.ui.search
 
 import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.repository.UserError
 import dev.ahmedmourad.nocopy.annotations.NoCopy
 
 @Suppress("DataClassPrivateConstructor")
@@ -31,7 +32,7 @@ internal sealed interface ViewIntent {
 internal data class ViewState(
   val users: List<UserItem>,
   val isLoading: Boolean,
-  val error: Throwable?,
+  val error: UserError?,
   val query: String,
 ) {
   companion object Factory {
@@ -49,7 +50,7 @@ internal data class ViewState(
 internal sealed interface PartialStateChange {
   object Loading : PartialStateChange
   data class Success(val users: List<UserItem>, val query: String) : PartialStateChange
-  data class Failure(val error: Throwable, val query: String) : PartialStateChange
+  data class Failure(val error: UserError, val query: String) : PartialStateChange
 
   fun reduce(state: ViewState) = when (this) {
     is Failure -> state.copy(
@@ -69,5 +70,5 @@ internal sealed interface PartialStateChange {
 }
 
 internal sealed interface SingleEvent {
-  data class SearchFailure(val error: Throwable) : SingleEvent
+  data class SearchFailure(val error: UserError) : SingleEvent
 }

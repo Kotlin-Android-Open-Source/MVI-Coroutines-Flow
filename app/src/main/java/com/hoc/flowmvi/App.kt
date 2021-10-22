@@ -16,6 +16,7 @@ import org.koin.core.logger.Level
 import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
+@ExperimentalStdlibApi
 @FlowPreview
 @ExperimentalCoroutinesApi
 @ExperimentalTime

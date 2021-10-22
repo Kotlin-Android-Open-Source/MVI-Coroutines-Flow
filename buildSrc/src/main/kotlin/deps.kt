@@ -46,7 +46,7 @@ object deps {
     const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
-    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.11.0"
+    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.12.0"
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.7"
   }
 
@@ -69,6 +69,11 @@ object deps {
   const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.2.0"
   const val flowExt = "io.github.hoc081098:FlowExt:0.0.7-SNAPSHOT"
 
+  object arrow {
+    private const val version = "1.0.0"
+    const val core = "io.arrow-kt:arrow-core:$version"
+  }
+
   object test {
     const val junit = "junit:junit:4.13.2"
     const val androidxJunit = "androidx.test.ext:junit:1.1.2"
@@ -86,6 +91,7 @@ inline val PDsS.androidApplication: PDS get() = id("com.android.application")
 inline val PDsS.androidLib: PDS get() = id("com.android.library")
 inline val PDsS.kotlinAndroid: PDS get() = id("kotlin-android")
 inline val PDsS.kotlin: PDS get() = id("kotlin")
+inline val PDsS.kotlinKapt: PDS get() = id("kotlin-kapt")
 
 inline val DependencyHandler.domain get() = project(":domain")
 inline val DependencyHandler.core get() = project(":core")

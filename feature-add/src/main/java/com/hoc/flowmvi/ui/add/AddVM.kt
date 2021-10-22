@@ -5,7 +5,8 @@ import androidx.core.util.PatternsCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hoc.flowmvi.core.Either
+import arrow.core.Either
+import arrow.core.identity
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc081098.flowext.flatMapFirst
@@ -68,7 +69,7 @@ internal class AddVM(
         is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(change.user)
         is PartialStateChange.AddUser.AddUserFailure -> SingleEvent.AddUserFailure(
           change.user,
-          change.throwable
+          change.error
         )
         PartialStateChange.FirstChange.EmailChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.FirstNameChangedFirstTime -> return@onEach
@@ -130,15 +131,16 @@ internal class AddVM(
 
     val addUserChanges = filterIsInstance<ViewIntent.Submit>()
       .withLatestFrom(userFormFlow) { _, userForm -> userForm }
-      .mapNotNull { it.rightOrNull() }
+      .mapNotNull { it.orNull() }
       .flatMapFirst { user ->
         flow { emit(addUser(user)) }
-          .map {
-            @Suppress("USELESS_CAST")
-            PartialStateChange.AddUser.AddUserSuccess(user) as PartialStateChange.AddUser
+          .map { result ->
+            result.fold(
+              ifLeft = { PartialStateChange.AddUser.AddUserFailure(user, it) },
+              ifRight = { PartialStateChange.AddUser.AddUserSuccess(user) }
+            )
           }
           .onStart { emit(PartialStateChange.AddUser.Loading) }
-          .catch { emit(PartialStateChange.AddUser.AddUserFailure(user, it)) }
       }
 
     val firstChanges = merge(
@@ -169,8 +171,7 @@ internal class AddVM(
       userFormFlow
         .map {
           PartialStateChange.ErrorsChanged(
-            it.leftOrNull()
-              ?: emptySet()
+            it.fold(::identity) { emptySet() }
           )
         },
       addUserChanges,

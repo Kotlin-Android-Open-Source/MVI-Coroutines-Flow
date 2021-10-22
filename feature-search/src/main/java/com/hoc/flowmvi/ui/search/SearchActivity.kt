@@ -19,6 +19,7 @@ import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.queryTextEvents
 import com.hoc.flowmvi.core.toast
+import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -60,7 +61,16 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
         textQuery.text = "Search results for '${viewState.query}'"
 
         errorGroup.isVisible = viewState.error !== null
-        errorMessageTextView.text = viewState.error?.message
+        errorMessageTextView.text = viewState.error?.let {
+          when (it) {
+            is UserError.InvalidId -> "Invalid id"
+            UserError.NetworkError -> "Network error"
+            UserError.ServerError -> "Server error"
+            UserError.Unexpected -> "Unexpected error"
+            is UserError.UserNotFound -> "User not found"
+            UserError.ValidationFailed -> "Validation failed"
+          }
+        }
 
         progressBar.isVisible = viewState.isLoading
       }
