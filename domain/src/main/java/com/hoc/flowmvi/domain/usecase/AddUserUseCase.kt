@@ -6,5 +6,5 @@ import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.domain.repository.UserRepository
 
 class AddUserUseCase(private val userRepository: UserRepository) {
-                suspend operator fun invoke(user: User): Either<UserError, Unit> = userRepository.add(user)
+  suspend operator fun invoke(user: User): Either<UserError, Unit> = userRepository.add(user)
 }
