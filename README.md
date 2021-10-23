@@ -27,6 +27,25 @@
 
 <!-- Pixel 3 XL API 30 -->
 
+# MVI pattern
+
+This pattern was specified by [André Medeiros (Staltz)](https://twitter.com/andrestaltz) for a JavaScript framework he has written called [cycle.js](https://cycle.js.org/). From a theoretical (and mathematical) point of view we could describe Model-View-Intent as follows [^1]
+
+<p align="center">
+  <img src="MVI_diagram.png">
+<p>
+  
+- `intent()`: This function takes the input from the user (i.e. UI events, like click events) and translate it to “something” that will be passed as parameter to `model()` function.
+  This could be a simple string to set a value of the model to or more complex data structure like an Object. We could say we have the intention to change the model with an intent.
+- `model()`: The `model()` function takes the output from `intent()` as input to manipulate the Model. The output of this function is a new Model (state changed).
+  So it should not update an already existing Model. **We want immutability!**
+  We don’t change an already existing Model object instance.
+  We create a new Model according to the changes described by the intent.
+  Please note, that the `model()` function is the only piece of your code that is allowed to create a new Model object.
+  Then this new immutable Model is the output of this function.
+  Basically, the `model()` function calls our apps business logic (could be an Interactor, Usecase, Repository … whatever pattern / terminology you use in your app) and delivers a new Model object as result.
+- `view()`: This method takes the model returned from `model()` function and gives it as input to the `view()` function. Then the View simply displays this Model somehow. `view()` is basically the same as `view.render(model)`.
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -46,3 +65,5 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+[^1]: https://hannesdorfmann.com/android/mosby3-mvi-2/
