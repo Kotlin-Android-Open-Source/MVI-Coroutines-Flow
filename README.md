@@ -27,7 +27,7 @@
 
 <!-- Pixel 3 XL API 30 -->
 
-# MVI pattern
+## MVI pattern
 
 This pattern was specified by [André Medeiros (Staltz)](https://twitter.com/andrestaltz) for a JavaScript framework he has written called [cycle.js](https://cycle.js.org/). From a theoretical (and mathematical) point of view we could describe Model-View-Intent as follows [^1]
 
