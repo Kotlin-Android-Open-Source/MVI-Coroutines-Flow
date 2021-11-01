@@ -24,11 +24,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
 class AddActivity : AppCompatActivity(R.layout.activity_add) {
-  private val addVM by stateViewModel<AddVM>()
+  private val addVM by viewModel<AddVM>()
   private val addBinding by viewBinding<ActivityAddBinding>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
