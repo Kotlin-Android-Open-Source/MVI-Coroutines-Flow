@@ -1,0 +1,28 @@
+name: reviewdog-suggester
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  kotlin:
+    name: runner / suggester / spotless
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # required to compare
+        with:
+          ref: master
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - run: ./gradlew spotlessKotlinApply
+      - uses: reviewdog/action-suggester@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tool_name: spotless
+      # Since "reviewdog/action-suggester" using "spotlessKotlinApply" does not work with forked PR,
+      # perform "spotlessKotlinCheck".
+      - run: ./gradlew spotlessKotlinCheck
+      - run: ./gradlew lintDebug
