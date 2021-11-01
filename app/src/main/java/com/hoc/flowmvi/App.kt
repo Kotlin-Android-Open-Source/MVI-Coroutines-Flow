@@ -15,6 +15,19 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import kotlin.time.ExperimentalTime
 
+@FlowPreview
+@ExperimentalCoroutinesApi
+@ExperimentalStdlibApi
+@ExperimentalTime
+val allModules = listOf(
+  coreModule,
+  dataModule,
+  domainModule,
+  mainModule,
+  addModule,
+  searchModule,
+)
+
 @Suppress("unused")
 @ExperimentalStdlibApi
 @FlowPreview
@@ -29,14 +42,7 @@ class App : Application() {
 
       androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.NONE)
 
-      modules(
-        coreModule,
-        dataModule,
-        domainModule,
-        mainModule,
-        addModule,
-        searchModule,
-      )
+      modules(allModules)
     }
   }
 }

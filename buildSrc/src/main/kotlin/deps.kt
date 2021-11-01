@@ -59,10 +59,11 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.0.2"
+    private const val version = "3.1.3"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
+    const val testJunit4 = "io.insert-koin:koin-test-junit4:$version"
   }
 
   const val coil = "io.coil-kt:coil:1.2.1"
