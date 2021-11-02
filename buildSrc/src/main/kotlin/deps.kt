@@ -26,16 +26,16 @@ object appConfig {
 
 object deps {
   object androidx {
-    const val appCompat = "androidx.appcompat:appcompat:1.3.0-rc01"
-    const val coreKtx = "androidx.core:core-ktx:1.6.0-alpha03"
-    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.0-beta02"
-    const val recyclerView = "androidx.recyclerview:recyclerview:1.2.0"
+    const val appCompat = "androidx.appcompat:appcompat:1.4.0-rc01"
+    const val coreKtx = "androidx.core:core-ktx:1.7.0"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.1"
+    const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-    const val material = "com.google.android.material:material:1.4.0-beta01"
+    const val material = "com.google.android.material:material:1.4.0"
   }
 
   object lifecycle {
-    private const val version = "2.4.0-alpha01"
+    private const val version = "2.4.0"
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
@@ -51,7 +51,7 @@ object deps {
   }
 
   object coroutines {
-    private const val version = "1.5.0"
+    private const val version = "1.5.2"
 
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
@@ -71,7 +71,7 @@ object deps {
   const val flowExt = "io.github.hoc081098:FlowExt:0.0.7-SNAPSHOT"
 
   object arrow {
-    private const val version = "1.0.0"
+    private const val version = "1.0.1"
     const val core = "io.arrow-kt:arrow-core:$version"
   }
 
