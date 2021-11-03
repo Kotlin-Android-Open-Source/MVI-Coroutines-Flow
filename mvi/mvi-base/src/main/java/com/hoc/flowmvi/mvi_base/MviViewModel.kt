@@ -28,7 +28,7 @@ interface MviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> {
 
 abstract class BaseMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
   MviViewModel<I, S, E>, ViewModel() {
-  private val tag by lazy { this::class.java.simpleName.take(23) }
+  private val tag by lazy(LazyThreadSafetyMode.PUBLICATION) { this::class.java.simpleName.take(23) }
 
   private val eventChannel = Channel<E>(Channel.UNLIMITED)
   private val intentMutableFlow = MutableSharedFlow<I>(extraBufferCapacity = SubscriberBufferSize)
