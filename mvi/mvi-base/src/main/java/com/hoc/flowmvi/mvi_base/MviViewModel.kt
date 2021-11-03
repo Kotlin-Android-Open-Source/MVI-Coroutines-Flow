@@ -41,7 +41,7 @@ abstract class BaseMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEv
 
   protected fun <T : I> Flow<T>.log(subject: String) = onEach { Log.d(tag, ">>> $subject: $it") }
 
-  companion object {
+  private companion object {
     /**
      * The buffer size that will be allocated by [kotlinx.coroutines.flow.MutableSharedFlow].
      * If it falls behind by more than 64 state updates, it will start suspending.
@@ -50,6 +50,6 @@ abstract class BaseMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEv
      * The internally allocated buffer is replay + extraBufferCapacity but always allocates 2^n space.
      * We use replay=0 so buffer = 64.
      */
-    const val SubscriberBufferSize = 64
+    private const val SubscriberBufferSize = 64
   }
 }
