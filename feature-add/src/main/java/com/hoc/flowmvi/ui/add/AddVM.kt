@@ -44,13 +44,13 @@ internal class AddVM(
       firstName = savedStateHandle.get<String?>(FIRST_NAME_KEY),
       lastName = savedStateHandle.get<String?>(LAST_NAME_KEY),
     )
-    Log.d(tag, "[ADD_VM] initialVS: $initialVS")
+    Log.d(logTag, "[ADD_VM] initialVS: $initialVS")
 
     viewState = intentFlow
       .toPartialStateChangesFlow()
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
-      .catch { Log.d(tag, "[ADD_VM] Throwable: $it") }
+      .catch { Log.d(logTag, "[ADD_VM] Throwable: $it") }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 

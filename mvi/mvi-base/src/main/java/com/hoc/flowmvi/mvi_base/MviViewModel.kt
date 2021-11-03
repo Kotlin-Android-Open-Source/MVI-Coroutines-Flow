@@ -32,7 +32,9 @@ interface MviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> {
 
 abstract class BaseMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
   MviViewModel<I, S, E>, ViewModel() {
-  protected val tag by lazy(LazyThreadSafetyMode.PUBLICATION) { this::class.java.simpleName.take(23) }
+  protected val logTag by lazy(LazyThreadSafetyMode.PUBLICATION) {
+    this::class.java.simpleName.take(23)
+  }
 
   private val eventChannel = Channel<E>(Channel.UNLIMITED)
   private val intentMutableFlow = MutableSharedFlow<I>(extraBufferCapacity = SubscriberBufferSize)
@@ -40,11 +42,15 @@ abstract class BaseMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEv
   final override val singleEvent: Flow<E> get() = eventChannel.receiveAsFlow()
   final override suspend fun processIntent(intent: I) = intentMutableFlow.emit(intent)
 
+  // Send event and access intent flow.
+
   protected suspend fun sendEvent(event: E) = eventChannel.send(event)
   protected val intentFlow: SharedFlow<I> get() = intentMutableFlow
 
+  // Extensions on Flow using viewModelScope.
+
   protected fun <T> Flow<T>.log(subject: String): Flow<T> =
-    onEach { Log.d(tag, ">>> $subject: $it") }
+    onEach { Log.d(logTag, ">>> $subject: $it") }
 
   protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> =
     shareIn(viewModelScope, SharingStarted.WhileSubscribed())
