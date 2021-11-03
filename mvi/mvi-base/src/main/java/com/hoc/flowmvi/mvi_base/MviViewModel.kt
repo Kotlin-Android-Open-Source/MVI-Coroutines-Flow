@@ -1,7 +1,13 @@
 package com.hoc.flowmvi.mvi_base
 
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * Object that will subscribes to a MviView's [MviIntent]s,
@@ -16,5 +22,33 @@ interface MviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> {
 
   val singleEvent: Flow<E>
 
-  fun processIntent(intent: I)
+  suspend fun processIntent(intent: I)
+}
+
+abstract class BaseMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
+  MviViewModel<I, S, E>, ViewModel() {
+  private val tag by lazy { this::class.java.simpleName.take(23) }
+
+  private val eventChannel = Channel<E>(Channel.UNLIMITED)
+  private val intentMutableFlow = MutableSharedFlow<I>(extraBufferCapacity = SubscriberBufferSize)
+
+  override val singleEvent: Flow<E> get() = eventChannel.receiveAsFlow()
+  override suspend fun processIntent(intent: I) = intentMutableFlow.emit(intent)
+
+  protected suspend fun sendEvent(event: E) = eventChannel.send(event)
+  protected val intentFlow: Flow<I> get() = intentMutableFlow
+
+  protected fun <T : I> Flow<T>.log(subject: String) = onEach { Log.d(tag, ">>> $subject: $it") }
+
+  companion object {
+    /**
+     * The buffer size that will be allocated by [kotlinx.coroutines.flow.MutableSharedFlow].
+     * If it falls behind by more than 64 state updates, it will start suspending.
+     * Slow consumers should consider using `stateFlow.buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)`.
+     *
+     * The internally allocated buffer is replay + extraBufferCapacity but always allocates 2^n space.
+     * We use replay=0 so buffer = 64.
+     */
+    const val SubscriberBufferSize = 64
+  }
 }

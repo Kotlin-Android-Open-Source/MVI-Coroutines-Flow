@@ -1,19 +1,15 @@
 package com.hoc.flowmvi.ui.main
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hoc.flowmvi.core.unit
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
-import com.hoc.flowmvi.mvi_base.MviViewModel
+import com.hoc.flowmvi.mvi_base.BaseMviViewModel
 import com.hoc081098.flowext.flatMapFirst
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
@@ -29,7 +25,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
@@ -41,20 +36,16 @@ class MainVM(
   private val getUsersUseCase: GetUsersUseCase,
   private val refreshGetUsers: RefreshGetUsersUseCase,
   private val removeUser: RemoveUserUseCase,
-) : ViewModel(), MviViewModel<ViewIntent, ViewState, SingleEvent> {
-  private val _eventChannel = Channel<SingleEvent>(Channel.BUFFERED)
-  private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
+) : BaseMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
   override val viewState: StateFlow<ViewState>
-  override val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
-  override fun processIntent(intent: ViewIntent) = _intentFlow.tryEmit(intent).unit
 
   init {
     val initialVS = ViewState.initial()
 
     viewState = merge(
-      _intentFlow.filterIsInstance<ViewIntent.Initial>().take(1),
-      _intentFlow.filterNot { it is ViewIntent.Initial }
+      intentFlow.filterIsInstance<ViewIntent.Initial>().take(1),
+      intentFlow.filterNot { it is ViewIntent.Initial }
     )
       .toPartialChangeFlow()
       .sendSingleEvent()
@@ -82,7 +73,7 @@ class MainVM(
         is PartialChange.GetUser.Data -> return@onEach
         PartialChange.Refresh.Loading -> return@onEach
       }
-      _eventChannel.send(event)
+      sendEvent(event)
     }
   }
 
@@ -110,18 +101,18 @@ class MainVM(
 
       return merge(
         filterIsInstance<ViewIntent.Initial>()
-          .logIntent()
+          .log("Intent")
           .flatMapConcat { getUserChanges },
         filterIsInstance<ViewIntent.Refresh>()
           .filter { viewState.value.let { !it.isLoading && it.error === null } }
-          .logIntent()
+          .log("Intent")
           .flatMapFirst { refreshChanges },
         filterIsInstance<ViewIntent.Retry>()
           .filter { viewState.value.error != null }
-          .logIntent()
+          .log("Intent")
           .flatMapFirst { getUserChanges },
         filterIsInstance<ViewIntent.RemoveUser>()
-          .logIntent()
+          .log("Intent")
           .map { it.user }
           .flatMapMerge { userItem ->
             flow {
@@ -139,8 +130,6 @@ class MainVM(
           }
       )
     }
-
-  private fun <T : ViewIntent> Flow<T>.logIntent() = onEach { Log.d("MainVM", "## Intent: $it") }
 }
 
 private fun <T> defer(flowFactory: () -> Flow<T>): Flow<T> = flow { emitAll(flowFactory()) }
