@@ -20,6 +20,7 @@ import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.queryTextEvents
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.mvi_base.MviView
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,7 +38,9 @@ import kotlin.time.ExperimentalTime
 @ExperimentalCoroutinesApi
 @FlowPreview
 @ExperimentalTime
-class SearchActivity : AppCompatActivity(R.layout.activity_search) {
+class SearchActivity :
+  AppCompatActivity(R.layout.activity_search),
+  MviView<ViewIntent, ViewState, SingleEvent> {
   private val binding by viewBinding<ActivitySearchBinding>()
   private val vm by viewModel<SearchVM>()
 
@@ -53,42 +56,47 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   }
 
   private fun bindVM() {
-    vm.viewState.collectIn(this) { viewState ->
-      searchAdapter.submitList(viewState.users)
+    vm.viewState
+      .collectIn(this) { viewState -> render(viewState) }
 
-      binding.run {
-        textQuery.isInvisible = viewState.isLoading || viewState.query.isBlank()
-        textQuery.text = "Search results for '${viewState.query}'"
+    vm.singleEvent
+      .collectIn(this) { event -> handleSingleEvent(event) }
 
-        errorGroup.isVisible = viewState.error !== null
-        errorMessageTextView.text = viewState.error?.let {
-          when (it) {
-            is UserError.InvalidId -> "Invalid id"
-            UserError.NetworkError -> "Network error"
-            UserError.ServerError -> "Server error"
-            UserError.Unexpected -> "Unexpected error"
-            is UserError.UserNotFound -> "User not found"
-            UserError.ValidationFailed -> "Validation failed"
-          }
-        }
-
-        progressBar.isVisible = viewState.isLoading
-      }
-    }
-
-    vm.singleEvent.collectIn(this) { event ->
-      when (event) {
-        is SingleEvent.SearchFailure -> toast("Failed to search")
-      }
-    }
-
-    intents()
+    viewIntents()
       .onEach { vm.processIntent(it) }
       .launchIn(lifecycleScope)
   }
 
-  @Suppress("NOTHING_TO_INLINE")
-  private inline fun intents(): Flow<ViewIntent> = merge(
+  override fun handleSingleEvent(event: SingleEvent) {
+    when (event) {
+      is SingleEvent.SearchFailure -> toast("Failed to search")
+    }
+  }
+
+  override fun render(viewState: ViewState) {
+    searchAdapter.submitList(viewState.users)
+
+    binding.run {
+      textQuery.isInvisible = viewState.isLoading || viewState.query.isBlank()
+      textQuery.text = "Search results for '${viewState.query}'"
+
+      errorGroup.isVisible = viewState.error !== null
+      errorMessageTextView.text = viewState.error?.let {
+        when (it) {
+          is UserError.InvalidId -> "Invalid id"
+          UserError.NetworkError -> "Network error"
+          UserError.ServerError -> "Server error"
+          UserError.Unexpected -> "Unexpected error"
+          is UserError.UserNotFound -> "User not found"
+          UserError.ValidationFailed -> "Validation failed"
+        }
+      }
+
+      progressBar.isVisible = viewState.isLoading
+    }
+  }
+
+  override fun viewIntents(): Flow<ViewIntent> = merge(
     searchViewQueryTextEventChannel
       .consumeAsFlow()
       .onEach { Log.d("SearchActivity", "Query $it") }

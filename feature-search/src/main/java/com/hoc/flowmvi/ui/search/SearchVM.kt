@@ -1,16 +1,14 @@
 package com.hoc.flowmvi.ui.search
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
+import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
 import com.hoc081098.flowext.takeUntil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -25,9 +23,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -37,22 +33,18 @@ import kotlin.time.ExperimentalTime
 @ExperimentalCoroutinesApi
 internal class SearchVM(
   private val searchUsersUseCase: SearchUsersUseCase,
-) : ViewModel() {
-  private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
-  private val _singleEvent = Channel<SingleEvent>(Channel.BUFFERED)
+) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
-  val viewState: StateFlow<ViewState>
-  val singleEvent: Flow<SingleEvent> get() = _singleEvent.receiveAsFlow()
-  fun processIntent(intent: ViewIntent) = _intentFlow.tryEmit(intent)
+  override val viewState: StateFlow<ViewState>
 
   init {
     val initialVS = ViewState.initial()
 
-    viewState = _intentFlow
+    viewState = intentFlow
       .toPartialStateChangesFlow()
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
-      .catch { Log.d("###", "[SEARCH_VM] Throwable: $it") }
+      .catch { Log.d(logTag, "[SEARCH_VM] Throwable: $it") }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 
@@ -78,10 +70,7 @@ internal class SearchVM(
       .map { it.query }
       .filter { it.isNotBlank() }
       .distinctUntilChanged()
-      .shareIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-      )
+      .shareWhileSubscribed()
 
     return merge(
       queryFlow.flatMapLatest(executeSearch),
@@ -98,7 +87,7 @@ internal class SearchVM(
   private fun Flow<PartialStateChange>.sendSingleEvent(): Flow<PartialStateChange> =
     onEach { change ->
       when (change) {
-        is PartialStateChange.Failure -> _singleEvent.send(SingleEvent.SearchFailure(change.error))
+        is PartialStateChange.Failure -> sendEvent(SingleEvent.SearchFailure(change.error))
         PartialStateChange.Loading -> return@onEach
         is PartialStateChange.Success -> return@onEach
       }

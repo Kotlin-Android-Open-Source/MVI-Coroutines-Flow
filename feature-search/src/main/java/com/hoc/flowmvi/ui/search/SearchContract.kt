@@ -2,11 +2,14 @@ package com.hoc.flowmvi.ui.search
 
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.mvi_base.MviIntent
+import com.hoc.flowmvi.mvi_base.MviSingleEvent
+import com.hoc.flowmvi.mvi_base.MviViewState
 import dev.ahmedmourad.nocopy.annotations.NoCopy
 
 @Suppress("DataClassPrivateConstructor")
 @NoCopy
-internal data class UserItem private constructor(
+data class UserItem private constructor(
   val id: String,
   val email: String,
   val avatar: String,
@@ -24,17 +27,17 @@ internal data class UserItem private constructor(
   }
 }
 
-internal sealed interface ViewIntent {
+sealed interface ViewIntent : MviIntent {
   data class Search(val query: String) : ViewIntent
   object Retry : ViewIntent
 }
 
-internal data class ViewState(
+data class ViewState(
   val users: List<UserItem>,
   val isLoading: Boolean,
   val error: UserError?,
   val query: String,
-) {
+) : MviViewState {
   companion object Factory {
     fun initial(): ViewState {
       return ViewState(
@@ -69,6 +72,6 @@ internal sealed interface PartialStateChange {
   }
 }
 
-internal sealed interface SingleEvent {
+sealed interface SingleEvent : MviSingleEvent {
   data class SearchFailure(val error: UserError) : SingleEvent
 }
