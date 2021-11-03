@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 
 @ExperimentalCoroutinesApi
-internal class AddVM(
+class AddVM(
   private val addUser: AddUserUseCase,
   private val savedStateHandle: SavedStateHandle,
 ) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
