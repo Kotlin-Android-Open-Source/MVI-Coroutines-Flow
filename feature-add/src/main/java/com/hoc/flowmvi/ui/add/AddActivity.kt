@@ -91,7 +91,7 @@ class AddActivity :
   }
 
   override fun setupViews() {
-    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
     val state = vm.viewState.value
 

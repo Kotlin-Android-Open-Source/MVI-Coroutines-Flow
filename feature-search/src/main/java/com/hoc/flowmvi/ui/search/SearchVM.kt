@@ -31,7 +31,7 @@ import kotlin.time.ExperimentalTime
 @FlowPreview
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-internal class SearchVM(
+class SearchVM(
   private val searchUsersUseCase: SearchUsersUseCase,
 ) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 

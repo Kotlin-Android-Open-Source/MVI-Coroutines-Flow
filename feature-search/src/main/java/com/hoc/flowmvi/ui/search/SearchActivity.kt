@@ -3,11 +3,9 @@ package com.hoc.flowmvi.ui.search
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -15,12 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hoc.flowmvi.core.SearchViewQueryTextEvent
 import com.hoc.flowmvi.core.clicks
-import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.queryTextEvents
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.domain.repository.UserError
-import com.hoc.flowmvi.mvi_base.MviView
+import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,33 +36,12 @@ import kotlin.time.ExperimentalTime
 @FlowPreview
 @ExperimentalTime
 class SearchActivity :
-  AppCompatActivity(R.layout.activity_search),
-  MviView<ViewIntent, ViewState, SingleEvent> {
+  AbstractMviActivity<ViewIntent, ViewState, SingleEvent, SearchVM>(R.layout.activity_search) {
   private val binding by viewBinding<ActivitySearchBinding>()
-  private val vm by viewModel<SearchVM>()
+  override val vm by viewModel<SearchVM>()
 
   private val searchViewQueryTextEventChannel = Channel<SearchViewQueryTextEvent>()
   private val searchAdapter = SearchAdapter()
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-    setupViews()
-    bindVM()
-  }
-
-  private fun bindVM() {
-    vm.viewState
-      .collectIn(this) { viewState -> render(viewState) }
-
-    vm.singleEvent
-      .collectIn(this) { event -> handleSingleEvent(event) }
-
-    viewIntents()
-      .onEach { vm.processIntent(it) }
-      .launchIn(lifecycleScope)
-  }
 
   override fun handleSingleEvent(event: SingleEvent) {
     when (event) {
@@ -104,7 +80,9 @@ class SearchActivity :
     binding.retryButton.clicks().map { ViewIntent.Retry },
   )
 
-  private fun setupViews() {
+  override fun setupViews() {
+    supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
     binding.run {
       usersRecycler.run {
         setHasFixedSize(true)
