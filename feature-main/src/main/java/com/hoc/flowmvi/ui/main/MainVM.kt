@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
-import com.hoc.flowmvi.mvi_base.BaseMviViewModel
+import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -35,7 +35,7 @@ class MainVM(
   private val getUsersUseCase: GetUsersUseCase,
   private val refreshGetUsers: RefreshGetUsersUseCase,
   private val removeUser: RemoveUserUseCase,
-) : BaseMviViewModel<ViewIntent, ViewState, SingleEvent>() {
+) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
   override val viewState: StateFlow<ViewState>
 

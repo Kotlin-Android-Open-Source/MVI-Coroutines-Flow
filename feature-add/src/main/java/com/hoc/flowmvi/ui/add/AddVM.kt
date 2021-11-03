@@ -10,7 +10,7 @@ import arrow.core.validNel
 import arrow.core.zip
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
-import com.hoc.flowmvi.mvi_base.BaseMviViewModel
+import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
 import com.hoc081098.flowext.withLatestFrom
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,7 +34,7 @@ import kotlinx.coroutines.flow.stateIn
 internal class AddVM(
   private val addUser: AddUserUseCase,
   private val savedStateHandle: SavedStateHandle,
-) : BaseMviViewModel<ViewIntent, ViewState, SingleEvent>() {
+) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
   override val viewState: StateFlow<ViewState>
 

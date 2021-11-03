@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 
-abstract class BaseMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
+abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
   MviViewModel<I, S, E>, ViewModel() {
   protected val logTag by lazy(LazyThreadSafetyMode.PUBLICATION) {
     this::class.java.simpleName.take(23)
