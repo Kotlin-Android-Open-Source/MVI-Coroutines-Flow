@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.ui.search
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
@@ -33,12 +34,15 @@ import kotlin.time.ExperimentalTime
 @ExperimentalCoroutinesApi
 class SearchVM(
   private val searchUsersUseCase: SearchUsersUseCase,
+  private val savedStateHandle: SavedStateHandle,
 ) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
   override val viewState: StateFlow<ViewState>
 
   init {
-    val initialVS = ViewState.initial()
+    val initialVS = ViewState.initial(
+      originalQuery = savedStateHandle.get<String?>(QUERY_KEY)
+    )
 
     viewState = intentFlow
       .toPartialStateChangesFlow()
@@ -66,21 +70,25 @@ class SearchVM(
     }
 
     val queryFlow = filterIsInstance<ViewIntent.Search>()
-      .debounce(Duration.milliseconds(400))
       .map { it.query }
+      .shareWhileSubscribed()
+
+    val searchableQueryFlow = queryFlow
+      .debounce(Duration.milliseconds(400))
       .filter { it.isNotBlank() }
       .distinctUntilChanged()
       .shareWhileSubscribed()
 
     return merge(
-      queryFlow.flatMapLatest(executeSearch),
+      searchableQueryFlow.flatMapLatest(executeSearch),
       filterIsInstance<ViewIntent.Retry>()
         .flatMapFirst {
           viewState.value.let { vs ->
-            if (vs.error !== null) executeSearch(vs.query).takeUntil(queryFlow)
+            if (vs.error !== null) executeSearch(vs.submittedQuery).takeUntil(searchableQueryFlow)
             else emptyFlow()
           }
         },
+      queryFlow.map { PartialStateChange.QueryChanged(it) },
     )
   }
 
@@ -90,6 +98,14 @@ class SearchVM(
         is PartialStateChange.Failure -> sendEvent(SingleEvent.SearchFailure(change.error))
         PartialStateChange.Loading -> return@onEach
         is PartialStateChange.Success -> return@onEach
+        is PartialStateChange.QueryChanged -> {
+          savedStateHandle.set(QUERY_KEY, change.query)
+          return@onEach
+        }
       }
     }
+
+  private companion object {
+    const val QUERY_KEY = "com.hoc.flowmvi.ui.search.query"
+  }
 }

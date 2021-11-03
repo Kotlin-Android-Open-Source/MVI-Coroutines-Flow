@@ -53,18 +53,22 @@ class SearchActivity :
     searchAdapter.submitList(viewState.users)
 
     binding.run {
-      textQuery.isInvisible = viewState.isLoading || viewState.query.isBlank()
-      textQuery.text = "Search results for '${viewState.query}'"
+      textQuery.isInvisible = viewState.isLoading || viewState.submittedQuery.isBlank()
+      if (textQuery.isVisible) {
+        textQuery.text = "Search results for '${viewState.submittedQuery}'"
+      }
 
       errorGroup.isVisible = viewState.error !== null
-      errorMessageTextView.text = viewState.error?.let {
-        when (it) {
-          is UserError.InvalidId -> "Invalid id"
-          UserError.NetworkError -> "Network error"
-          UserError.ServerError -> "Server error"
-          UserError.Unexpected -> "Unexpected error"
-          is UserError.UserNotFound -> "User not found"
-          UserError.ValidationFailed -> "Validation failed"
+      if (errorGroup.isVisible) {
+        errorMessageTextView.text = viewState.error?.let {
+          when (it) {
+            is UserError.InvalidId -> "Invalid id"
+            UserError.NetworkError -> "Network error"
+            UserError.ServerError -> "Server error"
+            UserError.Unexpected -> "Unexpected error"
+            is UserError.UserNotFound -> "User not found"
+            UserError.ValidationFailed -> "Validation failed"
+          }
         }
       }
 
@@ -108,6 +112,11 @@ class SearchActivity :
     (menu.findItem(R.id.action_search)!!.actionView as SearchView).run {
       isIconified = false
       queryHint = "Search user..."
+
+      vm.viewState.value
+        .originalQuery
+        .takeUnless { it.isNullOrBlank() }
+        ?.let { setQuery(it, false) }
 
       queryTextEvents()
         .onEach { searchViewQueryTextEventChannel.send(it) }

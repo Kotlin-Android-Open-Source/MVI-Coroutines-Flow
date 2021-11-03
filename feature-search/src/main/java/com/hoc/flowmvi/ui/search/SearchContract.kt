@@ -36,15 +36,17 @@ data class ViewState(
   val users: List<UserItem>,
   val isLoading: Boolean,
   val error: UserError?,
-  val query: String,
+  val submittedQuery: String,
+  val originalQuery: String?,
 ) : MviViewState {
   companion object Factory {
-    fun initial(): ViewState {
+    fun initial(originalQuery: String?): ViewState {
       return ViewState(
         users = emptyList(),
         isLoading = false,
         error = null,
-        query = "",
+        submittedQuery = "",
+        originalQuery = originalQuery,
       )
     }
   }
@@ -52,14 +54,15 @@ data class ViewState(
 
 internal sealed interface PartialStateChange {
   object Loading : PartialStateChange
-  data class Success(val users: List<UserItem>, val query: String) : PartialStateChange
-  data class Failure(val error: UserError, val query: String) : PartialStateChange
+  data class Success(val users: List<UserItem>, val submittedQuery: String) : PartialStateChange
+  data class Failure(val error: UserError, val submittedQuery: String) : PartialStateChange
+  data class QueryChanged(val query: String) : PartialStateChange
 
-  fun reduce(state: ViewState) = when (this) {
+  fun reduce(state: ViewState): ViewState = when (this) {
     is Failure -> state.copy(
       isLoading = false,
       error = error,
-      query = query,
+      submittedQuery = submittedQuery,
       users = emptyList()
     )
     Loading -> state.copy(isLoading = true, error = null)
@@ -67,8 +70,9 @@ internal sealed interface PartialStateChange {
       isLoading = false,
       error = null,
       users = users,
-      query = query,
+      submittedQuery = submittedQuery,
     )
+    is QueryChanged -> state.copy(originalQuery = query)
   }
 }
 

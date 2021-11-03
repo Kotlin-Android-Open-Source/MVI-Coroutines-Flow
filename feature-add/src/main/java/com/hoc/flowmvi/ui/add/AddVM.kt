@@ -170,9 +170,9 @@ class AddVM(
   }
 
   private companion object {
-    const val EMAIL_KEY = "email"
-    const val FIRST_NAME_KEY = "first_name"
-    const val LAST_NAME_KEY = "last_name"
+    const val EMAIL_KEY = "com.hoc.flowmvi.ui.add.email"
+    const val FIRST_NAME_KEY = "com.hoc.flowmvi.ui.add.first_name"
+    const val LAST_NAME_KEY = "com.hoc.flowmvi.ui.add.last_name"
 
     const val MIN_LENGTH_FIRST_NAME = 3
     const val MIN_LENGTH_LAST_NAME = 3
