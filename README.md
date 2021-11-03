@@ -10,10 +10,10 @@
 
 ## Coroutine + Flow = MVI :heart:
 *   Play MVI with Kotlin Coroutines Flow.
-*   Multiple modules, Clean Architecture.
+*   Multiple modules, Clean Architecture, Functional programming with [ΛRROW.kt](https://arrow-kt.io/).
 *   Unit tests for MVI ViewModel, domain and data layer.
 *   Master branch using Koin for DI.
-*   **Checkout [dagger_hilt branch](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/tree/dagger_hilt), using Dagger Hilt for DI** (_obsolete_).
+*   **Checkout [dagger_hilt branch](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/tree/dagger_hilt), using Dagger Hilt for DI** (_obsolete, will update as soon as possible_).
 *   **[Download latest debug APK here](https://nightly.link/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/workflows/build/master/app-debug.zip)**.
 
 > **Jetpack Compose Version** 👉 https://github.com/Kotlin-Android-Open-Source/Jetpack-Compose-MVI-Coroutines-Flow
@@ -35,7 +35,7 @@ This pattern was specified by [André Medeiros (Staltz)](https://twitter.com/and
 <p align="center">
   <img src="MVI_diagram.png">
 <p>
-  
+
 - `intent()`: This function takes the input from the user (i.e. UI events, like click events) and translate it to “something” that will be passed as parameter to `model()` function.
   This could be a simple string to set a value of the model to or more complex data structure like an Object. We could say we have the intention to change the model with an intent.
 - `model()`: The `model()` function takes the output from `intent()` as input to manipulate the Model. The output of this function is a new Model (state changed).
@@ -48,10 +48,10 @@ This pattern was specified by [André Medeiros (Staltz)](https://twitter.com/and
 - `view()`: This method takes the model returned from `model()` function and gives it as input to the `view()` function. Then the View simply displays this Model somehow. `view()` is basically the same as `view.render(model)`.
 
 ### Reference
-  
+
 - [Model-View-Intent Design Pattern on Android](https://xizzhu.me/post/2021-06-21-android-mvi-kotlin-coroutines-flow-compose/)
 - [Reactive Apps with Model-View-Intent](https://hannesdorfmann.com/android/mosby3-mvi-1/)
-  
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
