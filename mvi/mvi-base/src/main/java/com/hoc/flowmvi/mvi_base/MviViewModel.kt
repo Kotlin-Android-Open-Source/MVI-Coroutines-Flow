@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -36,7 +37,7 @@ abstract class BaseMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEv
   override suspend fun processIntent(intent: I) = intentMutableFlow.emit(intent)
 
   protected suspend fun sendEvent(event: E) = eventChannel.send(event)
-  protected val intentFlow: Flow<I> get() = intentMutableFlow
+  protected val intentFlow: SharedFlow<I> get() = intentMutableFlow
 
   protected fun <T : I> Flow<T>.log(subject: String) = onEach { Log.d(tag, ">>> $subject: $it") }
 
