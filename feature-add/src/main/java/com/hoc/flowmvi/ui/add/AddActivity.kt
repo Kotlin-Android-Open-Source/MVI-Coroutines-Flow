@@ -16,6 +16,7 @@ import com.hoc.flowmvi.core.firstChange
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
+import com.hoc.flowmvi.mvi_base.MviView
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,7 +28,9 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
-class AddActivity : AppCompatActivity(R.layout.activity_add) {
+class AddActivity :
+  AppCompatActivity(R.layout.activity_add),
+  MviView<ViewIntent, ViewState, SingleEvent> {
   private val addVM by viewModel<AddVM>()
   private val addBinding by viewBinding<ActivityAddBinding>()
 
@@ -56,12 +59,12 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
       .collectIn(this) { handleSingleEvent(it) }
 
     // pass view intent to view model
-    intents()
+    viewIntents()
       .onEach { addVM.processIntent(it) }
       .launchIn(lifecycleScope)
   }
 
-  private fun handleSingleEvent(event: SingleEvent) {
+  override fun handleSingleEvent(event: SingleEvent) {
     Log.d("###", "Event=$event")
 
     return when (event) {
@@ -76,7 +79,7 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
     }
   }
 
-  private fun render(viewState: ViewState) {
+  override fun render(viewState: ViewState) {
     Log.d("###", "ViewState=$viewState")
 
     val emailErrorMessage = if (ValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) {
@@ -127,8 +130,7 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
     }
   }
 
-  @Suppress("NOTHING_TO_INLINE")
-  private inline fun intents(): Flow<ViewIntent> = addBinding.run {
+  override fun viewIntents(): Flow<ViewIntent> = addBinding.run {
     merge(
       emailEditText
         .editText!!

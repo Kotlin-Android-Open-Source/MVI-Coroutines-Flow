@@ -1,15 +1,22 @@
 package com.hoc.flowmvi.ui.add
 
+import arrow.core.ValidatedNel
+import arrow.core.invalidNel
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.mvi_base.MviIntent
+import com.hoc.flowmvi.mvi_base.MviSingleEvent
+import com.hoc.flowmvi.mvi_base.MviViewState
 
-internal enum class ValidationError {
+enum class ValidationError {
   INVALID_EMAIL_ADDRESS,
   TOO_SHORT_FIRST_NAME,
-  TOO_SHORT_LAST_NAME
+  TOO_SHORT_LAST_NAME;
+
+  val asInvalidNel: ValidatedNel<ValidationError, Nothing> = invalidNel()
 }
 
-internal data class ViewState(
+data class ViewState(
   val errors: Set<ValidationError>,
   val isLoading: Boolean,
   //
@@ -19,13 +26,13 @@ internal data class ViewState(
   //
   val email: String?,
   val firstName: String?,
-  val lastName: String?
-) {
+  val lastName: String?,
+) : MviViewState {
   companion object {
     fun initial(
       email: String?,
       firstName: String?,
-      lastName: String?
+      lastName: String?,
     ) = ViewState(
       errors = emptySet(),
 
@@ -40,7 +47,7 @@ internal data class ViewState(
   }
 }
 
-internal sealed interface ViewIntent {
+sealed interface ViewIntent : MviIntent {
   data class EmailChanged(val email: String?) : ViewIntent
   data class FirstNameChanged(val firstName: String?) : ViewIntent
   data class LastNameChanged(val lastName: String?) : ViewIntent
@@ -102,7 +109,7 @@ internal sealed interface PartialStateChange {
   }
 }
 
-internal sealed interface SingleEvent {
+sealed interface SingleEvent : MviSingleEvent {
   data class AddUserSuccess(val user: User) : SingleEvent
   data class AddUserFailure(val user: User, val error: UserError) : SingleEvent
 }

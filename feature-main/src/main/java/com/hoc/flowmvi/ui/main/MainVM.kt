@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
 
@@ -78,7 +77,7 @@ class MainVM(
   }
 
   private fun Flow<ViewIntent>.toPartialChangeFlow(): Flow<PartialChange> =
-    shareIn(viewModelScope, SharingStarted.WhileSubscribed()).run {
+    shareWhileSubscribed().run {
       val getUserChanges = defer(getUsersUseCase::invoke)
         .onEach { either -> Log.d("###", "[MAIN_VM] Emit users.size=${either.map { it.size }}") }
         .map { result ->
