@@ -15,6 +15,15 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '11'
+      - name: Cache gradle, wrapper and buildSrc
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-${{ github.job }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.job }}-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - run: ./gradlew spotlessKotlinApply
