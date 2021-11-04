@@ -109,18 +109,24 @@ class SearchActivity :
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_search, menu)
 
-    (menu.findItem(R.id.action_search)!!.actionView as SearchView).run {
-      isIconified = false
-      queryHint = "Search user..."
+    menu.findItem(R.id.action_search)!!.let { menuItem ->
+      (menuItem.actionView as SearchView).run {
+        isIconified = false
+        queryHint = "Search user..."
 
-      vm.viewState.value
-        .originalQuery
-        .takeUnless { it.isNullOrBlank() }
-        ?.let { setQuery(it, false) }
+        vm.viewState.value
+          .originalQuery
+          .takeUnless { it.isNullOrBlank() }
+          ?.let {
+            menuItem.expandActionView()
+            setQuery(it, true)
+            clearFocus()
+          }
 
-      queryTextEvents()
-        .onEach { searchViewQueryTextEventChannel.send(it) }
-        .launchIn(lifecycleScope)
+        queryTextEvents()
+          .onEach { searchViewQueryTextEventChannel.send(it) }
+          .launchIn(lifecycleScope)
+      }
     }
 
     return true
