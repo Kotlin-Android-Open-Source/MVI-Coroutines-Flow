@@ -99,7 +99,7 @@ class SearchVM(
         PartialStateChange.Loading -> return@onEach
         is PartialStateChange.Success -> return@onEach
         is PartialStateChange.QueryChanged -> {
-          savedStateHandle.set(QUERY_KEY, change.query)
+          savedStateHandle[QUERY_KEY] = change.query
           return@onEach
         }
       }

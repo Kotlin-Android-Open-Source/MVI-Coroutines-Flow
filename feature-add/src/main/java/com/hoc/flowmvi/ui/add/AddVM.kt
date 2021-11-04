@@ -68,15 +68,15 @@ class AddVM(
         PartialStateChange.FirstChange.FirstNameChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.LastNameChangedFirstTime -> return@onEach
         is PartialStateChange.FormValueChange.EmailChanged -> {
-          savedStateHandle.set(EMAIL_KEY, change.email)
+          savedStateHandle[EMAIL_KEY] = change.email
           return@onEach
         }
         is PartialStateChange.FormValueChange.FirstNameChanged -> {
-          savedStateHandle.set(FIRST_NAME_KEY, change.firstName)
+          savedStateHandle[FIRST_NAME_KEY] = change.firstName
           return@onEach
         }
         is PartialStateChange.FormValueChange.LastNameChanged -> {
-          savedStateHandle.set(LAST_NAME_KEY, change.lastName)
+          savedStateHandle[LAST_NAME_KEY] = change.lastName
           return@onEach
         }
       }
