@@ -69,6 +69,7 @@ object deps {
   const val coil = "io.coil-kt:coil:1.2.1"
   const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.2.0"
   const val flowExt = "io.github.hoc081098:FlowExt:0.0.7-SNAPSHOT"
+  const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
     private const val version = "1.0.1"

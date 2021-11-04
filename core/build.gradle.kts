@@ -49,5 +49,7 @@ dependencies {
   implementation(deps.lifecycle.commonJava8)
   implementation(deps.lifecycle.runtimeKtx)
 
+  implementation(deps.timber)
+
   addUnitTest()
 }

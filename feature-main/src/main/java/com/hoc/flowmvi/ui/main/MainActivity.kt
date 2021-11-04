@@ -1,6 +1,5 @@
 package com.hoc.flowmvi.ui.main
 
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
@@ -27,6 +26,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -81,7 +81,7 @@ class MainActivity :
   )
 
   override fun handleSingleEvent(event: SingleEvent) {
-    Log.d("MainActivity", "handleSingleEvent $event")
+    Timber.d("handleSingleEvent $event")
     return when (event) {
       SingleEvent.Refresh.Success -> toast("Refresh success")
       is SingleEvent.Refresh.Failure -> toast("Refresh failure")
@@ -92,7 +92,7 @@ class MainActivity :
   }
 
   override fun render(viewState: ViewState) {
-    Log.d("MainActivity", "render $viewState")
+    Timber.d("render $viewState")
 
     userAdapter.submitList(viewState.userItems)
 

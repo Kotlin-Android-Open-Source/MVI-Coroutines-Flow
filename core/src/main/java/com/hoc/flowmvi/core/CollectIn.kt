@@ -1,6 +1,5 @@
 package com.hoc.flowmvi.core
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -10,6 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 inline fun <T> Flow<T>.collectIn(
   owner: LifecycleOwner,
@@ -17,7 +17,7 @@ inline fun <T> Flow<T>.collectIn(
   crossinline action: suspend (value: T) -> Unit,
 ): Job = owner.lifecycleScope.launch {
   owner.repeatOnLifecycle(state = minActiveState) {
-    Log.d("collectIn", "Start collecting $owner $minActiveState...")
+    Timber.d("Start collecting $owner $minActiveState...")
     collect { action(it) }
   }
 }

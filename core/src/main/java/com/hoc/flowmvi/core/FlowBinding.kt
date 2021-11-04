@@ -2,7 +2,6 @@ package com.hoc.flowmvi.core
 
 import android.content.Context
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.take
+import timber.log.Timber
 import kotlin.coroutines.EmptyCoroutineContext
 
 internal fun checkMainThread() {
@@ -35,7 +35,7 @@ fun EditText.firstChange(): Flow<Unit> {
     awaitClose {
       Dispatchers.Main.dispatch(EmptyCoroutineContext) {
         removeTextChangedListener(listener)
-        Log.d("###", "removeTextChangedListener $listener ${this@firstChange}")
+        Timber.d("removeTextChangedListener $listener $this")
       }
     }
   }.take(1)
