@@ -16,7 +16,6 @@ import com.hoc.flowmvi.core.clicks
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.queryTextEvents
 import com.hoc.flowmvi.core.toast
-import com.hoc.flowmvi.core.unit
 import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
@@ -115,24 +114,18 @@ class SearchActivity :
         isIconified = false
         queryHint = "Search user..."
 
-        fun listen() = queryTextEvents()
-          .onEach { searchViewQueryTextEventChannel.send(it) }
-          .launchIn(lifecycleScope)
-          .unit
-
         vm.viewState.value
           .originalQuery
           .takeUnless { it.isNullOrBlank() }
           ?.let {
-            post {
-              menuItem.expandActionView()
-              setQuery(it, true)
-              clearFocus()
-
-              listen()
-            }
+            menuItem.expandActionView()
+            setQuery(it, true)
+            clearFocus()
           }
-          ?: listen()
+
+        queryTextEvents()
+          .onEach { searchViewQueryTextEventChannel.send(it) }
+          .launchIn(lifecycleScope)
       }
     }
 

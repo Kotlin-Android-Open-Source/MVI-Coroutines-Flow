@@ -35,7 +35,6 @@ data class ViewState(
       lastName: String?,
     ) = ViewState(
       errors = emptySet(),
-
       isLoading = false,
       emailChanged = false,
       firstNameChanged = false,
@@ -97,9 +96,18 @@ internal sealed interface PartialStateChange {
   sealed class FormValueChange : PartialStateChange {
     override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
-        is EmailChanged -> viewState.copy(email = email)
-        is FirstNameChanged -> viewState.copy(firstName = firstName)
-        is LastNameChanged -> viewState.copy(lastName = lastName)
+        is EmailChanged -> {
+          if (viewState.email == email) viewState
+          else viewState.copy(email = email)
+        }
+        is FirstNameChanged -> {
+          if (viewState.firstName == firstName) viewState
+          else viewState.copy(firstName = firstName)
+        }
+        is LastNameChanged -> {
+          if (viewState.lastName == lastName) viewState
+          else viewState.copy(lastName = lastName)
+        }
       }
     }
 
