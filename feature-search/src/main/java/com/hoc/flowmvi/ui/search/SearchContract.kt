@@ -65,7 +65,11 @@ internal sealed interface PartialStateChange {
       submittedQuery = submittedQuery,
       users = emptyList()
     )
-    Loading -> state.copy(isLoading = true, error = null)
+    Loading -> state.copy(
+      isLoading = true,
+      error = null,
+      users = emptyList()
+    )
     is Success -> state.copy(
       isLoading = false,
       error = null,
