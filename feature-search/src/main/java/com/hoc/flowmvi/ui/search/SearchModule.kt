@@ -13,5 +13,10 @@ import kotlin.time.ExperimentalTime
 val searchModule = module {
   single<IntentProviders.Search> { SearchActivity.IntentProvider() }
 
-  viewModel { SearchVM(searchUsersUseCase = get()) }
+  viewModel { params ->
+    SearchVM(
+      searchUsersUseCase = get(),
+      savedStateHandle = params.get(),
+    )
+  }
 }

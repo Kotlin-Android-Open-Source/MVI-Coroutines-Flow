@@ -7,5 +7,5 @@
     android:icon="@drawable/ic_baseline_search_24"
     android:title="Search"
     app:actionViewClass="androidx.appcompat.widget.SearchView"
-    app:showAsAction="always|collapseActionView" />
+    app:showAsAction="always" />
 </menu>

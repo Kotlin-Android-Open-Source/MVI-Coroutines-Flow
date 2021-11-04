@@ -3,11 +3,9 @@ package com.hoc.flowmvi.ui.search
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -15,11 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hoc.flowmvi.core.SearchViewQueryTextEvent
 import com.hoc.flowmvi.core.clicks
-import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.queryTextEvents
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,30 +35,31 @@ import kotlin.time.ExperimentalTime
 @ExperimentalCoroutinesApi
 @FlowPreview
 @ExperimentalTime
-class SearchActivity : AppCompatActivity(R.layout.activity_search) {
+class SearchActivity :
+  AbstractMviActivity<ViewIntent, ViewState, SingleEvent, SearchVM>(R.layout.activity_search) {
   private val binding by viewBinding<ActivitySearchBinding>()
-  private val vm by viewModel<SearchVM>()
+  override val vm by viewModel<SearchVM>()
 
   private val searchViewQueryTextEventChannel = Channel<SearchViewQueryTextEvent>()
   private val searchAdapter = SearchAdapter()
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-    setupViews()
-    bindVM()
+  override fun handleSingleEvent(event: SingleEvent) {
+    when (event) {
+      is SingleEvent.SearchFailure -> toast("Failed to search")
+    }
   }
 
-  private fun bindVM() {
-    vm.viewState.collectIn(this) { viewState ->
-      searchAdapter.submitList(viewState.users)
+  override fun render(viewState: ViewState) {
+    searchAdapter.submitList(viewState.users)
 
-      binding.run {
-        textQuery.isInvisible = viewState.isLoading || viewState.query.isBlank()
-        textQuery.text = "Search results for '${viewState.query}'"
+    binding.run {
+      textQuery.isInvisible = viewState.isLoading || viewState.submittedQuery.isBlank()
+      if (textQuery.isVisible) {
+        textQuery.text = "Search results for '${viewState.submittedQuery}'"
+      }
 
-        errorGroup.isVisible = viewState.error !== null
+      errorGroup.isVisible = viewState.error !== null
+      if (errorGroup.isVisible) {
         errorMessageTextView.text = viewState.error?.let {
           when (it) {
             is UserError.InvalidId -> "Invalid id"
@@ -71,24 +70,13 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
             UserError.ValidationFailed -> "Validation failed"
           }
         }
-
-        progressBar.isVisible = viewState.isLoading
       }
-    }
 
-    vm.singleEvent.collectIn(this) { event ->
-      when (event) {
-        is SingleEvent.SearchFailure -> toast("Failed to search")
-      }
+      progressBar.isVisible = viewState.isLoading
     }
-
-    intents()
-      .onEach { vm.processIntent(it) }
-      .launchIn(lifecycleScope)
   }
 
-  @Suppress("NOTHING_TO_INLINE")
-  private inline fun intents(): Flow<ViewIntent> = merge(
+  override fun viewIntents(): Flow<ViewIntent> = merge(
     searchViewQueryTextEventChannel
       .consumeAsFlow()
       .onEach { Log.d("SearchActivity", "Query $it") }
@@ -96,7 +84,9 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
     binding.retryButton.clicks().map { ViewIntent.Retry },
   )
 
-  private fun setupViews() {
+  override fun setupViews() {
+    supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
     binding.run {
       usersRecycler.run {
         setHasFixedSize(true)
@@ -119,13 +109,24 @@ class SearchActivity : AppCompatActivity(R.layout.activity_search) {
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_search, menu)
 
-    (menu.findItem(R.id.action_search)!!.actionView as SearchView).run {
-      isIconified = false
-      queryHint = "Search user..."
+    menu.findItem(R.id.action_search)!!.let { menuItem ->
+      (menuItem.actionView as SearchView).run {
+        isIconified = false
+        queryHint = "Search user..."
 
-      queryTextEvents()
-        .onEach { searchViewQueryTextEventChannel.send(it) }
-        .launchIn(lifecycleScope)
+        vm.viewState.value
+          .originalQuery
+          .takeUnless { it.isNullOrBlank() }
+          ?.let {
+            menuItem.expandActionView()
+            setQuery(it, true)
+            clearFocus()
+          }
+
+        queryTextEvents()
+          .onEach { searchViewQueryTextEventChannel.send(it) }
+          .launchIn(lifecycleScope)
+      }
     }
 
     return true

@@ -32,8 +32,12 @@ android {
 }
 
 dependencies {
+  implementation(deps.androidx.appCompat)
   implementation(deps.lifecycle.viewModelKtx)
+  implementation(deps.lifecycle.runtimeKtx)
   implementation(deps.coroutines.core)
+
+  implementation(core)
 
   addUnitTest()
 }

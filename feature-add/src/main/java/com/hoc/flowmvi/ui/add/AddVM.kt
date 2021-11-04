@@ -3,18 +3,20 @@ package com.hoc.flowmvi.ui.add
 import android.util.Log
 import androidx.core.util.PatternsCompat
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import arrow.core.Either
-import arrow.core.identity
+import arrow.core.ValidatedNel
+import arrow.core.orNull
+import arrow.core.validNel
+import arrow.core.zip
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
+import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.mapTo
 import com.hoc081098.flowext.withLatestFrom
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -27,23 +29,16 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 
 @ExperimentalCoroutinesApi
-internal class AddVM(
+class AddVM(
   private val addUser: AddUserUseCase,
-  private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
-  private val _eventChannel = Channel<SingleEvent>(Channel.BUFFERED)
-  private val _intentFlow = MutableSharedFlow<ViewIntent>(extraBufferCapacity = 64)
+  private val savedStateHandle: SavedStateHandle,
+) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
-  val viewState: StateFlow<ViewState>
-  val singleEvent: Flow<SingleEvent> get() = _eventChannel.receiveAsFlow()
-
-  fun processIntent(intent: ViewIntent) = _intentFlow.tryEmit(intent)
+  override val viewState: StateFlow<ViewState>
 
   init {
     val initialVS = ViewState.initial(
@@ -51,13 +46,13 @@ internal class AddVM(
       firstName = savedStateHandle.get<String?>(FIRST_NAME_KEY),
       lastName = savedStateHandle.get<String?>(LAST_NAME_KEY),
     )
-    Log.d("###", "[ADD_VM] initialVS: $initialVS")
+    Log.d(logTag, "[ADD_VM] initialVS: $initialVS")
 
-    viewState = _intentFlow
+    viewState = intentFlow
       .toPartialStateChangesFlow()
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
-      .catch { Log.d("###", "[ADD_VM] Throwable: $it") }
+      .catch { Log.d(logTag, "[ADD_VM] Throwable: $it") }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 
@@ -74,64 +69,62 @@ internal class AddVM(
         PartialStateChange.FirstChange.EmailChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.FirstNameChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.LastNameChangedFirstTime -> return@onEach
-        is PartialStateChange.FormValueChange.EmailChanged -> return@onEach
-        is PartialStateChange.FormValueChange.FirstNameChanged -> return@onEach
-        is PartialStateChange.FormValueChange.LastNameChanged -> return@onEach
+        is PartialStateChange.FormValueChange.EmailChanged -> {
+          savedStateHandle[EMAIL_KEY] = change.email
+          return@onEach
+        }
+        is PartialStateChange.FormValueChange.FirstNameChanged -> {
+          savedStateHandle[FIRST_NAME_KEY] = change.firstName
+          return@onEach
+        }
+        is PartialStateChange.FormValueChange.LastNameChanged -> {
+          savedStateHandle[LAST_NAME_KEY] = change.lastName
+          return@onEach
+        }
       }
-      _eventChannel.send(event)
+      sendEvent(event)
     }
   }
 
-  private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
-    val emailErrors = filterIsInstance<ViewIntent.EmailChanged>()
+  private fun SharedFlow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
+    val emailFlow = filterIsInstance<ViewIntent.EmailChanged>()
+      .log("Intent")
       .map { it.email }
       .distinctUntilChanged()
-      .map { validateEmail(it) to it }
-      .shareIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed()
-      )
+      .shareWhileSubscribed()
 
-    val firstNameErrors = filterIsInstance<ViewIntent.FirstNameChanged>()
+    val firstNameFlow = filterIsInstance<ViewIntent.FirstNameChanged>()
+      .log("Intent")
       .map { it.firstName }
       .distinctUntilChanged()
-      .map { validateFirstName(it) to it }
-      .shareIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed()
-      )
+      .shareWhileSubscribed()
 
-    val lastNameErrors = filterIsInstance<ViewIntent.LastNameChanged>()
+    val lastNameFlow = filterIsInstance<ViewIntent.LastNameChanged>()
+      .log("Intent")
       .map { it.lastName }
       .distinctUntilChanged()
-      .map { validateLastName(it) to it }
-      .shareIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed()
-      )
+      .shareWhileSubscribed()
 
-    val userFormFlow =
-      combine(emailErrors, firstNameErrors, lastNameErrors) { email, firstName, lastName ->
-        val errors = email.first + firstName.first + lastName.first
-
-        if (errors.isEmpty()) Either.Right(
-          User(
-            firstName = firstName.second!!,
-            email = email.second!!,
-            lastName = lastName.second!!,
-            id = "",
-            avatar = ""
-          )
-        ) else Either.Left(errors)
-      }
-        .shareIn(
-          scope = viewModelScope,
-          started = SharingStarted.WhileSubscribed()
+    val userFormFlow = combine(
+      emailFlow.map { validateEmail(it) }.distinctUntilChanged(),
+      firstNameFlow.map { validateFirstName(it) }.distinctUntilChanged(),
+      lastNameFlow.map { validateLastName(it) }.distinctUntilChanged(),
+    ) { emailValidated, firstNameValidated, lastNameValidated ->
+      emailValidated.zip(firstNameValidated, lastNameValidated) { email, firstName, lastName ->
+        User(
+          firstName = firstName,
+          email = email,
+          lastName = lastName,
+          id = "",
+          avatar = ""
         )
+      }
+    }.stateWithInitialNullWhileSubscribed()
 
     val addUserChanges = filterIsInstance<ViewIntent.Submit>()
+      .log("Intent")
       .withLatestFrom(userFormFlow) { _, userForm -> userForm }
-      .mapNotNull { it.orNull() }
+      .mapNotNull { it?.orNull() }
       .flatMapFirst { user ->
         flow { emit(addUser(user)) }
           .map { result ->
@@ -145,35 +138,33 @@ internal class AddVM(
 
     val firstChanges = merge(
       filterIsInstance<ViewIntent.EmailChangedFirstTime>()
-        .map { PartialStateChange.FirstChange.EmailChangedFirstTime },
+        .log("Intent")
+        .mapTo(PartialStateChange.FirstChange.EmailChangedFirstTime),
       filterIsInstance<ViewIntent.FirstNameChangedFirstTime>()
-        .map { PartialStateChange.FirstChange.FirstNameChangedFirstTime },
+        .log("Intent")
+        .mapTo(PartialStateChange.FirstChange.FirstNameChangedFirstTime),
       filterIsInstance<ViewIntent.LastNameChangedFirstTime>()
-        .map { PartialStateChange.FirstChange.LastNameChangedFirstTime }
+        .log("Intent")
+        .mapTo(PartialStateChange.FirstChange.LastNameChangedFirstTime)
     )
 
     val formValuesChanges = merge(
-      emailErrors
-        .map { it.second }
-        .onEach { savedStateHandle.set(EMAIL_KEY, it) }
-        .map { PartialStateChange.FormValueChange.EmailChanged(it) },
-      firstNameErrors
-        .map { it.second }
-        .onEach { savedStateHandle.set(FIRST_NAME_KEY, it) }
-        .map { PartialStateChange.FormValueChange.FirstNameChanged(it) },
-      lastNameErrors
-        .map { it.second }
-        .onEach { savedStateHandle.set(LAST_NAME_KEY, it) }
-        .map { PartialStateChange.FormValueChange.LastNameChanged(it) },
+      emailFlow.map { PartialStateChange.FormValueChange.EmailChanged(it) },
+      firstNameFlow.map { PartialStateChange.FormValueChange.FirstNameChanged(it) },
+      lastNameFlow.map { PartialStateChange.FormValueChange.LastNameChanged(it) },
     )
 
+    val errorsChanges = userFormFlow.map { validated ->
+      PartialStateChange.ErrorsChanged(
+        validated?.fold(
+          { it.toSet() },
+          { emptySet() }
+        ) ?: emptySet()
+      )
+    }
+
     return merge(
-      userFormFlow
-        .map {
-          PartialStateChange.ErrorsChanged(
-            it.fold(::identity) { emptySet() }
-          )
-        },
+      errorsChanges,
       addUserChanges,
       firstChanges,
       formValuesChanges,
@@ -181,47 +172,35 @@ internal class AddVM(
   }
 
   private companion object {
-    const val EMAIL_KEY = "email"
-    const val FIRST_NAME_KEY = "first_name"
-    const val LAST_NAME_KEY = "last_name"
+    const val EMAIL_KEY = "com.hoc.flowmvi.ui.add.email"
+    const val FIRST_NAME_KEY = "com.hoc.flowmvi.ui.add.first_name"
+    const val LAST_NAME_KEY = "com.hoc.flowmvi.ui.add.last_name"
 
     const val MIN_LENGTH_FIRST_NAME = 3
     const val MIN_LENGTH_LAST_NAME = 3
 
-    fun validateFirstName(firstName: String?): Set<ValidationError> {
-      val errors = mutableSetOf<ValidationError>()
-
+    fun validateFirstName(firstName: String?): ValidatedNel<ValidationError, String> {
       if (firstName == null || firstName.length < MIN_LENGTH_FIRST_NAME) {
-        errors += ValidationError.TOO_SHORT_FIRST_NAME
+        return ValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel
       }
-
-      // more validation here
-
-      return errors
+      // more validations here
+      return firstName.validNel()
     }
 
-    fun validateLastName(lastName: String?): Set<ValidationError> {
-      val errors = mutableSetOf<ValidationError>()
-
+    fun validateLastName(lastName: String?): ValidatedNel<ValidationError, String> {
       if (lastName == null || lastName.length < MIN_LENGTH_LAST_NAME) {
-        errors += ValidationError.TOO_SHORT_LAST_NAME
+        return ValidationError.TOO_SHORT_LAST_NAME.asInvalidNel
       }
-
-      // more validation here
-
-      return errors
+      // more validations here
+      return lastName.validNel()
     }
 
-    fun validateEmail(email: String?): Set<ValidationError> {
-      val errors = mutableSetOf<ValidationError>()
-
+    fun validateEmail(email: String?): ValidatedNel<ValidationError, String> {
       if (email == null || !PatternsCompat.EMAIL_ADDRESS.matcher(email).matches()) {
-        errors += ValidationError.INVALID_EMAIL_ADDRESS
+        return ValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel
       }
-
-      // more validation here
-
-      return errors
+      // more validations here
+      return email.validNel()
     }
   }
 }

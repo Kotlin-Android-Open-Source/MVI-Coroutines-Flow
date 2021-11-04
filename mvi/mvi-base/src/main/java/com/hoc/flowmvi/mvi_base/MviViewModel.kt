@@ -16,5 +16,5 @@ interface MviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> {
 
   val singleEvent: Flow<E>
 
-  fun processIntent(intent: I)
+  suspend fun processIntent(intent: I)
 }

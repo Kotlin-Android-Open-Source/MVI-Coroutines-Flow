@@ -2,42 +2,30 @@ package com.hoc.flowmvi.ui.add
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
-import androidx.lifecycle.lifecycleScope
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.hoc.flowmvi.core.clicks
-import com.hoc.flowmvi.core.collectIn
 import com.hoc.flowmvi.core.firstChange
 import com.hoc.flowmvi.core.navigator.IntentProviders
 import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
+import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
-class AddActivity : AppCompatActivity(R.layout.activity_add) {
-  private val addVM by viewModel<AddVM>()
+class AddActivity :
+  AbstractMviActivity<ViewIntent, ViewState, SingleEvent, AddVM>(R.layout.activity_add) {
+  override val vm by viewModel<AddVM>()
   private val addBinding by viewBinding<ActivityAddBinding>()
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-    setupViews()
-    bindVM(addVM)
-  }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when (item.itemId) {
@@ -46,22 +34,7 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
     }
   }
 
-  private fun bindVM(addVM: AddVM) {
-    // observe view model
-    addVM.viewState
-      .collectIn(this) { render(it) }
-
-    // observe single event
-    addVM.singleEvent
-      .collectIn(this) { handleSingleEvent(it) }
-
-    // pass view intent to view model
-    intents()
-      .onEach { addVM.processIntent(it) }
-      .launchIn(lifecycleScope)
-  }
-
-  private fun handleSingleEvent(event: SingleEvent) {
+  override fun handleSingleEvent(event: SingleEvent) {
     Log.d("###", "Event=$event")
 
     return when (event) {
@@ -76,7 +49,7 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
     }
   }
 
-  private fun render(viewState: ViewState) {
+  override fun render(viewState: ViewState) {
     Log.d("###", "ViewState=$viewState")
 
     val emailErrorMessage = if (ValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) {
@@ -117,8 +90,10 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
     addBinding.addButton.isInvisible = viewState.isLoading
   }
 
-  private fun setupViews() {
-    val state = addVM.viewState.value
+  override fun setupViews() {
+    supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+    val state = vm.viewState.value
 
     addBinding.run {
       emailEditText.editText!!.setText(state.email)
@@ -127,8 +102,7 @@ class AddActivity : AppCompatActivity(R.layout.activity_add) {
     }
   }
 
-  @Suppress("NOTHING_TO_INLINE")
-  private inline fun intents(): Flow<ViewIntent> = addBinding.run {
+  override fun viewIntents(): Flow<ViewIntent> = addBinding.run {
     merge(
       emailEditText
         .editText!!
