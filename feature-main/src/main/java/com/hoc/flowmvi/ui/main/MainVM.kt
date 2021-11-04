@@ -1,6 +1,5 @@
 package com.hoc.flowmvi.ui.main
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
@@ -28,6 +27,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
+import timber.log.Timber
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -49,7 +49,7 @@ class MainVM(
       .toPartialChangeFlow()
       .sendSingleEvent()
       .scan(initialVS) { vs, change -> change.reduce(vs) }
-      .catch { Log.d("###", "[MAIN_VM] Throwable: $it") }
+      .catch { Timber.tag(logTag).e(it, "[MAIN_VM] Throwable: $it") }
       .stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
@@ -79,7 +79,7 @@ class MainVM(
   private fun Flow<ViewIntent>.toPartialChangeFlow(): Flow<PartialChange> =
     shareWhileSubscribed().run {
       val getUserChanges = defer(getUsersUseCase::invoke)
-        .onEach { either -> Log.d("###", "[MAIN_VM] Emit users.size=${either.map { it.size }}") }
+        .onEach { either -> Timber.d("[MAIN_VM] Emit users.size=${either.map { it.size }}") }
         .map { result ->
           result.fold(
             ifLeft = { PartialChange.GetUser.Error(it) },

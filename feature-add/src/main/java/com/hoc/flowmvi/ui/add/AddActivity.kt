@@ -2,7 +2,6 @@ package com.hoc.flowmvi.ui.add
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.MenuItem
 import androidx.core.view.isInvisible
 import androidx.transition.AutoTransition
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class AddActivity :
@@ -35,7 +35,7 @@ class AddActivity :
   }
 
   override fun handleSingleEvent(event: SingleEvent) {
-    Log.d("###", "Event=$event")
+    Timber.d("Event=$event")
 
     return when (event) {
       is SingleEvent.AddUserSuccess -> {
@@ -43,14 +43,13 @@ class AddActivity :
         finish()
       }
       is SingleEvent.AddUserFailure -> {
-        Log.d("###", event.toString())
         toast("Add failure")
       }
     }
   }
 
   override fun render(viewState: ViewState) {
-    Log.d("###", "ViewState=$viewState")
+    Timber.d("viewState=$viewState")
 
     val emailErrorMessage = if (ValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) {
       "Invalid email"

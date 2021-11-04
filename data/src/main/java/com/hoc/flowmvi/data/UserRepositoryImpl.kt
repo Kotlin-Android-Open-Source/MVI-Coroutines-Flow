@@ -1,6 +1,5 @@
 package com.hoc.flowmvi.data
 
-import android.util.Log
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.leftWiden
@@ -24,6 +23,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.IOException
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -54,7 +54,7 @@ internal class UserRepositoryImpl(
         factor = 2.0,
         shouldRetry = { it is IOException }
       ) {
-        Log.d("###", "[USER_REPO] Retry times=$it")
+        Timber.d("[USER_REPO] Retry times=$it")
         userApiService.getUsers().map(responseToDomain)
       }
     }
@@ -64,7 +64,7 @@ internal class UserRepositoryImpl(
     val initial = getUsersFromRemote()
 
     changesFlow
-      .onEach { Log.d("###", "[USER_REPO] Change=$it") }
+      .onEach { Timber.d("[USER_REPO] Change=$it") }
       .scan(initial) { acc, change ->
         when (change) {
           is Change.Removed -> acc.filter { it.id != change.removed.id }
@@ -72,38 +72,45 @@ internal class UserRepositoryImpl(
           is Change.Added -> acc + change.user
         }
       }
-      .onEach { Log.d("###", "[USER_REPO] Emit users.size=${it.size} ") }
+      .onEach { Timber.d("[USER_REPO] Emit users.size=${it.size} ") }
       .let { emitAll(it) }
   }
     .map { it.right().leftWiden<UserError, Nothing, List<User>>() }
-    .catch { emit(errorMapper(it).left()) }
+    .catch {
+      Timber.tag("UserRepositoryImpl").e(it, "getUsers")
+      emit(errorMapper(it).left())
+    }
 
-  override suspend fun refresh() = Either.catch(errorMapper) {
+  override suspend fun refresh() = Either.catch {
     getUsersFromRemote().let { changesFlow.emit(Change.Refreshed(it)) }
-  }
+  }.tapLeft { Timber.tag("UserRepositoryImpl").e(it, "refresh") }
+    .mapLeft(errorMapper)
 
-  override suspend fun remove(user: User) = Either.catch(errorMapper) {
+  override suspend fun remove(user: User) = Either.catch {
     withContext(dispatchers.io) {
       val response = userApiService.remove(user.id)
       changesFlow.emit(Change.Removed(responseToDomain(response)))
     }
-  }
+  }.tapLeft { Timber.tag("UserRepositoryImpl").e(it, "remove user=$user") }
+    .mapLeft(errorMapper)
 
-  override suspend fun add(user: User) = Either.catch(errorMapper) {
+  override suspend fun add(user: User) = Either.catch {
     withContext(dispatchers.io) {
       val body = domainToBody(user)
       val response = userApiService.add(body)
       changesFlow.emit(Change.Added(responseToDomain(response)))
       extraDelay()
     }
-  }
+  }.tapLeft { Timber.tag("UserRepositoryImpl").e(it, "add user=$user") }
+    .mapLeft(errorMapper)
 
-  override suspend fun search(query: String) = Either.catch(errorMapper) {
+  override suspend fun search(query: String) = Either.catch {
     withContext(dispatchers.io) {
       extraDelay()
       userApiService.search(query).map(responseToDomain)
     }
-  }
+  }.tapLeft { Timber.tag("UserRepositoryImpl").e(it, "search query=$query") }
+    .mapLeft(errorMapper)
 
   private suspend inline fun extraDelay() = delay(400)
 }

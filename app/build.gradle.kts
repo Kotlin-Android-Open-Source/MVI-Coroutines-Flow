@@ -67,6 +67,7 @@ dependencies {
   implementation(deps.koin.android)
 
   debugImplementation(deps.squareup.leakCanary)
+  implementation(deps.timber)
 
   testImplementation(deps.test.junit)
   androidTestImplementation(deps.test.androidxJunit)

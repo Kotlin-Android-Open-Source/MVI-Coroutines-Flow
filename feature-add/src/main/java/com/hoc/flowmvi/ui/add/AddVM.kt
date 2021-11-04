@@ -1,6 +1,5 @@
 package com.hoc.flowmvi.ui.add
 
-import android.util.Log
 import androidx.core.util.PatternsCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -31,6 +30,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class AddVM(
@@ -46,13 +46,13 @@ class AddVM(
       firstName = savedStateHandle.get<String?>(FIRST_NAME_KEY),
       lastName = savedStateHandle.get<String?>(LAST_NAME_KEY),
     )
-    Log.d(logTag, "[ADD_VM] initialVS: $initialVS")
+    Timber.tag(logTag).d("[ADD_VM] initialVS: $initialVS")
 
     viewState = intentFlow
       .toPartialStateChangesFlow()
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
-      .catch { Log.d(logTag, "[ADD_VM] Throwable: $it") }
+      .catch { Timber.tag(logTag).e(it, "[ADD_VM] Throwable: $it") }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 

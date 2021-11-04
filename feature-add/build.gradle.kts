@@ -58,6 +58,7 @@ dependencies {
 
   implementation(deps.viewBindingDelegate)
   implementation(deps.flowExt)
+  implementation(deps.timber)
 
   addUnitTest()
 }

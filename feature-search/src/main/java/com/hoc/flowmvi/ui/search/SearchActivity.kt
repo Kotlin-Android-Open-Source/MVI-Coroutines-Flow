@@ -3,7 +3,6 @@ package com.hoc.flowmvi.ui.search
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
@@ -30,6 +29,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
@@ -79,7 +79,7 @@ class SearchActivity :
   override fun viewIntents(): Flow<ViewIntent> = merge(
     searchViewQueryTextEventChannel
       .consumeAsFlow()
-      .onEach { Log.d("SearchActivity", "Query $it") }
+      .onEach { Timber.d("Query $it") }
       .map { ViewIntent.Search(it.query.toString()) },
     binding.retryButton.clicks().map { ViewIntent.Retry },
   )

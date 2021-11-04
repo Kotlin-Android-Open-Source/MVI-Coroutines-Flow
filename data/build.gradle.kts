@@ -52,5 +52,7 @@ dependencies {
   implementation(deps.koin.core)
   implementation(deps.arrow.core)
 
+  implementation(deps.timber)
+
   addUnitTest()
 }

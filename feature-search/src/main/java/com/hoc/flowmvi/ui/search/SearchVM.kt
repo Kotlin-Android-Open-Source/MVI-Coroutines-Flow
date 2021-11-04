@@ -1,6 +1,5 @@
 package com.hoc.flowmvi.ui.search
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
@@ -27,6 +26,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
@@ -49,7 +49,7 @@ class SearchVM(
       .toPartialStateChangesFlow()
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
-      .catch { Log.d(logTag, "[SEARCH_VM] Throwable: $it") }
+      .catch { Timber.tag(logTag).e(it, "[SEARCH_VM] Throwable: $it") }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 

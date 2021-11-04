@@ -38,6 +38,7 @@ dependencies {
   implementation(deps.coroutines.core)
 
   implementation(core)
+  implementation(deps.timber)
 
   addUnitTest()
 }

@@ -1,6 +1,6 @@
 package com.hoc.flowmvi.mvi_base
 
-import android.util.Log
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
@@ -13,11 +13,19 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 
 abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
   MviViewModel<I, S, E>, ViewModel() {
   protected val logTag by lazy(LazyThreadSafetyMode.PUBLICATION) {
-    this::class.java.simpleName.take(23)
+    this::class.java.simpleName.let { tag ->
+      // Tag length limit was removed in API 26.
+      if (tag.length <= MAX_TAG_LENGTH || Build.VERSION.SDK_INT >= 26) {
+        tag
+      } else {
+        tag.take(MAX_TAG_LENGTH)
+      }
+    }
   }
 
   private val eventChannel = Channel<E>(Channel.UNLIMITED)
@@ -34,7 +42,7 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
   // Extensions on Flow using viewModelScope.
 
   protected fun <T> Flow<T>.log(subject: String): Flow<T> =
-    onEach { Log.d(logTag, ">>> $subject: $it") }
+    onEach { Timber.tag(logTag).d(">>> $subject: $it") }
 
   protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> =
     shareIn(viewModelScope, SharingStarted.WhileSubscribed())
@@ -52,5 +60,7 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
      * We use replay=0 so buffer = 64.
      */
     private const val SubscriberBufferSize = 64
+
+    private const val MAX_TAG_LENGTH = 23
   }
 }
