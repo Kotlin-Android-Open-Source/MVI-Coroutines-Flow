@@ -10,6 +10,7 @@ import com.hoc081098.flowext.takeUntil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -52,7 +53,7 @@ class SearchVM(
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 
-  private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
+  private fun SharedFlow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val executeSearch: suspend (String) -> Flow<PartialStateChange> = { query: String ->
       flow { emit(searchUsersUseCase(query)) }
         .map { result ->
@@ -70,6 +71,7 @@ class SearchVM(
     }
 
     val queryFlow = filterIsInstance<ViewIntent.Search>()
+      .log("Intent")
       .map { it.query }
       .shareWhileSubscribed()
 

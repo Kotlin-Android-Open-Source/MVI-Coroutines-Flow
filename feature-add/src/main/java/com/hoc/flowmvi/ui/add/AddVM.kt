@@ -12,9 +12,11 @@ import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.mapTo
 import com.hoc081098.flowext.withLatestFrom
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -84,7 +86,7 @@ class AddVM(
     }
   }
 
-  private fun Flow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
+  private fun SharedFlow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val emailFlow = filterIsInstance<ViewIntent.EmailChanged>()
       .log("Intent")
       .map { it.email }
@@ -137,13 +139,13 @@ class AddVM(
     val firstChanges = merge(
       filterIsInstance<ViewIntent.EmailChangedFirstTime>()
         .log("Intent")
-        .map { PartialStateChange.FirstChange.EmailChangedFirstTime },
+        .mapTo(PartialStateChange.FirstChange.EmailChangedFirstTime),
       filterIsInstance<ViewIntent.FirstNameChangedFirstTime>()
         .log("Intent")
-        .map { PartialStateChange.FirstChange.FirstNameChangedFirstTime },
+        .mapTo(PartialStateChange.FirstChange.FirstNameChangedFirstTime),
       filterIsInstance<ViewIntent.LastNameChangedFirstTime>()
         .log("Intent")
-        .map { PartialStateChange.FirstChange.LastNameChangedFirstTime }
+        .mapTo(PartialStateChange.FirstChange.LastNameChangedFirstTime)
     )
 
     val formValuesChanges = merge(

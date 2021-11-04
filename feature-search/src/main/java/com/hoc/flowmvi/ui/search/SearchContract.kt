@@ -72,7 +72,7 @@ internal sealed interface PartialStateChange {
       users = users,
       submittedQuery = submittedQuery,
     )
-    is QueryChanged -> state.copy(originalQuery = query)
+    is QueryChanged -> if (state.originalQuery == query) state else state.copy(originalQuery = query)
   }
 }
 

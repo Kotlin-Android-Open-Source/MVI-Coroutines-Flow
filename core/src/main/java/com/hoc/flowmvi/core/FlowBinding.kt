@@ -118,7 +118,6 @@ fun EditText.textChanges(): Flow<CharSequence?> {
     checkMainThread()
 
     val listener = doOnTextChanged { text, _, _, _ -> trySend(text) }
-    addTextChangedListener(listener)
     awaitClose { removeTextChangedListener(listener) }
   }.onStart { emit(text) }
 }
