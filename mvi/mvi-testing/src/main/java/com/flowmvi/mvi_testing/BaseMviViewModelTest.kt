@@ -1,6 +1,8 @@
 package com.flowmvi.mvi_testing
 
 import androidx.annotation.CallSuper
+import arrow.core.Either
+import arrow.core.right
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewModel
@@ -20,7 +22,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
-import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -44,8 +45,8 @@ abstract class BaseMviViewModelTest<
   protected fun test(
     vmProducer: () -> VM,
     intents: Flow<I>,
-    expectedStates: List<S>,
-    expectedEvents: List<E>,
+    expectedStates: List<Either<(S) -> Unit, S>>,
+    expectedEvents: List<Either<(E) -> Unit, E>>,
     delayAfterDispatchingIntents: Duration = Duration.ZERO,
     logging: Boolean = true,
     intentsBeforeCollecting: Flow<I>? = null,
@@ -69,18 +70,34 @@ abstract class BaseMviViewModelTest<
     }
 
     assertEquals(expectedStates.size, states.size, "States size")
-    assertContentEquals(
-      expectedStates,
-      states,
-      "States content"
-    )
+    expectedStates.withIndex().zip(states).forEach { (indexedValue, state) ->
+      val (index, exp) = indexedValue
+      exp.fold(
+        ifRight = {
+          assertEquals(
+            expected = it,
+            actual = state,
+            message = "[State index=$index]"
+          )
+        },
+        ifLeft = { it(state) }
+      )
+    }
 
     assertEquals(expectedEvents.size, events.size, "Events size")
-    assertContentEquals(
-      expectedEvents,
-      events,
-      "Evens content",
-    )
+    expectedEvents.withIndex().zip(events).forEach { (indexedValue, event) ->
+      val (index, exp) = indexedValue
+      exp.fold(
+        ifRight = {
+          assertEquals(
+            expected = it,
+            actual = event,
+            message = "[Event index=$index]"
+          )
+        },
+        ifLeft = { it(event) }
+      )
+    }
 
     otherAssertions?.invoke()
     stateJob.cancel()
@@ -95,3 +112,5 @@ abstract class BaseMviViewModelTest<
     clearAllMocks()
   }
 }
+
+fun <T> Iterable<T>.mapRight(): List<Either<(T) -> Unit, T>> = map { it.right() }

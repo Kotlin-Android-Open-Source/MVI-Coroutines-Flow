@@ -38,5 +38,7 @@ dependencies {
   implementation(mviBase)
   implementation(deps.timber)
 
+  implementation(deps.arrow.core)
+
   addUnitTest(testImplementation = false)
 }
