@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.take
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
@@ -139,12 +140,15 @@ class AddVM(
     val firstChanges = merge(
       filterIsInstance<ViewIntent.EmailChangedFirstTime>()
         .log("Intent")
+        .take(1)
         .mapTo(PartialStateChange.FirstChange.EmailChangedFirstTime),
       filterIsInstance<ViewIntent.FirstNameChangedFirstTime>()
         .log("Intent")
+        .take(1)
         .mapTo(PartialStateChange.FirstChange.FirstNameChangedFirstTime),
       filterIsInstance<ViewIntent.LastNameChangedFirstTime>()
         .log("Intent")
+        .take(1)
         .mapTo(PartialStateChange.FirstChange.LastNameChangedFirstTime)
     )
 
