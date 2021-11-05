@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hoc.flowmvi.core.SwipeLeftToDeleteCallback
 import com.hoc.flowmvi.core.clicks
-import com.hoc.flowmvi.core.navigator.Navigator
+import com.hoc.flowmvi.core_ui.navigator.Navigator
 import com.hoc.flowmvi.core.refreshes
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.domain.repository.UserError

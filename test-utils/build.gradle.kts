@@ -4,5 +4,7 @@ plugins {
 
 dependencies {
   implementation(deps.coroutines.core)
-  addUnitTest()
+  implementation(core)
+
+  addUnitTest(testImplementation = false)
 }

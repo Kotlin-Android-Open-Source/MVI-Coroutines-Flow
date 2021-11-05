@@ -36,6 +36,7 @@ dependencies {
   implementation(deps.coroutines.core)
 
   implementation(mviBase)
+  implementation(testUtils)
   implementation(deps.timber)
 
   addUnitTest(testImplementation = false)

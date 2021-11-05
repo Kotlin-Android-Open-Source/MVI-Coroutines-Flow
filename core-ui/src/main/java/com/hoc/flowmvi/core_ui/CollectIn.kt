@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.core
+package com.hoc.flowmvi.core_ui
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle

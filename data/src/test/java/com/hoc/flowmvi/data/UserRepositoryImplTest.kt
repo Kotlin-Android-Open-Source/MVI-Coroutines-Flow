@@ -4,12 +4,13 @@ import arrow.core.Either
 import arrow.core.getOrHandle
 import arrow.core.identity
 import com.hoc.flowmvi.core.Mapper
-import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
+import com.hoc.flowmvi.test_utils.TestDispatchers
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -19,17 +20,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifySequence
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
 import java.io.IOException
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -40,6 +30,13 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Rule
 
 private val USER_BODY = UserBody(
   email = "email1@gmail.com",
@@ -95,16 +92,13 @@ private val USERS = listOf(
   ),
 )
 
-@ExperimentalCoroutinesApi
-class TestDispatchersImpl(testDispatcher: TestCoroutineDispatcher) : CoroutineDispatchers {
-  override val main: CoroutineDispatcher = testDispatcher
-  override val io: CoroutineDispatcher = testDispatcher
-}
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
 class UserRepositoryImplTest {
-  private val testDispatcher = TestCoroutineDispatcher()
+  @get:Rule
+  val coroutineRule = TestCoroutineDispatcherRule()
+  private val testDispatcher get() = coroutineRule.testCoroutineDispatcher
 
   private lateinit var repo: UserRepositoryImpl
   private lateinit var userApiService: UserApiService
@@ -114,8 +108,6 @@ class UserRepositoryImplTest {
 
   @BeforeTest
   fun setup() {
-    Dispatchers.setMain(testDispatcher)
-
     userApiService = mockk()
     responseToDomain = mockk()
     domainToBody = mockk()
@@ -123,7 +115,7 @@ class UserRepositoryImplTest {
 
     repo = UserRepositoryImpl(
       userApiService = userApiService,
-      dispatchers = TestDispatchersImpl(testDispatcher),
+      dispatchers = TestDispatchers(coroutineRule.testCoroutineDispatcher),
       responseToDomain = responseToDomain,
       domainToBody = domainToBody,
       errorMapper = errorMapper
@@ -132,9 +124,6 @@ class UserRepositoryImplTest {
 
   @AfterTest
   fun tearDown() {
-    testDispatcher.cleanupTestCoroutines()
-    Dispatchers.resetMain()
-
     confirmVerified(
       userApiService,
       responseToDomain,

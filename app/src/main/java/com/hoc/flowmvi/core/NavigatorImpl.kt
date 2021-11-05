@@ -1,8 +1,8 @@
 package com.hoc.flowmvi.core
 
 import android.content.Context
-import com.hoc.flowmvi.core.navigator.IntentProviders
-import com.hoc.flowmvi.core.navigator.Navigator
+import com.hoc.flowmvi.core_ui.navigator.IntentProviders
+import com.hoc.flowmvi.core_ui.navigator.Navigator
 
 class NavigatorImpl(
   private val add: IntentProviders.Add,

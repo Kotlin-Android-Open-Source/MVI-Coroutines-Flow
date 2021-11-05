@@ -7,6 +7,8 @@ include(":feature-search")
 include(":domain")
 include(":data")
 include(":core")
+include(":core-ui")
+include(":test-utils")
 includeProject(":mvi-base", "mvi/mvi-base")
 includeProject(":mvi-testing", "mvi/mvi-testing")
 

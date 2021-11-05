@@ -1,6 +1,6 @@
 package com.hoc.flowmvi.ui.search
 
-import com.hoc.flowmvi.core.navigator.IntentProviders
+import com.hoc.flowmvi.core_ui.navigator.IntentProviders
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.dsl.viewModel
