@@ -13,6 +13,7 @@ import com.hoc.flowmvi.core.textChanges
 import com.hoc.flowmvi.core.toast
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
+import com.hoc081098.flowext.mapTo
 import com.hoc081098.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -121,15 +122,15 @@ class AddActivity :
       emailEditText
         .editText!!
         .firstChange()
-        .map { ViewIntent.EmailChangedFirstTime },
+        .mapTo(ViewIntent.EmailChangedFirstTime),
       firstNameEditText
         .editText!!
         .firstChange()
-        .map { ViewIntent.FirstNameChangedFirstTime },
+        .mapTo(ViewIntent.FirstNameChangedFirstTime),
       lastNameEditText
         .editText!!
         .firstChange()
-        .map { ViewIntent.LastNameChangedFirstTime },
+        .mapTo(ViewIntent.LastNameChangedFirstTime),
     )
   }
 
