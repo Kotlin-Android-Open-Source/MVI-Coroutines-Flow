@@ -89,13 +89,7 @@ class MainActivity :
       is SingleEvent.RemoveUser.Success -> toast("Removed '${event.user.fullName}'")
       is SingleEvent.RemoveUser.Failure -> {
         toast("Error when removing '${event.user.fullName}'")
-        userAdapter.notifyItemChanged(
-          vm.viewState.value
-            .userItems
-            .indexOfFirst { it.id == event.user.id }
-            .takeIf { it != RecyclerView.NO_POSITION }
-            ?: return
-        )
+        userAdapter.notifyItemChanged(event.indexProducer() ?: return)
       }
     }
   }

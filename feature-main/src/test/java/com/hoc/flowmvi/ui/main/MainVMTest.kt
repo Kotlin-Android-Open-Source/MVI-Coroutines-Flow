@@ -3,6 +3,7 @@ package com.hoc.flowmvi.ui.main
 import arrow.core.left
 import arrow.core.right
 import com.flowmvi.mvi_testing.BaseMviViewModelTest
+import com.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
@@ -22,6 +23,8 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
@@ -78,7 +81,7 @@ class MainVMTest : BaseMviViewModelTest<
         error = null,
         isRefreshing = false
       )
-    ),
+    ).mapRight(),
     expectedEvents = emptyList(),
   ) { verify(exactly = 1) { getUserUseCase() } }
 
@@ -100,12 +103,12 @@ class MainVMTest : BaseMviViewModelTest<
           error = userError,
           isRefreshing = false
         )
-      ),
+      ).mapRight(),
       expectedEvents = listOf(
         SingleEvent.GetUsersError(
           error = userError,
         ),
-      ),
+      ).mapRight(),
     ) { verify(exactly = 1) { getUserUseCase() } }
   }
 
@@ -137,10 +140,10 @@ class MainVMTest : BaseMviViewModelTest<
         error = null,
         isRefreshing = false
       ),
-    ),
+    ).mapRight(),
     expectedEvents = listOf(
       SingleEvent.Refresh.Success
-    ),
+    ).mapRight(),
   ) {
     coVerify(exactly = 1) { getUserUseCase() }
     coVerify(exactly = 1) { refreshGetUsersUseCase() }
@@ -177,10 +180,10 @@ class MainVMTest : BaseMviViewModelTest<
           error = null,
           isRefreshing = false
         ),
-      ),
+      ).mapRight(),
       expectedEvents = listOf(
         SingleEvent.Refresh.Failure(userError)
-      ),
+      ).mapRight(),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerify(exactly = 1) { refreshGetUsersUseCase() }
@@ -195,7 +198,7 @@ class MainVMTest : BaseMviViewModelTest<
         vm
       },
       intents = flowOf(ViewIntent.Refresh),
-      expectedStates = listOf(ViewState.initial()),
+      expectedStates = listOf(ViewState.initial()).mapRight(),
       expectedEvents = emptyList(),
       delayAfterDispatchingIntents = Duration.milliseconds(100),
     ) { coVerify(exactly = 0) { refreshGetUsersUseCase() } }
@@ -220,10 +223,10 @@ class MainVMTest : BaseMviViewModelTest<
           error = userError,
           isRefreshing = false,
         )
-      ),
+      ).mapRight(),
       expectedEvents = listOf(
         SingleEvent.GetUsersError(userError),
-      ),
+      ).mapRight(),
       delayAfterDispatchingIntents = Duration.milliseconds(100),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
@@ -239,7 +242,7 @@ class MainVMTest : BaseMviViewModelTest<
         vm
       },
       intents = flowOf(ViewIntent.Retry),
-      expectedStates = listOf(ViewState.initial()),
+      expectedStates = listOf(ViewState.initial()).mapRight(),
       expectedEvents = emptyList(),
       delayAfterDispatchingIntents = Duration.milliseconds(100),
     ) { coVerify(exactly = 0) { getUserUseCase() } }
@@ -278,10 +281,10 @@ class MainVMTest : BaseMviViewModelTest<
           error = null,
           isRefreshing = false,
         )
-      ),
+      ).mapRight(),
       expectedEvents = listOf(
         SingleEvent.GetUsersError(userError),
-      ),
+      ).mapRight(),
     ) { verify(exactly = 2) { getUserUseCase() } }
   }
 
@@ -319,11 +322,11 @@ class MainVMTest : BaseMviViewModelTest<
           error = userError2,
           isRefreshing = false,
         )
-      ),
+      ).mapRight(),
       expectedEvents = listOf(
         SingleEvent.GetUsersError(userError1),
         SingleEvent.GetUsersError(userError2),
-      ),
+      ).mapRight(),
     ) { verify(exactly = 2) { getUserUseCase() } }
   }
 
@@ -375,11 +378,11 @@ class MainVMTest : BaseMviViewModelTest<
           error = null,
           isRefreshing = false,
         ),
-      ),
+      ).mapRight(),
       expectedEvents = listOf(
         SingleEvent.RemoveUser.Success(item1),
         SingleEvent.RemoveUser.Success(item2),
-      )
+      ).mapRight()
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerifySequence {
@@ -410,9 +413,14 @@ class MainVMTest : BaseMviViewModelTest<
           error = null,
           isRefreshing = false,
         ),
-      ),
+      ).mapRight(),
       expectedEvents = listOf(
-        SingleEvent.RemoveUser.Failure(item, userError),
+        { event: SingleEvent ->
+          val removed = assertIs<SingleEvent.RemoveUser.Failure>(event)
+          assertEquals(item, removed.user)
+          assertEquals(userError, removed.error)
+          assertEquals(removed.indexProducer(), 0)
+        }.left(),
       )
     ) {
       coVerify(exactly = 1) { getUserUseCase() }

@@ -39,5 +39,7 @@ dependencies {
   implementation(testUtils)
   implementation(deps.timber)
 
+  implementation(deps.arrow.core)
+
   addUnitTest(testImplementation = false)
 }
