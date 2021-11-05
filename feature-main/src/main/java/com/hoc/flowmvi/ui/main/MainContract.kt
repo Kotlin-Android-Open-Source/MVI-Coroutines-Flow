@@ -114,6 +114,10 @@ sealed interface SingleEvent : MviSingleEvent {
 
   sealed interface RemoveUser : SingleEvent {
     data class Success(val user: UserItem) : RemoveUser
-    data class Failure(val user: UserItem, val error: UserError) : RemoveUser
+    data class Failure(
+      val user: UserItem,
+      val error: UserError,
+      val indexProducer: () -> Int?,
+    ) : RemoveUser
   }
 }

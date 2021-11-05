@@ -58,15 +58,21 @@ class MainVM(
   }
 
   private fun Flow<PartialChange>.sendSingleEvent(): Flow<PartialChange> {
-    return onEach {
-      val event = when (it) {
-        is PartialChange.GetUser.Error -> SingleEvent.GetUsersError(it.error)
+    return onEach { change ->
+      val event = when (change) {
+        is PartialChange.GetUser.Error -> SingleEvent.GetUsersError(change.error)
         is PartialChange.Refresh.Success -> SingleEvent.Refresh.Success
-        is PartialChange.Refresh.Failure -> SingleEvent.Refresh.Failure(it.error)
-        is PartialChange.RemoveUser.Success -> SingleEvent.RemoveUser.Success(it.user)
+        is PartialChange.Refresh.Failure -> SingleEvent.Refresh.Failure(change.error)
+        is PartialChange.RemoveUser.Success -> SingleEvent.RemoveUser.Success(change.user)
         is PartialChange.RemoveUser.Failure -> SingleEvent.RemoveUser.Failure(
-          user = it.user,
-          error = it.error,
+          user = change.user,
+          error = change.error,
+          indexProducer = {
+            viewState.value
+              .userItems
+              .indexOfFirst { it.id == change.user.id }
+              .takeIf { it != -1 }
+          }
         )
         PartialChange.GetUser.Loading -> return@onEach
         is PartialChange.GetUser.Data -> return@onEach
