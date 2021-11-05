@@ -42,6 +42,7 @@ android {
 dependencies {
   implementation(domain)
   implementation(core)
+  implementation(coreUi)
   implementation(mviBase)
 
   implementation(deps.androidx.appCompat)

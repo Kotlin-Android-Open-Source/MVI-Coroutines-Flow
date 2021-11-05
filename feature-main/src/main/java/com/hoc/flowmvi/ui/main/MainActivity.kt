@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hoc.flowmvi.core.SwipeLeftToDeleteCallback
-import com.hoc.flowmvi.core.clicks
+import com.hoc.flowmvi.core_ui.SwipeLeftToDeleteCallback
+import com.hoc.flowmvi.core_ui.clicks
 import com.hoc.flowmvi.core_ui.navigator.Navigator
-import com.hoc.flowmvi.core.refreshes
-import com.hoc.flowmvi.core.toast
+import com.hoc.flowmvi.core_ui.refreshes
+import com.hoc.flowmvi.core_ui.toast
 import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.main.databinding.ActivityMainBinding

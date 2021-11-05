@@ -9,11 +9,6 @@ import com.hoc.flowmvi.mvi_base.MviViewModel
 import com.hoc.flowmvi.mvi_base.MviViewState
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import io.mockk.clearAllMocks
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.assertEquals
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -23,6 +18,11 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
@@ -109,7 +109,6 @@ abstract class BaseMviViewModelTest<
     stateJob.cancel()
     eventJob.cancel()
   }
-
 }
 
 fun <T> Iterable<T>.mapRight(): List<Either<(T) -> Unit, T>> = map { it.right() }
