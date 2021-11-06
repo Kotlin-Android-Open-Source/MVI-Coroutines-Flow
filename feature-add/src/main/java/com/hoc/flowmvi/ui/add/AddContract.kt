@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.ui.add
 
+import android.os.Parcelable
 import arrow.core.ValidatedNel
 import arrow.core.invalidNel
 import com.hoc.flowmvi.domain.entity.User
@@ -7,6 +8,7 @@ import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
+import kotlinx.parcelize.Parcelize
 
 enum class ValidationError {
   INVALID_EMAIL_ADDRESS,
@@ -16,32 +18,29 @@ enum class ValidationError {
   val asInvalidNel: ValidatedNel<ValidationError, Nothing> = invalidNel()
 }
 
+@Parcelize
 data class ViewState(
   val errors: Set<ValidationError>,
   val isLoading: Boolean,
-  //
+  // show error or not
   val emailChanged: Boolean,
   val firstNameChanged: Boolean,
   val lastNameChanged: Boolean,
-  //
+  // form values
   val email: String?,
   val firstName: String?,
   val lastName: String?,
-) : MviViewState {
+) : MviViewState, Parcelable {
   companion object {
-    fun initial(
-      email: String?,
-      firstName: String?,
-      lastName: String?,
-    ) = ViewState(
+    fun initial() = ViewState(
       errors = emptySet(),
       isLoading = false,
       emailChanged = false,
       firstNameChanged = false,
       lastNameChanged = false,
-      email = email,
-      firstName = firstName,
-      lastName = lastName,
+      email = null,
+      firstName = null,
+      lastName = null,
     )
   }
 }

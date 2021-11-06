@@ -95,6 +95,7 @@ inline val PDsS.androidLib: PDS get() = id("com.android.library")
 inline val PDsS.kotlinAndroid: PDS get() = id("kotlin-android")
 inline val PDsS.kotlin: PDS get() = id("kotlin")
 inline val PDsS.kotlinKapt: PDS get() = id("kotlin-kapt")
+inline val PDsS.kotlinParcelize: PDS get() = id("kotlin-parcelize")
 
 inline val DependencyHandler.domain get() = project(":domain")
 inline val DependencyHandler.core get() = project(":core")

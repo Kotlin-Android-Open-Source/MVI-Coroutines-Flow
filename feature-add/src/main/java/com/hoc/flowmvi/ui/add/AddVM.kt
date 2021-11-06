@@ -1,11 +1,8 @@
 package com.hoc.flowmvi.ui.add
 
-import androidx.core.util.PatternsCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import arrow.core.ValidatedNel
 import arrow.core.orNull
-import arrow.core.validNel
 import arrow.core.zip
 import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
@@ -36,23 +33,20 @@ import timber.log.Timber
 @ExperimentalCoroutinesApi
 class AddVM(
   private val addUser: AddUserUseCase,
-  private val savedStateHandle: SavedStateHandle,
+  savedStateHandle: SavedStateHandle,
 ) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
   override val viewState: StateFlow<ViewState>
 
   init {
-    val initialVS = ViewState.initial(
-      email = savedStateHandle.get<String?>(EMAIL_KEY),
-      firstName = savedStateHandle.get<String?>(FIRST_NAME_KEY),
-      lastName = savedStateHandle.get<String?>(LAST_NAME_KEY),
-    )
+    val initialVS = savedStateHandle.get<ViewState?>(VIEW_STATE) ?: ViewState.initial()
     Timber.tag(logTag).d("[ADD_VM] initialVS: $initialVS")
 
     viewState = intentFlow
       .toPartialStateChangesFlow()
       .sendSingleEvent()
       .scan(initialVS) { state, change -> change.reduce(state) }
+      .onEach { savedStateHandle[VIEW_STATE] = it }
       .catch { Timber.tag(logTag).e(it, "[ADD_VM] Throwable: $it") }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
@@ -70,18 +64,9 @@ class AddVM(
         PartialStateChange.FirstChange.EmailChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.FirstNameChangedFirstTime -> return@onEach
         PartialStateChange.FirstChange.LastNameChangedFirstTime -> return@onEach
-        is PartialStateChange.FormValueChange.EmailChanged -> {
-          savedStateHandle[EMAIL_KEY] = change.email
-          return@onEach
-        }
-        is PartialStateChange.FormValueChange.FirstNameChanged -> {
-          savedStateHandle[FIRST_NAME_KEY] = change.firstName
-          return@onEach
-        }
-        is PartialStateChange.FormValueChange.LastNameChanged -> {
-          savedStateHandle[LAST_NAME_KEY] = change.lastName
-          return@onEach
-        }
+        is PartialStateChange.FormValueChange.EmailChanged -> return@onEach
+        is PartialStateChange.FormValueChange.FirstNameChanged -> return@onEach
+        is PartialStateChange.FormValueChange.LastNameChanged -> return@onEach
       }
       sendEvent(event)
     }
@@ -176,35 +161,6 @@ class AddVM(
   }
 
   private companion object {
-    const val EMAIL_KEY = "com.hoc.flowmvi.ui.add.email"
-    const val FIRST_NAME_KEY = "com.hoc.flowmvi.ui.add.first_name"
-    const val LAST_NAME_KEY = "com.hoc.flowmvi.ui.add.last_name"
-
-    const val MIN_LENGTH_FIRST_NAME = 3
-    const val MIN_LENGTH_LAST_NAME = 3
-
-    fun validateFirstName(firstName: String?): ValidatedNel<ValidationError, String> {
-      if (firstName == null || firstName.length < MIN_LENGTH_FIRST_NAME) {
-        return ValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel
-      }
-      // more validations here
-      return firstName.validNel()
-    }
-
-    fun validateLastName(lastName: String?): ValidatedNel<ValidationError, String> {
-      if (lastName == null || lastName.length < MIN_LENGTH_LAST_NAME) {
-        return ValidationError.TOO_SHORT_LAST_NAME.asInvalidNel
-      }
-      // more validations here
-      return lastName.validNel()
-    }
-
-    fun validateEmail(email: String?): ValidatedNel<ValidationError, String> {
-      if (email == null || !PatternsCompat.EMAIL_ADDRESS.matcher(email).matches()) {
-        return ValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel
-      }
-      // more validations here
-      return email.validNel()
-    }
+    private const val VIEW_STATE = "com.hoc.flowmvi.ui.add.view_state"
   }
 }
