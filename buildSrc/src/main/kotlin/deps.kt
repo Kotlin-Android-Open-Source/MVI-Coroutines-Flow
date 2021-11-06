@@ -1,5 +1,6 @@
 @file:Suppress("unused", "ClassName", "SpellCheckingInspection")
 
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
@@ -114,3 +115,8 @@ fun DependencyHandler.addUnitTest(testImplementation: Boolean = true) {
   add(configName, deps.test.kotlinJUnit)
   add(configName, deps.coroutines.test)
 }
+
+val Project.isCiBuild: Boolean
+  get() = providers.environmentVariable("CI")
+    .forUseAtConfigurationTime()
+    .orNull == "true"

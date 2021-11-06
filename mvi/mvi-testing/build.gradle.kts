@@ -16,12 +16,28 @@ android {
   }
 
   buildTypes {
+    debug {
+      (!isCiBuild).let {
+        buildConfigField(
+          type = it::class.java.simpleName,
+          name = "ENABLE_LOG_TEST",
+          value = it.toString(),
+        )
+      }
+    }
     release {
       isMinifyEnabled = false
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"
       )
+      false.let {
+        buildConfigField(
+          type = it::class.java.simpleName,
+          name = "ENABLE_LOG_TEST",
+          value = it.toString(),
+        )
+      }
     }
   }
   compileOptions {

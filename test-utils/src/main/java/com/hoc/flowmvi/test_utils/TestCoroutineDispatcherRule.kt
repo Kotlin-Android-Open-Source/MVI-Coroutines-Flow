@@ -13,12 +13,10 @@ class TestCoroutineDispatcherRule(val testCoroutineDispatcher: TestCoroutineDisp
   TestWatcher() {
   override fun starting(description: Description) {
     Dispatchers.setMain(testCoroutineDispatcher)
-    println("$this::starting $description")
   }
 
   override fun finished(description: Description) {
     Dispatchers.resetMain()
     testCoroutineDispatcher.cleanupTestCoroutines()
-    println("$this::finished $description")
   }
 }
