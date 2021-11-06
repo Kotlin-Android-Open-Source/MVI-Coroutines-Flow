@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.core.view.isInvisible
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import com.google.android.material.textfield.TextInputLayout
 import com.hoc.flowmvi.core_ui.clicks
 import com.hoc.flowmvi.core_ui.firstChange
 import com.hoc.flowmvi.core_ui.navigator.IntentProviders
@@ -52,31 +53,17 @@ class AddActivity :
   override fun render(viewState: ViewState) {
     Timber.d("viewState=$viewState")
 
-    val emailErrorMessage = if (ValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) {
-      "Invalid email"
-    } else {
-      null
+    addBinding.emailEditText.setErrorIfChanged(viewState.emailChanged) {
+      if (ValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) "Invalid email"
+      else null
     }
-    if (viewState.emailChanged && addBinding.emailEditText.error != emailErrorMessage) {
-      addBinding.emailEditText.error = emailErrorMessage
+    addBinding.firstNameEditText.setErrorIfChanged(viewState.firstNameChanged) {
+      if (ValidationError.TOO_SHORT_FIRST_NAME in viewState.errors) "Too short first name"
+      else null
     }
-
-    val firstNameErrorMessage = if (ValidationError.TOO_SHORT_FIRST_NAME in viewState.errors) {
-      "Too short first name"
-    } else {
-      null
-    }
-    if (viewState.firstNameChanged && addBinding.firstNameEditText.error != firstNameErrorMessage) {
-      addBinding.firstNameEditText.error = firstNameErrorMessage
-    }
-
-    val lastNameErrorMessage = if (ValidationError.TOO_SHORT_LAST_NAME in viewState.errors) {
-      "Too short last name"
-    } else {
-      null
-    }
-    if (viewState.lastNameChanged && addBinding.lastNameEditText.error != lastNameErrorMessage) {
-      addBinding.lastNameEditText.error = lastNameErrorMessage
+    addBinding.lastNameEditText.setErrorIfChanged(viewState.lastNameChanged) {
+      if (ValidationError.TOO_SHORT_LAST_NAME in viewState.errors) "Too short last name"
+      else null
     }
 
     TransitionManager.beginDelayedTransition(
@@ -137,5 +124,16 @@ class AddActivity :
   internal class IntentProvider : IntentProviders.Add {
     override fun makeIntent(context: Context): Intent =
       Intent(context, AddActivity::class.java)
+  }
+}
+
+private inline fun TextInputLayout.setErrorIfChanged(
+  errorEnabled: Boolean,
+  errorBuilder: () -> String?,
+) {
+  val newError = if (errorEnabled) errorBuilder() else null
+  // avoid unnecessary animation
+  if (error != newError) {
+    error = newError
   }
 }
