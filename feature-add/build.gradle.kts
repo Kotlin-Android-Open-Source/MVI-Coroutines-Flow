@@ -62,4 +62,5 @@ dependencies {
   implementation(deps.timber)
 
   addUnitTest()
+  testImplementation(mviTesting)
 }

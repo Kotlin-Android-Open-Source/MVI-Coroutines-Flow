@@ -168,10 +168,10 @@ class AddVM(
     }
 
     return merge(
+      formValuesChanges,
       errorsChanges,
       addUserChanges,
       firstChanges,
-      formValuesChanges,
     )
   }
 

@@ -52,7 +52,7 @@ dependencies {
   implementation(deps.coroutines.core)
 
   implementation(mviBase)
-  implementation(testUtils)
+  api(testUtils)
   implementation(deps.timber)
 
   implementation(deps.arrow.core)

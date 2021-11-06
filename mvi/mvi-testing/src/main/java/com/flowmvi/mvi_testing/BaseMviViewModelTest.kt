@@ -15,6 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
@@ -63,7 +64,7 @@ abstract class BaseMviViewModelTest<
 
     val vm = vmProducer()
     intentsBeforeCollecting
-      ?.onCompletion { logIfEnabled { "---------------" } }
+      ?.onCompletion { logIfEnabled { "-".repeat(32) } }
       ?.collect {
         vm.processIntent(it)
         logIfEnabled { "[BEFORE] Dispatch $it -> $vm" }
@@ -74,15 +75,15 @@ abstract class BaseMviViewModelTest<
     val states = mutableListOf<S>()
     val events = mutableListOf<E>()
 
-    val stateJob = launch(start = CoroutineStart.UNDISPATCHED) { vm.viewState.toList(states) }
+    val stateJob = launch(start = CoroutineStart.UNDISPATCHED) { vm.viewState.onEach { logIfEnabled { "[STATE] <- $it" } }.toList(states) }
     val eventJob = launch(start = CoroutineStart.UNDISPATCHED) { vm.singleEvent.toList(events) }
 
     intents.collect {
-      vm.processIntent(it)
       logIfEnabled { "[DISPATCH] Dispatch $it -> $vm" }
+      vm.processIntent(it)
     }
     delay(delayAfterDispatchingIntents)
-    logIfEnabled { "---------------" }
+    logIfEnabled { "-".repeat(32) }
 
     logIfEnabled { "[DONE] states=${states.joinToStringWithIndex()}" }
     logIfEnabled { "[DONE] events=${events.joinToStringWithIndex()}" }

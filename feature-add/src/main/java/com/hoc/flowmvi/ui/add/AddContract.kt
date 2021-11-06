@@ -62,7 +62,8 @@ internal sealed interface PartialStateChange {
   fun reduce(viewState: ViewState): ViewState
 
   data class ErrorsChanged(val errors: Set<ValidationError>) : PartialStateChange {
-    override fun reduce(viewState: ViewState) = viewState.copy(errors = errors)
+    override fun reduce(viewState: ViewState) =
+      if (viewState.errors == errors) viewState else viewState.copy(errors = errors)
   }
 
   sealed class AddUser : PartialStateChange {
