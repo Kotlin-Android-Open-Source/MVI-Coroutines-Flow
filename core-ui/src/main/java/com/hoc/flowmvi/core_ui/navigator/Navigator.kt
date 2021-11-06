@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.core.navigator
+package com.hoc.flowmvi.core_ui.navigator
 
 import android.content.Context
 import android.content.Intent

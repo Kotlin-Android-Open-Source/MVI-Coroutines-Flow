@@ -10,11 +10,11 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.hoc.flowmvi.core.SearchViewQueryTextEvent
-import com.hoc.flowmvi.core.clicks
-import com.hoc.flowmvi.core.navigator.IntentProviders
-import com.hoc.flowmvi.core.queryTextEvents
-import com.hoc.flowmvi.core.toast
+import com.hoc.flowmvi.core_ui.SearchViewQueryTextEvent
+import com.hoc.flowmvi.core_ui.clicks
+import com.hoc.flowmvi.core_ui.navigator.IntentProviders
+import com.hoc.flowmvi.core_ui.queryTextEvents
+import com.hoc.flowmvi.core_ui.toast
 import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding

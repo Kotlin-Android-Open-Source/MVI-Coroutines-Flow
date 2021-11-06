@@ -37,7 +37,7 @@ dependencies {
   implementation(deps.lifecycle.runtimeKtx)
   implementation(deps.coroutines.core)
 
-  implementation(core)
+  implementation(coreUi)
   implementation(deps.timber)
 
   addUnitTest()

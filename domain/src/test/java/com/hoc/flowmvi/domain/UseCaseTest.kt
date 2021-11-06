@@ -10,6 +10,7 @@ import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
+import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,8 +21,8 @@ import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -53,7 +54,9 @@ private val USERS = listOf(
 
 @ExperimentalCoroutinesApi
 class UseCaseTest {
-  private val testDispatcher = TestCoroutineDispatcher()
+  @get:Rule
+  val coroutineRule = TestCoroutineDispatcherRule()
+  private val testDispatcher get() = coroutineRule.testCoroutineDispatcher
 
   private lateinit var userRepository: UserRepository
   private lateinit var getUsersUseCase: GetUsersUseCase

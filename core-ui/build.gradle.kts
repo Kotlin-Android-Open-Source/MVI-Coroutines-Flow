@@ -16,46 +16,40 @@ android {
   }
 
   buildTypes {
-    debug {
-      (!isCiBuild).let {
-        buildConfigField(
-          type = it::class.java.simpleName,
-          name = "ENABLE_LOG_TEST",
-          value = it.toString(),
-        )
-      }
-    }
     release {
       isMinifyEnabled = false
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"
       )
-      false.let {
-        buildConfigField(
-          type = it::class.java.simpleName,
-          name = "ENABLE_LOG_TEST",
-          value = it.toString(),
-        )
-      }
     }
   }
+
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
+
+  testOptions {
+    unitTests.isIncludeAndroidResources = true
+    unitTests.isReturnDefaultValues = true
+  }
 }
 
 dependencies {
-  implementation(deps.lifecycle.viewModelKtx)
   implementation(deps.coroutines.core)
+  implementation(deps.coroutines.android)
 
-  implementation(mviBase)
-  implementation(testUtils)
+  implementation(deps.androidx.coreKtx)
+  implementation(deps.androidx.swipeRefreshLayout)
+  implementation(deps.androidx.recyclerView)
+  implementation(deps.androidx.material)
+
+  implementation(deps.lifecycle.commonJava8)
+  implementation(deps.lifecycle.runtimeKtx)
+
   implementation(deps.timber)
 
-  implementation(deps.arrow.core)
-
-  addUnitTest(testImplementation = false)
+  addUnitTest()
 }

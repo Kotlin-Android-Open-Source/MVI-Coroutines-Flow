@@ -6,11 +6,11 @@ import android.view.MenuItem
 import androidx.core.view.isInvisible
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import com.hoc.flowmvi.core.clicks
-import com.hoc.flowmvi.core.firstChange
-import com.hoc.flowmvi.core.navigator.IntentProviders
-import com.hoc.flowmvi.core.textChanges
-import com.hoc.flowmvi.core.toast
+import com.hoc.flowmvi.core_ui.clicks
+import com.hoc.flowmvi.core_ui.firstChange
+import com.hoc.flowmvi.core_ui.navigator.IntentProviders
+import com.hoc.flowmvi.core_ui.textChanges
+import com.hoc.flowmvi.core_ui.toast
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
 import com.hoc081098.flowext.mapTo

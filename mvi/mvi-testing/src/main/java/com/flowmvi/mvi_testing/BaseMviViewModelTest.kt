@@ -7,19 +7,18 @@ import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewModel
 import com.hoc.flowmvi.mvi_base.MviViewState
+import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import io.mockk.clearAllMocks
 import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
+import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
@@ -34,12 +33,20 @@ abstract class BaseMviViewModelTest<
   E : MviSingleEvent,
   VM : MviViewModel<I, S, E>,
   > {
-  private val testDispatcher = TestCoroutineDispatcher()
+  @get:Rule
+  val coroutineRule = TestCoroutineDispatcherRule()
+
+  protected val testDispatcher get() = coroutineRule.testCoroutineDispatcher
 
   @CallSuper
   @BeforeTest
   open fun setup() {
-    Dispatchers.setMain(testDispatcher)
+  }
+
+  @CallSuper
+  @AfterTest
+  open fun tearDown() {
+    clearAllMocks()
   }
 
   protected fun test(
@@ -48,12 +55,21 @@ abstract class BaseMviViewModelTest<
     expectedStates: List<Either<(S) -> Unit, S>>,
     expectedEvents: List<Either<(E) -> Unit, E>>,
     delayAfterDispatchingIntents: Duration = Duration.ZERO,
-    logging: Boolean = true,
+    logging: Boolean = BuildConfig.ENABLE_LOG_TEST,
     intentsBeforeCollecting: Flow<I>? = null,
     otherAssertions: (suspend () -> Unit)? = null,
   ) = testDispatcher.runBlockingTest {
+    fun logIfEnabled(s: () -> String) = if (logging) println(s()) else Unit
+
     val vm = vmProducer()
-    intentsBeforeCollecting?.collect { vm.processIntent(it) }
+    intentsBeforeCollecting
+      ?.onCompletion { logIfEnabled { "---------------" } }
+      ?.collect {
+        vm.processIntent(it)
+        logIfEnabled { "[BEFORE] Dispatch $it -> $vm" }
+      }
+
+    logIfEnabled { "[START] $vm" }
 
     val states = mutableListOf<S>()
     val events = mutableListOf<E>()
@@ -61,13 +77,15 @@ abstract class BaseMviViewModelTest<
     val stateJob = launch(start = CoroutineStart.UNDISPATCHED) { vm.viewState.toList(states) }
     val eventJob = launch(start = CoroutineStart.UNDISPATCHED) { vm.singleEvent.toList(events) }
 
-    intents.collect { vm.processIntent(it) }
-    delay(delayAfterDispatchingIntents)
-
-    if (logging) {
-      println(states)
-      println(events)
+    intents.collect {
+      vm.processIntent(it)
+      logIfEnabled { "[DISPATCH] Dispatch $it -> $vm" }
     }
+    delay(delayAfterDispatchingIntents)
+    logIfEnabled { "---------------" }
+
+    logIfEnabled { "[DONE] states=${states.joinToStringWithIndex()}" }
+    logIfEnabled { "[DONE] events=${events.joinToStringWithIndex()}" }
 
     assertEquals(expectedStates.size, states.size, "States size")
     expectedStates.withIndex().zip(states).forEach { (indexedValue, state) ->
@@ -103,14 +121,16 @@ abstract class BaseMviViewModelTest<
     stateJob.cancel()
     eventJob.cancel()
   }
-
-  @CallSuper
-  @AfterTest
-  open fun tearDown() {
-    Dispatchers.resetMain()
-    testDispatcher.cleanupTestCoroutines()
-    clearAllMocks()
-  }
 }
 
 fun <T> Iterable<T>.mapRight(): List<Either<(T) -> Unit, T>> = map { it.right() }
+
+private fun <T> List<T>.joinToStringWithIndex(): String {
+  return withIndex().joinToString(
+    separator = ",\n",
+    prefix = "[\n",
+    postfix = "]",
+  ) { (i, v) ->
+    "   [$i]: $v"
+  }
+}

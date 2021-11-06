@@ -1,4 +1,4 @@
-package com.hoc.flowmvi.core
+package com.hoc.flowmvi.core_ui
 
 import android.content.Context
 import android.os.Looper

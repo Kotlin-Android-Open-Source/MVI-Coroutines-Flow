@@ -8,4 +8,5 @@ dependencies {
   implementation(deps.arrow.core)
 
   addUnitTest()
+  testImplementation(testUtils)
 }

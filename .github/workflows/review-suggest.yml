@@ -2,6 +2,10 @@ name: reviewdog-suggester
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+
+env:
+  CI: true
+
 jobs:
   kotlin:
     name: runner / suggester / spotless
