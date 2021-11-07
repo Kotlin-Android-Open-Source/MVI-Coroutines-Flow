@@ -1,10 +1,12 @@
 package com.hoc.flowmvi.ui.add
 
 import androidx.lifecycle.SavedStateHandle
+import arrow.core.left
 import arrow.core.right
 import com.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.repository.UserError
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.ui.add.ValidationError.TOO_SHORT_FIRST_NAME
 import com.hoc.flowmvi.ui.add.ValidationError.TOO_SHORT_LAST_NAME
@@ -265,7 +267,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
   }
 
   @Test
-  fun test_withSubmitIntentWhenFormValid_callAddUserAndReturnsStateWithLoading() {
+  fun test_withSubmitIntentWhenFormValidAndAddUserSuccess_callAddUserAndReturnsStateWithLoading() {
     val user = User(
       id = "",
       email = EMAIL,
@@ -326,6 +328,68 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
   }
 
   @Test
+  fun test_withSubmitIntentWhenFormValidAndAddUserFailure_callAddUserAndReturnsStateWithLoading() {
+    val user = User(
+      id = "",
+      email = EMAIL,
+      firstName = NAME,
+      lastName = NAME,
+      avatar = ""
+    )
+    val networkError = UserError.NetworkError
+
+    coEvery { addUser(user) } returns networkError.left()
+
+    test(
+      vmProducer = { vm },
+      intents = flowOf(ViewIntent.Submit),
+      intentsBeforeCollecting = flowOf(
+        ViewIntent.EmailChanged(EMAIL),
+        ViewIntent.FirstNameChanged(NAME),
+        ViewIntent.LastNameChanged(NAME),
+      ),
+      expectedStates = listOf(
+        ViewState(
+          errors = emptySet(),
+          isLoading = false,
+          emailChanged = false,
+          firstNameChanged = false,
+          lastNameChanged = false,
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME,
+        ),
+        ViewState(
+          errors = emptySet(),
+          isLoading = true,
+          emailChanged = false,
+          firstNameChanged = false,
+          lastNameChanged = false,
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME,
+        ),
+        ViewState(
+          errors = emptySet(),
+          isLoading = false,
+          emailChanged = false,
+          firstNameChanged = false,
+          lastNameChanged = false,
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME,
+        ),
+      ).mapRight(),
+      expectedEvents = listOf(
+        SingleEvent.AddUserFailure(user = user, error = networkError),
+      ).mapRight(),
+      delayAfterDispatchingIntents = Duration.seconds(1),
+    ) {
+      coVerify { addUser(user) }
+    }
+  }
+
+  @Test
   fun test_withSubmitIntentWhenFormInvalid_doNothing() {
     test(
       vmProducer = { vm },
@@ -349,6 +413,52 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       ).mapRight(),
       expectedEvents = emptyList(),
       delayAfterDispatchingIntents = Duration.seconds(1),
+    )
+  }
+
+  @Test
+  fun test_withFirstChangeIntents_returnsStateWithFirstChangesSetToTrue() {
+    test(
+      vmProducer = { vm },
+      intents = flowOf(
+        ViewIntent.EmailChangedFirstTime,
+        ViewIntent.FirstNameChangedFirstTime,
+        ViewIntent.LastNameChangedFirstTime,
+      ),
+      expectedStates = listOf(
+        ViewState.initial(),
+        ViewState(
+          errors = setOf(),
+          isLoading = false,
+          emailChanged = true,
+          firstNameChanged = false,
+          lastNameChanged = false,
+          email = null,
+          firstName = null,
+          lastName = null
+        ),
+        ViewState(
+          errors = setOf(),
+          isLoading = false,
+          emailChanged = true,
+          firstNameChanged = true,
+          lastNameChanged = false,
+          email = null,
+          firstName = null,
+          lastName = null
+        ),
+        ViewState(
+          errors = setOf(),
+          isLoading = false,
+          emailChanged = true,
+          firstNameChanged = true,
+          lastNameChanged = true,
+          email = null,
+          firstName = null,
+          lastName = null
+        )
+      ).mapRight(),
+      expectedEvents = emptyList()
     )
   }
 }
