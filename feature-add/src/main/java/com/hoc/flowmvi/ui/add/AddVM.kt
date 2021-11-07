@@ -39,7 +39,7 @@ class AddVM(
   override val viewState: StateFlow<ViewState>
 
   init {
-    val initialVS = savedStateHandle.get<ViewState?>(VIEW_STATE).copy(isLoading = false)
+    val initialVS = savedStateHandle.get<ViewState?>(VIEW_STATE)?.copy(isLoading = false)
       ?: ViewState.initial()
     Timber.tag(logTag).d("[ADD_VM] initialVS: $initialVS")
 
