@@ -265,7 +265,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
   }
 
   @Test
-  fun test_withSubmitIntentFormValid_callAddUser() {
+  fun test_withSubmitIntentWhenFormValid_callAddUserAndReturnsStateWithLoading() {
     val user = User(
       id = "",
       email = EMAIL,
@@ -323,5 +323,32 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     ) {
       coVerify { addUser(user) }
     }
+  }
+
+  @Test
+  fun test_withSubmitIntentWhenFormInvalid_doNothing() {
+    test(
+      vmProducer = { vm },
+      intents = flowOf(ViewIntent.Submit),
+      intentsBeforeCollecting = flowOf(
+        ViewIntent.EmailChanged(""),
+        ViewIntent.FirstNameChanged(""),
+        ViewIntent.LastNameChanged(""),
+      ),
+      expectedStates = listOf(
+        ViewState(
+          errors = ALL_ERRORS,
+          isLoading = false,
+          emailChanged = false,
+          firstNameChanged = false,
+          lastNameChanged = false,
+          email = "",
+          firstName = "",
+          lastName = "",
+        ),
+      ).mapRight(),
+      expectedEvents = emptyList(),
+      delayAfterDispatchingIntents = Duration.seconds(1),
+    )
   }
 }

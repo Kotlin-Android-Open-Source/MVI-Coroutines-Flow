@@ -137,10 +137,10 @@ abstract class BaseMviViewModelTest<
 fun <T> Iterable<T>.mapRight(): List<Either<(T) -> Unit, T>> = map { it.right() }
 
 private fun <T> List<T>.joinToStringWithIndex(): String {
-  return withIndex().joinToString(
+  return if (isEmpty()) "[]" else withIndex().joinToString(
     separator = ",\n",
     prefix = "[\n",
-    postfix = "]",
+    postfix = "\n]",
   ) { (i, v) ->
     "   [$i]: $v"
   }
