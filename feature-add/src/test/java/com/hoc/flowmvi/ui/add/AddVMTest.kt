@@ -1,20 +1,27 @@
 package com.hoc.flowmvi.ui.add
 
 import androidx.lifecycle.SavedStateHandle
+import arrow.core.right
 import com.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.flowmvi.mvi_testing.mapRight
+import com.hoc.flowmvi.domain.entity.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.ui.add.ValidationError.TOO_SHORT_FIRST_NAME
 import com.hoc.flowmvi.ui.add.ValidationError.TOO_SHORT_LAST_NAME
 import com.hoc.flowmvi.ui.add.ValidationError.values
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlin.test.Test
+import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 private val ALL_ERRORS = values().toSet()
+private const val EMAIL = "hoc081098@gmail.com"
+private const val NAME = "hoc081098"
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
@@ -144,9 +151,9 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
         ViewIntent.FirstNameChanged(""),
         ViewIntent.LastNameChanged(""),
         // all fields changed
-        ViewIntent.EmailChanged("hoc081098@gmail.com"),
-        ViewIntent.FirstNameChanged("hoc081098"),
-        ViewIntent.LastNameChanged("hoc081098"),
+        ViewIntent.EmailChanged(EMAIL),
+        ViewIntent.FirstNameChanged(NAME),
+        ViewIntent.LastNameChanged(NAME),
       ),
       expectedStates = listOf(
         ViewState.initial(),
@@ -197,7 +204,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
           emailChanged = false,
           firstNameChanged = false,
           lastNameChanged = false,
-          email = "hoc081098@gmail.com",
+          email = EMAIL,
           firstName = "",
           lastName = ""
         ),
@@ -207,7 +214,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
           emailChanged = false,
           firstNameChanged = false,
           lastNameChanged = false,
-          email = "hoc081098@gmail.com",
+          email = EMAIL,
           firstName = "",
           lastName = ""
         ),
@@ -217,8 +224,8 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
           emailChanged = false,
           firstNameChanged = false,
           lastNameChanged = false,
-          email = "hoc081098@gmail.com",
-          firstName = "hoc081098",
+          email = EMAIL,
+          firstName = NAME,
           lastName = ""
         ),
         ViewState(
@@ -227,8 +234,8 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
           emailChanged = false,
           firstNameChanged = false,
           lastNameChanged = false,
-          email = "hoc081098@gmail.com",
-          firstName = "hoc081098",
+          email = EMAIL,
+          firstName = NAME,
           lastName = ""
         ),
         ViewState(
@@ -237,9 +244,9 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
           emailChanged = false,
           firstNameChanged = false,
           lastNameChanged = false,
-          email = "hoc081098@gmail.com",
-          firstName = "hoc081098",
-          lastName = "hoc081098"
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME
         ),
         // valid state
         ViewState(
@@ -248,12 +255,73 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
           emailChanged = false,
           firstNameChanged = false,
           lastNameChanged = false,
-          email = "hoc081098@gmail.com",
-          firstName = "hoc081098",
-          lastName = "hoc081098"
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
     )
+  }
+
+  @Test
+  fun test_withSubmitIntentFormValid_callAddUser() {
+    val user = User(
+      id = "",
+      email = EMAIL,
+      firstName = NAME,
+      lastName = NAME,
+      avatar = ""
+    )
+
+    coEvery { addUser(user) } returns Unit.right()
+
+    test(
+      vmProducer = { vm },
+      intents = flowOf(ViewIntent.Submit),
+      intentsBeforeCollecting = flowOf(
+        ViewIntent.EmailChanged(EMAIL),
+        ViewIntent.FirstNameChanged(NAME),
+        ViewIntent.LastNameChanged(NAME),
+      ),
+      expectedStates = listOf(
+        ViewState(
+          errors = emptySet(),
+          isLoading = false,
+          emailChanged = false,
+          firstNameChanged = false,
+          lastNameChanged = false,
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME,
+        ),
+        ViewState(
+          errors = emptySet(),
+          isLoading = true,
+          emailChanged = false,
+          firstNameChanged = false,
+          lastNameChanged = false,
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME,
+        ),
+        ViewState(
+          errors = emptySet(),
+          isLoading = false,
+          emailChanged = false,
+          firstNameChanged = false,
+          lastNameChanged = false,
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME,
+        ),
+      ).mapRight(),
+      expectedEvents = listOf(
+        SingleEvent.AddUserSuccess(user),
+      ).mapRight(),
+      delayAfterDispatchingIntents = Duration.seconds(1),
+    ) {
+      coVerify { addUser(user) }
+    }
   }
 }

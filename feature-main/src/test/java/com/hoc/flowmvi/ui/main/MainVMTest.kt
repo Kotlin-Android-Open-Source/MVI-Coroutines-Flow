@@ -224,9 +224,7 @@ class MainVMTest : BaseMviViewModelTest<
           isRefreshing = false,
         )
       ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.GetUsersError(userError),
-      ).mapRight(),
+      expectedEvents = emptyList(),
       delayAfterDispatchingIntents = Duration.milliseconds(100),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
@@ -282,9 +280,7 @@ class MainVMTest : BaseMviViewModelTest<
           isRefreshing = false,
         )
       ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.GetUsersError(userError),
-      ).mapRight(),
+      expectedEvents = emptyList(),
     ) { verify(exactly = 2) { getUserUseCase() } }
   }
 
@@ -324,7 +320,6 @@ class MainVMTest : BaseMviViewModelTest<
         )
       ).mapRight(),
       expectedEvents = listOf(
-        SingleEvent.GetUsersError(userError1),
         SingleEvent.GetUsersError(userError2),
       ).mapRight(),
     ) { verify(exactly = 2) { getUserUseCase() } }

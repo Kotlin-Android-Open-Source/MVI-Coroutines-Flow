@@ -14,6 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
@@ -63,19 +64,28 @@ abstract class BaseMviViewModelTest<
     fun logIfEnabled(s: () -> String) = if (logging) println(s()) else Unit
 
     val vm = vmProducer()
-    intentsBeforeCollecting
-      ?.onCompletion { logIfEnabled { "-".repeat(32) } }
-      ?.collect {
-        vm.processIntent(it)
-        logIfEnabled { "[BEFORE] Dispatch $it -> $vm" }
-      }
+    intentsBeforeCollecting?.let { flow ->
+      val job = vm.singleEvent.launchIn(this) // ignore events
+
+      flow
+        .onCompletion {
+          job.cancel()
+          logIfEnabled { "-".repeat(32) }
+        }
+        .collect {
+          vm.processIntent(it)
+          logIfEnabled { "[BEFORE] Dispatch $it -> $vm" }
+        }
+    }
 
     logIfEnabled { "[START] $vm" }
 
     val states = mutableListOf<S>()
     val events = mutableListOf<E>()
 
-    val stateJob = launch(start = CoroutineStart.UNDISPATCHED) { vm.viewState.onEach { logIfEnabled { "[STATE] <- $it" } }.toList(states) }
+    val stateJob = launch(start = CoroutineStart.UNDISPATCHED) {
+      vm.viewState.onEach { logIfEnabled { "[STATE] <- $it" } }.toList(states)
+    }
     val eventJob = launch(start = CoroutineStart.UNDISPATCHED) { vm.singleEvent.toList(events) }
 
     intents.collect {
@@ -84,6 +94,8 @@ abstract class BaseMviViewModelTest<
     }
     delay(delayAfterDispatchingIntents)
     logIfEnabled { "-".repeat(32) }
+    stateJob.cancel()
+    eventJob.cancel()
 
     logIfEnabled { "[DONE] states=${states.joinToStringWithIndex()}" }
     logIfEnabled { "[DONE] events=${events.joinToStringWithIndex()}" }
@@ -119,8 +131,6 @@ abstract class BaseMviViewModelTest<
     }
 
     otherAssertions?.invoke()
-    stateJob.cancel()
-    eventJob.cancel()
   }
 }
 
