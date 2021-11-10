@@ -12,7 +12,7 @@ import com.hoc.flowmvi.core_ui.clicks
 import com.hoc.flowmvi.core_ui.navigator.Navigator
 import com.hoc.flowmvi.core_ui.refreshes
 import com.hoc.flowmvi.core_ui.toast
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.main.databinding.ActivityMainBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
@@ -108,7 +108,7 @@ class MainActivity :
           UserError.ServerError -> "Server error"
           UserError.Unexpected -> "Unexpected error"
           is UserError.UserNotFound -> "User not found"
-          UserError.ValidationFailed -> "Validation failed"
+          is UserError.ValidationFailed -> "Validation failed"
         }
       }
 

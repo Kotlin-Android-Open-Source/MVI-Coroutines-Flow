@@ -1,22 +1,13 @@
 package com.hoc.flowmvi.ui.add
 
 import android.os.Parcelable
-import arrow.core.ValidatedNel
-import arrow.core.invalidNel
-import com.hoc.flowmvi.domain.entity.User
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
+import com.hoc.flowmvi.domain.model.ValidationError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
 import kotlinx.parcelize.Parcelize
-
-enum class ValidationError {
-  INVALID_EMAIL_ADDRESS,
-  TOO_SHORT_FIRST_NAME,
-  TOO_SHORT_LAST_NAME;
-
-  val asInvalidNel: ValidatedNel<ValidationError, Nothing> = invalidNel()
-}
 
 @Parcelize
 data class ViewState(

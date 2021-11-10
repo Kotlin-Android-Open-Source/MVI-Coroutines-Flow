@@ -1,17 +1,21 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.Either
+import arrow.core.ValidatedNel
+import arrow.core.andThen
 import arrow.core.left
 import arrow.core.leftWiden
 import arrow.core.right
+import arrow.core.valueOr
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
 import com.hoc.flowmvi.core.retrySuspend
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
-import com.hoc.flowmvi.domain.entity.User
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
+import com.hoc.flowmvi.domain.model.ValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -33,7 +37,7 @@ import kotlin.time.ExperimentalTime
 internal class UserRepositoryImpl(
   private val userApiService: UserApiService,
   private val dispatchers: CoroutineDispatchers,
-  private val responseToDomain: Mapper<UserResponse, User>,
+  private val responseToDomain: Mapper<UserResponse, ValidatedNel<ValidationError, User>>,
   private val domainToBody: Mapper<User, UserBody>,
   private val errorMapper: Mapper<Throwable, UserError>,
 ) : UserRepository {
@@ -53,9 +57,11 @@ internal class UserRepositoryImpl(
         initialDelay = Duration.milliseconds(500),
         factor = 2.0,
         shouldRetry = { it is IOException }
-      ) {
-        Timber.d("[USER_REPO] Retry times=$it")
-        userApiService.getUsers().map(responseToDomain)
+      ) { times ->
+        Timber.d("[USER_REPO] Retry times=$times")
+        userApiService
+          .getUsers()
+          .map(responseToDomain andThen { it.valueOrThrowUserError() })
       }
     }
   }
@@ -89,7 +95,7 @@ internal class UserRepositoryImpl(
   override suspend fun remove(user: User) = Either.catch {
     withContext(dispatchers.io) {
       val response = userApiService.remove(user.id)
-      changesFlow.emit(Change.Removed(responseToDomain(response)))
+      changesFlow.emit(Change.Removed(responseToDomain(response).valueOrThrowUserError()))
     }
   }.tapLeft { Timber.tag("UserRepositoryImpl").e(it, "remove user=$user") }
     .mapLeft(errorMapper)
@@ -98,7 +104,7 @@ internal class UserRepositoryImpl(
     withContext(dispatchers.io) {
       val body = domainToBody(user)
       val response = userApiService.add(body)
-      changesFlow.emit(Change.Added(responseToDomain(response)))
+      changesFlow.emit(Change.Added(responseToDomain(response).valueOrThrowUserError()))
       extraDelay()
     }
   }.tapLeft { Timber.tag("UserRepositoryImpl").e(it, "add user=$user") }
@@ -107,10 +113,14 @@ internal class UserRepositoryImpl(
   override suspend fun search(query: String) = Either.catch {
     withContext(dispatchers.io) {
       extraDelay()
-      userApiService.search(query).map(responseToDomain)
+      userApiService.search(query).map(responseToDomain andThen { it.valueOrThrowUserError() })
     }
   }.tapLeft { Timber.tag("UserRepositoryImpl").e(it, "search query=$query") }
     .mapLeft(errorMapper)
 
   private suspend inline fun extraDelay() = delay(400)
 }
+
+@Suppress("NOTHING_TO_INLINE")
+private inline fun <A> ValidatedNel<ValidationError, A>.valueOrThrowUserError(): A =
+  valueOr { throw UserError.ValidationFailed(it) }

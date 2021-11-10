@@ -1,6 +1,6 @@
 package com.hoc.flowmvi.ui.main
 
-import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.model.User
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

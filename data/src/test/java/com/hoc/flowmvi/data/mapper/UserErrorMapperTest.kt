@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.data.mapper
 
 import com.hoc.flowmvi.data.remote.ErrorResponse
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.UserError
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -145,7 +145,7 @@ class UserErrorMapperTest {
       errorMapper(buildHttpException("user-not-found", id)),
     )
     assertEquals(
-      UserError.ValidationFailed,
+      UserError.ValidationFailed(emptyList()),
       errorMapper(buildHttpException("validation-failed", null)),
     )
   }

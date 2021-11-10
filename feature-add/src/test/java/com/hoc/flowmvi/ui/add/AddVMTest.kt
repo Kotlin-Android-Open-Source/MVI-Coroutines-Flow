@@ -5,8 +5,8 @@ import arrow.core.left
 import arrow.core.right
 import com.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.flowmvi.mvi_testing.mapRight
-import com.hoc.flowmvi.domain.entity.User
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.ui.add.ValidationError.TOO_SHORT_FIRST_NAME
 import com.hoc.flowmvi.ui.add.ValidationError.TOO_SHORT_LAST_NAME

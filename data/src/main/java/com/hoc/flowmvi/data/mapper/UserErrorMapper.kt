@@ -3,7 +3,7 @@ package com.hoc.flowmvi.data.mapper
 import arrow.core.nonFatalOrThrow
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.ErrorResponse
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.UserError
 import com.squareup.moshi.JsonAdapter
 import okhttp3.ResponseBody
 import retrofit2.HttpException
@@ -19,6 +19,7 @@ internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter
 
     return runCatching {
       when (throwable) {
+        is UserError -> throwable
         is IOException -> when (throwable) {
           is UnknownHostException -> UserError.NetworkError
           is SocketTimeoutException -> UserError.NetworkError
@@ -47,7 +48,7 @@ internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter
       "internal-error" -> UserError.ServerError
       "invalid-id" -> UserError.InvalidId(id = errorResponse.data as String)
       "user-not-found" -> UserError.UserNotFound(id = errorResponse.data as String)
-      "validation-failed" -> UserError.ValidationFailed
+      "validation-failed" -> UserError.ValidationFailed(errors = emptyList())
       else -> UserError.Unexpected
     }
   }

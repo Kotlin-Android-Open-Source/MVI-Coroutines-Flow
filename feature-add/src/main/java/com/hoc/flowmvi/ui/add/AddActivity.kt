@@ -12,6 +12,7 @@ import com.hoc.flowmvi.core_ui.firstChange
 import com.hoc.flowmvi.core_ui.navigator.IntentProviders
 import com.hoc.flowmvi.core_ui.textChanges
 import com.hoc.flowmvi.core_ui.toast
+import com.hoc.flowmvi.domain.model.ValidationError
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
 import com.hoc081098.flowext.mapTo

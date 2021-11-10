@@ -1,6 +1,6 @@
 package com.hoc.flowmvi.ui.main
 
-import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.model.User
 
 internal val USERS = listOf(
   User(

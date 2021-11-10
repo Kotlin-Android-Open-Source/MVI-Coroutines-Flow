@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.ui.main
 
-import com.hoc.flowmvi.domain.entity.User
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
@@ -17,19 +17,19 @@ data class UserItem(
 
   constructor(domain: User) : this(
     id = domain.id,
-    email = domain.email,
+    email = domain.email.value,
     avatar = domain.avatar,
-    firstName = domain.firstName,
-    lastName = domain.lastName
+    firstName = domain.firstName.value,
+    lastName = domain.lastName.value
   )
 
-  fun toDomain() = User(
+  fun toDomain() = User.create(
     id = id,
     lastName = lastName,
     firstName = firstName,
     avatar = avatar,
     email = email
-  )
+  ).toEither().mapLeft(UserError::ValidationFailed)
 }
 
 sealed interface ViewIntent : MviIntent {
