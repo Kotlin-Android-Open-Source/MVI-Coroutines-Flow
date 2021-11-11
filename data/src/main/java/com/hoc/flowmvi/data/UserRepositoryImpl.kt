@@ -1,7 +1,6 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.ValidatedNel
-import arrow.core.andThen
 import arrow.core.computations.either
 import arrow.core.left
 import arrow.core.leftWiden
@@ -49,8 +48,14 @@ internal class UserRepositoryImpl(
     class Added(val user: User) : Change()
   }
 
-  private val responseToDomainThrows = responseToDomain andThen { validated ->
-    validated.valueOr { throw UserError.ValidationFailed(it.toSet()) }
+  private val responseToDomainThrows: (UserResponse) -> User = { response ->
+    responseToDomain(response).let { validated ->
+      validated.valueOr {
+        val t = UserError.ValidationFailed(it.toSet())
+        logError(t, "Map $response to user")
+        throw t
+      }
+    }
   }
 
   private val changesFlow = MutableSharedFlow<Change>(extraBufferCapacity = 64)
