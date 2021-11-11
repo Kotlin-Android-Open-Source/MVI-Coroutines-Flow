@@ -5,7 +5,6 @@ import arrow.core.ValidatedNel
 import arrow.core.getOrHandle
 import arrow.core.identity
 import arrow.core.validNel
-import arrow.core.valueOr
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
@@ -15,6 +14,7 @@ import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import com.hoc.flowmvi.test_utils.TestDispatchers
+import com.hoc.flowmvi.test_utils.valueOrThrow
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -94,7 +94,7 @@ private val USERS = listOf(
     lastName = "last",
     avatar = "avatar3",
   ),
-).map { validated -> validated.valueOr { error("$it") } }
+).map { it.valueOrThrow }
 
 private val VALID_NEL_USERS = USERS.map(User::validNel)
 

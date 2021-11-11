@@ -2,7 +2,6 @@ package com.hoc.flowmvi.domain
 
 import arrow.core.left
 import arrow.core.right
-import arrow.core.valueOr
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.repository.UserRepository
@@ -12,6 +11,7 @@ import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
+import com.hoc.flowmvi.test_utils.valueOrThrow
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -51,7 +51,7 @@ private val USERS = listOf(
     lastName = "last3",
     avatar = "3.png"
   ),
-).map { validated -> validated.valueOr { error("Invalid user $it") } }
+).map { it.valueOrThrow }
 
 @ExperimentalCoroutinesApi
 class UseCaseTest {
