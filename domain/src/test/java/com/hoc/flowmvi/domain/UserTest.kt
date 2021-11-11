@@ -1,12 +1,11 @@
 package com.hoc.flowmvi.domain
 
-import arrow.core.identity
-import arrow.core.orNull
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserValidationError
+import com.hoc.flowmvi.test_utils.invalidValueOrThrow
+import com.hoc.flowmvi.test_utils.valueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 private const val ID = "id"
@@ -25,7 +24,7 @@ class UserTest {
       avatar = AVATAR,
     )
     assertTrue(validated.isValid)
-    assertNotNull(validated.orNull()).let { user ->
+    validated.valueOrThrow.let { user ->
       assertEquals(ID, user.id)
       assertEquals(VALID_EMAIL, user.email.value)
       assertEquals(VALID_NAME, user.firstName.value)
@@ -44,9 +43,7 @@ class UserTest {
       avatar = AVATAR,
     )
     assertTrue(validated.isInvalid)
-    assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(setOf(UserValidationError.INVALID_EMAIL_ADDRESS), errors.toSet())
-    }
+    assertEquals(UserValidationError.INVALID_EMAIL_ADDRESS, validated.invalidValueOrThrow.single())
   }
 
   @Test
@@ -59,9 +56,7 @@ class UserTest {
       avatar = AVATAR,
     )
     assertTrue(validated.isInvalid)
-    assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(setOf(UserValidationError.TOO_SHORT_FIRST_NAME), errors.toSet())
-    }
+    assertEquals(UserValidationError.TOO_SHORT_FIRST_NAME, validated.invalidValueOrThrow.single())
   }
 
   @Test
@@ -74,9 +69,7 @@ class UserTest {
       avatar = AVATAR,
     )
     assertTrue(validated.isInvalid)
-    assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(setOf(UserValidationError.TOO_SHORT_LAST_NAME), errors.toSet())
-    }
+    assertEquals(UserValidationError.TOO_SHORT_LAST_NAME, validated.invalidValueOrThrow.single())
   }
 
   @Test
@@ -89,15 +82,13 @@ class UserTest {
       avatar = AVATAR,
     )
     assertTrue(validated.isInvalid)
-    assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(
-        setOf(
-          UserValidationError.INVALID_EMAIL_ADDRESS,
-          UserValidationError.TOO_SHORT_FIRST_NAME,
-        ),
-        errors.toSet()
-      )
-    }
+    assertEquals(
+      setOf(
+        UserValidationError.INVALID_EMAIL_ADDRESS,
+        UserValidationError.TOO_SHORT_FIRST_NAME,
+      ),
+      validated.invalidValueOrThrow.toSet()
+    )
   }
 
   @Test
@@ -110,15 +101,13 @@ class UserTest {
       avatar = AVATAR,
     )
     assertTrue(validated.isInvalid)
-    assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(
-        setOf(
-          UserValidationError.INVALID_EMAIL_ADDRESS,
-          UserValidationError.TOO_SHORT_LAST_NAME,
-        ),
-        errors.toSet()
-      )
-    }
+    assertEquals(
+      setOf(
+        UserValidationError.INVALID_EMAIL_ADDRESS,
+        UserValidationError.TOO_SHORT_LAST_NAME,
+      ),
+      validated.invalidValueOrThrow.toSet()
+    )
   }
 
   @Test
@@ -131,15 +120,13 @@ class UserTest {
       avatar = AVATAR,
     )
     assertTrue(validated.isInvalid)
-    assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(
-        setOf(
-          UserValidationError.TOO_SHORT_FIRST_NAME,
-          UserValidationError.TOO_SHORT_LAST_NAME,
-        ),
-        errors.toSet()
-      )
-    }
+    assertEquals(
+      setOf(
+        UserValidationError.TOO_SHORT_FIRST_NAME,
+        UserValidationError.TOO_SHORT_LAST_NAME,
+      ),
+      validated.invalidValueOrThrow.toSet()
+    )
   }
 
   @Test
@@ -152,11 +139,9 @@ class UserTest {
       avatar = AVATAR,
     )
     assertTrue(validated.isInvalid)
-    assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(
-        UserValidationError.values().toSet(),
-        errors.toSet()
-      )
-    }
+    assertEquals(
+      UserValidationError.values().toSet(),
+      validated.invalidValueOrThrow.toSet()
+    )
   }
 }

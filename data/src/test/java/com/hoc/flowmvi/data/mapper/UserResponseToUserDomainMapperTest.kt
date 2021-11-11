@@ -1,13 +1,12 @@
 package com.hoc.flowmvi.data.mapper
 
-import arrow.core.identity
-import arrow.core.orNull
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserValidationError
+import com.hoc.flowmvi.test_utils.invalidValueOrThrow
+import com.hoc.flowmvi.test_utils.valueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class UserResponseToUserDomainMapperTest {
@@ -32,8 +31,8 @@ class UserResponseToUserDomainMapperTest {
         firstName = "first",
         lastName = "last",
         avatar = "avatar",
-      ).orNull()!!,
-      validated.orNull()!!,
+      ).valueOrThrow,
+      validated.valueOrThrow,
     )
   }
 
@@ -51,7 +50,7 @@ class UserResponseToUserDomainMapperTest {
     assertTrue(validated.isInvalid)
     assertEquals(
       UserValidationError.INVALID_EMAIL_ADDRESS,
-      assertNotNull(validated.fold(fe = ::identity, fa = { null })).head,
+      validated.invalidValueOrThrow.head,
     )
   }
 }

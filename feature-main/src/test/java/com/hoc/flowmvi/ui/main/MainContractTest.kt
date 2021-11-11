@@ -1,7 +1,8 @@
 package com.hoc.flowmvi.ui.main
 
-import arrow.core.orNull
 import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.test_utils.getOrThrow
+import com.hoc.flowmvi.test_utils.valueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -69,14 +70,14 @@ class MainContractTest {
         firstName = "first",
         lastName = "last",
         avatar = "avatar.png",
-      ).orNull()!!,
+      ).valueOrThrow,
       UserItem(
         id = "0",
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
         lastName = "last"
-      ).toDomain().orNull()!!,
+      ).toDomain().getOrThrow,
     )
   }
 
@@ -97,7 +98,7 @@ class MainContractTest {
           firstName = "first",
           lastName = "last",
           avatar = "avatar.png",
-        ).orNull()!!
+        ).valueOrThrow
       ),
     )
   }

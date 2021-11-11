@@ -33,7 +33,7 @@ subprojects {
         // TODO this should all come from editorconfig https://github.com/diffplug/spotless/issues/142
         mapOf(
           "indent_size" to "2",
-          "kotlin_imports_layout" to "ascii"
+          "ij_kotlin_imports_layout" to "*"
         )
       )
 
@@ -56,7 +56,7 @@ subprojects {
       ktlint(ktlintVersion).userData(
         mapOf(
           "indent_size" to "2",
-          "kotlin_imports_layout" to "ascii"
+          "ij_kotlin_imports_layout" to "*"
         )
       )
 

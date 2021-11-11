@@ -2,8 +2,6 @@ package com.hoc.flowmvi.data
 
 import arrow.core.Either
 import arrow.core.ValidatedNel
-import arrow.core.getOrHandle
-import arrow.core.identity
 import arrow.core.validNel
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.UserApiService
@@ -14,6 +12,8 @@ import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import com.hoc.flowmvi.test_utils.TestDispatchers
+import com.hoc.flowmvi.test_utils.getOrThrow
+import com.hoc.flowmvi.test_utils.leftOrThrow
 import com.hoc.flowmvi.test_utils.valueOrThrow
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -360,12 +360,3 @@ class UserRepositoryImplTest {
       }
     }
 }
-
-private inline val <L, R> Either<L, R>.leftOrThrow: L
-  get() = fold(::identity) {
-    if (it is Throwable) throw it
-    else error("$this - $it - Should not reach here!")
-  }
-
-private inline val <L, R> Either<L, R>.getOrThrow: R
-  get() = getOrHandle { error("$this - $it - Should not reach here!") }
