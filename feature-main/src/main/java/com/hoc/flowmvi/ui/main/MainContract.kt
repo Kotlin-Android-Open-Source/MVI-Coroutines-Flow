@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.ui.main
 
+import arrow.core.Either
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.mvi_base.MviIntent
@@ -23,13 +24,13 @@ data class UserItem(
     lastName = domain.lastName.value
   )
 
-  fun toDomain() = User.create(
+  fun toDomain(): Either<UserError.ValidationFailed, User> = User.create(
     id = id,
     lastName = lastName,
     firstName = firstName,
     avatar = avatar,
     email = email
-  ).toEither().mapLeft(UserError::ValidationFailed)
+  ).toEither().mapLeft { UserError.ValidationFailed(it.toSet()) }
 }
 
 sealed interface ViewIntent : MviIntent {
