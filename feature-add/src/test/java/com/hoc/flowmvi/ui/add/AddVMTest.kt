@@ -8,9 +8,9 @@ import com.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
-import com.hoc.flowmvi.domain.model.ValidationError
-import com.hoc.flowmvi.domain.model.ValidationError.TOO_SHORT_FIRST_NAME
-import com.hoc.flowmvi.domain.model.ValidationError.TOO_SHORT_LAST_NAME
+import com.hoc.flowmvi.domain.model.UserValidationError
+import com.hoc.flowmvi.domain.model.UserValidationError.TOO_SHORT_FIRST_NAME
+import com.hoc.flowmvi.domain.model.UserValidationError.TOO_SHORT_LAST_NAME
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,7 +22,7 @@ import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-private val ALL_ERRORS = ValidationError.values().toSet()
+private val ALL_ERRORS = UserValidationError.values().toSet()
 private const val EMAIL = "hoc081098@gmail.com"
 private const val NAME = "hoc081098"
 

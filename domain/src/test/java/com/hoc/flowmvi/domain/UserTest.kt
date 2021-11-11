@@ -3,7 +3,7 @@ package com.hoc.flowmvi.domain
 import arrow.core.identity
 import arrow.core.orNull
 import com.hoc.flowmvi.domain.model.User
-import com.hoc.flowmvi.domain.model.ValidationError
+import com.hoc.flowmvi.domain.model.UserValidationError
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -45,7 +45,7 @@ class UserTest {
     )
     assertTrue(validated.isInvalid)
     assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(setOf(ValidationError.INVALID_EMAIL_ADDRESS), errors.toSet())
+      assertEquals(setOf(UserValidationError.INVALID_EMAIL_ADDRESS), errors.toSet())
     }
   }
 
@@ -60,7 +60,7 @@ class UserTest {
     )
     assertTrue(validated.isInvalid)
     assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(setOf(ValidationError.TOO_SHORT_FIRST_NAME), errors.toSet())
+      assertEquals(setOf(UserValidationError.TOO_SHORT_FIRST_NAME), errors.toSet())
     }
   }
 
@@ -75,7 +75,7 @@ class UserTest {
     )
     assertTrue(validated.isInvalid)
     assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
-      assertEquals(setOf(ValidationError.TOO_SHORT_LAST_NAME), errors.toSet())
+      assertEquals(setOf(UserValidationError.TOO_SHORT_LAST_NAME), errors.toSet())
     }
   }
 
@@ -92,8 +92,8 @@ class UserTest {
     assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
       assertEquals(
         setOf(
-          ValidationError.INVALID_EMAIL_ADDRESS,
-          ValidationError.TOO_SHORT_FIRST_NAME,
+          UserValidationError.INVALID_EMAIL_ADDRESS,
+          UserValidationError.TOO_SHORT_FIRST_NAME,
         ),
         errors.toSet()
       )
@@ -113,8 +113,8 @@ class UserTest {
     assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
       assertEquals(
         setOf(
-          ValidationError.INVALID_EMAIL_ADDRESS,
-          ValidationError.TOO_SHORT_LAST_NAME,
+          UserValidationError.INVALID_EMAIL_ADDRESS,
+          UserValidationError.TOO_SHORT_LAST_NAME,
         ),
         errors.toSet()
       )
@@ -134,8 +134,8 @@ class UserTest {
     assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
       assertEquals(
         setOf(
-          ValidationError.TOO_SHORT_FIRST_NAME,
-          ValidationError.TOO_SHORT_LAST_NAME,
+          UserValidationError.TOO_SHORT_FIRST_NAME,
+          UserValidationError.TOO_SHORT_LAST_NAME,
         ),
         errors.toSet()
       )
@@ -154,7 +154,7 @@ class UserTest {
     assertTrue(validated.isInvalid)
     assertNotNull(validated.fold(fe = ::identity, fa = { null })).let { errors ->
       assertEquals(
-        ValidationError.values().toSet(),
+        UserValidationError.values().toSet(),
         errors.toSet()
       )
     }

@@ -12,7 +12,7 @@ import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
-import com.hoc.flowmvi.domain.model.ValidationError
+import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import com.hoc.flowmvi.test_utils.TestDispatchers
 import io.mockk.clearAllMocks
@@ -107,7 +107,7 @@ class UserRepositoryImplTest {
 
   private lateinit var repo: UserRepositoryImpl
   private lateinit var userApiService: UserApiService
-  private lateinit var responseToDomain: Mapper<UserResponse, ValidatedNel<ValidationError, User>>
+  private lateinit var responseToDomain: Mapper<UserResponse, ValidatedNel<UserValidationError, User>>
   private lateinit var domainToBody: Mapper<User, UserBody>
   private lateinit var errorMapper: Mapper<Throwable, UserError>
 

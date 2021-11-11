@@ -18,7 +18,7 @@ data class User(
       firstName: String?,
       lastName: String?,
       avatar: String,
-    ): ValidatedNel<ValidationError, User> = Email.create(email)
+    ): ValidatedNel<UserValidationError, User> = Email.create(email)
       .zip(
         FirstName.create(firstName),
         LastName.create(lastName),
@@ -34,25 +34,25 @@ data class User(
   }
 }
 
-internal fun validateFirstName(firstName: String?): ValidatedNel<ValidationError, String> {
+internal fun validateFirstName(firstName: String?): ValidatedNel<UserValidationError, String> {
   if (firstName == null || firstName.length < MIN_LENGTH_FIRST_NAME) {
-    return ValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel
+    return UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel
   }
   // more validations here
   return firstName.validNel()
 }
 
-internal fun validateLastName(lastName: String?): ValidatedNel<ValidationError, String> {
+internal fun validateLastName(lastName: String?): ValidatedNel<UserValidationError, String> {
   if (lastName == null || lastName.length < MIN_LENGTH_LAST_NAME) {
-    return ValidationError.TOO_SHORT_LAST_NAME.asInvalidNel
+    return UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel
   }
   // more validations here
   return lastName.validNel()
 }
 
-internal fun validateEmail(email: String?): ValidatedNel<ValidationError, String> {
+internal fun validateEmail(email: String?): ValidatedNel<UserValidationError, String> {
   if (email == null || !EMAIL_ADDRESS.matches(email)) {
-    return ValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel
+    return UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel
   }
   // more validations here
   return email.validNel()

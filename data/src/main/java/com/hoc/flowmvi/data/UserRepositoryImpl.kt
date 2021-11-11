@@ -15,7 +15,7 @@ import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
-import com.hoc.flowmvi.domain.model.ValidationError
+import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -37,7 +37,7 @@ import kotlin.time.ExperimentalTime
 internal class UserRepositoryImpl(
   private val userApiService: UserApiService,
   private val dispatchers: CoroutineDispatchers,
-  private val responseToDomain: Mapper<UserResponse, ValidatedNel<ValidationError, User>>,
+  private val responseToDomain: Mapper<UserResponse, ValidatedNel<UserValidationError, User>>,
   private val domainToBody: Mapper<User, UserBody>,
   private val errorMapper: Mapper<Throwable, UserError>,
 ) : UserRepository {
@@ -122,5 +122,5 @@ internal class UserRepositoryImpl(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-private inline fun <A> ValidatedNel<ValidationError, A>.valueOrThrowUserError(): A =
+private inline fun <A> ValidatedNel<UserValidationError, A>.valueOrThrowUserError(): A =
   valueOr { throw UserError.ValidationFailed(it) }

@@ -4,7 +4,7 @@ import arrow.core.orNull
 import com.hoc.flowmvi.domain.model.Email
 import com.hoc.flowmvi.domain.model.FirstName
 import com.hoc.flowmvi.domain.model.LastName
-import com.hoc.flowmvi.domain.model.ValidationError
+import com.hoc.flowmvi.domain.model.UserValidationError
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -26,19 +26,19 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateEmail_withInvalidEmail_returnsInvalid() {
     assertEquals(
-      ValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
+      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
       Email.create(null),
     )
     assertEquals(
-      ValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
+      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
       Email.create(""),
     )
     assertEquals(
-      ValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
+      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
       Email.create("a"),
     )
     assertEquals(
-      ValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
+      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
       Email.create("a@"),
     )
   }
@@ -56,19 +56,19 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateFirstName_withInvalidFirstName_returnsInvalid() {
     assertEquals(
-      ValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
       FirstName.create(null),
     )
     assertEquals(
-      ValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
       FirstName.create(""),
     )
     assertEquals(
-      ValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
       FirstName.create("a"),
     )
     assertEquals(
-      ValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
       FirstName.create("ab"),
     )
   }
@@ -86,19 +86,19 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateLastName_withInvalidLastName_returnsInvalid() {
     assertEquals(
-      ValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
       LastName.create(null),
     )
     assertEquals(
-      ValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
       LastName.create(""),
     )
     assertEquals(
-      ValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
       LastName.create("a"),
     )
     assertEquals(
-      ValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
       LastName.create("ab"),
     )
   }

@@ -4,7 +4,7 @@ import arrow.core.identity
 import arrow.core.orNull
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.model.User
-import com.hoc.flowmvi.domain.model.ValidationError
+import com.hoc.flowmvi.domain.model.UserValidationError
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -50,7 +50,7 @@ class UserResponseToUserDomainMapperTest {
     )
     assertTrue(validated.isInvalid)
     assertEquals(
-      ValidationError.INVALID_EMAIL_ADDRESS,
+      UserValidationError.INVALID_EMAIL_ADDRESS,
       assertNotNull(validated.fold(fe = ::identity, fa = { null })).head,
     )
   }
