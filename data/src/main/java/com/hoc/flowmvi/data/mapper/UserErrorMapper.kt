@@ -48,7 +48,7 @@ internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter
       "internal-error" -> UserError.ServerError
       "invalid-id" -> UserError.InvalidId(id = errorResponse.data as String)
       "user-not-found" -> UserError.UserNotFound(id = errorResponse.data as String)
-      "validation-failed" -> UserError.ValidationFailed(errors = emptyList())
+      "validation-failed" -> UserError.ValidationFailed(errors = emptySet())
       else -> UserError.Unexpected
     }
   }

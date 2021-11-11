@@ -49,8 +49,8 @@ class UserErrorMapperTest {
     assertEquals(UserError.UserNotFound("1"), errorMapper(UserError.UserNotFound("1")))
     assertEquals(UserError.InvalidId("1"), errorMapper(UserError.InvalidId("1")))
     assertEquals(
-      UserError.ValidationFailed(emptyList()),
-      errorMapper(UserError.ValidationFailed(emptyList())),
+      UserError.ValidationFailed(emptySet()),
+      errorMapper(UserError.ValidationFailed(emptySet())),
     )
     assertEquals(UserError.ServerError, errorMapper(UserError.ServerError))
     assertEquals(UserError.Unexpected, errorMapper(UserError.Unexpected))
@@ -158,7 +158,7 @@ class UserErrorMapperTest {
       errorMapper(buildHttpException("user-not-found", id)),
     )
     assertEquals(
-      UserError.ValidationFailed(emptyList()),
+      UserError.ValidationFailed(emptySet()),
       errorMapper(buildHttpException("validation-failed", null)),
     )
   }
