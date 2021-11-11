@@ -51,7 +51,7 @@ private val USERS = listOf(
     lastName = "last3",
     avatar = "3.png"
   ),
-).map { it.valueOr { error("Invalid user $it") } }
+).map { validated -> validated.valueOr { error("Invalid user $it") } }
 
 @ExperimentalCoroutinesApi
 class UseCaseTest {

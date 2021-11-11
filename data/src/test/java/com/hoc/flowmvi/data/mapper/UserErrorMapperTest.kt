@@ -44,6 +44,19 @@ class UserErrorMapperTest {
     )
 
   @Test
+  fun test_withUserError_returnsItself() {
+    assertEquals(UserError.NetworkError, errorMapper(UserError.NetworkError))
+    assertEquals(UserError.UserNotFound("1"), errorMapper(UserError.UserNotFound("1")))
+    assertEquals(UserError.InvalidId("1"), errorMapper(UserError.InvalidId("1")))
+    assertEquals(
+      UserError.ValidationFailed(emptyList()),
+      errorMapper(UserError.ValidationFailed(emptyList())),
+    )
+    assertEquals(UserError.ServerError, errorMapper(UserError.ServerError))
+    assertEquals(UserError.Unexpected, errorMapper(UserError.Unexpected))
+  }
+
+  @Test
   fun test_withFatalError_rethrows() {
     assertFailsWith<KotlinCancellationException> { errorMapper(KotlinCancellationException()) }
     assertFailsWith<KotlinXCancellationException> { errorMapper(KotlinXCancellationException()) }

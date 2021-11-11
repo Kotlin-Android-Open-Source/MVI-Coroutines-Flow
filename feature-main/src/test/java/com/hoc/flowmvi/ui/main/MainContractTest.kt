@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.ui.main
 
+import arrow.core.orNull
 import com.hoc.flowmvi.domain.model.User
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -62,20 +63,20 @@ class MainContractTest {
   @Test
   fun test_userItem_toDomain() {
     assertEquals(
+      User.create(
+        id = "0",
+        email = "test@gmail.com",
+        firstName = "first",
+        lastName = "last",
+        avatar = "avatar.png",
+      ).orNull()!!,
       UserItem(
         id = "0",
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
         lastName = "last"
-      ).toDomain(),
-      User(
-        id = "0",
-        email = "test@gmail.com",
-        firstName = "first",
-        lastName = "last",
-        avatar = "avatar.png",
-      )
+      ).toDomain().orNull()!!,
     )
   }
 
@@ -83,20 +84,20 @@ class MainContractTest {
   fun test_userItem_fromDomain() {
     assertEquals(
       UserItem(
-        domain = User(
-          id = "0",
-          email = "test@gmail.com",
-          firstName = "first",
-          lastName = "last",
-          avatar = "avatar.png",
-        )
-      ),
-      UserItem(
         id = "0",
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
         lastName = "last"
+      ),
+      UserItem(
+        domain = User.create(
+          id = "0",
+          email = "test@gmail.com",
+          firstName = "first",
+          lastName = "last",
+          avatar = "avatar.png",
+        ).orNull()!!
       ),
     )
   }

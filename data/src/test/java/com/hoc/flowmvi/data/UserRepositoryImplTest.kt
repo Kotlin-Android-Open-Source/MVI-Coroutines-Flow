@@ -1,14 +1,18 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.Either
+import arrow.core.ValidatedNel
 import arrow.core.getOrHandle
 import arrow.core.identity
+import arrow.core.validNel
+import arrow.core.valueOr
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
+import com.hoc.flowmvi.domain.model.ValidationError
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import com.hoc.flowmvi.test_utils.TestDispatchers
 import io.mockk.clearAllMocks
@@ -69,28 +73,30 @@ private val USER_RESPONSES = listOf(
 )
 
 private val USERS = listOf(
-  User(
+  User.create(
     id = "1",
     email = "email1@gmail.com",
     firstName = "first",
     lastName = "last",
     avatar = "avatar1",
   ),
-  User(
+  User.create(
     id = "2",
     email = "email2@gmail.com",
     firstName = "first",
     lastName = "last",
     avatar = "avatar2",
   ),
-  User(
+  User.create(
     id = "3",
     email = "email3@gmail.com",
     firstName = "first",
     lastName = "last",
     avatar = "avatar3",
   ),
-)
+).map { validated -> validated.valueOr { error("$it") } }
+
+private val VALID_NEL_USERS = USERS.map(User::validNel)
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
@@ -101,7 +107,7 @@ class UserRepositoryImplTest {
 
   private lateinit var repo: UserRepositoryImpl
   private lateinit var userApiService: UserApiService
-  private lateinit var responseToDomain: Mapper<UserResponse, User>
+  private lateinit var responseToDomain: Mapper<UserResponse, ValidatedNel<ValidationError, User>>
   private lateinit var domainToBody: Mapper<User, UserBody>
   private lateinit var errorMapper: Mapper<Throwable, UserError>
 
@@ -135,7 +141,7 @@ class UserRepositoryImplTest {
   @Test
   fun test_refresh_withApiCallSuccess_returnsRight() = testDispatcher.runBlockingTest {
     coEvery { userApiService.getUsers() } returns USER_RESPONSES
-    every { responseToDomain(any()) } returnsMany USERS
+    every { responseToDomain(any()) } returnsMany VALID_NEL_USERS
 
     val result = repo.refresh()
 
@@ -170,7 +176,7 @@ class UserRepositoryImplTest {
     val userResponse = USER_RESPONSES[0]
 
     coEvery { userApiService.remove(user.id) } returns userResponse
-    every { responseToDomain(userResponse) } returns user
+    every { responseToDomain(userResponse) } returns user.validNel()
 
     val result = repo.remove(user)
 
@@ -202,7 +208,7 @@ class UserRepositoryImplTest {
 
     coEvery { userApiService.add(USER_BODY) } returns userResponse
     every { domainToBody(user) } returns USER_BODY
-    every { responseToDomain(userResponse) } returns user
+    every { responseToDomain(userResponse) } returns user.validNel()
 
     val result = repo.add(user)
 
@@ -235,7 +241,7 @@ class UserRepositoryImplTest {
   fun test_search_withApiCallSuccess_returnsRight() = testDispatcher.runBlockingTest {
     val q = "hoc081098"
     coEvery { userApiService.search(q) } returns USER_RESPONSES
-    every { responseToDomain(any()) } returnsMany USERS
+    every { responseToDomain(any()) } returnsMany VALID_NEL_USERS
 
     val result = repo.search(q)
 
@@ -269,7 +275,7 @@ class UserRepositoryImplTest {
   @Test
   fun test_getUsers_withApiCallSuccess_emitsInitial() = testDispatcher.runBlockingTest {
     coEvery { userApiService.getUsers() } returns USER_RESPONSES
-    every { responseToDomain(any()) } returnsMany USERS
+    every { responseToDomain(any()) } returnsMany VALID_NEL_USERS
 
     val events = mutableListOf<Either<UserError, List<User>>>()
     val job = launch(start = CoroutineStart.UNDISPATCHED) {
@@ -323,7 +329,8 @@ class UserRepositoryImplTest {
       coEvery { userApiService.add(USER_BODY) } returns userResponse
       coEvery { userApiService.remove(user.id) } returns userResponse
       every { domainToBody(user) } returns USER_BODY
-      USER_RESPONSES.zip(USERS).forEach { (r, u) -> every { responseToDomain(r) } returns u }
+      USER_RESPONSES.zip(USERS)
+        .forEach { (r, u) -> every { responseToDomain(r) } returns u.validNel() }
 
       val events = mutableListOf<Either<UserError, List<User>>>()
       val job = launch(start = CoroutineStart.UNDISPATCHED) {
