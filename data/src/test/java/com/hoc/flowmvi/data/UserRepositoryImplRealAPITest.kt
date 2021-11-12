@@ -3,6 +3,7 @@ package com.hoc.flowmvi.data
 import android.util.Log
 import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
 import com.hoc.flowmvi.domain.repository.UserRepository
+import com.hoc.flowmvi.test_utils.getOrThrow
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -20,6 +21,7 @@ import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.test.Test
+import kotlin.test.assertTrue
 import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
@@ -52,7 +54,8 @@ class UserRepositoryImplRealAPITest : KoinTest {
     val result = userRepo
       .getUsers()
       .first()
-    Timber.d("result=$result")
+    assertTrue(result.isRight())
+    assertTrue(result.getOrThrow.isNotEmpty())
   }
 }
 

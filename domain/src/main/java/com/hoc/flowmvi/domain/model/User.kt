@@ -51,7 +51,7 @@ internal fun validateLastName(lastName: String?): ValidatedNel<UserValidationErr
 }
 
 internal fun validateEmail(email: String?): ValidatedNel<UserValidationError, String> {
-  if (email == null || !EMAIL_ADDRESS.matches(email)) {
+  if (email == null || !EMAIL_ADDRESS_REGEX.matches(email)) {
     return UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel
   }
   // more validations here
@@ -60,5 +60,5 @@ internal fun validateEmail(email: String?): ValidatedNel<UserValidationError, St
 
 private const val MIN_LENGTH_FIRST_NAME = 3
 private const val MIN_LENGTH_LAST_NAME = 3
-private val EMAIL_ADDRESS =
-  Regex("""[a-zA-Z0-9+._%\-]{1,256}@[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9\-]{0,25})+""")
+private val EMAIL_ADDRESS_REGEX =
+  Regex("""[a-zA-Z0-9+._%\-']{1,256}@[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9\-]{0,25})+""")
