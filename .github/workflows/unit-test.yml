@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [ master ]
     paths-ignore: [ '**.md', '**.MD' ]
-
+  workflow_dispatch:
 env:
   CI: true
 
