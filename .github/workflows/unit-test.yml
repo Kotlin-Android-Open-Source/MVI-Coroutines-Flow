@@ -8,6 +8,7 @@ on:
     branches: [ master ]
     paths-ignore: [ '**.md', '**.MD' ]
   workflow_dispatch:
+
 env:
   CI: true
 
