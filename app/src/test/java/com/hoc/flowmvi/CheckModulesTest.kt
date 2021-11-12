@@ -6,6 +6,7 @@ import io.mockk.mockkClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.junit.Rule
+import org.koin.test.AutoCloseKoinTest
 import org.koin.test.check.checkKoinModules
 import org.koin.test.mock.MockProviderRule
 import kotlin.test.Test
@@ -15,7 +16,7 @@ import kotlin.time.ExperimentalTime
 @FlowPreview
 @ExperimentalCoroutinesApi
 @ExperimentalTime
-class ExampleUnitTest {
+class CheckModulesTest : AutoCloseKoinTest() {
   @get:Rule
   val mockProvider = MockProviderRule.create { clazz ->
     mockkClass(clazz).also { o ->

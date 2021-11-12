@@ -1,8 +1,8 @@
 package com.hoc.flowmvi.domain.usecase
 
 import arrow.core.Either
-import com.hoc.flowmvi.domain.entity.User
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.repository.UserRepository
 
 class RemoveUserUseCase(private val userRepository: UserRepository) {

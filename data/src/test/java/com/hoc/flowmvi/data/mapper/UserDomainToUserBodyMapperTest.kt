@@ -1,7 +1,8 @@
 package com.hoc.flowmvi.data.mapper
 
 import com.hoc.flowmvi.data.remote.UserBody
-import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.test_utils.valueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -11,13 +12,13 @@ class UserDomainToUserBodyMapperTest {
   @Test
   fun test_UserDomainToUserBodyMapper() {
     val body = mapper(
-      User(
+      User.create(
         id = "id",
         email = "email@gmail.com",
         firstName = "first",
         lastName = "last",
         avatar = "avatar",
-      )
+      ).valueOrThrow
     )
 
     assertEquals(

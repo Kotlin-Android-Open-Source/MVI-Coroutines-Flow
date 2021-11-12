@@ -1,17 +1,9 @@
 package com.hoc.flowmvi.domain.repository
 
 import arrow.core.Either
-import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
 import kotlinx.coroutines.flow.Flow
-
-sealed interface UserError {
-  object NetworkError : UserError
-  data class UserNotFound(val id: String) : UserError
-  data class InvalidId(val id: String) : UserError
-  object ValidationFailed : UserError
-  object ServerError : UserError
-  object Unexpected : UserError
-}
 
 interface UserRepository {
   fun getUsers(): Flow<Either<UserError, List<User>>>

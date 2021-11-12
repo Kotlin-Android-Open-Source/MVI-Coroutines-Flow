@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.ui.main
 
 import androidx.lifecycle.viewModelScope
+import arrow.core.flatMap
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
@@ -123,7 +124,7 @@ class MainVM(
             flow {
               userItem
                 .toDomain()
-                .let { removeUser(it) }
+                .flatMap { removeUser(it) }
                 .let { emit(it) }
             }
               .map { result ->

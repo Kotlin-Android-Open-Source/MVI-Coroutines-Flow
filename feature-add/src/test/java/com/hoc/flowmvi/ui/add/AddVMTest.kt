@@ -5,12 +5,13 @@ import arrow.core.left
 import arrow.core.right
 import com.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.flowmvi.mvi_testing.mapRight
-import com.hoc.flowmvi.domain.entity.User
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
+import com.hoc.flowmvi.domain.model.UserValidationError
+import com.hoc.flowmvi.domain.model.UserValidationError.TOO_SHORT_FIRST_NAME
+import com.hoc.flowmvi.domain.model.UserValidationError.TOO_SHORT_LAST_NAME
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
-import com.hoc.flowmvi.ui.add.ValidationError.TOO_SHORT_FIRST_NAME
-import com.hoc.flowmvi.ui.add.ValidationError.TOO_SHORT_LAST_NAME
-import com.hoc.flowmvi.ui.add.ValidationError.values
+import com.hoc.flowmvi.test_utils.valueOrThrow
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -21,7 +22,7 @@ import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-private val ALL_ERRORS = values().toSet()
+private val ALL_ERRORS = UserValidationError.values().toSet()
 private const val EMAIL = "hoc081098@gmail.com"
 private const val NAME = "hoc081098"
 
@@ -268,13 +269,13 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
 
   @Test
   fun test_withSubmitIntentWhenFormValidAndAddUserSuccess_callAddUserAndReturnsStateWithLoading() {
-    val user = User(
+    val user = User.create(
       id = "",
       email = EMAIL,
       firstName = NAME,
       lastName = NAME,
       avatar = ""
-    )
+    ).valueOrThrow
 
     coEvery { addUser(user) } returns Unit.right()
 
@@ -329,13 +330,13 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
 
   @Test
   fun test_withSubmitIntentWhenFormValidAndAddUserFailure_callAddUserAndReturnsStateWithLoading() {
-    val user = User(
+    val user = User.create(
       id = "",
       email = EMAIL,
       firstName = NAME,
       lastName = NAME,
       avatar = ""
-    )
+    ).valueOrThrow
     val networkError = UserError.NetworkError
 
     coEvery { addUser(user) } returns networkError.left()

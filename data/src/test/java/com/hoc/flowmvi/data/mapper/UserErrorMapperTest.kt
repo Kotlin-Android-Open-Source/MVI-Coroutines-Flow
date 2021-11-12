@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.data.mapper
 
 import com.hoc.flowmvi.data.remote.ErrorResponse
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.UserError
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -42,6 +42,19 @@ class UserErrorMapperTest {
         ).toResponseBody("application/json".toMediaType())
       )
     )
+
+  @Test
+  fun test_withUserError_returnsItself() {
+    assertEquals(UserError.NetworkError, errorMapper(UserError.NetworkError))
+    assertEquals(UserError.UserNotFound("1"), errorMapper(UserError.UserNotFound("1")))
+    assertEquals(UserError.InvalidId("1"), errorMapper(UserError.InvalidId("1")))
+    assertEquals(
+      UserError.ValidationFailed(emptySet()),
+      errorMapper(UserError.ValidationFailed(emptySet())),
+    )
+    assertEquals(UserError.ServerError, errorMapper(UserError.ServerError))
+    assertEquals(UserError.Unexpected, errorMapper(UserError.Unexpected))
+  }
 
   @Test
   fun test_withFatalError_rethrows() {
@@ -145,7 +158,7 @@ class UserErrorMapperTest {
       errorMapper(buildHttpException("user-not-found", id)),
     )
     assertEquals(
-      UserError.ValidationFailed,
+      UserError.ValidationFailed(emptySet()),
       errorMapper(buildHttpException("validation-failed", null)),
     )
   }

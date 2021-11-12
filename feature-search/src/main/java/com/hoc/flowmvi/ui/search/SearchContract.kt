@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.ui.search
 
-import com.hoc.flowmvi.domain.entity.User
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
@@ -19,7 +19,7 @@ data class UserItem private constructor(
     fun from(domain: User): UserItem {
       return UserItem(
         id = domain.id,
-        email = domain.email,
+        email = domain.email.value,
         avatar = domain.avatar,
         fullName = "${domain.firstName} ${domain.lastName}",
       )

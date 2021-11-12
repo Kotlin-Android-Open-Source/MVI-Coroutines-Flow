@@ -15,7 +15,7 @@ import com.hoc.flowmvi.core_ui.clicks
 import com.hoc.flowmvi.core_ui.navigator.IntentProviders
 import com.hoc.flowmvi.core_ui.queryTextEvents
 import com.hoc.flowmvi.core_ui.toast
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.search.databinding.ActivitySearchBinding
 import com.hoc081098.viewbindingdelegate.viewBinding
@@ -67,7 +67,7 @@ class SearchActivity :
             UserError.ServerError -> "Server error"
             UserError.Unexpected -> "Unexpected error"
             is UserError.UserNotFound -> "User not found"
-            UserError.ValidationFailed -> "Validation failed"
+            is UserError.ValidationFailed -> "Validation failed"
           }
         }
       }

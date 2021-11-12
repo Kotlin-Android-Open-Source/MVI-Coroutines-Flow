@@ -1,26 +1,17 @@
 package com.hoc.flowmvi.ui.add
 
 import android.os.Parcelable
-import arrow.core.ValidatedNel
-import arrow.core.invalidNel
-import com.hoc.flowmvi.domain.entity.User
-import com.hoc.flowmvi.domain.repository.UserError
+import com.hoc.flowmvi.domain.model.User
+import com.hoc.flowmvi.domain.model.UserError
+import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
 import kotlinx.parcelize.Parcelize
 
-enum class ValidationError {
-  INVALID_EMAIL_ADDRESS,
-  TOO_SHORT_FIRST_NAME,
-  TOO_SHORT_LAST_NAME;
-
-  val asInvalidNel: ValidatedNel<ValidationError, Nothing> = invalidNel()
-}
-
 @Parcelize
 data class ViewState(
-  val errors: Set<ValidationError>,
+  val errors: Set<UserValidationError>,
   val isLoading: Boolean,
   // show error or not
   val emailChanged: Boolean,
@@ -60,7 +51,7 @@ sealed interface ViewIntent : MviIntent {
 internal sealed interface PartialStateChange {
   fun reduce(viewState: ViewState): ViewState
 
-  data class ErrorsChanged(val errors: Set<ValidationError>) : PartialStateChange {
+  data class ErrorsChanged(val errors: Set<UserValidationError>) : PartialStateChange {
     override fun reduce(viewState: ViewState) =
       if (viewState.errors == errors) viewState else viewState.copy(errors = errors)
   }

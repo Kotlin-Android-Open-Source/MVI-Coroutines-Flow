@@ -1,3 +1,6 @@
+import java.util.EnumSet
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -33,7 +36,9 @@ subprojects {
         // TODO this should all come from editorconfig https://github.com/diffplug/spotless/issues/142
         mapOf(
           "indent_size" to "2",
-          "kotlin_imports_layout" to "ascii"
+          "ij_kotlin_imports_layout" to "*",
+          "end_of_line" to "lf",
+          "charset" to "utf-8"
         )
       )
 
@@ -56,7 +61,9 @@ subprojects {
       ktlint(ktlintVersion).userData(
         mapOf(
           "indent_size" to "2",
-          "kotlin_imports_layout" to "ascii"
+          "ij_kotlin_imports_layout" to "*",
+          "end_of_line" to "lf",
+          "charset" to "utf-8"
         )
       )
 
@@ -83,6 +90,21 @@ subprojects {
           isIncludeNoLocationClasses = true
           excludes = listOf("jdk.internal.*")
         }
+
+      testLogging {
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        showStandardStreams = true
+        events = EnumSet.of(
+          TestLogEvent.PASSED,
+          TestLogEvent.FAILED,
+          TestLogEvent.SKIPPED,
+          TestLogEvent.STANDARD_OUT,
+          TestLogEvent.STANDARD_ERROR
+        )
+        exceptionFormat = TestExceptionFormat.FULL
+      }
     }
   }
 }

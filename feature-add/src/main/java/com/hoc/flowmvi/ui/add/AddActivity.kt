@@ -12,6 +12,7 @@ import com.hoc.flowmvi.core_ui.firstChange
 import com.hoc.flowmvi.core_ui.navigator.IntentProviders
 import com.hoc.flowmvi.core_ui.textChanges
 import com.hoc.flowmvi.core_ui.toast
+import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.mvi_base.AbstractMviActivity
 import com.hoc.flowmvi.ui.add.databinding.ActivityAddBinding
 import com.hoc081098.flowext.mapTo
@@ -54,15 +55,15 @@ class AddActivity :
     Timber.d("viewState=$viewState")
 
     addBinding.emailEditText.setErrorIfChanged(viewState.emailChanged) {
-      if (ValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) "Invalid email"
+      if (UserValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) "Invalid email"
       else null
     }
     addBinding.firstNameEditText.setErrorIfChanged(viewState.firstNameChanged) {
-      if (ValidationError.TOO_SHORT_FIRST_NAME in viewState.errors) "Too short first name"
+      if (UserValidationError.TOO_SHORT_FIRST_NAME in viewState.errors) "Too short first name"
       else null
     }
     addBinding.lastNameEditText.setErrorIfChanged(viewState.lastNameChanged) {
-      if (ValidationError.TOO_SHORT_LAST_NAME in viewState.errors) "Too short last name"
+      if (UserValidationError.TOO_SHORT_LAST_NAME in viewState.errors) "Too short last name"
       else null
     }
 

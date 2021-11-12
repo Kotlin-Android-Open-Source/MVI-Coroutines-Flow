@@ -3,8 +3,7 @@ package com.hoc.flowmvi.ui.add
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import arrow.core.orNull
-import arrow.core.zip
-import com.hoc.flowmvi.domain.entity.User
+import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
@@ -93,19 +92,17 @@ class AddVM(
       .shareWhileSubscribed()
 
     val userFormFlow = combine(
-      emailFlow.map { validateEmail(it) }.distinctUntilChanged(),
-      firstNameFlow.map { validateFirstName(it) }.distinctUntilChanged(),
-      lastNameFlow.map { validateLastName(it) }.distinctUntilChanged(),
-    ) { emailValidated, firstNameValidated, lastNameValidated ->
-      emailValidated.zip(firstNameValidated, lastNameValidated) { email, firstName, lastName ->
-        User(
-          firstName = firstName,
-          email = email,
-          lastName = lastName,
-          id = "",
-          avatar = ""
-        )
-      }
+      emailFlow,
+      firstNameFlow,
+      lastNameFlow,
+    ) { email, firstName, lastName ->
+      User.create(
+        email = email,
+        firstName = firstName,
+        lastName = lastName,
+        id = "",
+        avatar = "",
+      )
     }.stateWithInitialNullWhileSubscribed()
 
     val addUserChanges = filterIsInstance<ViewIntent.Submit>()
