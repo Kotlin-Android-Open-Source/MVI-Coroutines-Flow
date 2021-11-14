@@ -7,6 +7,7 @@ on:
   schedule:
     # Runs at 01:00 UTC on the 1, 8, 15, 22 and 29th of every month.
     - cron: '0 1 */7 * *'
+  workflow_dispatch:
 
 jobs:
   gradle-versions-checker:
