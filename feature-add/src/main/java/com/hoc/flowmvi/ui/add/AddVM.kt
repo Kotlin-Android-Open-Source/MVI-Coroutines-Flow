@@ -8,6 +8,7 @@ import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
 import com.hoc081098.flowext.mapTo
+import com.hoc081098.flowext.startWith
 import com.hoc081098.flowext.withLatestFrom
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
@@ -117,7 +117,7 @@ class AddVM(
               ifRight = { PartialStateChange.AddUser.AddUserSuccess(user) }
             )
           }
-          .onStart { emit(PartialStateChange.AddUser.Loading) }
+          .startWith(PartialStateChange.AddUser.Loading)
       }
 
     val firstChanges = merge(
