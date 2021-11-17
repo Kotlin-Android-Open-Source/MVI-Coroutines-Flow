@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.startWith
 import com.hoc081098.flowext.takeUntil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
@@ -67,7 +67,7 @@ class SearchVM(
             }
           )
         }
-        .onStart { emit(PartialStateChange.Loading) }
+        .startWith(PartialStateChange.Loading)
     }
 
     val queryFlow = filterIsInstance<ViewIntent.Search>()

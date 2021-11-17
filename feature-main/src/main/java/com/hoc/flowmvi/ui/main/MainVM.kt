@@ -7,6 +7,7 @@ import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.startWith
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
@@ -93,7 +93,7 @@ class MainVM(
             ifRight = { PartialChange.GetUser.Data(it.map(::UserItem)) }
           )
         }
-        .onStart { emit(PartialChange.GetUser.Loading) }
+        .startWith(PartialChange.GetUser.Loading)
 
       val refreshChanges = refreshGetUsers::invoke
         .asFlow()
@@ -103,7 +103,7 @@ class MainVM(
             ifRight = { PartialChange.Refresh.Success }
           )
         }
-        .onStart { emit(PartialChange.Refresh.Loading) }
+        .startWith(PartialChange.Refresh.Loading)
 
       return merge(
         filterIsInstance<ViewIntent.Initial>()
