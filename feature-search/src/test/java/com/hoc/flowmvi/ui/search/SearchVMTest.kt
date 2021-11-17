@@ -1,10 +1,15 @@
 package com.hoc.flowmvi.ui.search
 
 import androidx.lifecycle.SavedStateHandle
+import arrow.core.left
 import arrow.core.right
 import com.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.flowmvi.mvi_testing.mapRight
+import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
+import com.hoc.flowmvi.ui.search.SearchVM.Companion.SEARCH_DEBOUNCE_DURATION
+import com.hoc081098.flowext.concatWith
+import com.hoc081098.flowext.timer
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -13,6 +18,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -28,10 +37,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   override fun setup() {
     super.setup()
 
-    searchUsersUseCase = mockk() {
-      coEvery { this@mockk(any()) } returns USERS.right()
-    }
-
+    searchUsersUseCase = mockk()
     savedStateHandle = SavedStateHandle()
     vm = SearchVM(
       searchUsersUseCase = searchUsersUseCase,
@@ -47,38 +53,16 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   }
 
   @Test
-  fun test_withSearchIntent_rejectBlankSearchQuery() {
-    val q = "    "
-    test(
-      vmProducer = { vm },
-      intents = flow {
-        emit(ViewIntent.Search(q))
-        timeout()
-      },
-      expectedStates = listOf(
-        ViewState.initial(null),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = q, // update originalQuery
-        ),
-      ).mapRight(),
-      expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = TIMEOUT,
-    )
-  }
+  fun test_withSearchIntent_debounceSearchQuery() {
+    val query = "d"
+    coEvery { searchUsersUseCase(query) } returns USERS.right()
 
-  @Test
-  fun test_withSearchIntent_returnsUserItemsWithProperLoadingState() {
-    val q = "query"
     test(
       vmProducer = { vm },
-      intents = flow {
-        emit(ViewIntent.Search(q))
-        timeout()
-      },
+      intents = flowOf("a", "b", "c", query)
+        .map { ViewIntent.Search(it) }
+        .onEach { delay(SEMI_TIMEOUT) }
+        .onCompletion { timeout() },
       expectedStates = listOf(
         ViewState.initial(null),
         ViewState(
@@ -86,37 +70,257 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
           isLoading = false,
           error = null,
           submittedQuery = "",
-          originalQuery = q, // update originalQuery
+          originalQuery = "a", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "b", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "c", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = query, // update originalQuery
         ),
         ViewState(
           users = emptyList(),
           isLoading = true, // update isLoading
           error = null,
           submittedQuery = "",
-          originalQuery = q,
+          originalQuery = query,
         ),
         ViewState(
           users = USER_ITEMS, // update users
           isLoading = false, // update isLoading
           error = null,
-          submittedQuery = q,
-          originalQuery = q,
+          submittedQuery = query, // update submittedQuery
+          originalQuery = query,
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = TIMEOUT,
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
-      coVerify(exactly = 1) { searchUsersUseCase(q) }
+      coVerify(exactly = 1) { searchUsersUseCase(query) }
+    }
+  }
+
+  @Test
+  fun test_withSearchIntent_debounceSearchQueryAndRejectBlank() {
+    val query = "     "
+
+    test(
+      vmProducer = { vm },
+      intents = flowOf("a", "b", "c", query)
+        .map { ViewIntent.Search(it) }
+        .onEach { delay(SEMI_TIMEOUT) }
+        .onCompletion { timeout() },
+      expectedStates = listOf(
+        ViewState.initial(null),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "a", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "b", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "c", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = query, // update originalQuery
+        ),
+      ).mapRight(),
+      expectedEvents = emptyList(),
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
+    )
+  }
+
+  @Test
+  fun test_withSearchIntent_debounceSearchQueryThenRejectBlankAndDistinctUntilChanged() {
+    val query = "#query"
+    coEvery { searchUsersUseCase(query) } returns USERS.right()
+
+    test(
+      vmProducer = { vm },
+      intents = flowOf("a", "b", "c", query)
+        .map { ViewIntent.Search(it) }
+        .onEach { delay(SEMI_TIMEOUT) }
+        .onCompletion { timeout() }
+        .concatWith(timer(ViewIntent.Search(query), TOTAL_TIMEOUT))
+        .onCompletion { timeout() },
+      expectedStates = listOf(
+        ViewState.initial(null),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "a", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "b", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "c", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = query, // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true, // update isLoading
+          error = null,
+          submittedQuery = "",
+          originalQuery = query,
+        ),
+        ViewState(
+          users = USER_ITEMS, // update users
+          isLoading = false, // update isLoading
+          error = null,
+          submittedQuery = query, // update submittedQuery
+          originalQuery = query,
+        ),
+      ).mapRight(),
+      expectedEvents = emptyList(),
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
+    ) {
+      coVerify(exactly = 1) { searchUsersUseCase(query) }
+    }
+  }
+
+  @Test
+  fun test_withSearchIntent_returnsUserItemsWithProperLoadingState() {
+    val query = "query"
+    coEvery { searchUsersUseCase(query) } returns USERS.right()
+
+    test(
+      vmProducer = { vm },
+      intents = flow {
+        emit(ViewIntent.Search(query))
+        timeout()
+      },
+      expectedStates = listOf(
+        ViewState.initial(null),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = query, // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true, // update isLoading
+          error = null,
+          submittedQuery = "",
+          originalQuery = query,
+        ),
+        ViewState(
+          users = USER_ITEMS, // update users
+          isLoading = false, // update isLoading
+          error = null,
+          submittedQuery = query, // update submittedQuery
+          originalQuery = query,
+        ),
+      ).mapRight(),
+      expectedEvents = emptyList(),
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
+    ) {
+      coVerify(exactly = 1) { searchUsersUseCase(query) }
+    }
+  }
+
+  @Test
+  fun test_withSearchIntent_returnsUserErrorWithProperLoadingState() {
+    val query = "query"
+    val networkError = UserError.NetworkError
+    coEvery { searchUsersUseCase(query) } returns networkError.left()
+
+    test(
+      vmProducer = { vm },
+      intents = flow {
+        emit(ViewIntent.Search(query))
+        timeout()
+      },
+      expectedStates = listOf(
+        ViewState.initial(null),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = query, // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true, // update isLoading
+          error = null,
+          submittedQuery = "",
+          originalQuery = query,
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false, // update isLoading
+          error = networkError, // update error
+          submittedQuery = query, // update submittedQuery
+          originalQuery = query,
+        ),
+      ).mapRight(),
+      expectedEvents = listOf(
+        SingleEvent.SearchFailure(networkError)
+      ).mapRight(),
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
+    ) {
+      coVerify(exactly = 1) { searchUsersUseCase(query) }
     }
   }
 
   private companion object {
-    private val TIMEOUT = Duration.milliseconds(100)
+    private val EXTRAS_TIMEOUT = Duration.milliseconds(100)
+    private val TOTAL_TIMEOUT = SEARCH_DEBOUNCE_DURATION + EXTRAS_TIMEOUT
+    private val SEMI_TIMEOUT = SEARCH_DEBOUNCE_DURATION / 10
 
     /**
      * Extra delay to emit search intent
      */
-    private suspend inline fun timeout() =
-      delay(SearchVM.SEARCH_DEBOUNCE_DURATION + TIMEOUT)
+    private suspend inline fun timeout() = delay(TOTAL_TIMEOUT)
   }
 }
