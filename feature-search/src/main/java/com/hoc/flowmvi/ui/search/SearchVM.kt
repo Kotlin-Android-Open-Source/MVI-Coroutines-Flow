@@ -76,7 +76,7 @@ class SearchVM(
       .shareWhileSubscribed()
 
     val searchableQueryFlow = queryFlow
-      .debounce(Duration.milliseconds(400))
+      .debounce(SEARCH_DEBOUNCE_DURATION)
       .filter { it.isNotBlank() }
       .distinctUntilChanged()
       .shareWhileSubscribed()
@@ -107,7 +107,8 @@ class SearchVM(
       }
     }
 
-  private companion object {
-    const val QUERY_KEY = "com.hoc.flowmvi.ui.search.query"
+  internal companion object {
+    private const val QUERY_KEY = "com.hoc.flowmvi.ui.search.query"
+    internal val SEARCH_DEBOUNCE_DURATION = Duration.milliseconds(400)
   }
 }
