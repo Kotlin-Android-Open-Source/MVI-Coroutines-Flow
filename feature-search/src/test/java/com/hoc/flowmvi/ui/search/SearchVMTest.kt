@@ -12,6 +12,7 @@ import com.hoc081098.flowext.concatWith
 import com.hoc081098.flowext.timer
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -227,6 +228,90 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   }
 
   @Test
+  fun test_withSearchIntent_debounceSearchQueryThenRejectBlankThenDistinctUntilChangedAndCancelledPreviousExecution() {
+    val query1 = "#query#1"
+    val query2 = "#query#2"
+    coEvery { searchUsersUseCase(query1) } coAnswers {
+      repeat(10) { timeout() } // (1) very long... -> cancelled by (2)
+      USERS.right()
+    }
+    coEvery { searchUsersUseCase(query2) } returns USERS.right()
+
+    test(
+      vmProducer = { vm },
+      intents = flowOf("a", "b", "c", query1)
+        .map { ViewIntent.Search(it) }
+        .onEach { delay(SEMI_TIMEOUT) }
+        .onCompletion { timeout() }
+        .concatWith(
+          timer(
+            ViewIntent.Search(query2),
+            TOTAL_TIMEOUT,
+          ).onCompletion { timeout() }, // (2)
+        ),
+      expectedStates = listOf(
+        ViewState.initial(null),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "a", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "b", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = "c", // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = null,
+          submittedQuery = "",
+          originalQuery = query1, // update originalQuery
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true, // update isLoading
+          error = null,
+          submittedQuery = "",
+          originalQuery = query1,
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true,
+          error = null,
+          submittedQuery = "",
+          originalQuery = query2, // update originalQuery
+        ),
+        ViewState(
+          users = USER_ITEMS, // update users
+          isLoading = false, // update isLoading
+          error = null,
+          submittedQuery = query2, // update submittedQuery
+          originalQuery = query2,
+        ),
+      ).mapRight(),
+      expectedEvents = emptyList(),
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
+    ) {
+      coVerifySequence {
+        searchUsersUseCase(query1)
+        searchUsersUseCase(query2)
+      }
+    }
+  }
+
+  @Test
   fun test_withSearchIntent_returnsUserItemsWithProperLoadingState() {
     val query = "query"
     coEvery { searchUsersUseCase(query) } returns USERS.right()
@@ -322,6 +407,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         ViewState.initial(null),
       ).mapRight(),
       expectedEvents = emptyList(),
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     )
   }
 
@@ -365,6 +451,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         emit(ViewIntent.Search(query))
         timeout()
       },
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerify(exactly = 2) { searchUsersUseCase(query) }
     }
@@ -409,8 +496,82 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         emit(ViewIntent.Search(query))
         timeout()
       },
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerify(exactly = 2) { searchUsersUseCase(query) }
+    }
+  }
+
+  @Test
+  fun test_withRetryIntentWhenError_cancelledBySearchIntent() {
+    val query1 = "#hoc081098#1"
+    val query2 = "#hoc081098#2"
+    val networkError = UserError.NetworkError
+
+    var count = 0
+    coEvery { searchUsersUseCase(query1) } coAnswers {
+      when (count++) {
+        0 -> networkError.left()
+        1 -> {
+          repeat(3) { timeout() } // (1) very long ... -> cancelled by (2)
+          USERS.right()
+        }
+        else -> error("Should not reach here!")
+      }
+    }
+    coEvery { searchUsersUseCase(query2) } returns USERS.right()
+
+    test(
+      vmProducer = { vm },
+      intents = flowOf(ViewIntent.Retry).concatWith(
+        flow {
+          delay(SEMI_TIMEOUT) // (2) very short ...
+          emit(ViewIntent.Search(query2))
+          timeout()
+        }
+      ),
+      expectedStates = listOf(
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = networkError,
+          submittedQuery = query1,
+          originalQuery = query1,
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true, // update isLoading
+          error = null, // update error
+          submittedQuery = query1,
+          originalQuery = query1,
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true,
+          error = null,
+          submittedQuery = query1,
+          originalQuery = query2, // update originalQuery
+        ),
+        ViewState(
+          users = USER_ITEMS, // update users
+          isLoading = false, // update isLoading
+          error = null,
+          submittedQuery = query2, // update submittedQuery
+          originalQuery = query2,
+        ),
+      ).mapRight(),
+      expectedEvents = emptyList(),
+      intentsBeforeCollecting = flow {
+        emit(ViewIntent.Search(query1))
+        timeout()
+      },
+      delayAfterDispatchingIntents = EXTRAS_TIMEOUT
+    ) {
+      coVerifySequence {
+        searchUsersUseCase(query1)
+        searchUsersUseCase(query1)
+        searchUsersUseCase(query2)
+      }
     }
   }
 
