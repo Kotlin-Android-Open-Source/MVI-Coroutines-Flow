@@ -313,6 +313,107 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     }
   }
 
+  @Test
+  fun test_withRetryIntentWhenNoError_ignored() {
+    test(
+      vmProducer = { vm },
+      intents = flowOf(ViewIntent.Retry),
+      expectedStates = listOf(
+        ViewState.initial(null),
+      ).mapRight(),
+      expectedEvents = emptyList(),
+    )
+  }
+
+  @Test
+  fun test_withRetryIntentWhenError_returnsUserItemsWithProperLoadingState() {
+    val query = "#hoc081098"
+    val networkError = UserError.NetworkError
+    coEvery { searchUsersUseCase(query) } returnsMany listOf(
+      networkError.left(),
+      USERS.right(),
+    )
+
+    test(
+      vmProducer = { vm },
+      intents = flowOf(ViewIntent.Retry),
+      expectedStates = listOf(
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = networkError,
+          submittedQuery = query,
+          originalQuery = query,
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true, // update isLoading
+          error = null, // update error
+          submittedQuery = query,
+          originalQuery = query,
+        ),
+        ViewState(
+          users = USER_ITEMS, // update users
+          isLoading = false, // update isLoading
+          error = null,
+          submittedQuery = query,
+          originalQuery = query,
+        ),
+      ).mapRight(),
+      expectedEvents = emptyList(),
+      intentsBeforeCollecting = flow {
+        emit(ViewIntent.Search(query))
+        timeout()
+      },
+    ) {
+      coVerify(exactly = 2) { searchUsersUseCase(query) }
+    }
+  }
+
+  @Test
+  fun test_withRetryIntentWhenError_returnsUserErrorWithProperLoadingState() {
+    val query = "#hoc081098"
+    val networkError = UserError.NetworkError
+    coEvery { searchUsersUseCase(query) } returns networkError.left()
+
+    test(
+      vmProducer = { vm },
+      intents = flowOf(ViewIntent.Retry),
+      expectedStates = listOf(
+        ViewState(
+          users = emptyList(),
+          isLoading = false,
+          error = networkError,
+          submittedQuery = query,
+          originalQuery = query,
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = true, // update isLoading
+          error = null, // update error
+          submittedQuery = query,
+          originalQuery = query,
+        ),
+        ViewState(
+          users = emptyList(),
+          isLoading = false, // update isLoading
+          error = networkError, // update error
+          submittedQuery = query,
+          originalQuery = query,
+        ),
+      ).mapRight(),
+      expectedEvents = listOf(
+        SingleEvent.SearchFailure(networkError),
+      ).mapRight(),
+      intentsBeforeCollecting = flow {
+        emit(ViewIntent.Search(query))
+        timeout()
+      },
+    ) {
+      coVerify(exactly = 2) { searchUsersUseCase(query) }
+    }
+  }
+
   private companion object {
     private val EXTRAS_TIMEOUT = Duration.milliseconds(100)
     private val TOTAL_TIMEOUT = SEARCH_DEBOUNCE_DURATION + EXTRAS_TIMEOUT
