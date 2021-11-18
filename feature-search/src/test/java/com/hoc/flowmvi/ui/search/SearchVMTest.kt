@@ -3,10 +3,10 @@ package com.hoc.flowmvi.ui.search
 import androidx.lifecycle.SavedStateHandle
 import arrow.core.left
 import arrow.core.right
-import com.flowmvi.mvi_testing.BaseMviViewModelTest
-import com.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
+import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
+import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.ui.search.SearchVM.Companion.SEARCH_DEBOUNCE_DURATION
 import com.hoc081098.flowext.concatWith
 import com.hoc081098.flowext.timer

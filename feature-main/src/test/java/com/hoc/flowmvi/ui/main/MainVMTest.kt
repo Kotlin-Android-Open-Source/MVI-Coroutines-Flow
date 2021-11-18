@@ -2,13 +2,13 @@ package com.hoc.flowmvi.ui.main
 
 import arrow.core.left
 import arrow.core.right
-import com.flowmvi.mvi_testing.BaseMviViewModelTest
-import com.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
+import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
+import com.hoc.flowmvi.mvi_testing.mapRight
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence

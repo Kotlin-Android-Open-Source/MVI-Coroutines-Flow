@@ -1,4 +1,4 @@
-package com.flowmvi.mvi_testing
+package com.hoc.flowmvi.mvi_testing
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -1,4 +1,4 @@
-package com.flowmvi.mvi_testing
+package com.hoc.flowmvi.mvi_testing
 
 import androidx.annotation.CallSuper
 import arrow.core.Either
