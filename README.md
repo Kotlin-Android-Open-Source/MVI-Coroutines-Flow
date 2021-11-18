@@ -8,8 +8,9 @@
 [![codecov](https://codecov.io/gh/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/branch/master/graph/badge.svg?token=QBV7IE7RU6)](https://codecov.io/gh/Kotlin-Android-Open-Source/MVI-Coroutines-Flow)
 [![Qodana](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/workflows/qodana.yml/badge.svg)](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/workflows/qodana.yml)
 [![Validate Gradle Wrapper](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/workflows/gradle-wrapper-validation.yml/badge.svg)](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/workflows/gradle-wrapper-validation.yml)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKotlin-Android-Open-Source%2FMVI-Coroutines-Flow&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.5.31-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FKotlin-Android-Open-Source%2FMVI-Coroutines-Flow&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 
 ## Coroutine + Flow = MVI :heart:
