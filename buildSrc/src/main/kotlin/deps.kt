@@ -27,7 +27,7 @@ object appConfig {
 
 object deps {
   object androidx {
-    const val appCompat = "androidx.appcompat:appcompat:1.4.0-rc01"
+    const val appCompat = "androidx.appcompat:appcompat:1.4.0"
     const val coreKtx = "androidx.core:core-ktx:1.7.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.1"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
@@ -82,7 +82,7 @@ object deps {
     const val androidxJunit = "androidx.test.ext:junit:1.1.2"
     const val androidXSspresso = "androidx.test.espresso:espresso-core:3.3.0"
 
-    const val mockk = "io.mockk:mockk:1.12.0"
+    const val mockk = "io.mockk:mockk:1.12.1"
     const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
   }
 }
