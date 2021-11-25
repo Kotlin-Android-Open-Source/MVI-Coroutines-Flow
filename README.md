@@ -23,6 +23,8 @@
 
 > **Jetpack Compose Version** 👉 https://github.com/Kotlin-Android-Open-Source/Jetpack-Compose-MVI-Coroutines-Flow
 
+> **Pagination Horizontal List in Vertical List** 👉 https://github.com/Kotlin-Android-Open-Source/Pagination-MVI-Flow
+
 | List view state | Error view state |
 | --------------- | ---------------- |
 | <img src="Screenshot_01.png" height="480" /> | <img src="Screenshot_02.png" height="480"> |
