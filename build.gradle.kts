@@ -15,7 +15,7 @@ buildscript {
   dependencies {
     classpath("com.android.tools.build:gradle:7.0.3")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.0.0")
+    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.0.1")
     classpath("dev.ahmedmourad.nocopy:nocopy-gradle-plugin:1.4.0")
     classpath("org.jacoco:org.jacoco.core:0.8.7")
     classpath("com.vanniktech:gradle-android-junit-jacoco-plugin:0.17.0-SNAPSHOT")
