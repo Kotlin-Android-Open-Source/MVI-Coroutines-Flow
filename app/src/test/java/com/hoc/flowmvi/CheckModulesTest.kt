@@ -6,8 +6,10 @@ import io.mockk.mockkClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.junit.Rule
+import org.koin.core.logger.Level
+import org.koin.dsl.koinApplication
 import org.koin.test.AutoCloseKoinTest
-import org.koin.test.check.checkKoinModules
+import org.koin.test.check.checkModules
 import org.koin.test.mock.MockProviderRule
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
@@ -28,8 +30,13 @@ class CheckModulesTest : AutoCloseKoinTest() {
 
   @Test
   fun verifyKoinApp() {
-    checkKoinModules(allModules) {
-      withInstance<SavedStateHandle>()
+    koinApplication {
+      modules(allModules)
+      printLogger(Level.DEBUG)
+
+      checkModules {
+        withInstance<SavedStateHandle>()
+      }
     }
   }
 }
