@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.mvi_base
 
 import android.os.Build
+import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
@@ -18,7 +19,7 @@ import timber.log.Timber
 abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
   MviViewModel<I, S, E>, ViewModel() {
   protected val logTag by lazy(LazyThreadSafetyMode.PUBLICATION) {
-    this::class.java.simpleName.let { tag ->
+    this::class.java.simpleName.let { tag: String ->
       // Tag length limit was removed in API 26.
       if (tag.length <= MAX_TAG_LENGTH || Build.VERSION.SDK_INT >= 26) {
         tag
@@ -33,6 +34,12 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
 
   final override val singleEvent: Flow<E> get() = eventChannel.receiveAsFlow()
   final override suspend fun processIntent(intent: I) = intentMutableFlow.emit(intent)
+
+  @CallSuper
+  override fun onCleared() {
+    super.onCleared()
+    eventChannel.close()
+  }
 
   // Send event and access intent flow.
 
