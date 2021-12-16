@@ -112,7 +112,7 @@ subprojects {
 allprojects {
   tasks.withType<KotlinCompile> {
     kotlinOptions {
-      val version = JavaVersion.VERSION_1_8.toString()
+      val version = JavaVersion.VERSION_11.toString()
       jvmTarget = version
       sourceCompatibility = version
       targetCompatibility = version
