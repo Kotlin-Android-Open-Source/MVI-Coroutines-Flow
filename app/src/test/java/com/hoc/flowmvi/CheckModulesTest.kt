@@ -12,6 +12,8 @@ import org.koin.dsl.koinApplication
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.mock.MockProviderRule
+import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
 @ExperimentalStdlibApi
 @FlowPreview
