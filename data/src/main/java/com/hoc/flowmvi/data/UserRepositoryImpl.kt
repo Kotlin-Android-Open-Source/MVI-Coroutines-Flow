@@ -31,7 +31,6 @@ import java.io.IOException
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import arrow.core.Either.Companion.catch as catchEither
-import kotlin.time.Duration.Companion.milliseconds
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
