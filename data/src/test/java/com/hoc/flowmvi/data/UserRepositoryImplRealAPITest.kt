@@ -4,6 +4,11 @@ import android.util.Log
 import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.hoc.flowmvi.test_utils.getOrThrow
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import kotlin.test.Test
+import kotlin.test.assertTrue
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -13,16 +18,12 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
+import org.koin.core.logger.Level
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import org.koin.test.inject
 import timber.log.Timber
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import kotlin.test.Test
-import kotlin.test.assertTrue
-import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 @ExperimentalTime
@@ -30,7 +31,8 @@ import kotlin.time.ExperimentalTime
 class UserRepositoryImplRealAPITest : KoinTest {
   @get:Rule
   val koinRuleTest = KoinTestRule.create {
-    printLogger()
+    // TODO(koin): https://github.com/InsertKoinIO/koin/issues/1188
+    printLogger(Level.ERROR)
     modules(
       dataModule,
       module {

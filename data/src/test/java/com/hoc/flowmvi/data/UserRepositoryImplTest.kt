@@ -24,13 +24,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifySequence
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Rule
 import java.io.IOException
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -41,6 +34,13 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 
 private val USER_BODY = UserBody(
   email = "email1@gmail.com",
@@ -103,7 +103,6 @@ private val VALID_NEL_USERS = USERS.map(User::validNel)
 class UserRepositoryImplTest {
   @get:Rule
   val coroutineRule = TestCoroutineDispatcherRule()
-  private val testDispatcher get() = coroutineRule.testCoroutineDispatcher
 
   private lateinit var repo: UserRepositoryImpl
   private lateinit var userApiService: UserApiService
@@ -139,7 +138,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_refresh_withApiCallSuccess_returnsRight() = testDispatcher.runBlockingTest {
+  fun test_refresh_withApiCallSuccess_returnsRight() = runTest {
     coEvery { userApiService.getUsers() } returns USER_RESPONSES
     every { responseToDomain(any()) } returnsMany VALID_NEL_USERS
 
@@ -157,7 +156,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_refresh_withApiCallError_returnsLeft() = testDispatcher.runBlockingTest {
+  fun test_refresh_withApiCallError_returnsLeft() = runTest {
     val ioException = IOException()
     coEvery { userApiService.getUsers() } throws ioException
     every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
@@ -171,7 +170,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_remove_withApiCallSuccess_returnsRight() = testDispatcher.runBlockingTest {
+  fun test_remove_withApiCallSuccess_returnsRight() = runTest {
     val user = USERS[0]
     val userResponse = USER_RESPONSES[0]
 
@@ -188,7 +187,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_remove_withApiCallError_returnsLeft() = testDispatcher.runBlockingTest {
+  fun test_remove_withApiCallError_returnsLeft() = runTest {
     val user = USERS[0]
     coEvery { userApiService.remove(user.id) } throws IOException()
     every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
@@ -202,7 +201,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_add_withApiCallSuccess_returnsRight() = testDispatcher.runBlockingTest {
+  fun test_add_withApiCallSuccess_returnsRight() = runTest {
     val user = USERS[0]
     val userResponse = USER_RESPONSES[0]
 
@@ -221,7 +220,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_add_withApiCallError_returnsLeft() = testDispatcher.runBlockingTest {
+  fun test_add_withApiCallError_returnsLeft() = runTest {
     val user = USERS[0]
     coEvery { userApiService.add(USER_BODY) } throws IOException()
     every { domainToBody(user) } returns USER_BODY
@@ -238,7 +237,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_search_withApiCallSuccess_returnsRight() = testDispatcher.runBlockingTest {
+  fun test_search_withApiCallSuccess_returnsRight() = runTest {
     val q = "hoc081098"
     coEvery { userApiService.search(q) } returns USER_RESPONSES
     every { responseToDomain(any()) } returnsMany VALID_NEL_USERS
@@ -258,7 +257,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_search_withApiCallError_returnsLeft() = testDispatcher.runBlockingTest {
+  fun test_search_withApiCallError_returnsLeft() = runTest {
     val q = "hoc081098"
     coEvery { userApiService.search(q) } throws IOException()
     every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
@@ -273,7 +272,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_getUsers_withApiCallSuccess_emitsInitial() = testDispatcher.runBlockingTest {
+  fun test_getUsers_withApiCallSuccess_emitsInitial() = runTest {
     coEvery { userApiService.getUsers() } returns USER_RESPONSES
     every { responseToDomain(any()) } returnsMany VALID_NEL_USERS
 
@@ -299,7 +298,7 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_getUsers_withApiCallError_rethrows() = testDispatcher.runBlockingTest {
+  fun test_getUsers_withApiCallError_rethrows() = runTest {
     coEvery { userApiService.getUsers() } throws IOException()
     every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
@@ -322,7 +321,7 @@ class UserRepositoryImplTest {
 
   @Test
   fun test_getUsers_withApiCallSuccess_emitsInitialAndUpdatedUsers() =
-    testDispatcher.runBlockingTest {
+    runTest {
       val user = USERS.last()
       val userResponse = USER_RESPONSES.last()
       coEvery { userApiService.getUsers() } returns USER_RESPONSES.dropLast(1)

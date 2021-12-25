@@ -16,11 +16,11 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlin.test.Test
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import kotlin.test.Test
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
 private val ALL_ERRORS = UserValidationError.values().toSet()
 private const val EMAIL = "hoc081098@gmail.com"
@@ -322,7 +322,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       expectedEvents = listOf(
         SingleEvent.AddUserSuccess(user),
       ).mapRight(),
-      delayAfterDispatchingIntents = Duration.seconds(1),
+      delayAfterDispatchingIntents = 1.seconds,
     ) {
       coVerify { addUser(user) }
     }
@@ -384,7 +384,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       expectedEvents = listOf(
         SingleEvent.AddUserFailure(user = user, error = networkError),
       ).mapRight(),
-      delayAfterDispatchingIntents = Duration.seconds(1),
+      delayAfterDispatchingIntents = 1.seconds,
     ) {
       coVerify { addUser(user) }
     }
@@ -413,7 +413,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = Duration.seconds(1),
+      delayAfterDispatchingIntents = 1.seconds,
     )
   }
 

@@ -26,6 +26,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -200,7 +201,7 @@ class MainVMTest : BaseMviViewModelTest<
       intents = flowOf(ViewIntent.Refresh),
       expectedStates = listOf(ViewState.initial()).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = Duration.milliseconds(100),
+      delayAfterDispatchingIntents = 100.milliseconds,
     ) { coVerify(exactly = 0) { refreshGetUsersUseCase() } }
   }
 
@@ -225,7 +226,7 @@ class MainVMTest : BaseMviViewModelTest<
         )
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = Duration.milliseconds(100),
+      delayAfterDispatchingIntents = 100.milliseconds,
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerify(exactly = 0) { refreshGetUsersUseCase() }
@@ -242,7 +243,7 @@ class MainVMTest : BaseMviViewModelTest<
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(ViewState.initial()).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = Duration.milliseconds(100),
+      delayAfterDispatchingIntents = 100.milliseconds,
     ) { coVerify(exactly = 0) { getUserUseCase() } }
   }
 

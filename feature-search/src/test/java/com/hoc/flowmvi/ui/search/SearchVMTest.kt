@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlin.test.Test
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
@@ -523,7 +524,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     test(
       vmProducer = { vm },
-      intents = flowOf(ViewIntent.Retry).concatWith(
+      intents = flowOf<ViewIntent>(ViewIntent.Retry).concatWith(
         flow {
           delay(SEMI_TIMEOUT) // (2) very short ...
           emit(ViewIntent.Search(query2))
@@ -576,7 +577,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   }
 
   private companion object {
-    private val EXTRAS_TIMEOUT = Duration.milliseconds(100)
+    private val EXTRAS_TIMEOUT = 100.milliseconds
     private val TOTAL_TIMEOUT = SEARCH_DEBOUNCE_DURATION + EXTRAS_TIMEOUT
     private val SEMI_TIMEOUT = SEARCH_DEBOUNCE_DURATION / 10
 
