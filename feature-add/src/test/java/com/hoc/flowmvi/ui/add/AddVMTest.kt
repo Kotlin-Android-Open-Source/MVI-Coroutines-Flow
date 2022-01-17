@@ -11,6 +11,7 @@ import com.hoc.flowmvi.domain.model.UserValidationError.TOO_SHORT_LAST_NAME
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.mapRight
+import com.hoc.flowmvi.mvi_testing.returnsWithDelay
 import com.hoc.flowmvi.test_utils.valueOrThrow
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -19,7 +20,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlin.test.Test
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 private val ALL_ERRORS = UserValidationError.values().toSet()
@@ -55,7 +55,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
 
   @Test
   fun test_withFormValueIntents_returnsStateWithChangedValuesAndErrors() {
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(
         ViewIntent.EmailChanged(""),
@@ -147,7 +147,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
 
   @Test
   fun test_withFormValueIntents_returnsStateWithChangedValuesAndNoErrors() {
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(
         ViewIntent.EmailChanged(""),
@@ -277,16 +277,11 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       avatar = ""
     ).valueOrThrow
 
-    coEvery { addUser(user) } returns Unit.right()
+    coEvery { addUser(user) } returnsWithDelay Unit.right()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Submit),
-      intentsBeforeCollecting = flowOf(
-        ViewIntent.EmailChanged(EMAIL),
-        ViewIntent.FirstNameChanged(NAME),
-        ViewIntent.LastNameChanged(NAME),
-      ),
       expectedStates = listOf(
         ViewState(
           errors = emptySet(),
@@ -322,7 +317,11 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       expectedEvents = listOf(
         SingleEvent.AddUserSuccess(user),
       ).mapRight(),
-      delayAfterDispatchingIntents = 1.seconds,
+      preProcessingIntents = flowOf(
+        ViewIntent.EmailChanged(EMAIL),
+        ViewIntent.FirstNameChanged(NAME),
+        ViewIntent.LastNameChanged(NAME),
+      ),
     ) {
       coVerify { addUser(user) }
     }
@@ -339,16 +338,11 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     ).valueOrThrow
     val networkError = UserError.NetworkError
 
-    coEvery { addUser(user) } returns networkError.left()
+    coEvery { addUser(user) } returnsWithDelay networkError.left()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Submit),
-      intentsBeforeCollecting = flowOf(
-        ViewIntent.EmailChanged(EMAIL),
-        ViewIntent.FirstNameChanged(NAME),
-        ViewIntent.LastNameChanged(NAME),
-      ),
       expectedStates = listOf(
         ViewState(
           errors = emptySet(),
@@ -384,7 +378,11 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       expectedEvents = listOf(
         SingleEvent.AddUserFailure(user = user, error = networkError),
       ).mapRight(),
-      delayAfterDispatchingIntents = 1.seconds,
+      preProcessingIntents = flowOf(
+        ViewIntent.EmailChanged(EMAIL),
+        ViewIntent.FirstNameChanged(NAME),
+        ViewIntent.LastNameChanged(NAME),
+      ),
     ) {
       coVerify { addUser(user) }
     }
@@ -392,14 +390,9 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
 
   @Test
   fun test_withSubmitIntentWhenFormInvalid_doNothing() {
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Submit),
-      intentsBeforeCollecting = flowOf(
-        ViewIntent.EmailChanged(""),
-        ViewIntent.FirstNameChanged(""),
-        ViewIntent.LastNameChanged(""),
-      ),
       expectedStates = listOf(
         ViewState(
           errors = ALL_ERRORS,
@@ -413,13 +406,17 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = 1.seconds,
+      preProcessingIntents = flowOf(
+        ViewIntent.EmailChanged(""),
+        ViewIntent.FirstNameChanged(""),
+        ViewIntent.LastNameChanged(""),
+      ),
     )
   }
 
   @Test
   fun test_withFirstChangeIntents_returnsStateWithFirstChangesSetToTrue() {
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(
         ViewIntent.EmailChangedFirstTime,

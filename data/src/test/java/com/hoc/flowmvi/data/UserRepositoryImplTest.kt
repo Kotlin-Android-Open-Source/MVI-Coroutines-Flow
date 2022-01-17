@@ -119,7 +119,7 @@ class UserRepositoryImplTest {
 
     repo = UserRepositoryImpl(
       userApiService = userApiService,
-      dispatchers = TestDispatchers(coroutineRule.testCoroutineDispatcher),
+      dispatchers = TestDispatchers(coroutineRule.testDispatcher),
       responseToDomain = responseToDomain,
       domainToBody = domainToBody,
       errorMapper = errorMapper
