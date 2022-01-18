@@ -75,5 +75,6 @@ dependencies {
   androidTestImplementation(deps.test.androidXSspresso)
 
   addUnitTest()
+  testImplementation(testUtils)
   testImplementation(deps.koin.testJunit4)
 }

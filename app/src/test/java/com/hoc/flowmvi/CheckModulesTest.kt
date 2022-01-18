@@ -1,6 +1,7 @@
 package com.hoc.flowmvi
 
 import androidx.lifecycle.SavedStateHandle
+import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import io.mockk.every
 import io.mockk.mockkClass
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,12 +28,16 @@ class CheckModulesTest : AutoCloseKoinTest() {
       }
     }
   }
+  @get:Rule
+  val coroutineRule = TestCoroutineDispatcherRule()
 
   @Test
   fun verifyKoinApp() {
     koinApplication {
       modules(allModules)
-      printLogger(Level.DEBUG)
+
+      // TODO(koin): https://github.com/InsertKoinIO/koin/issues/1188
+      printLogger(Level.ERROR)
 
       checkModules {
         withInstance<SavedStateHandle>()

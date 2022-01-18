@@ -7,6 +7,8 @@ import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.mapRight
+import com.hoc.flowmvi.mvi_testing.returnsManyWithDelay
+import com.hoc.flowmvi.mvi_testing.returnsWithDelay
 import com.hoc.flowmvi.ui.search.SearchVM.Companion.SEARCH_DEBOUNCE_DURATION
 import com.hoc081098.flowext.concatWith
 import com.hoc081098.flowext.timer
@@ -24,7 +26,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlin.test.Test
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
@@ -56,9 +58,9 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   @Test
   fun test_withSearchIntent_debounceSearchQuery() {
     val query = "d"
-    coEvery { searchUsersUseCase(query) } returns USERS.right()
+    coEvery { searchUsersUseCase(query) } returnsWithDelay USERS.right()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf("a", "b", "c", query)
         .map { ViewIntent.Search(it) }
@@ -110,7 +112,6 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerify(exactly = 1) { searchUsersUseCase(query) }
     }
@@ -120,7 +121,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withSearchIntent_debounceSearchQueryAndRejectBlank() {
     val query = "     "
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf("a", "b", "c", query)
         .map { ViewIntent.Search(it) }
@@ -158,16 +159,15 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     )
   }
 
   @Test
   fun test_withSearchIntent_debounceSearchQueryThenRejectBlankAndDistinctUntilChanged() {
     val query = "#query"
-    coEvery { searchUsersUseCase(query) } returns USERS.right()
+    coEvery { searchUsersUseCase(query) } returnsWithDelay USERS.right()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf("a", "b", "c", query)
         .map { ViewIntent.Search(it) }
@@ -221,7 +221,6 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerify(exactly = 1) { searchUsersUseCase(query) }
     }
@@ -237,7 +236,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     }
     coEvery { searchUsersUseCase(query2) } returns USERS.right()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf("a", "b", "c", query1)
         .map { ViewIntent.Search(it) }
@@ -302,7 +301,6 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerifySequence {
         searchUsersUseCase(query1)
@@ -314,9 +312,9 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   @Test
   fun test_withSearchIntent_returnsUserItemsWithProperLoadingState() {
     val query = "query"
-    coEvery { searchUsersUseCase(query) } returns USERS.right()
+    coEvery { searchUsersUseCase(query) } returnsWithDelay USERS.right()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flow {
         emit(ViewIntent.Search(query))
@@ -347,7 +345,6 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerify(exactly = 1) { searchUsersUseCase(query) }
     }
@@ -357,9 +354,9 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withSearchIntent_returnsUserErrorWithProperLoadingState() {
     val query = "query"
     val networkError = UserError.NetworkError
-    coEvery { searchUsersUseCase(query) } returns networkError.left()
+    coEvery { searchUsersUseCase(query) } returnsWithDelay networkError.left()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flow {
         emit(ViewIntent.Search(query))
@@ -392,7 +389,6 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       expectedEvents = listOf(
         SingleEvent.SearchFailure(networkError)
       ).mapRight(),
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerify(exactly = 1) { searchUsersUseCase(query) }
     }
@@ -400,14 +396,13 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
   @Test
   fun test_withRetryIntentWhenNoError_ignored() {
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(
         ViewState.initial(null),
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     )
   }
 
@@ -415,12 +410,12 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withRetryIntentWhenError_returnsUserItemsWithProperLoadingState() {
     val query = "#hoc081098"
     val networkError = UserError.NetworkError
-    coEvery { searchUsersUseCase(query) } returnsMany listOf(
+    coEvery { searchUsersUseCase(query) } returnsManyWithDelay listOf(
       networkError.left(),
       USERS.right(),
     )
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(
@@ -447,11 +442,10 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      intentsBeforeCollecting = flow {
+      preProcessingIntents = flow {
         emit(ViewIntent.Search(query))
         timeout()
       },
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerify(exactly = 2) { searchUsersUseCase(query) }
     }
@@ -461,9 +455,9 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withRetryIntentWhenError_returnsUserErrorWithProperLoadingState() {
     val query = "#hoc081098"
     val networkError = UserError.NetworkError
-    coEvery { searchUsersUseCase(query) } returns networkError.left()
+    coEvery { searchUsersUseCase(query) } returnsWithDelay networkError.left()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(
@@ -492,11 +486,10 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       expectedEvents = listOf(
         SingleEvent.SearchFailure(networkError),
       ).mapRight(),
-      intentsBeforeCollecting = flow {
+      preProcessingIntents = flow {
         emit(ViewIntent.Search(query))
         timeout()
       },
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT,
     ) {
       coVerify(exactly = 2) { searchUsersUseCase(query) }
     }
@@ -521,9 +514,9 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     }
     coEvery { searchUsersUseCase(query2) } returns USERS.right()
 
-    test(
+    runVMTest(
       vmProducer = { vm },
-      intents = flowOf(ViewIntent.Retry).concatWith(
+      intents = flowOf<ViewIntent>(ViewIntent.Retry).concatWith(
         flow {
           delay(SEMI_TIMEOUT) // (2) very short ...
           emit(ViewIntent.Search(query2))
@@ -561,11 +554,10 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         ),
       ).mapRight(),
       expectedEvents = emptyList(),
-      intentsBeforeCollecting = flow {
+      preProcessingIntents = flow {
         emit(ViewIntent.Search(query1))
         timeout()
-      },
-      delayAfterDispatchingIntents = EXTRAS_TIMEOUT
+      }
     ) {
       coVerifySequence {
         searchUsersUseCase(query1)
@@ -576,7 +568,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   }
 
   private companion object {
-    private val EXTRAS_TIMEOUT = Duration.milliseconds(100)
+    private val EXTRAS_TIMEOUT = 100.milliseconds
     private val TOTAL_TIMEOUT = SEARCH_DEBOUNCE_DURATION + EXTRAS_TIMEOUT
     private val SEMI_TIMEOUT = SEARCH_DEBOUNCE_DURATION / 10
 

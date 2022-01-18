@@ -13,6 +13,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
+import org.koin.core.logger.Level
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
@@ -30,7 +31,8 @@ import kotlin.time.ExperimentalTime
 class UserRepositoryImplRealAPITest : KoinTest {
   @get:Rule
   val koinRuleTest = KoinTestRule.create {
-    printLogger()
+    // TODO(koin): https://github.com/InsertKoinIO/koin/issues/1188
+    printLogger(Level.ERROR)
     modules(
       dataModule,
       module {

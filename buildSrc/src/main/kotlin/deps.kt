@@ -7,7 +7,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "0.43.2"
-const val kotlinVersion = "1.5.31"
+const val kotlinVersion = "1.6.10"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -52,7 +52,7 @@ object deps {
   }
 
   object coroutines {
-    private const val version = "1.5.2"
+    private const val version = "1.6.0"
 
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"

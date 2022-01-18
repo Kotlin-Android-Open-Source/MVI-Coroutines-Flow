@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.IOException
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 import arrow.core.Either.Companion.catch as catchEither
 
@@ -69,7 +69,7 @@ internal class UserRepositoryImpl(
     return withContext(dispatchers.io) {
       retrySuspend(
         times = 3,
-        initialDelay = Duration.milliseconds(500),
+        initialDelay = 500.milliseconds,
         factor = 2.0,
         shouldRetry = { it is IOException }
       ) { times ->

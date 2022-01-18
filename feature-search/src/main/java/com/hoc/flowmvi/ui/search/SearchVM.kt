@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
-import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 
 @FlowPreview
@@ -109,6 +109,6 @@ class SearchVM(
 
   internal companion object {
     private const val QUERY_KEY = "com.hoc.flowmvi.ui.search.query"
-    internal val SEARCH_DEBOUNCE_DURATION = Duration.milliseconds(400)
+    internal val SEARCH_DEBOUNCE_DURATION = 400.milliseconds
   }
 }

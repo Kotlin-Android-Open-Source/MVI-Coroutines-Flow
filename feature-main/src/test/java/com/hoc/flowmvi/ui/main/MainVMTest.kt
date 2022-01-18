@@ -8,7 +8,9 @@ import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
+import com.hoc.flowmvi.mvi_testing.delayEach
 import com.hoc.flowmvi.mvi_testing.mapRight
+import com.hoc.flowmvi.mvi_testing.returnsWithDelay
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
@@ -25,7 +27,6 @@ import kotlinx.coroutines.flow.update
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
-import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -67,29 +68,31 @@ class MainVMTest : BaseMviViewModelTest<
   }
 
   @Test
-  fun test_withInitialIntentWhenSuccess_returnsUserItems() = test(
-    vmProducer = {
-      every { getUserUseCase() } returns flowOf(USERS.right())
-      vm
-    },
-    intents = flowOf(ViewIntent.Initial),
-    expectedStates = listOf(
-      ViewState.initial(),
-      ViewState(
-        userItems = USER_ITEMS,
-        isLoading = false,
-        error = null,
-        isRefreshing = false
-      )
-    ).mapRight(),
-    expectedEvents = emptyList(),
-  ) { verify(exactly = 1) { getUserUseCase() } }
+  fun test_withInitialIntentWhenSuccess_returnsUserItems() {
+    runVMTest(
+      vmProducer = {
+        every { getUserUseCase() } returns flowOf(USERS.right())
+        vm
+      },
+      intents = flowOf(ViewIntent.Initial),
+      expectedStates = listOf(
+        ViewState.initial(),
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false
+        )
+      ).mapRight(),
+      expectedEvents = emptyList(),
+    ) { verify(exactly = 1) { getUserUseCase() } }
+  }
 
   @Test
   fun test_withInitialIntentWhenError_returnsErrorState() {
     val userError = UserError.NetworkError
 
-    test(
+    runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns flowOf(userError.left())
         vm
@@ -113,53 +116,54 @@ class MainVMTest : BaseMviViewModelTest<
   }
 
   @Test
-  fun test_withRefreshIntentWhenSuccess_isNotRefreshing() = test(
-    vmProducer = {
-      every { getUserUseCase() } returns flowOf(USERS.right())
-      coEvery { refreshGetUsersUseCase() } returns Unit.right()
-      vm
-    },
-    intentsBeforeCollecting = flowOf(ViewIntent.Initial),
-    intents = flowOf(ViewIntent.Refresh),
-    expectedStates = listOf(
-      ViewState(
-        userItems = USER_ITEMS,
-        isLoading = false,
-        error = null,
-        isRefreshing = false
-      ),
-      ViewState(
-        userItems = USER_ITEMS,
-        isLoading = false,
-        error = null,
-        isRefreshing = true,
-      ),
-      ViewState(
-        userItems = USER_ITEMS,
-        isLoading = false,
-        error = null,
-        isRefreshing = false
-      ),
-    ).mapRight(),
-    expectedEvents = listOf(
-      SingleEvent.Refresh.Success
-    ).mapRight(),
-  ) {
-    coVerify(exactly = 1) { getUserUseCase() }
-    coVerify(exactly = 1) { refreshGetUsersUseCase() }
+  fun test_withRefreshIntentWhenSuccess_isNotRefreshing() {
+    runVMTest(
+      vmProducer = {
+        every { getUserUseCase() } returns flowOf(USERS.right()).delayEach()
+        coEvery { refreshGetUsersUseCase() } returnsWithDelay Unit.right()
+        vm
+      },
+      intents = flowOf(ViewIntent.Refresh),
+      expectedStates = listOf(
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false
+        ),
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = true,
+        ),
+        ViewState(
+          userItems = USER_ITEMS,
+          isLoading = false,
+          error = null,
+          isRefreshing = false
+        ),
+      ).mapRight(),
+      expectedEvents = listOf(
+        SingleEvent.Refresh.Success
+      ).mapRight(),
+      preProcessingIntents = flowOf(ViewIntent.Initial),
+    ) {
+      coVerify(exactly = 1) { getUserUseCase() }
+      coVerify(exactly = 1) { refreshGetUsersUseCase() }
+    }
   }
 
   @Test
   fun test_withRefreshIntentWhenFailure_isNotRefreshing() {
     val userError = UserError.NetworkError
 
-    test(
+    runVMTest(
       vmProducer = {
-        coEvery { getUserUseCase() } returns flowOf(USERS.right())
-        coEvery { refreshGetUsersUseCase() } returns userError.left()
+        every { getUserUseCase() } returns flowOf(USERS.right()).delayEach()
+        coEvery { refreshGetUsersUseCase() } returnsWithDelay userError.left()
         vm
       },
-      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
       intents = flowOf(ViewIntent.Refresh),
       expectedStates = listOf(
         ViewState(
@@ -184,6 +188,7 @@ class MainVMTest : BaseMviViewModelTest<
       expectedEvents = listOf(
         SingleEvent.Refresh.Failure(userError)
       ).mapRight(),
+      preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerify(exactly = 1) { refreshGetUsersUseCase() }
@@ -192,7 +197,7 @@ class MainVMTest : BaseMviViewModelTest<
 
   @Test
   fun test_withRefreshIntent_ignoredWhenIsLoading() {
-    test(
+    runVMTest(
       vmProducer = {
         coEvery { refreshGetUsersUseCase() } returns Unit.right()
         vm
@@ -200,7 +205,6 @@ class MainVMTest : BaseMviViewModelTest<
       intents = flowOf(ViewIntent.Refresh),
       expectedStates = listOf(ViewState.initial()).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = Duration.milliseconds(100),
     ) { coVerify(exactly = 0) { refreshGetUsersUseCase() } }
   }
 
@@ -208,13 +212,12 @@ class MainVMTest : BaseMviViewModelTest<
   fun test_withRefreshIntent_ignoredWhenHavingError() {
     val userError = UserError.NetworkError
 
-    test(
+    runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns flowOf(userError.left())
         coEvery { refreshGetUsersUseCase() } returns Unit.right()
         vm
       },
-      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
       intents = flowOf(ViewIntent.Refresh),
       expectedStates = listOf(
         ViewState(
@@ -225,7 +228,7 @@ class MainVMTest : BaseMviViewModelTest<
         )
       ).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = Duration.milliseconds(100),
+      preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerify(exactly = 0) { refreshGetUsersUseCase() }
@@ -234,7 +237,7 @@ class MainVMTest : BaseMviViewModelTest<
 
   @Test
   fun test_withRetryIntent_ignoredWhenHavingNoError() {
-    test(
+    runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns emptyFlow()
         vm
@@ -242,7 +245,6 @@ class MainVMTest : BaseMviViewModelTest<
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(ViewState.initial()).mapRight(),
       expectedEvents = emptyList(),
-      delayAfterDispatchingIntents = Duration.milliseconds(100),
     ) { coVerify(exactly = 0) { getUserUseCase() } }
   }
 
@@ -250,15 +252,14 @@ class MainVMTest : BaseMviViewModelTest<
   fun test_withRetryIntentWhenSuccess_returnsUserItems() {
     val userError = UserError.NetworkError
 
-    test(
+    runVMTest(
       vmProducer = {
         every { getUserUseCase() } returnsMany listOf(
-          flowOf(userError.left()),
-          flowOf(USERS.right()),
+          flowOf(userError.left()).delayEach(),
+          flowOf(USERS.right()).delayEach(),
         )
         vm
       },
-      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(
         ViewState(
@@ -281,6 +282,7 @@ class MainVMTest : BaseMviViewModelTest<
         )
       ).mapRight(),
       expectedEvents = emptyList(),
+      preProcessingIntents = flowOf(ViewIntent.Initial),
     ) { verify(exactly = 2) { getUserUseCase() } }
   }
 
@@ -289,15 +291,14 @@ class MainVMTest : BaseMviViewModelTest<
     val userError1 = UserError.NetworkError
     val userError2 = UserError.Unexpected
 
-    test(
+    runVMTest(
       vmProducer = {
         every { getUserUseCase() } returnsMany listOf(
-          flowOf(userError1.left()),
-          flowOf(userError2.left()),
+          flowOf(userError1.left()).delayEach(),
+          flowOf(userError2.left()).delayEach(),
         )
         vm
       },
-      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(
         ViewState(
@@ -322,6 +323,7 @@ class MainVMTest : BaseMviViewModelTest<
       expectedEvents = listOf(
         SingleEvent.GetUsersError(userError2),
       ).mapRight(),
+      preProcessingIntents = flowOf(ViewIntent.Initial),
     ) { verify(exactly = 2) { getUserUseCase() } }
   }
 
@@ -333,7 +335,7 @@ class MainVMTest : BaseMviViewModelTest<
     val item2 = USER_ITEMS[1]
     val usersFlow = MutableStateFlow(USERS.right())
 
-    test(
+    runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns usersFlow
         coEvery { removeUser(any()) } coAnswers {
@@ -346,7 +348,6 @@ class MainVMTest : BaseMviViewModelTest<
         }
         vm
       },
-      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
       intents = flowOf(
         ViewIntent.RemoveUser(item1),
         ViewIntent.RemoveUser(item2),
@@ -377,7 +378,8 @@ class MainVMTest : BaseMviViewModelTest<
       expectedEvents = listOf(
         SingleEvent.RemoveUser.Success(item1),
         SingleEvent.RemoveUser.Success(item2),
-      ).mapRight()
+      ).mapRight(),
+      preProcessingIntents = flowOf(ViewIntent.Initial)
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerifySequence {
@@ -393,13 +395,12 @@ class MainVMTest : BaseMviViewModelTest<
     val item = USER_ITEMS[0]
     val userError = UserError.NetworkError
 
-    test(
+    runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns flowOf(USERS.right())
         coEvery { removeUser(any()) } returns userError.left()
         vm
       },
-      intentsBeforeCollecting = flowOf(ViewIntent.Initial),
       intents = flowOf(ViewIntent.RemoveUser(item)),
       expectedStates = listOf(
         ViewState(
@@ -416,7 +417,8 @@ class MainVMTest : BaseMviViewModelTest<
           assertEquals(userError, removed.error)
           assertEquals(removed.indexProducer(), 0)
         }.left(),
-      )
+      ),
+      preProcessingIntents = flowOf(ViewIntent.Initial)
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerify(exactly = 1) { removeUser(user) }
