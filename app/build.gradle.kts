@@ -66,6 +66,7 @@ dependencies {
 
   implementation(deps.coroutines.android)
   implementation(deps.koin.android)
+  implementation(deps.androidx.material)
 
   debugImplementation(deps.squareup.leakCanary)
   implementation(deps.timber)

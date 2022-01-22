@@ -1,6 +1,7 @@
 package com.hoc.flowmvi
 
 import android.app.Application
+import com.google.android.material.color.DynamicColors
 import com.hoc.flowmvi.core.coreModule
 import com.hoc.flowmvi.data.dataModule
 import com.hoc.flowmvi.domain.domainModule
@@ -20,6 +21,7 @@ import kotlin.time.ExperimentalTime
 @ExperimentalCoroutinesApi
 @ExperimentalStdlibApi
 @ExperimentalTime
+@JvmField
 val allModules = listOf(
   coreModule,
   dataModule,
@@ -37,6 +39,8 @@ val allModules = listOf(
 class App : Application() {
   override fun onCreate() {
     super.onCreate()
+
+    DynamicColors.applyToActivitiesIfAvailable(this)
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
