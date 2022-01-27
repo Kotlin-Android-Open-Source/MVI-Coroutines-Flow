@@ -65,9 +65,10 @@ class MainActivity :
       adapter = userAdapter
       addItemDecoration(
         MaterialDividerItemDecoration(context, RecyclerView.VERTICAL).apply {
-          dividerInsetStart = dpToPx(8)
-          dividerInsetEnd = dpToPx(8)
+          dividerInsetStart = dpToPx(8f)
+          dividerInsetEnd = dpToPx(8f)
           isLastItemDecorated = false
+          dividerThickness = dpToPx(0.8f)
         }
       )
 
