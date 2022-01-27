@@ -1,10 +1,8 @@
 package com.hoc.flowmvi.core_ui
 
-import android.content.Context
 import android.os.Looper
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.annotation.CheckResult
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.doOnTextChanged
@@ -121,5 +119,3 @@ fun EditText.textChanges(): Flow<CharSequence?> {
     awaitClose { removeTextChangedListener(listener) }
   }.onStart { emit(text) }
 }
-
-fun Context.toast(text: CharSequence) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()

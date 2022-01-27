@@ -11,6 +11,8 @@
       <module name="MVI_Coroutines_Flow.mvi-base" target="13" />
       <module name="MVI_Coroutines_Flow.mvi-testing" target="13" />
       <module name="MVICoroutinesFlow.buildSrc" target="13" />
+      <module name="MVICoroutinesFlow.buildSrc.main" target="13" />
+      <module name="MVICoroutinesFlow.buildSrc.test" target="13" />
     </bytecodeTargetLevel>
   </component>
 </project>
