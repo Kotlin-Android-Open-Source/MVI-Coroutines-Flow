@@ -10,6 +10,15 @@
         <entry key="..\:/Admin/Documents/Android/MVICoroutinesFlow/feature-search/src/main/res/menu/menu_search.xml" value="0.1814814814814815" />
         <entry key="..\:/Admin/Documents/Android/MVICoroutinesFlow/feature-search/src/main/res/menu/search.xml" value="0.1550925925925926" />
         <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/core-ui/src/main/res/font/noto_sans.xml" value="0.1162037037037037" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-add/src/main/res/layout/activity_add.xml" value="0.12" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-main/src/main/res/drawable/ic_add_white_24dp.xml" value="0.1925" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-main/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1925" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-main/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-main/src/main/res/layout/item_recycler_user.xml" value="0.1814814814814815" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-search/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1925" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-search/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1925" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-search/src/main/res/layout/activity_search.xml" value="0.1814814814814815" />
+        <entry key="..\:/Users/Admin/Desktop/Documents/MVICoroutinesFlow/feature-search/src/main/res/layout/item_recycler_search_user.xml" value="0.1361111111111111" />
       </map>
     </option>
   </component>

@@ -3,12 +3,13 @@ package com.hoc.flowmvi.ui.main
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.hoc.flowmvi.core_ui.SwipeLeftToDeleteCallback
 import com.hoc.flowmvi.core_ui.clicks
+import com.hoc.flowmvi.core_ui.dpToPx
 import com.hoc.flowmvi.core_ui.navigator.Navigator
 import com.hoc.flowmvi.core_ui.refreshes
 import com.hoc.flowmvi.core_ui.toast
@@ -62,7 +63,14 @@ class MainActivity :
       setHasFixedSize(true)
       layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
       adapter = userAdapter
-      addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
+      addItemDecoration(
+        MaterialDividerItemDecoration(context, RecyclerView.VERTICAL).apply {
+          dividerInsetStart = dpToPx(8f)
+          dividerInsetEnd = dpToPx(8f)
+          isLastItemDecorated = false
+          dividerThickness = dpToPx(0.8f)
+        }
+      )
 
       ItemTouchHelper(
         SwipeLeftToDeleteCallback(context) cb@{ position ->

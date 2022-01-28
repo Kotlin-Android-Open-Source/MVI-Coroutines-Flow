@@ -32,7 +32,7 @@ object deps {
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.1"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-    const val material = "com.google.android.material:material:1.4.0"
+    const val material = "com.google.android.material:material:1.6.0-alpha02"
   }
 
   object lifecycle {
