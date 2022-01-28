@@ -66,7 +66,6 @@
         android:maxLines="2"
         android:text="TextView"
         android:textAlignment="center"
-        android:textColor="#424242"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

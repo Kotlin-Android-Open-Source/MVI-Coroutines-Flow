@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.hoc.flowmvi.ui.add">
+    package="com.hoc.flowmvi.ui.add">
 
-  <application>
+    <application>
 
-    <activity
-      android:name=".AddActivity"
-      android:label="Add user" />
+        <activity
+            android:name=".AddActivity"
+            android:label="Add user" />
 
-  </application>
+    </application>
 
 </manifest>
