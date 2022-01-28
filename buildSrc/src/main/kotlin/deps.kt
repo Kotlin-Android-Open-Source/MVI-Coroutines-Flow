@@ -19,7 +19,7 @@ object appConfig {
   const val targetSdkVersion = 31
 
   private const val MAJOR = 2
-  private const val MINOR = 0
+  private const val MINOR = 1
   private const val PATCH = 0
   const val versionCode = MAJOR * 10000 + MINOR * 100 + PATCH
   const val versionName = "$MAJOR.$MINOR.$PATCH"
