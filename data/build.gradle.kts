@@ -43,6 +43,7 @@ dependencies {
   implementation(domain)
 
   implementation(deps.coroutines.core)
+  implementation(deps.flowExt)
 
   implementation(deps.squareup.retrofit)
   implementation(deps.squareup.moshiKotlin)
