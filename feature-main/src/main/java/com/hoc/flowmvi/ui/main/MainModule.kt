@@ -5,6 +5,7 @@ import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+@JvmField
 @ExperimentalCoroutinesApi
 @FlowPreview
 val mainModule = module {

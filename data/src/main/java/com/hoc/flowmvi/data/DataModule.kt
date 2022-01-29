@@ -23,6 +23,7 @@ import kotlin.time.ExperimentalTime
 
 val BASE_URL_QUALIFIER = named("BASE_URL")
 
+@JvmField
 @FlowPreview
 @ExperimentalStdlibApi
 @ExperimentalTime

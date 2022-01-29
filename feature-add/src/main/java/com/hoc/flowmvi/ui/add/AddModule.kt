@@ -5,6 +5,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+@JvmField
 @ExperimentalCoroutinesApi
 val addModule = module {
   viewModel { params ->

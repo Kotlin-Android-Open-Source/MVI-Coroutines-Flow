@@ -7,6 +7,7 @@ import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import org.koin.dsl.module
 
+@JvmField
 val domainModule = module {
   factory { GetUsersUseCase(userRepository = get()) }
 

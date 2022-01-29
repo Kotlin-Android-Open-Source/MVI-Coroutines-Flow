@@ -7,6 +7,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import kotlin.time.ExperimentalTime
 
+@JvmField
 @ExperimentalCoroutinesApi
 @FlowPreview
 @ExperimentalTime
