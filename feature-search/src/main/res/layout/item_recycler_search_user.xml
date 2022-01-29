@@ -7,7 +7,7 @@
     android:background="?attr/colorSurface"
     tools:layout_width="150dp">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/avatarImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -25,6 +25,7 @@
 
     <TextView
         android:id="@+id/nameTextView"
+        style="@style/TextAppearance.Material3.TitleMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -32,7 +33,6 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/noto_sans"
         android:maxLines="1"
-        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/emailTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -42,6 +42,7 @@
 
     <TextView
         android:id="@+id/emailTextView"
+        style="@style/TextAppearance.Material3.BodySmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
