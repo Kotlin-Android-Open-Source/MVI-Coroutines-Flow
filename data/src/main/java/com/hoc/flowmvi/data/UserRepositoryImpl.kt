@@ -76,7 +76,7 @@ internal class UserRepositoryImpl(
       .map(responseToDomainThrows)
   }.asFlow()
     .retryWithExponentialBackoff(
-      maxAttempt = 3,
+      maxAttempt = 2,
       initialDelay = 500.milliseconds,
       factor = 2.0,
     ) { it is IOException }

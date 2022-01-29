@@ -165,7 +165,7 @@ class UserRepositoryImplTest {
 
     assertTrue(result.isLeft())
     assertEquals(UserError.NetworkError, result.leftOrThrow)
-    coVerify(exactly = 3) { userApiService.getUsers() } // retry 3 times
+    coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
 
@@ -315,7 +315,7 @@ class UserRepositoryImplTest {
     assertNull(result.orNull())
     assertEquals(UserError.NetworkError, result.leftOrThrow)
 
-    coVerify(exactly = 3) { userApiService.getUsers() } // retry 3 times.
+    coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times.
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
 
