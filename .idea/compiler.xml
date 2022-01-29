@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="11">
+      <module name="MVI_Coroutines_Flow.app" target="13" />
+      <module name="MVI_Coroutines_Flow.core-ui" target="13" />
+      <module name="MVI_Coroutines_Flow.data" target="13" />
+      <module name="MVI_Coroutines_Flow.feature-add" target="13" />
+      <module name="MVI_Coroutines_Flow.feature-main" target="13" />
+      <module name="MVI_Coroutines_Flow.feature-search" target="13" />
+      <module name="MVI_Coroutines_Flow.mvi-base" target="13" />
+      <module name="MVI_Coroutines_Flow.mvi-testing" target="13" />
+      <module name="MVICoroutinesFlow.buildSrc" target="13" />
+      <module name="MVICoroutinesFlow.buildSrc.main" target="13" />
+      <module name="MVICoroutinesFlow.buildSrc.test" target="13" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
