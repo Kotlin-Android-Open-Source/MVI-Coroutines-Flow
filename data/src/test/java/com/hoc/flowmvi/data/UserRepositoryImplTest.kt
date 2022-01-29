@@ -26,6 +26,7 @@ import io.mockk.verify
 import io.mockk.verifySequence
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -98,6 +99,7 @@ private val USERS = listOf(
 
 private val VALID_NEL_USERS = USERS.map(User::validNel)
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 @ExperimentalTime
 class UserRepositoryImplTest {
