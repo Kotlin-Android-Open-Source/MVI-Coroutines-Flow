@@ -10,6 +10,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -22,6 +23,8 @@ import kotlin.time.ExperimentalTime
 
 val BASE_URL_QUALIFIER = named("BASE_URL")
 
+@JvmField
+@FlowPreview
 @ExperimentalStdlibApi
 @ExperimentalTime
 @ExperimentalCoroutinesApi

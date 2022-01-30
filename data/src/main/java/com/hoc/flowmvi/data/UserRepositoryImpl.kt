@@ -8,7 +8,6 @@ import arrow.core.right
 import arrow.core.valueOr
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
-import com.hoc.flowmvi.core.retrySuspend
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
@@ -16,12 +15,15 @@ import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
+import com.hoc081098.flowext.retryWithExponentialBackoff
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
@@ -32,6 +34,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 import arrow.core.Either.Companion.catch as catchEither
 
+@FlowPreview
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 internal class UserRepositoryImpl(
@@ -65,44 +68,38 @@ internal class UserRepositoryImpl(
   @Suppress("NOTHING_TO_INLINE")
   private inline fun logError(t: Throwable, message: String) = Timber.tag(TAG).e(t, message)
 
-  private suspend fun getUsersFromRemote(): List<User> {
-    return withContext(dispatchers.io) {
-      retrySuspend(
-        times = 3,
-        initialDelay = 500.milliseconds,
-        factor = 2.0,
-        shouldRetry = { it is IOException }
-      ) { times ->
-        Timber.d("[USER_REPO] Retry times=$times")
-        userApiService
-          .getUsers()
-          .map(responseToDomainThrows)
-      }
-    }
-  }
+  private fun getUsersFromRemote(): Flow<List<User>> = suspend {
+    Timber.d("[USER_REPO] getUsersFromRemote ...")
+    userApiService
+      .getUsers()
+      .map(responseToDomainThrows)
+  }.asFlow()
+    .retryWithExponentialBackoff(
+      maxAttempt = 2,
+      initialDelay = 500.milliseconds,
+      factor = 2.0,
+    ) { it is IOException }
 
-  override fun getUsers() = flow {
-    val initial = getUsersFromRemote()
-
-    changesFlow
-      .onEach { Timber.d("[USER_REPO] Change=$it") }
-      .scan(initial) { acc, change ->
-        when (change) {
-          is Change.Removed -> acc.filter { it.id != change.removed.id }
-          is Change.Refreshed -> change.user
-          is Change.Added -> acc + change.user
+  override fun getUsers() = getUsersFromRemote()
+    .flatMapConcat { initial ->
+      changesFlow
+        .onEach { Timber.d("[USER_REPO] Change=$it") }
+        .scan(initial) { acc, change ->
+          when (change) {
+            is Change.Removed -> acc.filter { it.id != change.removed.id }
+            is Change.Refreshed -> change.user
+            is Change.Added -> acc + change.user
+          }
         }
-      }
-      .onEach { Timber.d("[USER_REPO] Emit users.size=${it.size} ") }
-      .let { emitAll(it) }
-  }
+    }
+    .onEach { Timber.d("[USER_REPO] Emit users.size=${it.size} ") }
     .map { it.right().leftWiden<UserError, Nothing, List<User>>() }
     .catch {
       logError(it, "getUsers")
       emit(errorMapper(it).left())
     }
 
-  override suspend fun refresh() = catchEither { getUsersFromRemote() }
+  override suspend fun refresh() = catchEither { getUsersFromRemote().first() }
     .tap { sendChange(Change.Refreshed(it)) }
     .map { }
     .tapLeft { logError(it, "refresh") }
@@ -130,8 +127,6 @@ internal class UserRepositoryImpl(
         .tapLeft { logError(it, "add user=$user") }
         .mapLeft(errorMapper)
         .bind()
-
-      delay(400) // TODO
 
       val added = responseToDomain(response)
         .mapLeft { UserError.ValidationFailed(it.toSet()) }

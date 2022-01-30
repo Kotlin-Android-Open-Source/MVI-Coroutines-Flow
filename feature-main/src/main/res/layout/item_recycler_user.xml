@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/avatarImage"
         android:layout_width="72dp"
         android:layout_height="72dp"
@@ -19,16 +18,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/nameTextView"
+        style="@style/TextAppearance.Material3.TitleMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/noto_sans"
         android:maxLines="1"
-        android:textColor="#424242"
-        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/emailTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -37,8 +35,9 @@
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Username" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/emailTextView"
+        style="@style/TextAppearance.Material3.BodySmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

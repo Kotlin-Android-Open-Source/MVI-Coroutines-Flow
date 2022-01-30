@@ -21,7 +21,7 @@ data class UserItem private constructor(
         id = domain.id,
         email = domain.email.value,
         avatar = domain.avatar,
-        fullName = "${domain.firstName} ${domain.lastName}",
+        fullName = "${domain.firstName.value} ${domain.lastName.value}",
       )
     }
   }

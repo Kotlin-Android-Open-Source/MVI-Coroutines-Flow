@@ -8,7 +8,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.widget.doOnTextChanged
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -23,7 +22,6 @@ internal fun checkMainThread() {
   }
 }
 
-@ExperimentalCoroutinesApi
 @CheckResult
 fun EditText.firstChange(): Flow<Unit> {
   return callbackFlow {
@@ -39,7 +37,6 @@ fun EditText.firstChange(): Flow<Unit> {
   }.take(1)
 }
 
-@ExperimentalCoroutinesApi
 @CheckResult
 fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
   return callbackFlow {
@@ -50,7 +47,6 @@ fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
   }
 }
 
-@ExperimentalCoroutinesApi
 @CheckResult
 fun View.clicks(): Flow<View> {
   return callbackFlow {
@@ -67,7 +63,6 @@ data class SearchViewQueryTextEvent(
   val isSubmitted: Boolean,
 )
 
-@ExperimentalCoroutinesApi
 @CheckResult
 fun SearchView.queryTextEvents(): Flow<SearchViewQueryTextEvent> {
   return callbackFlow {
@@ -109,7 +104,6 @@ fun SearchView.queryTextEvents(): Flow<SearchViewQueryTextEvent> {
   }
 }
 
-@ExperimentalCoroutinesApi
 @CheckResult
 fun EditText.textChanges(): Flow<CharSequence?> {
   return callbackFlow {

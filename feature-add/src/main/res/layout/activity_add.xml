@@ -48,8 +48,7 @@
                         android:layout_marginEnd="16dp"
                         android:fontFamily="@font/noto_sans"
                         android:inputType="textEmailAddress"
-                        android:singleLine="true"
-                        android:textSize="16sp" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -79,8 +78,7 @@
                         android:layout_marginEnd="16dp"
                         android:fontFamily="@font/noto_sans"
                         android:inputType="textPersonName"
-                        android:singleLine="true"
-                        android:textSize="16sp" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -111,8 +109,7 @@
                         android:fontFamily="@font/noto_sans"
                         android:imeOptions="actionDone"
                         android:inputType="textPersonName"
-                        android:singleLine="true"
-                        android:textSize="16sp" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -127,7 +124,6 @@
                     android:paddingEnd="32dp"
                     android:paddingBottom="12dp"
                     android:text="Add"
-                    android:textSize="16sp"
                     app:cornerRadius="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -135,11 +131,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lastNameEditText" />
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:indeterminate="true"
                     app:layout_constraintBottom_toBottomOf="@+id/addButton"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
