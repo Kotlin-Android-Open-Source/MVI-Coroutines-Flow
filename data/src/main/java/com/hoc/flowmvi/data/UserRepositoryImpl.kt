@@ -129,8 +129,6 @@ internal class UserRepositoryImpl(
         .mapLeft(errorMapper)
         .bind()
 
-      delay(400) // TODO
-
       val added = responseToDomain(response)
         .mapLeft { UserError.ValidationFailed(it.toSet()) }
         .tapInvalid { logError(it, "add user=$user") }

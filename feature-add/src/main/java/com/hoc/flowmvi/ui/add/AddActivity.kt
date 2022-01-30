@@ -67,6 +67,7 @@ class AddActivity :
       else null
     }
 
+    TransitionManager.endTransitions(addBinding.root)
     TransitionManager.beginDelayedTransition(
       addBinding.root,
       AutoTransition()
