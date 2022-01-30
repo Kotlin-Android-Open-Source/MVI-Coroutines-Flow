@@ -27,7 +27,7 @@ object appConfig {
 
 object deps {
   object androidx {
-    const val appCompat = "androidx.appcompat:appcompat:1.4.0"
+    const val appCompat = "androidx.appcompat:appcompat:1.4.1"
     const val coreKtx = "androidx.core:core-ktx:1.7.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.1"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
@@ -60,7 +60,7 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.1.4"
+    private const val version = "3.1.5"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
@@ -79,8 +79,15 @@ object deps {
 
   object test {
     const val junit = "junit:junit:4.13.2"
-    const val androidxJunit = "androidx.test.ext:junit:1.1.2"
-    const val androidXSspresso = "androidx.test.espresso:espresso-core:3.3.0"
+
+    object androidx {
+      const val core = "androidx.test:core-ktx:1.4.0"
+      const val junit = "androidx.test.ext:junit-ktx:1.1.3"
+
+      object espresso {
+        const val core = "androidx.test.espresso:espresso-core:3.4.0"
+      }
+    }
 
     const val mockk = "io.mockk:mockk:1.12.1"
     const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"

@@ -72,8 +72,9 @@ dependencies {
   implementation(deps.timber)
 
   testImplementation(deps.test.junit)
-  androidTestImplementation(deps.test.androidxJunit)
-  androidTestImplementation(deps.test.androidXSspresso)
+  androidTestImplementation(deps.test.androidx.junit)
+  androidTestImplementation(deps.test.androidx.core)
+  androidTestImplementation(deps.test.androidx.espresso.core)
 
   addUnitTest()
   testImplementation(testUtils)
