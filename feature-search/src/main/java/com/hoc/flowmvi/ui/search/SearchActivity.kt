@@ -10,6 +10,8 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.hoc.flowmvi.core_ui.SearchViewQueryTextEvent
 import com.hoc.flowmvi.core_ui.clicks
 import com.hoc.flowmvi.core_ui.navigator.IntentProviders
@@ -57,6 +59,15 @@ class SearchActivity :
       if (textQuery.isVisible) {
         textQuery.text = "Search results for '${viewState.submittedQuery}'"
       }
+
+      TransitionManager.endTransitions(root)
+      TransitionManager.beginDelayedTransition(
+        root,
+        AutoTransition()
+          .addTarget(errorGroup)
+          .addTarget(progressBar)
+          .setDuration(200)
+      )
 
       errorGroup.isVisible = viewState.error !== null
       if (errorGroup.isVisible) {
