@@ -27,7 +27,7 @@ object appConfig {
 
 object deps {
   object androidx {
-    const val appCompat = "androidx.appcompat:appcompat:1.4.0"
+    const val appCompat = "androidx.appcompat:appcompat:1.4.1"
     const val coreKtx = "androidx.core:core-ktx:1.7.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.1"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
@@ -60,7 +60,7 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.1.4"
+    private const val version = "3.1.5"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
