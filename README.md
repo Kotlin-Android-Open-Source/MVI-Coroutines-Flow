@@ -26,13 +26,25 @@
 
 > **Pagination Horizontal List in Vertical List** 👉 https://github.com/Kotlin-Android-Open-Source/Pagination-MVI-Flow
 
+### Light theme
+
 | List view state | Error view state |
 | --------------- | ---------------- |
-| <img src="Screenshot_01.png" height="480" /> | <img src="Screenshot_02.png" height="480"> |
+| <img src="screenshots/Screenshot_01.png" height="480" /> | <img src="screenshots/Screenshot_02.png" height="480"> |
 
 | Add new user | Search user  |
 | ------------ | ------------ |
-| <img src="Screenshot_03.png" height="480"> | <img src="Screenshot_04.png" height="480"> |
+| <img src="screenshots/Screenshot_03.png" height="480"> | <img src="screenshots/Screenshot_04.png" height="480"> |
+
+### Dark theme
+
+| List view state | Error view state |
+| --------------- | ---------------- |
+| <img src="screenshots/Screenshot_dark_01.png" height="480" /> | <img src="screenshots/Screenshot_dark_02.png" height="480"> |
+
+| Add new user | Search user  |
+| ------------ | ------------ |
+| <img src="screenshots/Screenshot_dark_03.png" height="480"> | <img src="screenshots/Screenshot_dark_04.png" height="480"> |
 
 <!-- Pixel 3 XL API 30 -->
 
