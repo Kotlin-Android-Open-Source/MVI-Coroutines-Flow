@@ -37,5 +37,9 @@ jobs:
           tool_name: spotless
       # Since "reviewdog/action-suggester" using "spotlessKotlinApply" does not work with forked PR,
       # perform "spotlessKotlinCheck".
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - run: ./gradlew spotlessKotlinCheck
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - run: ./gradlew lintDebug
