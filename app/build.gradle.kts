@@ -79,4 +79,5 @@ dependencies {
   addUnitTest()
   testImplementation(testUtils)
   testImplementation(deps.koin.testJunit4)
+  testImplementation(deps.koin.test)
 }

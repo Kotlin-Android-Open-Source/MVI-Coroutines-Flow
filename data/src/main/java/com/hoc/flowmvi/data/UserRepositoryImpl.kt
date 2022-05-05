@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.ValidatedNel
-import arrow.core.computations.either
+import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.leftWiden
 import arrow.core.right

@@ -36,8 +36,7 @@ class CheckModulesTest : AutoCloseKoinTest() {
     koinApplication {
       modules(allModules)
 
-      // TODO(koin): https://github.com/InsertKoinIO/koin/issues/1188
-      printLogger(Level.ERROR)
+      printLogger(Level.DEBUG)
 
       checkModules {
         withInstance<SavedStateHandle>()

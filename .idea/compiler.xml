@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
       <module name="MVI_Coroutines_Flow.app" target="13" />
+      <module name="MVI_Coroutines_Flow.buildSrc" target="13" />
       <module name="MVI_Coroutines_Flow.core-ui" target="13" />
       <module name="MVI_Coroutines_Flow.data" target="13" />
       <module name="MVI_Coroutines_Flow.feature-add" target="13" />
