@@ -6,33 +6,33 @@ import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
-const val ktlintVersion = "0.43.2"
-const val kotlinVersion = "1.6.10"
+const val ktlintVersion = "0.44.0"
+const val kotlinVersion = "1.6.21"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
 
-  const val compileSdkVersion = 31
-  const val buildToolsVersion = "31.0.0"
+  const val compileSdkVersion = 32
+  const val buildToolsVersion = "32.0.0"
 
   const val minSdkVersion = 21
-  const val targetSdkVersion = 31
+  const val targetSdkVersion = 32
 
   private const val MAJOR = 2
   private const val MINOR = 1
-  private const val PATCH = 0
+  private const val PATCH = 1
   const val versionCode = MAJOR * 10000 + MINOR * 100 + PATCH
-  const val versionName = "$MAJOR.$MINOR.$PATCH"
+  const val versionName = "$MAJOR.$MINOR.$PATCH-SNAPSHOT"
 }
 
 object deps {
   object androidx {
     const val appCompat = "androidx.appcompat:appcompat:1.4.1"
     const val coreKtx = "androidx.core:core-ktx:1.7.0"
-    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.1"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.3"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-    const val material = "com.google.android.material:material:1.6.0-alpha02"
+    const val material = "com.google.android.material:material:1.6.0"
   }
 
   object lifecycle {
@@ -52,7 +52,7 @@ object deps {
   }
 
   object coroutines {
-    private const val version = "1.6.0"
+    private const val version = "1.6.1"
 
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
@@ -60,20 +60,21 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.1.5"
+    private const val version = "3.2.0-beta-1"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
     const val testJunit4 = "io.insert-koin:koin-test-junit4:$version"
+    const val test = "io.insert-koin:koin-test:$version"
   }
 
-  const val coil = "io.coil-kt:coil:1.2.1"
+  const val coil = "io.coil-kt:coil:2.0.0-rc03"
   const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.3.1"
   const val flowExt = "io.github.hoc081098:FlowExt:0.3.0"
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
-    private const val version = "1.0.1"
+    private const val version = "1.1.2"
     const val core = "io.arrow-kt:arrow-core:$version"
   }
 
@@ -89,7 +90,7 @@ object deps {
       }
     }
 
-    const val mockk = "io.mockk:mockk:1.12.1"
+    const val mockk = "io.mockk:mockk:1.12.3"
     const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
   }
 }
@@ -125,6 +126,4 @@ fun DependencyHandler.addUnitTest(testImplementation: Boolean = true) {
 }
 
 val Project.isCiBuild: Boolean
-  get() = providers.environmentVariable("CI")
-    .forUseAtConfigurationTime()
-    .orNull == "true"
+  get() = providers.environmentVariable("CI").orNull == "true"

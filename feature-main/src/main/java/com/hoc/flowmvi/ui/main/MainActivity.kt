@@ -55,7 +55,7 @@ class MainActivity :
     }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu?) =
+  override fun onCreateOptionsMenu(menu: Menu) =
     menuInflater.inflate(R.menu.menu_main, menu).let { true }
 
   override fun setupViews() {

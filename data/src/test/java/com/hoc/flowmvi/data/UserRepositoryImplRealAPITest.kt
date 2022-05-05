@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
@@ -25,14 +26,15 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.time.ExperimentalTime
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 @ExperimentalTime
 @ExperimentalStdlibApi
 class UserRepositoryImplRealAPITest : KoinTest {
   @get:Rule
   val koinRuleTest = KoinTestRule.create {
-    // TODO(koin): https://github.com/InsertKoinIO/koin/issues/1188
-    printLogger(Level.ERROR)
+    printLogger(Level.DEBUG)
+
     modules(
       dataModule,
       module {
