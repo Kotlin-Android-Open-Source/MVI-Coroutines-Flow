@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.startWith
 import com.hoc081098.flowext.takeUntil
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -55,7 +55,7 @@ class SearchVM(
 
   private fun SharedFlow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val executeSearch: suspend (String) -> Flow<PartialStateChange> = { query: String ->
-      flow { emit(searchUsersUseCase(query)) }
+      flowFromSuspend { searchUsersUseCase(query) }
         .map { result ->
           result.fold(
             ifLeft = { PartialStateChange.Failure(it, query) },

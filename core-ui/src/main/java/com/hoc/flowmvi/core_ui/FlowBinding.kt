@@ -7,11 +7,12 @@ import androidx.annotation.CheckResult
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.doOnTextChanged
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.hoc081098.flowext.startWith
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.startWith
 import kotlinx.coroutines.flow.take
 import timber.log.Timber
 import kotlin.coroutines.EmptyCoroutineContext
@@ -93,13 +94,11 @@ fun SearchView.queryTextEvents(): Flow<SearchViewQueryTextEvent> {
     })
 
     awaitClose { setOnQueryTextListener(null) }
-  }.onStart {
-    emit(
-      SearchViewQueryTextEvent(
-        view = this@queryTextEvents,
-        query = query,
-        isSubmitted = false,
-      )
+  }.startWith {
+    SearchViewQueryTextEvent(
+      view = this@queryTextEvents,
+      query = query,
+      isSubmitted = false,
     )
   }
 }
@@ -111,5 +110,5 @@ fun EditText.textChanges(): Flow<CharSequence?> {
 
     val listener = doOnTextChanged { text, _, _, _ -> trySend(text) }
     awaitClose { removeTextChangedListener(listener) }
-  }.onStart { emit(text) }
+  }.startWith { text }
 }

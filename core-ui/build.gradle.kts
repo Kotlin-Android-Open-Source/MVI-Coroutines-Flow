@@ -50,6 +50,7 @@ dependencies {
   implementation(deps.lifecycle.runtimeKtx)
 
   implementation(deps.timber)
+  implementation(deps.flowExt)
 
   addUnitTest()
 }
