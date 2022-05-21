@@ -5,17 +5,18 @@ import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 @JvmField
 val domainModule = module {
-  factory { GetUsersUseCase(userRepository = get()) }
+  factoryOf(::GetUsersUseCase)
 
-  factory { RefreshGetUsersUseCase(userRepository = get()) }
+  factoryOf(::RefreshGetUsersUseCase)
 
-  factory { RemoveUserUseCase(userRepository = get()) }
+  factoryOf(::RemoveUserUseCase)
 
-  factory { AddUserUseCase(userRepository = get()) }
+  factoryOf(::AddUserUseCase)
 
-  factory { SearchUsersUseCase(userRepository = get()) }
+  factoryOf(::SearchUsersUseCase)
 }

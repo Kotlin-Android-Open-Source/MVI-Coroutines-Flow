@@ -14,6 +14,7 @@ import kotlinx.coroutines.FlowPreview
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -21,7 +22,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import kotlin.time.ExperimentalTime
 
-val BASE_URL_QUALIFIER = named("BASE_URL")
+internal val BASE_URL_QUALIFIER = named("BASE_URL")
+internal val ERROR_RESPONSE_JSON_ADAPTER = named("ERROR_RESPONSE_JSON_ADAPTER")
 
 @JvmField
 @FlowPreview
@@ -29,7 +31,7 @@ val BASE_URL_QUALIFIER = named("BASE_URL")
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 val dataModule = module {
-  single { UserApiService(retrofit = get()) }
+  singleOf(UserApiService::invoke)
 
   single {
     provideRetrofit(
@@ -49,9 +51,9 @@ val dataModule = module {
 
   factory { UserDomainToUserBodyMapper() }
 
-  factory { get<Moshi>().adapter<ErrorResponse>() }
+  factory(ERROR_RESPONSE_JSON_ADAPTER) { get<Moshi>().adapter<ErrorResponse>() }
 
-  factory { UserErrorMapper(errorResponseJsonAdapter = get()) }
+  factory { UserErrorMapper(get(ERROR_RESPONSE_JSON_ADAPTER)) }
 
   single<UserRepository> {
     UserRepositoryImpl(
