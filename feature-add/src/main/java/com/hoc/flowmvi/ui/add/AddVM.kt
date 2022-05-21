@@ -7,6 +7,7 @@ import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.mapTo
 import com.hoc081098.flowext.startWith
 import com.hoc081098.flowext.withLatestFrom
@@ -19,7 +20,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
@@ -110,7 +110,7 @@ class AddVM(
       .withLatestFrom(userFormFlow) { _, userForm -> userForm }
       .mapNotNull { it?.orNull() }
       .flatMapFirst { user ->
-        flow { emit(addUser(user)) }
+        flowFromSuspend { addUser(user) }
           .map { result ->
             result.fold(
               ifLeft = { PartialStateChange.AddUser.AddUserFailure(user, it) },

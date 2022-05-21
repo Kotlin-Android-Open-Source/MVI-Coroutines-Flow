@@ -6,7 +6,9 @@ import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
+import com.hoc081098.flowext.defer
 import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.startWith
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -15,13 +17,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapMerge
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -121,11 +121,10 @@ class MainVM(
           .log("Intent")
           .map { it.user }
           .flatMapMerge { userItem ->
-            flow {
+            flowFromSuspend {
               userItem
                 .toDomain()
                 .flatMap { removeUser(it) }
-                .let { emit(it) }
             }
               .map { result ->
                 result.fold(
@@ -137,5 +136,3 @@ class MainVM(
       )
     }
 }
-
-private fun <T> defer(flowFactory: () -> Flow<T>): Flow<T> = flow { emitAll(flowFactory()) }
