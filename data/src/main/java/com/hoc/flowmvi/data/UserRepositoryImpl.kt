@@ -7,7 +7,7 @@ import arrow.core.leftWiden
 import arrow.core.right
 import arrow.core.valueOr
 import com.hoc.flowmvi.core.Mapper
-import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
+import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
@@ -39,7 +39,7 @@ import arrow.core.Either.Companion.catch as catchEither
 @ExperimentalCoroutinesApi
 internal class UserRepositoryImpl(
   private val userApiService: UserApiService,
-  private val dispatchers: CoroutineDispatchers,
+  private val dispatchers: AppCoroutineDispatchers,
   private val responseToDomain: Mapper<UserResponse, ValidatedNel<UserValidationError, User>>,
   private val domainToBody: Mapper<User, UserBody>,
   private val errorMapper: Mapper<Throwable, UserError>,

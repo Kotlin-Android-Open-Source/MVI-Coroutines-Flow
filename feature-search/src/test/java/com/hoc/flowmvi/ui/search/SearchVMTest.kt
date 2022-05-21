@@ -9,6 +9,7 @@ import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.mvi_testing.returnsManyWithDelay
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
+import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.ui.search.SearchVM.Companion.SEARCH_DEBOUNCE_DURATION
 import com.hoc081098.flowext.concatWith
 import com.hoc081098.flowext.timer
@@ -44,7 +45,8 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     savedStateHandle = SavedStateHandle()
     vm = SearchVM(
       searchUsersUseCase = searchUsersUseCase,
-      savedStateHandle = savedStateHandle
+      savedStateHandle = savedStateHandle,
+      appCoroutineDispatchers = TestAppCoroutineDispatchers(coroutineRule.testDispatcher),
     )
   }
 

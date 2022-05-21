@@ -3,7 +3,7 @@ package com.hoc.flowmvi
 import androidx.lifecycle.SavedStateHandle
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import io.mockk.every
-import io.mockk.mockkClass
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.junit.Rule
@@ -22,12 +22,16 @@ import kotlin.time.ExperimentalTime
 class CheckModulesTest : AutoCloseKoinTest() {
   @get:Rule
   val mockProvider = MockProviderRule.create { clazz ->
-    mockkClass(clazz).also { o ->
-      if (clazz == SavedStateHandle::class) {
-        every { (o as SavedStateHandle).get<Any?>(any()) } returns null
+    when (clazz) {
+      SavedStateHandle::class -> {
+        mockk<SavedStateHandle>() {
+          every { get<Any?>(any()) } returns null
+        }
       }
+      else -> error("Unknown class: $clazz")
     }
   }
+
   @get:Rule
   val coroutineRule = TestCoroutineDispatcherRule()
 

@@ -2,18 +2,15 @@ package com.hoc.flowmvi.ui.add
 
 import com.hoc.flowmvi.core_ui.navigator.IntentProviders
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 @JvmField
 @ExperimentalCoroutinesApi
 val addModule = module {
-  viewModel { params ->
-    AddVM(
-      addUser = get(),
-      savedStateHandle = params.get(),
-    )
-  }
+  viewModelOf(::AddVM)
 
-  single<IntentProviders.Add> { AddActivity.IntentProvider() }
+  singleOf(AddActivity::IntentProvider) { bind<IntentProviders.Add>() }
 }
