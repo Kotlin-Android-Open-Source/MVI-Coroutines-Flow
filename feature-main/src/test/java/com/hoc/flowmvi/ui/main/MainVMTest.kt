@@ -11,6 +11,7 @@ import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.delayEach
 import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
+import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
@@ -54,6 +55,7 @@ class MainVMTest : BaseMviViewModelTest<
       getUsersUseCase = getUserUseCase,
       refreshGetUsers = refreshGetUsersUseCase,
       removeUser = removeUser,
+      appCoroutineDispatchers = TestAppCoroutineDispatchers(coroutineRule.testDispatcher)
     )
   }
 
