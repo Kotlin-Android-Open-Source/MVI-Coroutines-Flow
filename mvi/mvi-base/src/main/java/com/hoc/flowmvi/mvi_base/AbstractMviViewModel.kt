@@ -4,7 +4,9 @@ import android.os.Build
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -14,11 +16,16 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.withContext
 import timber.log.Timber
+import kotlin.LazyThreadSafetyMode.PUBLICATION
+import kotlin.coroutines.ContinuationInterceptor
 
-abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
+abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent>(
+  private val appCoroutineDispatchers: AppCoroutineDispatchers,
+) :
   MviViewModel<I, S, E>, ViewModel() {
-  protected val logTag by lazy(LazyThreadSafetyMode.PUBLICATION) {
+  protected val logTag by lazy(PUBLICATION) {
     this::class.java.simpleName.let { tag: String ->
       // Tag length limit was removed in API 26.
       if (tag.length <= MAX_TAG_LENGTH || Build.VERSION.SDK_INT >= 26) {
@@ -43,7 +50,14 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
 
   // Send event and access intent flow.
 
-  protected suspend fun sendEvent(event: E) = eventChannel.send(event)
+  protected suspend fun sendEvent(event: E) {
+    if (currentCoroutineContext()[ContinuationInterceptor] === appCoroutineDispatchers.mainImmediate) {
+      eventChannel.send(event)
+    } else {
+      withContext(appCoroutineDispatchers.mainImmediate) { eventChannel.send(event) }
+    }
+  }
+
   protected val intentFlow: SharedFlow<I> get() = intentMutableFlow
 
   // Extensions on Flow using viewModelScope.

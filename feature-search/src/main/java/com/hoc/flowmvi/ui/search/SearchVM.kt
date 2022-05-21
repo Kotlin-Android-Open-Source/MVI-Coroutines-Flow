@@ -2,6 +2,7 @@ package com.hoc.flowmvi.ui.search
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
@@ -36,7 +37,8 @@ import kotlin.time.ExperimentalTime
 class SearchVM(
   private val searchUsersUseCase: SearchUsersUseCase,
   private val savedStateHandle: SavedStateHandle,
-) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
+  appCoroutineDispatchers: AppCoroutineDispatchers,
+) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>(appCoroutineDispatchers) {
 
   override val viewState: StateFlow<ViewState>
 

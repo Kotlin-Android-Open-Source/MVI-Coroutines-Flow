@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.data
 
 import android.util.Log
-import com.hoc.flowmvi.core.dispatchers.CoroutineDispatchers
+import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.hoc.flowmvi.test_utils.getOrThrow
 import kotlinx.coroutines.CoroutineDispatcher
@@ -38,10 +38,11 @@ class UserRepositoryImplRealAPITest : KoinTest {
     modules(
       dataModule,
       module {
-        factory<CoroutineDispatchers> {
-          object : CoroutineDispatchers {
+        factory<AppCoroutineDispatchers> {
+          object : AppCoroutineDispatchers {
             override val main: CoroutineDispatcher get() = Main
             override val io: CoroutineDispatcher get() = IO
+            override val mainImmediate: CoroutineDispatcher get() = Main.immediate
           }
         }
       }

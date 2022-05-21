@@ -10,8 +10,8 @@ import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
+import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
-import com.hoc.flowmvi.test_utils.TestDispatchers
 import com.hoc.flowmvi.test_utils.getOrThrow
 import com.hoc.flowmvi.test_utils.leftOrThrow
 import com.hoc.flowmvi.test_utils.valueOrThrow
@@ -121,7 +121,7 @@ class UserRepositoryImplTest {
 
     repo = UserRepositoryImpl(
       userApiService = userApiService,
-      dispatchers = TestDispatchers(coroutineRule.testDispatcher),
+      dispatchers = TestAppCoroutineDispatchers(coroutineRule.testDispatcher),
       responseToDomain = responseToDomain,
       domainToBody = domainToBody,
       errorMapper = errorMapper
