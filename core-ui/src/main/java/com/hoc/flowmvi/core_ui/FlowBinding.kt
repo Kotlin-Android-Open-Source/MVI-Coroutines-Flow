@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.startWith
 import kotlinx.coroutines.flow.take
 import timber.log.Timber
 import kotlin.coroutines.EmptyCoroutineContext
