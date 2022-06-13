@@ -14,6 +14,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 [![Gitter](https://badges.gitter.im/Kotlin-Android-Open-Source/community.svg)](https://gitter.im/Kotlin-Android-Open-Source/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+## Buy me a coffee
+Liked some of my work? Buy me a coffee (or more likely a beer)
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/hoc081098)
+
 ## Coroutine + Flow = MVI :heart:
 *   Play MVI with Kotlin Coroutines Flow.
 *   Multiple modules, Clean Architecture, Functional programming with [ΛRROW.kt](https://arrow-kt.io/).
