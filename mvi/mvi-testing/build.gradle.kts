@@ -21,7 +21,7 @@ android {
         buildConfigField(
           type = it::class.java.simpleName,
           name = "ENABLE_LOG_TEST",
-          value = it.toString(),
+          value = it.toString()
         )
       }
     }
@@ -35,7 +35,7 @@ android {
         buildConfigField(
           type = it::class.java.simpleName,
           name = "ENABLE_LOG_TEST",
-          value = it.toString(),
+          value = it.toString()
         )
       }
     }

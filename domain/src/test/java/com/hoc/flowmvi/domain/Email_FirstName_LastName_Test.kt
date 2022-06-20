@@ -5,10 +5,10 @@ import com.hoc.flowmvi.domain.model.Email
 import com.hoc.flowmvi.domain.model.FirstName
 import com.hoc.flowmvi.domain.model.LastName
 import com.hoc.flowmvi.domain.model.UserValidationError
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @Suppress("ClassName")

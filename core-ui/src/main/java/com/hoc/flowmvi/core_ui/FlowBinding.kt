@@ -8,13 +8,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.widget.doOnTextChanged
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.hoc081098.flowext.startWith
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.take
 import timber.log.Timber
-import kotlin.coroutines.EmptyCoroutineContext
 
 internal fun checkMainThread() {
   check(Looper.myLooper() == Looper.getMainLooper()) {

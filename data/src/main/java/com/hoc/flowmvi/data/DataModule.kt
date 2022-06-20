@@ -9,6 +9,8 @@ import com.hoc.flowmvi.domain.repository.UserRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import java.util.concurrent.TimeUnit
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import okhttp3.OkHttpClient
@@ -19,8 +21,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
-import kotlin.time.ExperimentalTime
 
 internal val BASE_URL_QUALIFIER = named("BASE_URL")
 internal val ERROR_RESPONSE_JSON_ADAPTER = named("ERROR_RESPONSE_JSON_ADAPTER")

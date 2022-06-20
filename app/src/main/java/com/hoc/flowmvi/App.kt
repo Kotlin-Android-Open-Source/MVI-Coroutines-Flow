@@ -8,6 +8,7 @@ import com.hoc.flowmvi.domain.domainModule
 import com.hoc.flowmvi.ui.add.addModule
 import com.hoc.flowmvi.ui.main.mainModule
 import com.hoc.flowmvi.ui.search.searchModule
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.koin.androidContext
@@ -15,7 +16,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import timber.log.Timber
-import kotlin.time.ExperimentalTime
 
 @FlowPreview
 @ExperimentalCoroutinesApi

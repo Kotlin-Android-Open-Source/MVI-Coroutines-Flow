@@ -19,26 +19,24 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertIs
-import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 @FlowPreview
-class MainVMTest : BaseMviViewModelTest<
-  ViewIntent,
+class MainVMTest : BaseMviViewModelTest<ViewIntent,
   ViewState,
   SingleEvent,
-  MainVM
-  >() {
+  MainVM>() {
   private lateinit var vm: MainVM
   private lateinit var getUserUseCase: GetUsersUseCase
   private lateinit var refreshGetUsersUseCase: RefreshGetUsersUseCase

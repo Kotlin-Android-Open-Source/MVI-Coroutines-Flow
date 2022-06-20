@@ -11,6 +11,11 @@ import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import io.mockk.MockKAdditionalAnswerScope
 import io.mockk.MockKStubScope
 import io.mockk.clearAllMocks
+import java.util.LinkedList
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -25,11 +30,6 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
-import java.util.LinkedList
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.assertEquals
-import kotlin.time.ExperimentalTime
 
 fun <T> Iterable<T>.mapRight(): List<Either<(T) -> Unit, T>> = map { it.right() }
 
@@ -63,12 +63,10 @@ infix fun <T, B> MockKStubScope<T, B>.returnsManyWithDelay(values: List<T>) {
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-abstract class BaseMviViewModelTest<
-  I : MviIntent,
+abstract class BaseMviViewModelTest<I : MviIntent,
   S : MviViewState,
   E : MviSingleEvent,
-  VM : MviViewModel<I, S, E>,
-  > {
+  VM : MviViewModel<I, S, E>,> {
   @get:Rule
   val coroutineRule = TestCoroutineDispatcherRule(
     testDispatcher = UnconfinedTestDispatcher(
