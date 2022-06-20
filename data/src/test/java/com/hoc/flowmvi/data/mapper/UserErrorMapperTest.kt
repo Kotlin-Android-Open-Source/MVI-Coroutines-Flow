@@ -5,19 +5,19 @@ import com.hoc.flowmvi.domain.model.UserError
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import kotlin.coroutines.cancellation.CancellationException as KotlinCancellationException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.coroutines.cancellation.CancellationException as KotlinCancellationException
 import kotlinx.coroutines.CancellationException as KotlinXCancellationException
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.HttpException
+import retrofit2.Response
 
 @ExperimentalStdlibApi
 class UserErrorMapperTest {

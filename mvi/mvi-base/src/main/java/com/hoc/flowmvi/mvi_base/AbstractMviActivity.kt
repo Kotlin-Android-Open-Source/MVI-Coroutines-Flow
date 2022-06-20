@@ -9,12 +9,10 @@ import com.hoc.flowmvi.core_ui.collectIn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-abstract class AbstractMviActivity<
-  I : MviIntent,
+abstract class AbstractMviActivity<I : MviIntent,
   S : MviViewState,
   E : MviSingleEvent,
-  VM : MviViewModel<I, S, E>,
-  >(
+  VM : MviViewModel<I, S, E>,>(
   @LayoutRes contentLayoutId: Int,
 ) :
   AppCompatActivity(contentLayoutId), MviView<I, S, E> {

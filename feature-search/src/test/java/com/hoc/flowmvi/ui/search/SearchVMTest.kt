@@ -18,6 +18,9 @@ import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.mockk
+import kotlin.test.Test
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
@@ -26,9 +29,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlin.test.Test
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 @FlowPreview

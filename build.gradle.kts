@@ -15,7 +15,7 @@ buildscript {
   dependencies {
     classpath("com.android.tools.build:gradle:7.2.1")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.7.1")
+    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.7.2")
     classpath("dev.ahmedmourad.nocopy:nocopy-gradle-plugin:1.4.0")
     classpath("org.jacoco:org.jacoco.core:0.8.8")
     classpath("com.vanniktech:gradle-android-junit-jacoco-plugin:0.17.0-SNAPSHOT")
@@ -29,18 +29,33 @@ subprojects {
   apply(plugin = "com.github.ben-manes.versions")
 
   configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    val EDITOR_CONFIG_KEYS: Set<String> = hashSetOf(
+      "ij_kotlin_imports_layout",
+      "indent_size",
+      "end_of_line",
+      "charset"
+    )
+
     kotlin {
       target("**/*.kt")
 
-      ktlint(ktlintVersion).userData(
-        // TODO this should all come from editorconfig https://github.com/diffplug/spotless/issues/142
-        mapOf(
-          "indent_size" to "2",
-          "ij_kotlin_imports_layout" to "*",
-          "end_of_line" to "lf",
-          "charset" to "utf-8"
-        )
+      // TODO this should all come from editorconfig https://github.com/diffplug/spotless/issues/142
+      val data = mapOf(
+        "indent_size" to "2",
+        "ij_kotlin_imports_layout" to "*",
+        "end_of_line" to "lf",
+        "charset" to "utf-8",
+        "disabled_rules" to arrayOf(
+          "experimental:package-name",
+          "experimental:trailing-comma",
+          "experimental:type-parameter-list-spacing",
+        ).joinToString(separator = ","),
       )
+
+      ktlint(ktlintVersion)
+        .setUseExperimental(true)
+        .userData(data.filterKeys { it !in EDITOR_CONFIG_KEYS })
+        .editorConfigOverride(data.filterKeys { it in EDITOR_CONFIG_KEYS })
 
       trimTrailingWhitespace()
       indentWithSpaces()
@@ -58,14 +73,16 @@ subprojects {
     kotlinGradle {
       target("**/*.gradle.kts", "*.gradle.kts")
 
-      ktlint(ktlintVersion).userData(
-        mapOf(
-          "indent_size" to "2",
-          "ij_kotlin_imports_layout" to "*",
-          "end_of_line" to "lf",
-          "charset" to "utf-8"
-        )
+      val data = mapOf(
+        "indent_size" to "2",
+        "ij_kotlin_imports_layout" to "*",
+        "end_of_line" to "lf",
+        "charset" to "utf-8"
       )
+      ktlint(ktlintVersion)
+        .setUseExperimental(true)
+        .userData(data.filterKeys { it !in EDITOR_CONFIG_KEYS })
+        .editorConfigOverride(data.filterKeys { it in EDITOR_CONFIG_KEYS })
 
       trimTrailingWhitespace()
       indentWithSpaces()
@@ -114,8 +131,6 @@ allprojects {
     kotlinOptions {
       val version = JavaVersion.VERSION_11.toString()
       jvmTarget = version
-      sourceCompatibility = version
-      targetCompatibility = version
     }
   }
 

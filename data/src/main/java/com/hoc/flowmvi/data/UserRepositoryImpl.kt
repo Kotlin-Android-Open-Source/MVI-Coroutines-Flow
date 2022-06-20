@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.data
 
+import arrow.core.Either.Companion.catch as catchEither
 import arrow.core.ValidatedNel
 import arrow.core.continuations.either
 import arrow.core.left
@@ -16,6 +17,9 @@ import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.hoc081098.flowext.retryWithExponentialBackoff
+import java.io.IOException
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -29,10 +33,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.io.IOException
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.ExperimentalTime
-import arrow.core.Either.Companion.catch as catchEither
 
 @FlowPreview
 @ExperimentalTime

@@ -5,12 +5,12 @@ import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.ErrorResponse
 import com.hoc.flowmvi.domain.model.UserError
 import com.squareup.moshi.JsonAdapter
-import okhttp3.ResponseBody
-import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import okhttp3.ResponseBody
+import retrofit2.HttpException
 
 internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter<ErrorResponse>) :
   Mapper<Throwable, UserError> {

@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import io.mockk.every
 import io.mockk.mockk
+import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.junit.Rule
@@ -12,8 +14,6 @@ import org.koin.dsl.koinApplication
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.mock.MockProviderRule
-import kotlin.test.Test
-import kotlin.time.ExperimentalTime
 
 @ExperimentalStdlibApi
 @FlowPreview
@@ -24,7 +24,7 @@ class CheckModulesTest : AutoCloseKoinTest() {
   val mockProvider = MockProviderRule.create { clazz ->
     when (clazz) {
       SavedStateHandle::class -> {
-        mockk<SavedStateHandle>() {
+        mockk<SavedStateHandle> {
           every { get<Any?>(any()) } returns null
         }
       }

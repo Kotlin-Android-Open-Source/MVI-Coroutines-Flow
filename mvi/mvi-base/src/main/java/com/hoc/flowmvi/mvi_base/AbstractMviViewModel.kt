@@ -5,6 +5,8 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
+import kotlin.LazyThreadSafetyMode.PUBLICATION
+import kotlin.coroutines.ContinuationInterceptor
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
@@ -18,8 +20,6 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import kotlin.LazyThreadSafetyMode.PUBLICATION
-import kotlin.coroutines.ContinuationInterceptor
 
 abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent>(
   private val appCoroutineDispatchers: AppCoroutineDispatchers,
