@@ -1,0 +1,1235 @@
+{
+  "modules": [
+    {
+      "name": "MVI_Coroutines_Flow",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.app",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/app",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.core",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/core",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.core-ui",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/core-ui",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.data",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/data",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/debug",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/debugAndroidTest",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/debugUnitTest",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/release",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/releaseUnitTest",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kaptKotlin/debug",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kaptKotlin/debugAndroidTest",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kaptKotlin/debugUnitTest",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kaptKotlin/release",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kaptKotlin/releaseUnitTest",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "Gradle: kaptGeneratedClasses",
+          "type": "Library"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.domain",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/domain",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.feature-add",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/feature-add",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.feature-main",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/feature-main",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.feature-search",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/feature-search",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.mvi-base",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/mvi/mvi-base",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.mvi-testing",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/mvi/mvi-testing",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.test-utils",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/test-utils",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.buildSrc",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/buildSrc",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.core.test",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/core/src/test",
+          "sourceFolders": [
+            {
+              "path": "file://$PROJECT_DIR$/core/src/test/java",
+              "type": "TestSource",
+              "packagePrefix": ""
+            }
+          ]
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.core.main",
+          "type": "Module"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: junit:junit:4.13.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.hamcrest:hamcrest-core:1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-common:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-dsl:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.objenesis:objenesis:3.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+          "type": "Library"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.core.main",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/core/src/main",
+          "sourceFolders": [
+            {
+              "path": "file://$PROJECT_DIR$/core/src/main/java",
+              "type": "Source",
+              "packagePrefix": ""
+            }
+          ]
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.domain.test",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/domain/src/test",
+          "sourceFolders": [
+            {
+              "path": "file://$PROJECT_DIR$/domain/src/test/java",
+              "type": "TestSource",
+              "packagePrefix": ""
+            }
+          ]
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.domain.main",
+          "type": "Module"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.test-utils.main",
+          "type": "Module"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: junit:junit:4.13.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.insert-koin:koin-core-jvm:3.2.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.hamcrest:hamcrest-core:1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-common:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-dsl:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.core.main",
+          "type": "Module"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.21",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.objenesis:objenesis:3.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+          "type": "Library"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.domain.main",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/domain/src/main",
+          "sourceFolders": [
+            {
+              "path": "file://$PROJECT_DIR$/domain/src/main/java",
+              "type": "Source",
+              "packagePrefix": ""
+            }
+          ]
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.insert-koin:koin-core-jvm:3.2.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.21",
+          "type": "Library"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.test-utils.test",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/test-utils/src/test",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.test-utils.main",
+          "type": "Module"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.core.main",
+          "type": "Module"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: junit:junit:4.13.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.hamcrest:hamcrest-core:1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-common:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-dsl:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.21",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.objenesis:objenesis:3.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+          "type": "Library"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.test-utils.main",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/test-utils/src/main",
+          "sourceFolders": [
+            {
+              "path": "file://$PROJECT_DIR$/test-utils/src/main/java",
+              "type": "Source",
+              "packagePrefix": ""
+            }
+          ]
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.core.main",
+          "type": "Module"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: junit:junit:4.13.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.hamcrest:hamcrest-core:1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-common:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-dsl:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.21",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.objenesis:objenesis:3.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+          "type": "Library"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.buildSrc.test",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/buildSrc/src/test",
+          "sourceFolders": []
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.buildSrc.main",
+          "type": "Module"
+        },
+        {
+          "name": "/data/cache/gradle/caches/7.4.2/generated-gradle-jars/gradle-api-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-ant-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-astbuilder-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-console-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-datetime-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-dateutil-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-groovydoc-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-json-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-nio-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-sql-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-templates-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-test-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-xml-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/javaparser-core-3.17.0.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-stdlib-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-stdlib-common-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-stdlib-jdk7-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-stdlib-jdk8-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-reflect-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/gradle-installation-beacon-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/caches/7.4.2/generated-gradle-jars/gradle-kotlin-dsl-extensions-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/gradle-kotlin-dsl-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/gradle-kotlin-dsl-tooling-models-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/caches/7.4.2/generated-gradle-jars/gradle-test-kit-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "/data/project/buildSrc/build/pluginUnderTestMetadata",
+          "type": "Library"
+        }
+      ]
+    },
+    {
+      "name": "MVI_Coroutines_Flow.buildSrc.main",
+      "contentEntries": [
+        {
+          "path": "file://$PROJECT_DIR$/buildSrc/src/main",
+          "sourceFolders": [
+            {
+              "path": "file://$PROJECT_DIR$/buildSrc/src/main/kotlin",
+              "type": "Source",
+              "packagePrefix": ""
+            }
+          ]
+        }
+      ],
+      "orderEntries": [
+        {
+          "name": "1.8",
+          "type": "SDK"
+        },
+        {
+          "name": "<Module source>",
+          "type": "Own sources"
+        },
+        {
+          "name": "/data/cache/gradle/caches/7.4.2/generated-gradle-jars/gradle-api-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-ant-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-astbuilder-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-console-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-datetime-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-dateutil-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-groovydoc-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-json-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-nio-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-sql-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-templates-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-test-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/groovy-xml-3.0.9.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/javaparser-core-3.17.0.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-stdlib-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-stdlib-common-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-stdlib-jdk7-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-stdlib-jdk8-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/kotlin-reflect-1.5.31.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/gradle-installation-beacon-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/caches/7.4.2/generated-gradle-jars/gradle-kotlin-dsl-extensions-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/gradle-kotlin-dsl-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "/data/cache/gradle/wrapper/dists/gradle-7.4.2-all/9uukhhbclvbegdvsww0j0cr3p/gradle-7.4.2/lib/gradle-kotlin-dsl-tooling-models-7.4.2.jar",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.5.31",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.31",
+          "type": "Library"
+        }
+      ]
+    }
+  ]
+}

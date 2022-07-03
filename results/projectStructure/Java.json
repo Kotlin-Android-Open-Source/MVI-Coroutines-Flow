@@ -1,0 +1,88 @@
+{
+  "modules": [
+    {
+      "name": "MVI_Coroutines_Flow",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.app",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.core",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.core-ui",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.data",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.domain",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.feature-add",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.feature-main",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.feature-search",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.mvi-base",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.mvi-testing",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.test-utils",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.buildSrc",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.core.test",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.core.main",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.domain.test",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.domain.main",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.test-utils.test",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.test-utils.main",
+      "languageLevel": 11
+    },
+    {
+      "name": "MVI_Coroutines_Flow.buildSrc.test",
+      "languageLevel": 13
+    },
+    {
+      "name": "MVI_Coroutines_Flow.buildSrc.main",
+      "languageLevel": 13
+    }
+  ]
+}
