@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.util.EnumSet
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
@@ -26,7 +27,27 @@ buildscript {
 subprojects {
   apply(plugin = "com.diffplug.spotless")
   apply(plugin = "com.vanniktech.android.junit.jacoco")
+
   apply(plugin = "com.github.ben-manes.versions")
+
+  fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return !isStable
+  }
+
+  fun isStable(version: String) = !isNonStable(version)
+
+  tasks.withType<DependencyUpdatesTask> {
+    rejectVersionIf {
+      if (isStable(currentVersion)) {
+        isNonStable(candidate.version)
+      } else {
+        false
+      }
+    }
+  }
 
   configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     val EDITOR_CONFIG_KEYS: Set<String> = hashSetOf(
@@ -91,7 +112,7 @@ subprojects {
   }
 
   configure<com.vanniktech.android.junit.jacoco.JunitJacocoExtension> {
-    jacocoVersion = "0.8.7"
+    jacocoVersion = "0.8.8"
     includeNoLocationClasses = true
     includeInstrumentationCoverageInMergedReport = true
     csv.isEnabled = false
