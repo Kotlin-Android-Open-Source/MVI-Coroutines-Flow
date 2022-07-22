@@ -16,7 +16,7 @@ buildscript {
   dependencies {
     classpath("com.android.tools.build:gradle:7.2.1")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.7.2")
+    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.8.0")
     classpath("dev.ahmedmourad.nocopy:nocopy-gradle-plugin:1.4.0")
     classpath("org.jacoco:org.jacoco.core:0.8.8")
     classpath("com.vanniktech:gradle-android-junit-jacoco-plugin:0.17.0-SNAPSHOT")
@@ -54,7 +54,8 @@ subprojects {
       "ij_kotlin_imports_layout",
       "indent_size",
       "end_of_line",
-      "charset"
+      "charset",
+      "disabled_rules"
     )
 
     kotlin {
@@ -67,8 +68,9 @@ subprojects {
         "end_of_line" to "lf",
         "charset" to "utf-8",
         "disabled_rules" to arrayOf(
-          "experimental:package-name",
-          "experimental:trailing-comma",
+          "package-name",
+          "trailing-comma",
+          "filename",
           "experimental:type-parameter-list-spacing",
         ).joinToString(separator = ","),
       )
