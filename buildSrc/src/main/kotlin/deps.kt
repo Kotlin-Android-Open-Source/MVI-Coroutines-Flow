@@ -6,7 +6,7 @@ import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
-const val ktlintVersion = "0.45.2"
+const val ktlintVersion = "0.46.1"
 const val kotlinVersion = "1.7.10"
 
 object appConfig {

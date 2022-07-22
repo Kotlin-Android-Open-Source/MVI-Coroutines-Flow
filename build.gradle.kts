@@ -54,7 +54,8 @@ subprojects {
       "ij_kotlin_imports_layout",
       "indent_size",
       "end_of_line",
-      "charset"
+      "charset",
+      "disabled_rules"
     )
 
     kotlin {
@@ -67,8 +68,9 @@ subprojects {
         "end_of_line" to "lf",
         "charset" to "utf-8",
         "disabled_rules" to arrayOf(
-          "experimental:package-name",
-          "experimental:trailing-comma",
+          "package-name",
+          "trailing-comma",
+          "filename",
           "experimental:type-parameter-list-spacing",
         ).joinToString(separator = ","),
       )
