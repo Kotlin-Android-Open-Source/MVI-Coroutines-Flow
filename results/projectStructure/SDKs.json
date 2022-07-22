@@ -3,27 +3,27 @@
     {
       "name": "1.8",
       "roots": [
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/charsets.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/cldrdata.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/dnsns.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/jaccess.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/jfxrt.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/localedata.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/nashorn.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/sunec.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/sunjce_provider.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/sunpkcs11.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/ext/zipfs.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/jce.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/jfr.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/jfxswt.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/jsse.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/management-agent.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/resources.jar!/",
-        "jar://$USER_HOME$/.jdks/liberica-1.8.0_333/jre/lib/rt.jar!/"
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/charsets.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/cldrdata.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/dnsns.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/jaccess.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/jfxrt.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/localedata.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/nashorn.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/sunec.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/sunjce_provider.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/sunpkcs11.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/ext/zipfs.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/jce.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/jfr.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/jfxswt.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/jsse.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/management-agent.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/resources.jar!/",
+        "jar://$USER_HOME$/.jdks/corretto-1.8.0_342/jre/lib/rt.jar!/"
       ],
       "sdkType": "JavaSDK",
-      "sdkVersion": "BellSoft Liberica version 1.8.0_333"
+      "sdkVersion": "Amazon Corretto version 1.8.0_342"
     }
   ]
 }
