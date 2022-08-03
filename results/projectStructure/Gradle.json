@@ -256,14 +256,6 @@
       "groupId": "org.jetbrains.kotlin",
       "artifactId": "kotlin-stdlib-common",
       "version": "1.6.21"
-    },
-    {
-      "ideaName": "Gradle: org.jetbrains:annotations:13.0",
-      "gradleName": "org.jetbrains:annotations:13.0",
-      "unresolved": false,
-      "groupId": "org.jetbrains",
-      "artifactId": "annotations",
-      "version": "13.0"
     }
   ]
 }
