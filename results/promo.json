@@ -1,0 +1,57 @@
+{"version":"3","listProblem":[{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused receiver parameter",
+  "severity": "High",
+  "comment": "Receiver parameter is never used",
+  "detailsInfo": "Reports receiver parameter of extension functions and properties that is not used.\n\n**Remove redundant receiver parameter** can be used to amend the code automatically.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "core/src/main/java/com/hoc/flowmvi/core/Extensions.kt",
+      "language": "kotlin",
+      "line": 4,
+      "offset": 12,
+      "length": 4,
+      "code": {
+        "startLine": 2,
+        "length": 4,
+        "offset": 32,
+        "surroundingCode": "\n@Suppress(\"unused\")\ninline val Any?.unit\n  get() = Unit\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.core.main",
+    "inspectionName": "UnusedReceiverParameter"
+  },
+  "hash": "79dd62ef7821540552d44301e2f60ee16e37c8d20fc3d58787cae2223c010928"
+},{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Type alias \"Mapper\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "core/src/main/java/com/hoc/flowmvi/core/Mapper.kt",
+      "language": "kotlin",
+      "line": 3,
+      "offset": 11,
+      "length": 6,
+      "code": {
+        "startLine": 1,
+        "length": 6,
+        "offset": 40,
+        "surroundingCode": "package com.hoc.flowmvi.core\n\ntypealias Mapper<T, R> = (T) -> R\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.core.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "d360bb0f895d6d3fda4e76101743183d9f5aaad6adae113dca04bb8686ab2376"
+}]}
