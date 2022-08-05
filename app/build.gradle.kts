@@ -67,9 +67,11 @@ dependencies {
   implementation(deps.coroutines.android)
   implementation(deps.koin.android)
   implementation(deps.androidx.material)
+  implementation(deps.androidx.startup)
 
   debugImplementation(deps.squareup.leakCanary)
   implementation(deps.timber)
+  implementation(deps.viewBindingDelegate)
 
   testImplementation(deps.test.junit)
   androidTestImplementation(deps.test.androidx.junit)
