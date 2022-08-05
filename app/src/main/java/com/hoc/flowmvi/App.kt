@@ -15,7 +15,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
-import timber.log.Timber
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -41,12 +40,6 @@ class App : Application() {
     super.onCreate()
 
     DynamicColors.applyToActivitiesIfAvailable(this)
-
-    if (BuildConfig.DEBUG) {
-      Timber.plant(Timber.DebugTree())
-    } else {
-      // TODO(Timber): plant release tree
-    }
 
     startKoin {
       androidContext(this@App)
