@@ -104,16 +104,6 @@
       ]
     },
     {
-      "name": "Gradle: kaptGeneratedClasses",
-      "roots": [
-        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/debug",
-        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/debugAndroidTest",
-        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/debugUnitTest",
-        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/release",
-        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/releaseUnitTest"
-      ]
-    },
-    {
       "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.10",
       "roots": [
         "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-junit/1.7.10/27228b08adb999a47ae98ac03e98e1f3132f83ca/kotlin-test-junit-1.7.10.jar!/"
@@ -208,6 +198,16 @@
       "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
       "roots": [
         "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.12.6/22ef9744303f8b243f9c465d24ef236f52d8ba67/byte-buddy-agent-1.12.6.jar!/"
+      ]
+    },
+    {
+      "name": "Gradle: kaptGeneratedClasses",
+      "roots": [
+        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/debug",
+        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/debugAndroidTest",
+        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/debugUnitTest",
+        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/release",
+        "file://$PROJECT_DIR$/data/build/tmp/kapt3/classes/releaseUnitTest"
       ]
     }
   ]
