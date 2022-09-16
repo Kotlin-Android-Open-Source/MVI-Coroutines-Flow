@@ -131,6 +131,9 @@ subprojects {
           excludes = listOf("jdk.internal.*")
         }
 
+      maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1).also {
+        println("Setting maxParallelForks to $it")
+      }
       testLogging {
         showExceptions = true
         showCauses = true
