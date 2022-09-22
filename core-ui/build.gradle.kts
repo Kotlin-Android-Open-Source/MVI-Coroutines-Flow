@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+  namespace = "com.hoc.flowmvi.core_ui"
   compileSdk = appConfig.compileSdkVersion
   buildToolsVersion = appConfig.buildToolsVersion
 
