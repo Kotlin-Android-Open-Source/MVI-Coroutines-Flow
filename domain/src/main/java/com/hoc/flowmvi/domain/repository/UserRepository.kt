@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.domain.repository
 
 import arrow.core.Either
+import arrow.core.continuations.EffectScope
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import kotlinx.coroutines.flow.Flow
@@ -8,11 +9,15 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
   fun getUsers(): Flow<Either<UserError, List<User>>>
 
-  suspend fun refresh(): Either<UserError, Unit>
+  context(EffectScope<UserError>)
+  suspend fun refresh()
 
-  suspend fun remove(user: User): Either<UserError, Unit>
+  context(EffectScope<UserError>)
+  suspend fun remove(user: User)
 
-  suspend fun add(user: User): Either<UserError, Unit>
+  context(EffectScope<UserError>)
+  suspend fun add(user: User)
 
-  suspend fun search(query: String): Either<UserError, List<User>>
+  context(EffectScope<UserError>)
+  suspend fun search(query: String): List<User>
 }

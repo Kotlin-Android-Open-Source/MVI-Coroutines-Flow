@@ -7,7 +7,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "0.46.1"
-const val kotlinVersion = "1.7.10"
+const val kotlinVersion = "1.7.20-RC"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -75,7 +75,7 @@ object deps {
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
-    private const val version = "1.1.2"
+    private const val version = "1.1.3-rc.1"
     const val core = "io.arrow-kt:arrow-core:$version"
   }
 

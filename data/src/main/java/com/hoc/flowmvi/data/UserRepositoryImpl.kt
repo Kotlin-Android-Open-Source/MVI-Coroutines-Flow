@@ -2,7 +2,7 @@ package com.hoc.flowmvi.data
 
 import arrow.core.Either.Companion.catch as catchEither
 import arrow.core.ValidatedNel
-import arrow.core.continuations.either
+import arrow.core.continuations.EffectScope
 import arrow.core.left
 import arrow.core.leftWiden
 import arrow.core.right
@@ -99,13 +99,16 @@ internal class UserRepositoryImpl(
       emit(errorMapper(it).left())
     }
 
+  context(EffectScope<UserError>)
   override suspend fun refresh() = catchEither { getUsersFromRemote().first() }
     .tap { sendChange(Change.Refreshed(it)) }
     .map { }
     .tapLeft { logError(it, "refresh") }
     .mapLeft(errorMapper)
+    .bind()
 
-  override suspend fun remove(user: User) = either<UserError, Unit> {
+  context(EffectScope<UserError>)
+  override suspend fun remove(user: User) {
     withContext(dispatchers.io) {
       val response = catchEither { userApiService.remove(user.id) }
         .tapLeft { logError(it, "remove user=$user") }
@@ -121,7 +124,8 @@ internal class UserRepositoryImpl(
     }
   }
 
-  override suspend fun add(user: User) = either<UserError, Unit> {
+  context(EffectScope<UserError>)
+  override suspend fun add(user: User) {
     withContext(dispatchers.io) {
       val response = catchEither { userApiService.add(domainToBody(user)) }
         .tapLeft { logError(it, "add user=$user") }
@@ -137,10 +141,12 @@ internal class UserRepositoryImpl(
     }
   }
 
+  context(EffectScope<UserError>)
   override suspend fun search(query: String) = withContext(dispatchers.io) {
     catchEither { userApiService.search(query).map(responseToDomainThrows) }
       .tapLeft { logError(it, "search query=$query") }
       .mapLeft(errorMapper)
+      .bind()
   }
 
   private companion object {
