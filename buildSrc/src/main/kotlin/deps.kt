@@ -75,7 +75,7 @@ object deps {
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
-    private const val version = "1.1.3-rc.1"
+    private const val version = "1.1.3"
     const val core = "io.arrow-kt:arrow-core:$version"
   }
 
