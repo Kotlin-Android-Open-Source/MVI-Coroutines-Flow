@@ -2,6 +2,7 @@ package com.hoc.flowmvi.data
 
 import arrow.core.Either
 import arrow.core.ValidatedNel
+import arrow.core.continuations.either
 import arrow.core.validNel
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.UserApiService
@@ -14,7 +15,6 @@ import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import com.hoc.flowmvi.test_utils.getOrThrow
 import com.hoc.flowmvi.test_utils.leftOrThrow
-import com.hoc.flowmvi.test_utils.runAsEither
 import com.hoc.flowmvi.test_utils.valueOrThrow
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -145,7 +145,7 @@ class UserRepositoryImplTest {
     coEvery { userApiService.getUsers() } returns USER_RESPONSES
     every { responseToDomain(any()) } returnsMany VALID_NEL_USERS
 
-    val result = runAsEither { repo.refresh() }
+    val result = either { repo.refresh() }
 
     assertTrue(result.isRight())
     assertNotNull(result.orNull())
@@ -164,7 +164,7 @@ class UserRepositoryImplTest {
     coEvery { userApiService.getUsers() } throws ioException
     every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
-    val result = runAsEither { repo.refresh() }
+    val result = either { repo.refresh() }
 
     assertTrue(result.isLeft())
     assertEquals(UserError.NetworkError, result.leftOrThrow)
@@ -180,7 +180,7 @@ class UserRepositoryImplTest {
     coEvery { userApiService.remove(user.id) } returns userResponse
     every { responseToDomain(userResponse) } returns user.validNel()
 
-    val result = runAsEither { repo.remove(user) }
+    val result = either { repo.remove(user) }
 
     assertTrue(result.isRight())
     assertNotNull(result.orNull())
@@ -195,7 +195,7 @@ class UserRepositoryImplTest {
     coEvery { userApiService.remove(user.id) } throws IOException()
     every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
-    val result = runAsEither { repo.remove(user) }
+    val result = either { repo.remove(user) }
 
     assertTrue(result.isLeft())
     assertEquals(UserError.NetworkError, result.leftOrThrow)
@@ -212,7 +212,7 @@ class UserRepositoryImplTest {
     every { domainToBody(user) } returns USER_BODY
     every { responseToDomain(userResponse) } returns user.validNel()
 
-    val result = runAsEither { repo.add(user) }
+    val result = either { repo.add(user) }
 
     assertTrue(result.isRight())
     assertNotNull(result.orNull())
@@ -229,7 +229,7 @@ class UserRepositoryImplTest {
     every { domainToBody(user) } returns USER_BODY
     every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
-    val result = runAsEither { repo.add(user) }
+    val result = either { repo.add(user) }
 
     assertTrue(result.isLeft())
     assertEquals(UserError.NetworkError, result.leftOrThrow)
@@ -245,7 +245,7 @@ class UserRepositoryImplTest {
     coEvery { userApiService.search(q) } returns USER_RESPONSES
     every { responseToDomain(any()) } returnsMany VALID_NEL_USERS
 
-    val result = runAsEither { repo.search(q) }
+    val result = either { repo.search(q) }
 
     assertTrue(result.isRight())
     assertNotNull(result.orNull())
@@ -265,7 +265,7 @@ class UserRepositoryImplTest {
     coEvery { userApiService.search(q) } throws IOException()
     every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
-    val result = runAsEither { repo.search(q) }
+    val result = either { repo.search(q) }
 
     assertTrue(result.isLeft())
     assertEquals(UserError.NetworkError, result.leftOrThrow)
@@ -338,7 +338,7 @@ class UserRepositoryImplTest {
       val job = launch(start = CoroutineStart.UNDISPATCHED) {
         repo.getUsers().toList(events)
       }
-      runAsEither {
+      either {
         repo.add(user)
         repo.remove(user)
       }.getOrThrow

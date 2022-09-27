@@ -1,5 +1,6 @@
 package com.hoc.flowmvi.domain
 
+import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.right
 import com.hoc.flowmvi.domain.model.User
@@ -11,12 +12,16 @@ import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
+import com.hoc.flowmvi.test_utils.thenShift
 import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.withAnyEffectScope
+import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlin.test.AfterTest
@@ -65,7 +70,8 @@ class UseCaseTest {
   private lateinit var addUserUseCase: AddUserUseCase
   private lateinit var searchUsersUseCase: SearchUsersUseCase
 
-  private val errorLeft = UserError.NetworkError.left()
+  private val networkError = UserError.NetworkError
+  private val errorLeft = networkError.left()
 
   @BeforeTest
   fun setup() {
@@ -107,83 +113,83 @@ class UseCaseTest {
 
   @Test
   fun test_refreshUseCase_whenSuccess_returnsUnit() = runTest {
-    coEvery { userRepository.refresh() } returns Unit.right()
+    coEvery { withAnyEffectScope { userRepository.refresh() } } just Runs
 
-    val result = refreshUseCase()
+    val result = either { refreshUseCase() }
 
-    coVerify { userRepository.refresh() }
+    coVerify { withAnyEffectScope { userRepository.refresh() } }
     assertEquals(Unit.right(), result)
   }
 
   @Test
   fun test_refreshUseCase_whenError_throwsError() = runTest {
-    coEvery { userRepository.refresh() } returns errorLeft
+    coEvery { withAnyEffectScope { userRepository.refresh() } } thenShift networkError
 
-    val result = refreshUseCase()
+    val result = either { refreshUseCase() }
 
-    coVerify { userRepository.refresh() }
+    coVerify { withAnyEffectScope { userRepository.refresh() } }
     assertEquals(errorLeft, result)
   }
 
   @Test
   fun test_removeUserUseCase_whenSuccess_returnsUnit() = runTest {
-    coEvery { userRepository.remove(any()) } returns Unit.right()
+    coEvery { withAnyEffectScope { userRepository.remove(any()) } } just Runs
 
-    val result = removeUserUseCase(USERS[0])
+    val result = either { removeUserUseCase(USERS[0]) }
 
-    coVerify { userRepository.remove(USERS[0]) }
+    coVerify { withAnyEffectScope { userRepository.remove(USERS[0]) } }
     assertEquals(Unit.right(), result)
   }
 
   @Test
   fun test_removeUserUseCase_whenError_throwsError() = runTest {
-    coEvery { userRepository.remove(any()) } returns errorLeft
+    coEvery { withAnyEffectScope { userRepository.remove(any()) } } thenShift networkError
 
-    val result = removeUserUseCase(USERS[0])
+    val result = either { removeUserUseCase(USERS[0]) }
 
-    coVerify { userRepository.remove(USERS[0]) }
+    coVerify { withAnyEffectScope { userRepository.remove(USERS[0]) } }
     assertEquals(errorLeft, result)
   }
 
   @Test
   fun test_addUserUseCase_whenSuccess_returnsUnit() = runTest {
-    coEvery { userRepository.add(any()) } returns Unit.right()
+    coEvery { withAnyEffectScope { userRepository.add(any()) } } just Runs
 
-    val result = addUserUseCase(USERS[0])
+    val result = either { addUserUseCase(USERS[0]) }
 
-    coVerify { userRepository.add(USERS[0]) }
+    coVerify { withAnyEffectScope { userRepository.add(USERS[0]) } }
     assertEquals(Unit.right(), result)
   }
 
   @Test
   fun test_addUserUseCase_whenError_throwsError() = runTest {
-    coEvery { userRepository.add(any()) } returns errorLeft
+    coEvery { withAnyEffectScope { userRepository.add(any()) } } thenShift networkError
 
-    val result = addUserUseCase(USERS[0])
+    val result = either { addUserUseCase(USERS[0]) }
 
-    coVerify { userRepository.add(USERS[0]) }
+    coVerify { withAnyEffectScope { userRepository.add(USERS[0]) } }
     assertEquals(errorLeft, result)
   }
 
   @Test
   fun test_searchUsersUseCase_whenSuccess_returnsUsers() = runTest {
-    coEvery { userRepository.search(any()) } returns USERS.right()
+    coEvery { withAnyEffectScope { userRepository.search(any()) } } returns USERS
 
     val query = "hoc081098"
-    val result = searchUsersUseCase(query)
+    val result = either { searchUsersUseCase(query) }
 
-    coVerify { userRepository.search(query) }
+    coVerify { withAnyEffectScope { userRepository.search(query) } }
     assertEquals(USERS.right(), result)
   }
 
   @Test
   fun test_searchUsersUseCase_whenError_throwsError() = runTest {
-    coEvery { userRepository.search(any()) } returns errorLeft
+    coEvery { withAnyEffectScope { userRepository.search(any()) } } thenShift networkError
 
     val query = "hoc081098"
-    val result = searchUsersUseCase(query)
+    val result = either { searchUsersUseCase(query) }
 
-    coVerify { userRepository.search(query) }
+    coVerify { withAnyEffectScope { userRepository.search(query) } }
     assertEquals(errorLeft, result)
   }
 }
