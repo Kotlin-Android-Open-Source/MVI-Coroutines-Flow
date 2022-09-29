@@ -1,15 +1,15 @@
 package com.hoc.flowmvi.ui.search
 
 import androidx.lifecycle.SavedStateHandle
-import arrow.core.left
-import arrow.core.right
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
+import com.hoc.flowmvi.mvi_testing.justShiftWithDelay
 import com.hoc.flowmvi.mvi_testing.mapRight
-import com.hoc.flowmvi.mvi_testing.returnsManyWithDelay
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
 import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
+import com.hoc.flowmvi.test_utils.shift
+import com.hoc.flowmvi.test_utils.withAnyEffectScope
 import com.hoc.flowmvi.ui.search.SearchVM.Companion.SEARCH_DEBOUNCE_DURATION
 import com.hoc081098.flowext.concatWith
 import com.hoc081098.flowext.timer
@@ -60,7 +60,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   @Test
   fun test_withSearchIntent_debounceSearchQuery() {
     val query = "d"
-    coEvery { searchUsersUseCase(query) } returnsWithDelay USERS.right()
+    coEvery { withAnyEffectScope { searchUsersUseCase(query) } } returnsWithDelay USERS
 
     runVMTest(
       vmProducer = { vm },
@@ -115,7 +115,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       ).mapRight(),
       expectedEvents = emptyList(),
     ) {
-      coVerify(exactly = 1) { searchUsersUseCase(query) }
+      coVerify(exactly = 1) { withAnyEffectScope { searchUsersUseCase(query) } }
     }
   }
 
@@ -167,7 +167,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   @Test
   fun test_withSearchIntent_debounceSearchQueryThenRejectBlankAndDistinctUntilChanged() {
     val query = "#query"
-    coEvery { searchUsersUseCase(query) } returnsWithDelay USERS.right()
+    coEvery { withAnyEffectScope { searchUsersUseCase(query) } } returnsWithDelay USERS
 
     runVMTest(
       vmProducer = { vm },
@@ -224,7 +224,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       ).mapRight(),
       expectedEvents = emptyList(),
     ) {
-      coVerify(exactly = 1) { searchUsersUseCase(query) }
+      coVerify(exactly = 1) { withAnyEffectScope { searchUsersUseCase(query) } }
     }
   }
 
@@ -232,11 +232,11 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withSearchIntent_debounceSearchQueryThenRejectBlankThenDistinctUntilChangedAndCancelledPreviousExecution() {
     val query1 = "#query#1"
     val query2 = "#query#2"
-    coEvery { searchUsersUseCase(query1) } coAnswers {
+    coEvery { withAnyEffectScope { searchUsersUseCase(query1) } } coAnswers {
       repeat(10) { timeout() } // (1) very long... -> cancelled by (2)
-      USERS.right()
+      USERS
     }
-    coEvery { searchUsersUseCase(query2) } returns USERS.right()
+    coEvery { withAnyEffectScope { searchUsersUseCase(query2) } } returns USERS
 
     runVMTest(
       vmProducer = { vm },
@@ -305,8 +305,8 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       expectedEvents = emptyList(),
     ) {
       coVerifySequence {
-        searchUsersUseCase(query1)
-        searchUsersUseCase(query2)
+        withAnyEffectScope { searchUsersUseCase(query1) }
+        withAnyEffectScope { searchUsersUseCase(query2) }
       }
     }
   }
@@ -314,7 +314,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   @Test
   fun test_withSearchIntent_returnsUserItemsWithProperLoadingState() {
     val query = "query"
-    coEvery { searchUsersUseCase(query) } returnsWithDelay USERS.right()
+    coEvery { withAnyEffectScope { searchUsersUseCase(query) } } returnsWithDelay USERS
 
     runVMTest(
       vmProducer = { vm },
@@ -348,7 +348,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       ).mapRight(),
       expectedEvents = emptyList(),
     ) {
-      coVerify(exactly = 1) { searchUsersUseCase(query) }
+      coVerify(exactly = 1) { withAnyEffectScope { searchUsersUseCase(query) } }
     }
   }
 
@@ -356,7 +356,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withSearchIntent_returnsUserErrorWithProperLoadingState() {
     val query = "query"
     val networkError = UserError.NetworkError
-    coEvery { searchUsersUseCase(query) } returnsWithDelay networkError.left()
+    coEvery { withAnyEffectScope { searchUsersUseCase(query) } } justShiftWithDelay networkError
 
     runVMTest(
       vmProducer = { vm },
@@ -392,7 +392,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         SingleEvent.SearchFailure(networkError)
       ).mapRight(),
     ) {
-      coVerify(exactly = 1) { searchUsersUseCase(query) }
+      coVerify(exactly = 1) { withAnyEffectScope { searchUsersUseCase(query) } }
     }
   }
 
@@ -412,10 +412,17 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withRetryIntentWhenError_returnsUserItemsWithProperLoadingState() {
     val query = "#hoc081098"
     val networkError = UserError.NetworkError
-    coEvery { searchUsersUseCase(query) } returnsManyWithDelay listOf(
-      networkError.left(),
-      USERS.right(),
-    )
+    var count = 0
+    coEvery { withAnyEffectScope { searchUsersUseCase(query) } } coAnswers {
+      when (count++) {
+        0 -> shift(networkError)
+        1 -> {
+          delay(1)
+          USERS
+        }
+        else -> error("Should not reach here!")
+      }
+    }
 
     runVMTest(
       vmProducer = { vm },
@@ -449,7 +456,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         timeout()
       },
     ) {
-      coVerify(exactly = 2) { searchUsersUseCase(query) }
+      coVerify(exactly = 2) { withAnyEffectScope { searchUsersUseCase(query) } }
     }
   }
 
@@ -457,7 +464,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withRetryIntentWhenError_returnsUserErrorWithProperLoadingState() {
     val query = "#hoc081098"
     val networkError = UserError.NetworkError
-    coEvery { searchUsersUseCase(query) } returnsWithDelay networkError.left()
+    coEvery { withAnyEffectScope { searchUsersUseCase(query) } } justShiftWithDelay networkError
 
     runVMTest(
       vmProducer = { vm },
@@ -493,7 +500,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         timeout()
       },
     ) {
-      coVerify(exactly = 2) { searchUsersUseCase(query) }
+      coVerify(exactly = 2) { withAnyEffectScope { searchUsersUseCase(query) } }
     }
   }
 
@@ -504,17 +511,17 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     val networkError = UserError.NetworkError
 
     var count = 0
-    coEvery { searchUsersUseCase(query1) } coAnswers {
+    coEvery { withAnyEffectScope { searchUsersUseCase(query1) } } coAnswers {
       when (count++) {
-        0 -> networkError.left()
+        0 -> shift(networkError)
         1 -> {
           repeat(3) { timeout() } // (1) very long ... -> cancelled by (2)
-          USERS.right()
+          USERS
         }
         else -> error("Should not reach here!")
       }
     }
-    coEvery { searchUsersUseCase(query2) } returns USERS.right()
+    coEvery { withAnyEffectScope { searchUsersUseCase(query2) } } returns USERS
 
     runVMTest(
       vmProducer = { vm },
@@ -562,9 +569,9 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       }
     ) {
       coVerifySequence {
-        searchUsersUseCase(query1)
-        searchUsersUseCase(query1)
-        searchUsersUseCase(query2)
+        withAnyEffectScope { searchUsersUseCase(query1) }
+        withAnyEffectScope { searchUsersUseCase(query1) }
+        withAnyEffectScope { searchUsersUseCase(query2) }
       }
     }
   }

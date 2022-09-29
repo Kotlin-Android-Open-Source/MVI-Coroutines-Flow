@@ -113,7 +113,11 @@ class AddVM(
       .withLatestFrom(userFormFlow) { _, userForm -> userForm }
       .mapNotNull { it?.orNull() }
       .flatMapFirst { user ->
-        flowOf(effect { addUser(user) })
+        flowOf(
+          effect {
+            addUser(user)
+          }
+        )
           .map { result ->
             result.fold(
               recover = { PartialStateChange.AddUser.AddUserFailure(user, it) },

@@ -7,6 +7,7 @@ import arrow.core.getOrHandle
 import arrow.core.identity
 import arrow.core.valueOr
 import com.hoc.flowmvi.core.unit
+import io.mockk.MockKAnswerScope
 import io.mockk.MockKMatcherScope
 import io.mockk.MockKStubScope
 
@@ -33,5 +34,8 @@ inline fun <reified R, RR> withAnyEffectScope(block: EffectScope<R>.() -> RR): R
     block()
   }
 
-inline infix fun <reified R> MockKStubScope<*, *>.thenShift(r: R): Unit =
-  coAnswers { arg<EffectScope<R>>(0).shift(r) }.unit
+inline infix fun <reified R> MockKStubScope<*, *>.justShift(r: R): Unit =
+  coAnswers { shift(r) }.unit
+
+suspend inline infix fun <reified R> MockKAnswerScope<*, *>.shift(r: R): Nothing =
+  arg<EffectScope<R>>(0).shift(r)

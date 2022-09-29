@@ -12,7 +12,7 @@ import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
-import com.hoc.flowmvi.test_utils.thenShift
+import com.hoc.flowmvi.test_utils.justShift
 import com.hoc.flowmvi.test_utils.valueOrThrow
 import com.hoc.flowmvi.test_utils.withAnyEffectScope
 import io.mockk.Runs
@@ -123,7 +123,7 @@ class UseCaseTest {
 
   @Test
   fun test_refreshUseCase_whenError_throwsError() = runTest {
-    coEvery { withAnyEffectScope { userRepository.refresh() } } thenShift networkError
+    coEvery { withAnyEffectScope { userRepository.refresh() } } justShift networkError
 
     val result = either { refreshUseCase() }
 
@@ -143,7 +143,7 @@ class UseCaseTest {
 
   @Test
   fun test_removeUserUseCase_whenError_throwsError() = runTest {
-    coEvery { withAnyEffectScope { userRepository.remove(any()) } } thenShift networkError
+    coEvery { withAnyEffectScope { userRepository.remove(any()) } } justShift networkError
 
     val result = either { removeUserUseCase(USERS[0]) }
 
@@ -163,7 +163,7 @@ class UseCaseTest {
 
   @Test
   fun test_addUserUseCase_whenError_throwsError() = runTest {
-    coEvery { withAnyEffectScope { userRepository.add(any()) } } thenShift networkError
+    coEvery { withAnyEffectScope { userRepository.add(any()) } } justShift networkError
 
     val result = either { addUserUseCase(USERS[0]) }
 
@@ -184,7 +184,7 @@ class UseCaseTest {
 
   @Test
   fun test_searchUsersUseCase_whenError_throwsError() = runTest {
-    coEvery { withAnyEffectScope { userRepository.search(any()) } } thenShift networkError
+    coEvery { withAnyEffectScope { userRepository.search(any()) } } justShift networkError
 
     val query = "hoc081098"
     val result = either { searchUsersUseCase(query) }

@@ -1,8 +1,6 @@
 package com.hoc.flowmvi.ui.add
 
 import androidx.lifecycle.SavedStateHandle
-import arrow.core.left
-import arrow.core.right
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
@@ -10,10 +8,12 @@ import com.hoc.flowmvi.domain.model.UserValidationError.TOO_SHORT_FIRST_NAME
 import com.hoc.flowmvi.domain.model.UserValidationError.TOO_SHORT_LAST_NAME
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
+import com.hoc.flowmvi.mvi_testing.justShiftWithDelay
 import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
 import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.withAnyEffectScope
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -279,7 +279,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       avatar = ""
     ).valueOrThrow
 
-    coEvery { addUser(user) } returnsWithDelay Unit.right()
+    coEvery { withAnyEffectScope { addUser(user) } } returnsWithDelay Unit
 
     runVMTest(
       vmProducer = { vm },
@@ -325,7 +325,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
         ViewIntent.LastNameChanged(NAME),
       ),
     ) {
-      coVerify { addUser(user) }
+      coVerify { withAnyEffectScope { addUser(user) } }
     }
   }
 
@@ -340,7 +340,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     ).valueOrThrow
     val networkError = UserError.NetworkError
 
-    coEvery { addUser(user) } returnsWithDelay networkError.left()
+    coEvery { withAnyEffectScope { addUser(user) } } justShiftWithDelay networkError
 
     runVMTest(
       vmProducer = { vm },
@@ -386,7 +386,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
         ViewIntent.LastNameChanged(NAME),
       ),
     ) {
-      coVerify { addUser(user) }
+      coVerify { withAnyEffectScope { addUser(user) } }
     }
   }
 

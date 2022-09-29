@@ -9,9 +9,12 @@ import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.delayEach
+import com.hoc.flowmvi.mvi_testing.justShiftWithDelay
 import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
 import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
+import com.hoc.flowmvi.test_utils.justShift
+import com.hoc.flowmvi.test_utils.withAnyEffectScope
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifySequence
@@ -120,7 +123,7 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
     runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns flowOf(USERS.right()).delayEach()
-        coEvery { refreshGetUsersUseCase() } returnsWithDelay Unit.right()
+        coEvery { withAnyEffectScope { refreshGetUsersUseCase() } } returnsWithDelay Unit
         vm
       },
       intents = flowOf(ViewIntent.Refresh),
@@ -150,7 +153,7 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
       preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
-      coVerify(exactly = 1) { refreshGetUsersUseCase() }
+      coVerify(exactly = 1) { withAnyEffectScope { refreshGetUsersUseCase() } }
     }
   }
 
@@ -161,7 +164,7 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
     runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns flowOf(USERS.right()).delayEach()
-        coEvery { refreshGetUsersUseCase() } returnsWithDelay userError.left()
+        coEvery { withAnyEffectScope { refreshGetUsersUseCase() } } justShiftWithDelay userError
         vm
       },
       intents = flowOf(ViewIntent.Refresh),
@@ -191,7 +194,7 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
       preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
-      coVerify(exactly = 1) { refreshGetUsersUseCase() }
+      coVerify(exactly = 1) { withAnyEffectScope { refreshGetUsersUseCase() } }
     }
   }
 
@@ -199,13 +202,13 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
   fun test_withRefreshIntent_ignoredWhenIsLoading() {
     runVMTest(
       vmProducer = {
-        coEvery { refreshGetUsersUseCase() } returns Unit.right()
+        coEvery { withAnyEffectScope { refreshGetUsersUseCase() } } returns Unit
         vm
       },
       intents = flowOf(ViewIntent.Refresh),
       expectedStates = listOf(ViewState.initial()).mapRight(),
       expectedEvents = emptyList(),
-    ) { coVerify(exactly = 0) { refreshGetUsersUseCase() } }
+    ) { coVerify(exactly = 0) { withAnyEffectScope { refreshGetUsersUseCase() } } }
   }
 
   @Test
@@ -215,7 +218,7 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
     runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns flowOf(userError.left())
-        coEvery { refreshGetUsersUseCase() } returns Unit.right()
+        coEvery { withAnyEffectScope { refreshGetUsersUseCase() } } returns Unit
         vm
       },
       intents = flowOf(ViewIntent.Refresh),
@@ -231,7 +234,7 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
       preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
-      coVerify(exactly = 0) { refreshGetUsersUseCase() }
+      coVerify(exactly = 0) { withAnyEffectScope { refreshGetUsersUseCase() } }
     }
   }
 
@@ -338,10 +341,10 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
     runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns usersFlow
-        coEvery { removeUser(any()) } coAnswers {
+        coEvery { withAnyEffectScope { removeUser(any()) } } coAnswers {
           usersFlow.update { either ->
             either.map { users ->
-              users.filter { it.id != firstArg<User>().id }
+              users.filter { it.id != secondArg<User>().id }
             }
           }
           Unit.right()
@@ -383,8 +386,8 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerifySequence {
-        removeUser(user1)
-        removeUser(user2)
+        withAnyEffectScope { removeUser(user1) }
+        withAnyEffectScope { removeUser(user2) }
       }
     }
   }
@@ -398,7 +401,7 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
     runVMTest(
       vmProducer = {
         every { getUserUseCase() } returns flowOf(USERS.right())
-        coEvery { removeUser(any()) } returns userError.left()
+        coEvery { withAnyEffectScope { removeUser(any()) } } justShift userError
         vm
       },
       intents = flowOf(ViewIntent.RemoveUser(item)),
@@ -421,7 +424,7 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
       preProcessingIntents = flowOf(ViewIntent.Initial)
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
-      coVerify(exactly = 1) { removeUser(user) }
+      coVerify(exactly = 1) { withAnyEffectScope { removeUser(user) } }
     }
   }
 }
