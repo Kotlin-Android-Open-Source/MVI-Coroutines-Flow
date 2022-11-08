@@ -63,10 +63,12 @@ infix fun <T, B> MockKStubScope<T, B>.returnsManyWithDelay(values: List<T>) {
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-abstract class BaseMviViewModelTest<I : MviIntent,
+abstract class BaseMviViewModelTest<
+  I : MviIntent,
   S : MviViewState,
   E : MviSingleEvent,
-  VM : MviViewModel<I, S, E>,> {
+  VM : MviViewModel<I, S, E>,
+  > {
   @get:Rule
   val coroutineRule = TestCoroutineDispatcherRule(
     testDispatcher = UnconfinedTestDispatcher(
