@@ -319,11 +319,11 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
           "type": "Library"
         },
         {
@@ -343,15 +343,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
           "type": "Library"
         },
         {
@@ -367,7 +367,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
           "type": "Library"
         },
         {
@@ -432,7 +432,7 @@
           "type": "Own sources"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
           "type": "Library"
         },
         {
@@ -440,15 +440,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
           "type": "Library"
         },
         {
@@ -489,11 +489,11 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
           "type": "Library"
         },
         {
@@ -517,19 +517,19 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
           "type": "Library"
         },
         {
@@ -545,7 +545,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
           "type": "Library"
         },
         {
@@ -557,11 +557,11 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
           "type": "Library"
         },
         {
@@ -626,7 +626,7 @@
           "type": "Own sources"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
           "type": "Library"
         },
         {
@@ -638,19 +638,19 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
           "type": "Library"
         },
         {
@@ -658,11 +658,11 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
           "type": "Library"
         },
         {
@@ -697,11 +697,11 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
           "type": "Library"
         },
         {
@@ -713,7 +713,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
           "type": "Library"
         },
         {
@@ -725,15 +725,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
           "type": "Library"
         },
         {
@@ -749,7 +749,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
           "type": "Library"
         },
         {
@@ -761,11 +761,11 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
           "type": "Library"
         },
         {
@@ -830,11 +830,11 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
           "type": "Library"
         },
         {
@@ -846,7 +846,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
           "type": "Library"
         },
         {
@@ -858,15 +858,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
           "type": "Library"
         },
         {
@@ -882,7 +882,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
           "type": "Library"
         },
         {
@@ -894,11 +894,11 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.2",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
           "type": "Library"
         },
         {
