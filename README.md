@@ -14,10 +14,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 [![Gitter](https://badges.gitter.im/Kotlin-Android-Open-Source/community.svg)](https://gitter.im/Kotlin-Android-Open-Source/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-## Buy me a coffee
+<br>
 Liked some of my work? Buy me a coffee (or more likely a beer)
 
-[!["Buy Me A Coffee"](https://cdn.buymeacoffee.com/buttons/default-orange.png)](https://www.buymeacoffee.com/hoc081098)
+<a href="https://www.buymeacoffee.com/hoc081098" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" height=64></a>
 
 ## Coroutine + Flow = MVI :heart:
 *   Play MVI with Kotlin Coroutines Flow.
