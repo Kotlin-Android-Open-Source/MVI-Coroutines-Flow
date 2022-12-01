@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: JetBrains/qodana-action@v2022.2.3
+      - uses: JetBrains/qodana-action@v2022.2.4
         with:
           linter: jetbrains/qodana-jvm-android:latest
           fail-threshold: 10
