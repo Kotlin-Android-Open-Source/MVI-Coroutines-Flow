@@ -3,62 +3,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'setBuildToolsVersion(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-main/build.gradle.kts",
-      "language": "kotlin",
-      "line": 9,
-      "offset": 3,
-      "length": 17,
-      "code": {
-        "startLine": 7,
-        "length": 17,
-        "offset": 85,
-        "surroundingCode": "  namespace = \"com.hoc.flowmvi.ui.main\"\n  compileSdk = appConfig.compileSdkVersion\n  buildToolsVersion = appConfig.buildToolsVersion\n\n  defaultConfig {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-main",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "b692f14c0bed475a35531c9f245d22d48d26a13e2a0af0a969e85d1cd1a0d685"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setTargetSdk(java.lang.Integer)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-main/build.gradle.kts",
-      "language": "kotlin",
-      "line": 13,
-      "offset": 5,
-      "length": 9,
-      "code": {
-        "startLine": 11,
-        "length": 9,
-        "offset": 59,
-        "surroundingCode": "  defaultConfig {\n    minSdk = appConfig.minSdkVersion\n    targetSdk = appConfig.targetSdkVersion\n\n    testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-main",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "8a686033a9b725207f3e2291070e1ad77392218510272e4e31065c375d43de35"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'setMinifyEnabled(boolean)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -82,34 +26,6 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "432760e058a733ad6db9486daa072108ecc1225158917501e0d3a9936c3cfa88"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'getDefaultProguardFile(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-main/build.gradle.kts",
-      "language": "kotlin",
-      "line": 23,
-      "offset": 9,
-      "length": 22,
-      "code": {
-        "startLine": 21,
-        "length": 22,
-        "offset": 59,
-        "surroundingCode": "      isMinifyEnabled = false\n      proguardFiles(\n        getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n        \"proguard-rules.pro\"\n      )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-main",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "a8e1dfe52899a1e1a710995c3701661796d7d69c830b7541e52f139980346e33"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -143,34 +59,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'setViewBinding(java.lang.Boolean)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-main/build.gradle.kts",
-      "language": "kotlin",
-      "line": 39,
-      "offset": 19,
-      "length": 11,
-      "code": {
-        "startLine": 37,
-        "length": 11,
-        "offset": 85,
-        "surroundingCode": "  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }\n\n  buildFeatures { viewBinding = true }\n\n  testOptions {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-main",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "e58497cc4544df6e3797810736fef55f6f7f6d2ef4a4baaf2c1d82d31e72ab06"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'testOptions(kotlin.jvm.functions.Function1)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -194,62 +82,6 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "5fa7799e9a8181c5e6e8d4104cc0c69fd842deacba3a07fb525d209a2f5d32e7"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setBuildToolsVersion(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-search/build.gradle.kts",
-      "language": "kotlin",
-      "line": 10,
-      "offset": 3,
-      "length": 17,
-      "code": {
-        "startLine": 8,
-        "length": 17,
-        "offset": 87,
-        "surroundingCode": "  namespace = \"com.hoc.flowmvi.ui.search\"\n  compileSdk = appConfig.compileSdkVersion\n  buildToolsVersion = appConfig.buildToolsVersion\n\n  defaultConfig {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-search",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "a3ddad2a3c462ad921b38284030d156a00f1366bf6c4a3afbfbd491bfc092f8a"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setTargetSdk(java.lang.Integer)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-search/build.gradle.kts",
-      "language": "kotlin",
-      "line": 14,
-      "offset": 5,
-      "length": 9,
-      "code": {
-        "startLine": 12,
-        "length": 9,
-        "offset": 59,
-        "surroundingCode": "  defaultConfig {\n    minSdk = appConfig.minSdkVersion\n    targetSdk = appConfig.targetSdkVersion\n\n    testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-search",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "fc4efe9e4dc204131d1df765d25cddf7e2ee6c87ce123f5eab1dc049adedf0a4"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -283,34 +115,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'getDefaultProguardFile(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-search/build.gradle.kts",
-      "language": "kotlin",
-      "line": 24,
-      "offset": 9,
-      "length": 22,
-      "code": {
-        "startLine": 22,
-        "length": 22,
-        "offset": 59,
-        "surroundingCode": "      isMinifyEnabled = false\n      proguardFiles(\n        getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n        \"proguard-rules.pro\"\n      )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-search",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "557b2ffc073b0162552ab5d9358857c481096e563252f92d052682cc151af6ce"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'buildFeatures(kotlin.jvm.functions.Function1)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -334,34 +138,6 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "4414d2e6ce17333fc886e8c21cbb10f5435c35fc9191f1206e60e1f1c8d6a51f"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setViewBinding(java.lang.Boolean)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-search/build.gradle.kts",
-      "language": "kotlin",
-      "line": 35,
-      "offset": 19,
-      "length": 11,
-      "code": {
-        "startLine": 33,
-        "length": 11,
-        "offset": 88,
-        "surroundingCode": "  }\n  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }\n  buildFeatures { viewBinding = true }\n\n  testOptions {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-search",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "bc90811e6a32ff7844cfcc3a57c63cbb896d4b37b918fa15793f423952e5033e"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -395,62 +171,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'setBuildToolsVersion(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "file:/$PROJECT_DIR$$PROJECT_DIR$/../build.gradle.kts",
-      "language": "kotlin",
-      "line": 10,
-      "offset": 3,
-      "length": 17,
-      "code": {
-        "startLine": 8,
-        "length": 17,
-        "offset": 82,
-        "surroundingCode": "  namespace = \"com.hoc.flowmvi.data\"\n  compileSdk = appConfig.compileSdkVersion\n  buildToolsVersion = appConfig.buildToolsVersion\n\n  defaultConfig {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.data",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "2eb8c7ea33fa44008b71a196a8bde8f87feca1acd578e404bc18b469ddf6c5e4"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setTargetSdk(java.lang.Integer)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "file:/$PROJECT_DIR$$PROJECT_DIR$/../build.gradle.kts",
-      "language": "kotlin",
-      "line": 14,
-      "offset": 5,
-      "length": 9,
-      "code": {
-        "startLine": 12,
-        "length": 9,
-        "offset": 59,
-        "surroundingCode": "  defaultConfig {\n    minSdk = appConfig.minSdkVersion\n    targetSdk = appConfig.targetSdkVersion\n\n    testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.data",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "2c57a1772d5d75c4aab70492bc3950f5089ba4c7685c2b85170bb30a86d1cf71"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'setMinifyEnabled(boolean)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -474,34 +194,6 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "20ad0b1373e528decf19d1f4098a6891d242b110560947730dc1d1405ffeaf6c"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'getDefaultProguardFile(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "file:/$PROJECT_DIR$$PROJECT_DIR$/../build.gradle.kts",
-      "language": "kotlin",
-      "line": 24,
-      "offset": 9,
-      "length": 22,
-      "code": {
-        "startLine": 22,
-        "length": 22,
-        "offset": 59,
-        "surroundingCode": "      isMinifyEnabled = false\n      proguardFiles(\n        getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n        \"proguard-rules.pro\"\n      )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.data",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "6c8468b9bab9fbe5dd8b76985097d4fbb134809d585a011e6d95fd81b195c5e6"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -535,62 +227,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'setBuildToolsVersion(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "core-ui/build.gradle.kts",
-      "language": "kotlin",
-      "line": 9,
-      "offset": 3,
-      "length": 17,
-      "code": {
-        "startLine": 7,
-        "length": 17,
-        "offset": 85,
-        "surroundingCode": "  namespace = \"com.hoc.flowmvi.core_ui\"\n  compileSdk = appConfig.compileSdkVersion\n  buildToolsVersion = appConfig.buildToolsVersion\n\n  defaultConfig {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.core-ui",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "1e8c83d2e669652035f3aa61ba9296d9e54c19cd7da277a833c7ed351a16c3fe"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setTargetSdk(java.lang.Integer)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "core-ui/build.gradle.kts",
-      "language": "kotlin",
-      "line": 13,
-      "offset": 5,
-      "length": 9,
-      "code": {
-        "startLine": 11,
-        "length": 9,
-        "offset": 59,
-        "surroundingCode": "  defaultConfig {\n    minSdk = appConfig.minSdkVersion\n    targetSdk = appConfig.targetSdkVersion\n\n    testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.core-ui",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "dff35fb382098817fbb2917c78e997ba1182ec13a69d0f0acb599d230c01d692"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'setMinifyEnabled(boolean)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -614,34 +250,6 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "3d655519850d8dd662dad83ba06eeac883e375d086fc73867718c2cbe6c64228"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'getDefaultProguardFile(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "core-ui/build.gradle.kts",
-      "language": "kotlin",
-      "line": 23,
-      "offset": 9,
-      "length": 22,
-      "code": {
-        "startLine": 21,
-        "length": 22,
-        "offset": 59,
-        "surroundingCode": "      isMinifyEnabled = false\n      proguardFiles(\n        getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n        \"proguard-rules.pro\"\n      )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.core-ui",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "6b161f4064c89a64b6ad4c2fb325532d2afe5e4299ad6950dfcde158d3a88504"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -675,62 +283,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'setBuildToolsVersion(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-add/build.gradle.kts",
-      "language": "kotlin",
-      "line": 10,
-      "offset": 3,
-      "length": 17,
-      "code": {
-        "startLine": 8,
-        "length": 17,
-        "offset": 84,
-        "surroundingCode": "  namespace = \"com.hoc.flowmvi.ui.add\"\n  compileSdk = appConfig.compileSdkVersion\n  buildToolsVersion = appConfig.buildToolsVersion\n\n  defaultConfig {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-add",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "7ded81d556812d540b9728e7b155a004e9ceca561ba66586aa31471f79efa637"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setTargetSdk(java.lang.Integer)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-add/build.gradle.kts",
-      "language": "kotlin",
-      "line": 14,
-      "offset": 5,
-      "length": 9,
-      "code": {
-        "startLine": 12,
-        "length": 9,
-        "offset": 59,
-        "surroundingCode": "  defaultConfig {\n    minSdk = appConfig.minSdkVersion\n    targetSdk = appConfig.targetSdkVersion\n\n    testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-add",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "336a153711d0e85d877736872eb8639a4228097de7bd1d2e8ab54d8a9c20883c"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'setMinifyEnabled(boolean)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -754,34 +306,6 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "996c843e0a09c19eb456b3c18f6dfb8eb62908639d945175fb9b9b220bceda04"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'getDefaultProguardFile(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-add/build.gradle.kts",
-      "language": "kotlin",
-      "line": 24,
-      "offset": 9,
-      "length": 22,
-      "code": {
-        "startLine": 22,
-        "length": 22,
-        "offset": 59,
-        "surroundingCode": "      isMinifyEnabled = false\n      proguardFiles(\n        getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n        \"proguard-rules.pro\"\n      )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-add",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "1321f0c089097be29e08b3f914ff63be099a1a2d6192fccbcfeed4f858a1af4d"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -815,34 +339,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'setViewBinding(java.lang.Boolean)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "feature-add/build.gradle.kts",
-      "language": "kotlin",
-      "line": 35,
-      "offset": 19,
-      "length": 11,
-      "code": {
-        "startLine": 33,
-        "length": 11,
-        "offset": 88,
-        "surroundingCode": "  }\n  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }\n  buildFeatures { viewBinding = true }\n\n  testOptions {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.feature-add",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "5e273599e36ec2c31aa6412dddda8e9e3a3b8336300b42f67e9db2592c999fb5"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'testOptions(kotlin.jvm.functions.Function1)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -871,62 +367,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'setBuildToolsVersion(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "mvi/mvi-base/build.gradle.kts",
-      "language": "kotlin",
-      "line": 9,
-      "offset": 3,
-      "length": 17,
-      "code": {
-        "startLine": 7,
-        "length": 17,
-        "offset": 86,
-        "surroundingCode": "  namespace = \"com.hoc.flowmvi.mvi_base\"\n  compileSdk = appConfig.compileSdkVersion\n  buildToolsVersion = appConfig.buildToolsVersion\n\n  defaultConfig {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.mvi-base",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "5b3115a3061e695ca8f1c916817a42755238c2c03a2092943f82e4a960db0623"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setTargetSdk(java.lang.Integer)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "mvi/mvi-base/build.gradle.kts",
-      "language": "kotlin",
-      "line": 13,
-      "offset": 5,
-      "length": 9,
-      "code": {
-        "startLine": 11,
-        "length": 9,
-        "offset": 59,
-        "surroundingCode": "  defaultConfig {\n    minSdk = appConfig.minSdkVersion\n    targetSdk = appConfig.targetSdkVersion\n\n    testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.mvi-base",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "709c24033e06e1da8af043610177d514dff2141a027735a0932de9475452a439"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'setMinifyEnabled(boolean)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -950,62 +390,6 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "b06ce7be1e36df9e860494790bc6b805ebf77e6e5d1bc56bd733b04ff22c3cac"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'getDefaultProguardFile(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "mvi/mvi-base/build.gradle.kts",
-      "language": "kotlin",
-      "line": 23,
-      "offset": 9,
-      "length": 22,
-      "code": {
-        "startLine": 21,
-        "length": 22,
-        "offset": 59,
-        "surroundingCode": "      isMinifyEnabled = false\n      proguardFiles(\n        getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n        \"proguard-rules.pro\"\n      )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.mvi-base",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "c963b53013551ce012ac02f7b175981246a2478e6cc534bb07097e873b41aba6"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setBuildToolsVersion(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "app/build.gradle.kts",
-      "language": "kotlin",
-      "line": 10,
-      "offset": 3,
-      "length": 17,
-      "code": {
-        "startLine": 8,
-        "length": 17,
-        "offset": 77,
-        "surroundingCode": "  namespace = \"com.hoc.flowmvi\"\n  compileSdk = appConfig.compileSdkVersion\n  buildToolsVersion = appConfig.buildToolsVersion\n\n  defaultConfig {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.app",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "3a8bba4241ccc1195efbcc1d5166867112740fc30e5ad7e16aee234e4ebc7bb6"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -1067,34 +451,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'getDefaultProguardFile(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "app/build.gradle.kts",
-      "language": "kotlin",
-      "line": 27,
-      "offset": 9,
-      "length": 22,
-      "code": {
-        "startLine": 25,
-        "length": 22,
-        "offset": 60,
-        "surroundingCode": "      isShrinkResources = true\n      proguardFiles(\n        getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n        \"proguard-rules.pro\"\n      )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.app",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "6ee0d001176d7e9a18f442830e9df81bd568dba3d88777b173c90b34109cdd1a"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'buildFeatures(kotlin.jvm.functions.Function1)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -1118,34 +474,6 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "7f9816c4c7bb424cae43b9f220bee4135f6f8254a7f7d31e7253951f294a0abb"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setViewBinding(java.lang.Boolean)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "app/build.gradle.kts",
-      "language": "kotlin",
-      "line": 42,
-      "offset": 19,
-      "length": 11,
-      "code": {
-        "startLine": 40,
-        "length": 11,
-        "offset": 88,
-        "surroundingCode": "  }\n  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }\n  buildFeatures { viewBinding = true }\n\n  testOptions {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.app",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "1aa5f2b7e567041701ea00a9e46e7f11c5980e5ec7b7e474114f123baa8d715d"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -1179,62 +507,6 @@
   "category": "JVM languages",
   "type": "Unstable API Usage",
   "severity": "High",
-  "comment": "'setBuildToolsVersion(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "mvi/mvi-testing/build.gradle.kts",
-      "language": "kotlin",
-      "line": 9,
-      "offset": 3,
-      "length": 17,
-      "code": {
-        "startLine": 7,
-        "length": 17,
-        "offset": 89,
-        "surroundingCode": "  namespace = \"com.hoc.flowmvi.mvi_testing\"\n  compileSdk = appConfig.compileSdkVersion\n  buildToolsVersion = appConfig.buildToolsVersion\n\n  defaultConfig {"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.mvi-testing",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "0252ec8986460c163b6a3ecf8d217a854a715652ee775aed8202016b541d33c7"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'setTargetSdk(java.lang.Integer)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "mvi/mvi-testing/build.gradle.kts",
-      "language": "kotlin",
-      "line": 13,
-      "offset": 5,
-      "length": 9,
-      "code": {
-        "startLine": 11,
-        "length": 9,
-        "offset": 59,
-        "surroundingCode": "  defaultConfig {\n    minSdk = appConfig.minSdkVersion\n    targetSdk = appConfig.targetSdkVersion\n\n    testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\""
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.mvi-testing",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "93e0b38043049e92003cfbb1dadbc689ab2f169fd0c381d0fa9d0816b92a4a17"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
   "comment": "'setMinifyEnabled(boolean)' is marked unstable with @Incubating",
   "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
   "sources": [
@@ -1258,32 +530,4 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "e8173a98c921896d77bde03b9bb7679e1eb1af91d5e415b7b1cc3285b004d25f"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "severity": "High",
-  "comment": "'getDefaultProguardFile(java.lang.String)' is marked unstable with @Incubating",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "mvi/mvi-testing/build.gradle.kts",
-      "language": "kotlin",
-      "line": 32,
-      "offset": 9,
-      "length": 22,
-      "code": {
-        "startLine": 30,
-        "length": 22,
-        "offset": 59,
-        "surroundingCode": "      isMinifyEnabled = false\n      proguardFiles(\n        getDefaultProguardFile(\"proguard-android-optimize.txt\"),\n        \"proguard-rules.pro\"\n      )"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.mvi-testing",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "835827825feaaace781dcdcc321d078e57ff0b47f679dbeee545ce29a78c8d21"
 }]}
