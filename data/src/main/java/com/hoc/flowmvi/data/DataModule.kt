@@ -45,7 +45,7 @@ val dataModule = module {
 
   single { provideOkHttpClient() }
 
-  factory(BASE_URL_QUALIFIER) { "https://mvi-coroutines-flow-server.herokuapp.com/" }
+  factory(BASE_URL_QUALIFIER) { "https://mvi-coroutines-flow-server.onrender.com/" }
 
   factory { UserResponseToUserDomainMapper() }
 
