@@ -2,11 +2,11 @@ package com.hoc.flowmvi.ui.search
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import arrow.core.continuations.effect
 import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
-import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.startWith
 import com.hoc081098.flowext.takeUntil
 import kotlin.time.Duration.Companion.milliseconds
@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -57,11 +58,11 @@ class SearchVM(
 
   private fun SharedFlow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val executeSearch: suspend (String) -> Flow<PartialStateChange> = { query: String ->
-      flowFromSuspend { searchUsersUseCase(query) }
+      flowOf(effect { searchUsersUseCase(query) })
         .map { result ->
           result.fold(
-            ifLeft = { PartialStateChange.Failure(it, query) },
-            ifRight = {
+            recover = { PartialStateChange.Failure(it, query) },
+            transform = {
               PartialStateChange.Success(
                 it.map(UserItem::from),
                 query

@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.ui.main
 
 import androidx.lifecycle.viewModelScope
-import arrow.core.flatMap
+import arrow.core.continuations.effect
 import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
@@ -9,20 +9,19 @@ import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.defer
 import com.hoc081098.flowext.flatMapFirst
-import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.startWith
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -97,12 +96,11 @@ class MainVM(
         }
         .startWith(PartialChange.GetUser.Loading)
 
-      val refreshChanges = refreshGetUsers::invoke
-        .asFlow()
+      val refreshChanges = flowOf(effect { refreshGetUsers() })
         .map { result ->
           result.fold(
-            ifLeft = { PartialChange.Refresh.Failure(it) },
-            ifRight = { PartialChange.Refresh.Success }
+            recover = { PartialChange.Refresh.Failure(it) },
+            transform = { PartialChange.Refresh.Success }
           )
         }
         .startWith(PartialChange.Refresh.Loading)
@@ -123,15 +121,16 @@ class MainVM(
           .log("Intent")
           .map { it.user }
           .flatMapMerge { userItem ->
-            flowFromSuspend {
-              userItem
-                .toDomain()
-                .flatMap { removeUser(it) }
-            }
+            flowOf(
+              effect {
+                val user = userItem.toDomain().bind()
+                removeUser(user)
+              }
+            )
               .map { result ->
                 result.fold(
-                  ifLeft = { PartialChange.RemoveUser.Failure(userItem, it) },
-                  ifRight = { PartialChange.RemoveUser.Success(userItem) },
+                  recover = { PartialChange.RemoveUser.Failure(userItem, it) },
+                  transform = { PartialChange.RemoveUser.Success(userItem) },
                 )
               }
           }

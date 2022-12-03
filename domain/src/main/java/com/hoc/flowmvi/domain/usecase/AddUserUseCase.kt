@@ -1,10 +1,11 @@
 package com.hoc.flowmvi.domain.usecase
 
-import arrow.core.Either
+import arrow.core.continuations.EffectScope
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.repository.UserRepository
 
 class AddUserUseCase(private val userRepository: UserRepository) {
-  suspend operator fun invoke(user: User): Either<UserError, Unit> = userRepository.add(user)
+  context(EffectScope<UserError>)
+  suspend operator fun invoke(user: User): Unit = userRepository.add(user)
 }

@@ -8,6 +8,7 @@ import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewModel
 import com.hoc.flowmvi.mvi_base.MviViewState
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
+import com.hoc.flowmvi.test_utils.shift
 import io.mockk.MockKAdditionalAnswerScope
 import io.mockk.MockKStubScope
 import io.mockk.clearAllMocks
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -58,6 +60,17 @@ infix fun <T, B> MockKStubScope<T, B>.returnsManyWithDelay(values: List<T>) {
   coAnswers {
     delay(1)
     values[count++]
+  }
+}
+
+/**
+ * Workaround for [Kotlin/kotlinx.coroutines/issues/3120](https://github.com/Kotlin/kotlinx.coroutines/issues/3120).
+ * TODO(coroutines): https://github.com/Kotlin/kotlinx.coroutines/issues/3120
+ */
+inline infix fun <reified R> MockKStubScope<*, *>.justShiftWithDelay(r: R) {
+  coAnswers {
+    delay(1)
+    shift(r)
   }
 }
 

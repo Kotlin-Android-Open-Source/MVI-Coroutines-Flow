@@ -2,10 +2,11 @@ package com.hoc.flowmvi.data
 
 import arrow.core.Either.Companion.catch as catchEither
 import arrow.core.ValidatedNel
-import arrow.core.continuations.either
+import arrow.core.continuations.EffectScope
 import arrow.core.left
 import arrow.core.leftWiden
 import arrow.core.right
+import arrow.core.traverse
 import arrow.core.valueOr
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
@@ -16,6 +17,7 @@ import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
+import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.retryWithExponentialBackoff
 import java.io.IOException
 import kotlin.time.Duration.Companion.milliseconds
@@ -24,7 +26,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapConcat
@@ -51,34 +52,28 @@ internal class UserRepositoryImpl(
     class Added(val user: User) : Change()
   }
 
-  private val responseToDomainThrows: (UserResponse) -> User = { response ->
-    responseToDomain(response).let { validated ->
-      validated.valueOr {
-        val t = UserError.ValidationFailed(it.toSet())
-        logError(t, "Map $response to user")
-        throw t
-      }
-    }
-  }
-
   private val changesFlow = MutableSharedFlow<Change>(extraBufferCapacity = 64)
-
   private suspend inline fun sendChange(change: Change) = changesFlow.emit(change)
 
-  @Suppress("NOTHING_TO_INLINE")
-  private inline fun logError(t: Throwable, message: String) = Timber.tag(TAG).e(t, message)
-
-  private fun getUsersFromRemote(): Flow<List<User>> = suspend {
+  private fun getUsersFromRemote(): Flow<List<User>> = flowFromSuspend {
     Timber.d("[USER_REPO] getUsersFromRemote ...")
+
     userApiService
       .getUsers()
-      .map(responseToDomainThrows)
-  }.asFlow()
-    .retryWithExponentialBackoff(
-      maxAttempt = 2,
-      initialDelay = 500.milliseconds,
-      factor = 2.0,
-    ) { it is IOException }
+      .let { response ->
+        response
+          .traverse(responseToDomain)
+          .valueOr { validationErrors ->
+            throw UserError.ValidationFailed(validationErrors.toSet()).also {
+              logError(it, "Failed to map $response to user")
+            }
+          }
+      }
+  }.retryWithExponentialBackoff(
+    maxAttempt = 2,
+    initialDelay = 500.milliseconds,
+    factor = 2.0,
+  ) { it is IOException }
 
   override fun getUsers() = getUsersFromRemote()
     .flatMapConcat { initial ->
@@ -99,13 +94,16 @@ internal class UserRepositoryImpl(
       emit(errorMapper(it).left())
     }
 
+  context(EffectScope<UserError>)
   override suspend fun refresh() = catchEither { getUsersFromRemote().first() }
     .tap { sendChange(Change.Refreshed(it)) }
     .map { }
     .tapLeft { logError(it, "refresh") }
     .mapLeft(errorMapper)
+    .bind()
 
-  override suspend fun remove(user: User) = either<UserError, Unit> {
+  context(EffectScope<UserError>)
+  override suspend fun remove(user: User) {
     withContext(dispatchers.io) {
       val response = catchEither { userApiService.remove(user.id) }
         .tapLeft { logError(it, "remove user=$user") }
@@ -121,7 +119,8 @@ internal class UserRepositoryImpl(
     }
   }
 
-  override suspend fun add(user: User) = either<UserError, Unit> {
+  context(EffectScope<UserError>)
+  override suspend fun add(user: User) {
     withContext(dispatchers.io) {
       val response = catchEither { userApiService.add(domainToBody(user)) }
         .tapLeft { logError(it, "add user=$user") }
@@ -137,13 +136,30 @@ internal class UserRepositoryImpl(
     }
   }
 
+  context(EffectScope<UserError>)
   override suspend fun search(query: String) = withContext(dispatchers.io) {
-    catchEither { userApiService.search(query).map(responseToDomainThrows) }
+    val userResponses = catchEither { userApiService.search(query) }
       .tapLeft { logError(it, "search query=$query") }
       .mapLeft(errorMapper)
+      .bind()
+
+    val users = userResponses.traverse(responseToDomain)
+      .mapLeft { UserError.ValidationFailed(it.toSet()) }
+      .tapInvalid {
+        logError(
+          it,
+          "search query=$query, failed to map $userResponses to List<User>"
+        )
+      }
+      .bind()
+
+    users
   }
 
   private companion object {
     private val TAG = UserRepositoryImpl::class.java.simpleName
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun logError(t: Throwable, message: String) = Timber.tag(TAG).e(t, message)
   }
 }
