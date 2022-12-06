@@ -73,7 +73,7 @@ class SearchVM(
     }
 
     val queryFlow = filterIsInstance<ViewIntent.Search>()
-      .log("Intent")
+      .debugLog("Intent")
       .map { it.query }
       .shareWhileSubscribed()
 

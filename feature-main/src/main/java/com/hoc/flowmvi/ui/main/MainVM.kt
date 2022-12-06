@@ -50,10 +50,10 @@ class MainVM(
     )
       .shareWhileSubscribed()
       .toPartialStateChangeFlow()
-      .log("PartialStateChange")
+      .debugLog("PartialStateChange")
       .onEach { sendEvent(it.toSingleEventOrNull() ?: return@onEach) }
       .scan(initialVS) { vs, change -> change.reduce(vs) }
-      .log("ViewState")
+      .debugLog("ViewState")
       .stateIn(
         viewModelScope,
         SharingStarted.Eagerly,

@@ -72,8 +72,12 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
 
   // Extensions on Flow using viewModelScope.
 
-  protected fun <T> Flow<T>.log(subject: String): Flow<T> =
-    onEach { Timber.tag(logTag).d(">>> $subject: $it") }
+  protected fun <T> Flow<T>.debugLog(subject: String): Flow<T> =
+    if (BuildConfig.DEBUG) {
+      onEach { Timber.tag(logTag).d(">>> $subject: $it") }
+    } else {
+      this
+    }
 
   protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> =
     shareIn(viewModelScope, SharingStarted.WhileSubscribed())

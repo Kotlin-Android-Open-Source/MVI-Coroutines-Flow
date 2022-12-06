@@ -76,19 +76,19 @@ class AddVM(
 
   private fun SharedFlow<ViewIntent>.toPartialStateChangesFlow(): Flow<PartialStateChange> {
     val emailFlow = filterIsInstance<ViewIntent.EmailChanged>()
-      .log("Intent")
+      .debugLog("Intent")
       .map { it.email }
       .distinctUntilChanged()
       .shareWhileSubscribed()
 
     val firstNameFlow = filterIsInstance<ViewIntent.FirstNameChanged>()
-      .log("Intent")
+      .debugLog("Intent")
       .map { it.firstName }
       .distinctUntilChanged()
       .shareWhileSubscribed()
 
     val lastNameFlow = filterIsInstance<ViewIntent.LastNameChanged>()
-      .log("Intent")
+      .debugLog("Intent")
       .map { it.lastName }
       .distinctUntilChanged()
       .shareWhileSubscribed()
@@ -108,7 +108,7 @@ class AddVM(
     }.stateWithInitialNullWhileSubscribed()
 
     val addUserChanges = filterIsInstance<ViewIntent.Submit>()
-      .log("Intent")
+      .debugLog("Intent")
       .withLatestFrom(userFormFlow) { _, userForm -> userForm }
       .mapNotNull { it?.orNull() }
       .flatMapFirst { user ->
@@ -124,15 +124,15 @@ class AddVM(
 
     val firstChanges = merge(
       filterIsInstance<ViewIntent.EmailChangedFirstTime>()
-        .log("Intent")
+        .debugLog("Intent")
         .take(1)
         .mapTo(PartialStateChange.FirstChange.EmailChangedFirstTime),
       filterIsInstance<ViewIntent.FirstNameChangedFirstTime>()
-        .log("Intent")
+        .debugLog("Intent")
         .take(1)
         .mapTo(PartialStateChange.FirstChange.FirstNameChangedFirstTime),
       filterIsInstance<ViewIntent.LastNameChangedFirstTime>()
-        .log("Intent")
+        .debugLog("Intent")
         .take(1)
         .mapTo(PartialStateChange.FirstChange.LastNameChangedFirstTime)
     )
