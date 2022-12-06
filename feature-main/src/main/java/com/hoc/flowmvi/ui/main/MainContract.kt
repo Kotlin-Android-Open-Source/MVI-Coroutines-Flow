@@ -46,6 +46,8 @@ data class ViewState(
   val error: UserError?,
   val isRefreshing: Boolean
 ) : MviViewState {
+  inline val canRefresh get() = !isLoading && error === null
+
   companion object {
     fun initial() = ViewState(
       userItems = emptyList(),
@@ -56,39 +58,39 @@ data class ViewState(
   }
 }
 
-internal sealed interface PartialChange {
-  fun reduce(vs: ViewState): ViewState
+internal sealed interface PartialStateChange {
+  fun reduce(viewState: ViewState): ViewState
 
-  sealed class GetUser : PartialChange {
-    override fun reduce(vs: ViewState): ViewState {
+  sealed class Users : PartialStateChange {
+    override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
-        Loading -> vs.copy(
+        Loading -> viewState.copy(
           isLoading = true,
           error = null
         )
-        is Data -> vs.copy(
+        is Data -> viewState.copy(
           isLoading = false,
           error = null,
           userItems = users
         )
-        is Error -> vs.copy(
+        is Error -> viewState.copy(
           isLoading = false,
           error = error
         )
       }
     }
 
-    object Loading : GetUser()
-    data class Data(val users: List<UserItem>) : GetUser()
-    data class Error(val error: UserError) : GetUser()
+    object Loading : Users()
+    data class Data(val users: List<UserItem>) : Users()
+    data class Error(val error: UserError) : Users()
   }
 
-  sealed class Refresh : PartialChange {
-    override fun reduce(vs: ViewState): ViewState {
+  sealed class Refresh : PartialStateChange {
+    override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
-        is Success -> vs.copy(isRefreshing = false)
-        is Failure -> vs.copy(isRefreshing = false)
-        Loading -> vs.copy(isRefreshing = true)
+        is Success -> viewState.copy(isRefreshing = false)
+        is Failure -> viewState.copy(isRefreshing = false)
+        Loading -> viewState.copy(isRefreshing = true)
       }
     }
 
@@ -97,11 +99,11 @@ internal sealed interface PartialChange {
     data class Failure(val error: UserError) : Refresh()
   }
 
-  sealed class RemoveUser : PartialChange {
+  sealed class RemoveUser : PartialStateChange {
     data class Success(val user: UserItem) : RemoveUser()
     data class Failure(val user: UserItem, val error: UserError) : RemoveUser()
 
-    override fun reduce(vs: ViewState) = vs
+    override fun reduce(viewState: ViewState) = viewState
   }
 }
 
