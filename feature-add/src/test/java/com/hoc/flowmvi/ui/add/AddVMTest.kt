@@ -12,7 +12,6 @@ import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
-import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.test_utils.valueOrThrow
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -43,7 +42,6 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     vm = AddVM(
       addUser = addUser,
       savedStateHandle = savedStateHandle,
-      appCoroutineDispatchers = TestAppCoroutineDispatchers(coroutineRule.testDispatcher)
     )
   }
 
