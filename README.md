@@ -14,10 +14,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 [![Gitter](https://badges.gitter.im/Kotlin-Android-Open-Source/community.svg)](https://gitter.im/Kotlin-Android-Open-Source/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-## Buy me a coffee
+<br>
 Liked some of my work? Buy me a coffee (or more likely a beer)
 
-[!["Buy Me A Coffee"](https://cdn.buymeacoffee.com/buttons/default-orange.png)](https://www.buymeacoffee.com/hoc081098)
+<a href="https://www.buymeacoffee.com/hoc081098" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" height=64></a>
 
 ## Coroutine + Flow = MVI :heart:
 *   Play MVI with Kotlin Coroutines Flow.
@@ -27,9 +27,15 @@ Liked some of my work? Buy me a coffee (or more likely a beer)
 *   **Checkout [dagger_hilt branch](https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/tree/dagger_hilt), using Dagger Hilt for DI** (_obsolete, will update as soon as possible_).
 *   **[Download latest debug APK here](https://nightly.link/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/workflows/build/master/app-debug.zip)**.
 
-> **Jetpack Compose Version** 👉 https://github.com/Kotlin-Android-Open-Source/Jetpack-Compose-MVI-Coroutines-Flow
+## More
 
-> **Pagination Horizontal List in Vertical List** 👉 https://github.com/Kotlin-Android-Open-Source/Pagination-MVI-Flow
+### 1. Jetpack Compose Version
+
+👉 https://github.com/Kotlin-Android-Open-Source/Jetpack-Compose-MVI-Coroutines-Flow
+
+### 2. Pagination Horizontal List in Vertical List
+
+👉 https://github.com/Kotlin-Android-Open-Source/Pagination-MVI-Flow
 
 ### Light theme
 
