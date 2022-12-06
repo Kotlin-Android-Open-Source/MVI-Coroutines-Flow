@@ -2,7 +2,6 @@ package com.hoc.flowmvi.ui.main
 
 import androidx.lifecycle.viewModelScope
 import arrow.core.flatMap
-import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
@@ -37,8 +36,9 @@ class MainVM(
   private val getUsersUseCase: GetUsersUseCase,
   private val refreshGetUsers: RefreshGetUsersUseCase,
   private val removeUser: RemoveUserUseCase,
-  appCoroutineDispatchers: AppCoroutineDispatchers,
-) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>(appCoroutineDispatchers) {
+) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
+
+  override val rawLogTag get() = "MainVM[${System.identityHashCode(this)}]"
 
   override val viewState: StateFlow<ViewState>
 

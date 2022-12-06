@@ -6,13 +6,16 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.hoc.flowmvi.core_ui.collectIn
+import com.hoc.flowmvi.core_ui.debugCheckImmediateMainDispatcher
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-abstract class AbstractMviActivity<I : MviIntent,
+abstract class AbstractMviActivity<
+  I : MviIntent,
   S : MviViewState,
   E : MviSingleEvent,
-  VM : MviViewModel<I, S, E>,>(
+  VM : MviViewModel<I, S, E>,
+  >(
   @LayoutRes contentLayoutId: Int,
 ) :
   AppCompatActivity(contentLayoutId), MviView<I, S, E> {
@@ -33,7 +36,10 @@ abstract class AbstractMviActivity<I : MviIntent,
 
     // observe single event
     vm.singleEvent
-      .collectIn(this) { handleSingleEvent(it) }
+      .collectIn(this) {
+        debugCheckImmediateMainDispatcher()
+        handleSingleEvent(it)
+      }
 
     // pass view intent to view model
     viewIntents()

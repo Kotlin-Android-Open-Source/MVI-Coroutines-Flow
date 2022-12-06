@@ -3,7 +3,6 @@ package com.hoc.flowmvi.ui.add
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import arrow.core.orNull
-import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
@@ -34,8 +33,9 @@ import timber.log.Timber
 class AddVM(
   private val addUser: AddUserUseCase,
   savedStateHandle: SavedStateHandle,
-  appCoroutineDispatchers: AppCoroutineDispatchers,
-) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>(appCoroutineDispatchers) {
+) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
+
+  override val rawLogTag get() = "AddVM[${System.identityHashCode(this)}]"
 
   override val viewState: StateFlow<ViewState>
 
