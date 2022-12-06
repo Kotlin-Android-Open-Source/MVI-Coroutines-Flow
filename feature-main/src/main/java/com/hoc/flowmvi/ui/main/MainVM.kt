@@ -82,7 +82,7 @@ class MainVM(
     -> null
   }
 
-  private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> = run {
+  private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> {
     val userChanges = defer(getUsersUseCase::invoke)
       .onEach { either -> Timber.tag(logTag).d("Emit users.size=${either.map { it.size }}") }
       .map { result ->
