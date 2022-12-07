@@ -61,7 +61,7 @@ data class ViewState(
 internal sealed interface PartialStateChange {
   fun reduce(viewState: ViewState): ViewState
 
-  sealed class Users : PartialStateChange {
+  sealed interface Users : PartialStateChange {
     override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
         Loading -> viewState.copy(
@@ -80,12 +80,12 @@ internal sealed interface PartialStateChange {
       }
     }
 
-    object Loading : Users()
-    data class Data(val users: List<UserItem>) : Users()
-    data class Error(val error: UserError) : Users()
+    object Loading : Users
+    data class Data(val users: List<UserItem>) : Users
+    data class Error(val error: UserError) : Users
   }
 
-  sealed class Refresh : PartialStateChange {
+  sealed interface Refresh : PartialStateChange {
     override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
         is Success -> viewState.copy(isRefreshing = false)
@@ -94,14 +94,14 @@ internal sealed interface PartialStateChange {
       }
     }
 
-    object Loading : Refresh()
-    object Success : Refresh()
-    data class Failure(val error: UserError) : Refresh()
+    object Loading : Refresh
+    object Success : Refresh
+    data class Failure(val error: UserError) : Refresh
   }
 
-  sealed class RemoveUser : PartialStateChange {
-    data class Success(val user: UserItem) : RemoveUser()
-    data class Failure(val user: UserItem, val error: UserError) : RemoveUser()
+  sealed interface RemoveUser : PartialStateChange {
+    data class Success(val user: UserItem) : RemoveUser
+    data class Failure(val user: UserItem, val error: UserError) : RemoveUser
 
     override fun reduce(viewState: ViewState) = viewState
   }
