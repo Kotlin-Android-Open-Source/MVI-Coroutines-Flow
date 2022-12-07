@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.ui.add
 
 import android.os.Parcelable
+import arrow.core.ValidatedNel
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
@@ -18,28 +19,28 @@ data class ViewState(
   val firstNameChanged: Boolean,
   val lastNameChanged: Boolean,
   // form values
-  val email: String?,
-  val firstName: String?,
-  val lastName: String?,
+  val email: String,
+  val firstName: String,
+  val lastName: String,
 ) : MviViewState, Parcelable {
   companion object {
     fun initial() = ViewState(
-      errors = emptySet(),
+      errors = UserValidationError.VALUES_SET,
       isLoading = false,
       emailChanged = false,
       firstNameChanged = false,
       lastNameChanged = false,
-      email = null,
-      firstName = null,
-      lastName = null,
+      email = "",
+      firstName = "",
+      lastName = "",
     )
   }
 }
 
 sealed interface ViewIntent : MviIntent {
-  data class EmailChanged(val email: String?) : ViewIntent
-  data class FirstNameChanged(val firstName: String?) : ViewIntent
-  data class LastNameChanged(val lastName: String?) : ViewIntent
+  data class EmailChanged(val email: String) : ViewIntent
+  data class FirstNameChanged(val firstName: String) : ViewIntent
+  data class LastNameChanged(val lastName: String) : ViewIntent
 
   object Submit : ViewIntent
 
@@ -51,9 +52,21 @@ sealed interface ViewIntent : MviIntent {
 internal sealed interface PartialStateChange {
   fun reduce(viewState: ViewState): ViewState
 
-  data class Errors(val errors: Set<UserValidationError>) : PartialStateChange {
-    override fun reduce(viewState: ViewState) =
-      if (viewState.errors == errors) viewState else viewState.copy(errors = errors)
+  data class UserFormState(
+    val email: String,
+    val firstName: String,
+    val lastName: String,
+    val userValidatedNel: ValidatedNel<UserValidationError, User>,
+  ) : PartialStateChange {
+    override fun reduce(viewState: ViewState): ViewState = viewState.copy(
+      email = email,
+      firstName = firstName,
+      lastName = lastName,
+      errors = userValidatedNel.fold(
+        fe = { it.toSet() },
+        fa = { emptySet() },
+      ),
+    )
   }
 
   sealed interface AddUser : PartialStateChange {
@@ -91,29 +104,6 @@ internal sealed interface PartialStateChange {
         }
       }
     }
-  }
-
-  sealed interface FormValue : PartialStateChange {
-    override fun reduce(viewState: ViewState): ViewState {
-      return when (this) {
-        is EmailChanged -> {
-          if (viewState.email == email) viewState
-          else viewState.copy(email = email)
-        }
-        is FirstNameChanged -> {
-          if (viewState.firstName == firstName) viewState
-          else viewState.copy(firstName = firstName)
-        }
-        is LastNameChanged -> {
-          if (viewState.lastName == lastName) viewState
-          else viewState.copy(lastName = lastName)
-        }
-      }
-    }
-
-    data class EmailChanged(val email: String?) : FormValue
-    data class FirstNameChanged(val firstName: String?) : FormValue
-    data class LastNameChanged(val lastName: String?) : FormValue
   }
 }
 

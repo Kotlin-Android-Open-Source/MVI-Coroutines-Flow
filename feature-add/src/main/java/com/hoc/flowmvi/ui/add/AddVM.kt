@@ -2,10 +2,8 @@ package com.hoc.flowmvi.ui.add
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import arrow.core.ValidatedNel
 import arrow.core.orNull
 import com.hoc.flowmvi.domain.model.User
-import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
 import com.hoc081098.flowext.flatMapFirst
@@ -30,8 +28,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
 import timber.log.Timber
 
-private typealias UserFormStateFlow = StateFlow<ValidatedNel<UserValidationError, User>?>
-
 @ExperimentalCoroutinesApi
 class AddVM(
   private val addUser: AddUserUseCase,
@@ -53,6 +49,7 @@ class AddVM(
       .debugLog("PartialStateChange")
       .onEach { sendEvent(it.toSingleEventOrNull() ?: return@onEach) }
       .scan(initialVS) { state, change -> change.reduce(state) }
+      .distinctUntilChanged()
       .onEach { savedStateHandle[VIEW_STATE] = it }
       .debugLog("ViewState")
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
@@ -67,10 +64,7 @@ class AddVM(
     PartialStateChange.FirstChange.EmailChangedFirstTime,
     PartialStateChange.FirstChange.FirstNameChangedFirstTime,
     PartialStateChange.FirstChange.LastNameChangedFirstTime,
-    is PartialStateChange.FormValue.EmailChanged,
-    is PartialStateChange.FormValue.FirstNameChanged,
-    is PartialStateChange.FormValue.LastNameChanged,
-    is PartialStateChange.Errors,
+    is PartialStateChange.UserFormState,
     PartialStateChange.AddUser.Loading,
     -> null
   }
@@ -80,50 +74,44 @@ class AddVM(
       .map { it.email }
       .startWith(initialVS.email)
       .distinctUntilChanged()
-      .shareWhileSubscribed()
 
     val firstNameFlow = filterIsInstance<ViewIntent.FirstNameChanged>()
       .map { it.firstName }
       .startWith(initialVS.firstName)
       .distinctUntilChanged()
-      .shareWhileSubscribed()
 
     val lastNameFlow = filterIsInstance<ViewIntent.LastNameChanged>()
       .map { it.lastName }
       .startWith(initialVS.lastName)
       .distinctUntilChanged()
-      .shareWhileSubscribed()
 
-    val userFormFlow = combine(
+    val userFormStateFlow = combine(
       emailFlow,
       firstNameFlow,
       lastNameFlow,
     ) { email, firstName, lastName ->
-      User.create(
+      PartialStateChange.UserFormState(
         email = email,
         firstName = firstName,
         lastName = lastName,
-        id = "",
-        avatar = "",
+        userValidatedNel = User.create(
+          email = email,
+          firstName = firstName,
+          lastName = lastName,
+          id = "",
+          avatar = "",
+        ),
       )
-    }.stateWithInitialNullWhileSubscribed()
-
-    val formValuesChangeFlow = merge(
-      emailFlow.map { PartialStateChange.FormValue.EmailChanged(it) },
-      firstNameFlow.map { PartialStateChange.FormValue.FirstNameChanged(it) },
-      lastNameFlow.map { PartialStateChange.FormValue.LastNameChanged(it) },
-    )
+    }.shareWhileSubscribed()
 
     return merge(
-      // form values change
-      formValuesChangeFlow,
+      // user form state change
+      userFormStateFlow,
       // first change
       toFirstChangeFlow(),
-      // errors change
-      userFormFlow.toErrorsChangeFlow(),
       // add user change
       filterIsInstance<ViewIntent.Submit>()
-        .toAddUserChangeFlow(userFormFlow),
+        .toAddUserChangeFlow(userFormStateFlow),
     )
   }
 
@@ -141,9 +129,10 @@ class AddVM(
         .mapTo(PartialStateChange.FirstChange.LastNameChangedFirstTime)
     )
 
-  private fun Flow<ViewIntent.Submit>.toAddUserChangeFlow(userFormFlow: UserFormStateFlow): Flow<PartialStateChange.AddUser> =
-    withLatestFrom(userFormFlow) { _, userForm -> userForm }
-      .mapNotNull { it?.orNull() }
+  private fun Flow<ViewIntent.Submit>.toAddUserChangeFlow(userFormFlow: SharedFlow<PartialStateChange.UserFormState>): Flow<PartialStateChange.AddUser> =
+    withLatestFrom(userFormFlow) { _, userForm -> userForm.userValidatedNel }
+      .debugLog("toAddUserChangeFlow::userValidatedNel")
+      .mapNotNull { it.orNull() }
       .flatMapFirst { user ->
         flowFromSuspend { addUser(user) }
           .map { result ->
@@ -154,16 +143,6 @@ class AddVM(
           }
           .startWith(PartialStateChange.AddUser.Loading)
       }
-
-  private fun UserFormStateFlow.toErrorsChangeFlow(): Flow<PartialStateChange.Errors> =
-    map { validated ->
-      PartialStateChange.Errors(
-        validated?.fold(
-          fe = { it.toSet() },
-          fa = { emptySet() }
-        ) ?: emptySet()
-      )
-    }
   //endregion
 
   private companion object {

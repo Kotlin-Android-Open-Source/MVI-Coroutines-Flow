@@ -12,11 +12,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 
 abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
@@ -79,11 +77,13 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
       this
     }
 
+  /**
+   * Share the flow in [viewModelScope],
+   * start when the first subscriber arrives,
+   * and stop when the last subscriber leaves.
+   */
   protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> =
     shareIn(viewModelScope, SharingStarted.WhileSubscribed())
-
-  protected fun <T> Flow<T>.stateWithInitialNullWhileSubscribed(): StateFlow<T?> =
-    stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
   private companion object {
     /**
