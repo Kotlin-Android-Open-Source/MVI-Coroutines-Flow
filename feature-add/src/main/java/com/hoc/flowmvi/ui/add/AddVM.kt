@@ -130,13 +130,13 @@ class AddVM(
   //region Processors
   private fun SharedFlow<ViewIntent>.toFirstChangeFlow(): Flow<PartialStateChange.FirstChange> =
     merge(
-      filterIsInstance<ViewIntent.EmailChanged>()
+      filterIsInstance<ViewIntent.EmailChangedFirstTime>()
         .take(1)
         .mapTo(PartialStateChange.FirstChange.EmailChangedFirstTime),
-      filterIsInstance<ViewIntent.FirstNameChanged>()
+      filterIsInstance<ViewIntent.FirstNameChangedFirstTime>()
         .take(1)
         .mapTo(PartialStateChange.FirstChange.FirstNameChangedFirstTime),
-      filterIsInstance<ViewIntent.LastNameChanged>()
+      filterIsInstance<ViewIntent.LastNameChangedFirstTime>()
         .take(1)
         .mapTo(PartialStateChange.FirstChange.LastNameChangedFirstTime)
     )
