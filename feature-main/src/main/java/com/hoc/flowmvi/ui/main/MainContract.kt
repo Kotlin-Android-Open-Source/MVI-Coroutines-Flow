@@ -1,11 +1,13 @@
 package com.hoc.flowmvi.ui.main
 
+import androidx.annotation.MainThread
 import arrow.core.Either
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
+import kotlin.LazyThreadSafetyMode.NONE
 
 data class UserItem(
   val id: String,
@@ -14,7 +16,8 @@ data class UserItem(
   val firstName: String,
   val lastName: String
 ) {
-  val fullName get() = "$firstName $lastName"
+  @get:MainThread
+  val fullName by lazy(NONE) { "$firstName $lastName" }
 
   constructor(domain: User) : this(
     id = domain.id,
