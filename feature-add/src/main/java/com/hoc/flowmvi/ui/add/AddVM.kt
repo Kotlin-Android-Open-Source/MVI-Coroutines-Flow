@@ -49,7 +49,6 @@ class AddVM(
       .debugLog("PartialStateChange")
       .onEach { sendEvent(it.toSingleEventOrNull() ?: return@onEach) }
       .scan(initialVS) { state, change -> change.reduce(state) }
-      .distinctUntilChanged()
       .onEach { savedStateHandle[VIEW_STATE] = it }
       .debugLog("ViewState")
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
