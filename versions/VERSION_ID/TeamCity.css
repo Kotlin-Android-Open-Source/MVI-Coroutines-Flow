@@ -108,7 +108,6 @@ select[multiple] {
 	font-size: 13px;
 }
 
-input[type='checkbox'],
 input[type='radio'] {
 	margin-top: 0;
 	margin-bottom: 0;

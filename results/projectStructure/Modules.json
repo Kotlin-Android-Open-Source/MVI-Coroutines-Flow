@@ -80,27 +80,7 @@
       "name": "MVI_Coroutines_Flow.data",
       "contentEntries": [
         {
-          "path": "file://$PROJECT_DIR$/data",
-          "sourceFolders": []
-        },
-        {
           "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/debug",
-          "sourceFolders": []
-        },
-        {
-          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/debugAndroidTest",
-          "sourceFolders": []
-        },
-        {
-          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/debugUnitTest",
-          "sourceFolders": []
-        },
-        {
-          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/release",
-          "sourceFolders": []
-        },
-        {
-          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/releaseUnitTest",
           "sourceFolders": []
         },
         {
@@ -108,7 +88,15 @@
           "sourceFolders": []
         },
         {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/debugAndroidTest",
+          "sourceFolders": []
+        },
+        {
           "path": "file://$PROJECT_DIR$/data/build/generated/source/kaptKotlin/debugAndroidTest",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/debugUnitTest",
           "sourceFolders": []
         },
         {
@@ -116,11 +104,23 @@
           "sourceFolders": []
         },
         {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/release",
+          "sourceFolders": []
+        },
+        {
           "path": "file://$PROJECT_DIR$/data/build/generated/source/kaptKotlin/release",
           "sourceFolders": []
         },
         {
+          "path": "file://$PROJECT_DIR$/data/build/generated/source/kapt/releaseUnitTest",
+          "sourceFolders": []
+        },
+        {
           "path": "file://$PROJECT_DIR$/data/build/generated/source/kaptKotlin/releaseUnitTest",
+          "sourceFolders": []
+        },
+        {
+          "path": "file://$PROJECT_DIR$/data",
           "sourceFolders": []
         }
       ],
