@@ -60,7 +60,6 @@ class SearchVM(
 
   private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> {
     val queryFlow = filterIsInstance<ViewIntent.Search>()
-      .debugLog("Intent")
       .map { it.query }
       .shareWhileSubscribed()
 
