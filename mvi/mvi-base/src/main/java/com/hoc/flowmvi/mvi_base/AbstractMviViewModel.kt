@@ -85,6 +85,13 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
   protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> =
     shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
+  @Deprecated(
+    message = "This Flow is already shared in viewModelScope, so you don't need to share it again.",
+    replaceWith = ReplaceWith("this"),
+    level = DeprecationLevel.ERROR
+  )
+  protected fun <T> SharedFlow<T>.shareWhileSubscribed(): SharedFlow<T> = this
+
   private companion object {
     /**
      * The buffer size that will be allocated by [kotlinx.coroutines.flow.MutableSharedFlow].
