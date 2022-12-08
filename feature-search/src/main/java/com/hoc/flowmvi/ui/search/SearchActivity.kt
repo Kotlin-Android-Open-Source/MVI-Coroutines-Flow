@@ -90,7 +90,7 @@ class SearchActivity :
   override fun viewIntents(): Flow<ViewIntent> = merge(
     searchViewQueryTextEventChannel
       .consumeAsFlow()
-      .onEach { Timber.d("Query $it") }
+      .onEach { Timber.d(">>> Query $it") }
       .map { ViewIntent.Search(it.query.toString()) },
     binding.retryButton.clicks().map { ViewIntent.Retry },
   )
@@ -125,9 +125,10 @@ class SearchActivity :
         isIconified = false
         queryHint = "Search user..."
 
+        Timber.d("onCreateOptionsMenu: originalQuery=${ vm.viewState.value.originalQuery}")
         vm.viewState.value
           .originalQuery
-          .takeUnless { it.isNullOrBlank() }
+          .takeIf { it.isNotBlank() }
           ?.let {
             menuItem.expandActionView()
             setQuery(it, true)

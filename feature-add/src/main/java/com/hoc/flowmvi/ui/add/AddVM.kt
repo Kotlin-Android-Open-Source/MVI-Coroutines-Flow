@@ -44,13 +44,14 @@ class AddVM(
       ?: ViewState.initial()
     Timber.tag(logTag).d("[ADD_VM] initialVS: $initialVS")
 
-    viewState = intentFlow
+    viewState = intentSharedFlow
+      .debugLog("ViewIntent")
       .toPartialStateChangeFlow(initialVS)
       .debugLog("PartialStateChange")
       .onEach { sendEvent(it.toSingleEventOrNull() ?: return@onEach) }
       .scan(initialVS) { state, change -> change.reduce(state) }
-      .onEach { savedStateHandle[VIEW_STATE] = it }
       .debugLog("ViewState")
+      .onEach { savedStateHandle[VIEW_STATE] = it }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 

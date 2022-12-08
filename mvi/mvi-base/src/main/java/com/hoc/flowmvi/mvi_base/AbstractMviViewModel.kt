@@ -5,10 +5,12 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.core_ui.debugCheckImmediateMainDispatcher
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.LazyThreadSafetyMode.PUBLICATION
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -66,13 +68,33 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
       .getOrThrow()
   }
 
-  protected val intentFlow: SharedFlow<I> get() = intentMutableFlow
+  protected val intentSharedFlow: SharedFlow<I> get() = intentMutableFlow
 
   // Extensions on Flow using viewModelScope.
 
   protected fun <T> Flow<T>.debugLog(subject: String): Flow<T> =
     if (BuildConfig.DEBUG) {
       onEach { Timber.tag(logTag).d(">>> $subject: $it") }
+    } else {
+      this
+    }
+
+  protected fun <T> SharedFlow<T>.debugLog(subject: String): SharedFlow<T> =
+    if (BuildConfig.DEBUG) {
+      val self = this
+
+      object : SharedFlow<T> by self {
+        val subscriberCount = AtomicInteger(0)
+
+        override suspend fun collect(collector: FlowCollector<T>): Nothing {
+          val count = subscriberCount.getAndIncrement()
+
+          self.collect {
+            Timber.tag(logTag).d(">>> $subject ~ $count: $it")
+            collector.emit(it)
+          }
+        }
+      }
     } else {
       this
     }

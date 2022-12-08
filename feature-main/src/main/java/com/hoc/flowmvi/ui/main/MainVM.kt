@@ -44,7 +44,8 @@ class MainVM(
     val initialVS = ViewState.initial()
     val getViewState = { viewState.value }
 
-    intentFlow
+    intentSharedFlow
+      .debugLog("ViewIntent")
       .filtered()
       .shareWhileSubscribed()
       .toPartialStateChangeFlow()
