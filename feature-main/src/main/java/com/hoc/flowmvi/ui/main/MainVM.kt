@@ -59,7 +59,23 @@ class MainVM(
       )
   }
 
-  private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> {
+  private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> = merge(
+    // users change
+    merge(
+      filterIsInstance<ViewIntent.Initial>(),
+      filterIsInstance<ViewIntent.Retry>()
+        .filter { viewState.value.error != null },
+    ).toUserChangeFlow(),
+    // refresh change
+    filterIsInstance<ViewIntent.Refresh>()
+      .toRefreshChangeFlow(),
+    // remove user change
+    filterIsInstance<ViewIntent.RemoveUser>()
+      .toRemoveUserChangeFlow()
+  )
+
+  //region Processors
+  private fun Flow<ViewIntent>.toUserChangeFlow(): Flow<PartialStateChange.Users> {
     val userChanges = defer(getUsersUseCase::invoke)
       .onEach { either -> Timber.tag(logTag).d("Emit users.size=${either.map { it.size }}") }
       .map { result ->
@@ -70,23 +86,9 @@ class MainVM(
       }
       .startWith(PartialStateChange.Users.Loading)
 
-    return merge(
-      // users change
-      merge(
-        filterIsInstance<ViewIntent.Initial>(),
-        filterIsInstance<ViewIntent.Retry>()
-          .filter { viewState.value.error != null },
-      ).flatMapLatest { userChanges },
-      // refresh change
-      filterIsInstance<ViewIntent.Refresh>()
-        .toRefreshChangeFlow(),
-      // remove user change
-      filterIsInstance<ViewIntent.RemoveUser>()
-        .toRemoveUserChangeFlow()
-    )
+    return flatMapLatest { userChanges }
   }
 
-  //region Processors
   private fun Flow<ViewIntent.Refresh>.toRefreshChangeFlow(): Flow<PartialStateChange.Refresh> {
     val refreshChanges = flowFromSuspend(refreshGetUsers::invoke)
       .map { result ->
