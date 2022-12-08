@@ -54,20 +54,6 @@ class AddVM(
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
   }
 
-  private fun PartialStateChange.toSingleEventOrNull(): SingleEvent? = when (this) {
-    is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(user)
-    is PartialStateChange.AddUser.AddUserFailure -> SingleEvent.AddUserFailure(
-      user = user,
-      error = error
-    )
-    PartialStateChange.FirstChange.EmailChangedFirstTime,
-    PartialStateChange.FirstChange.FirstNameChangedFirstTime,
-    PartialStateChange.FirstChange.LastNameChangedFirstTime,
-    is PartialStateChange.UserFormState,
-    PartialStateChange.AddUser.Loading,
-    -> null
-  }
-
   private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(initialVS: ViewState): Flow<PartialStateChange> {
     val emailFlow = filterIsInstance<ViewIntent.EmailChanged>()
       .map { it.email }
@@ -146,5 +132,19 @@ class AddVM(
 
   private companion object {
     private const val VIEW_STATE = "com.hoc.flowmvi.ui.add.view_state"
+
+    private fun PartialStateChange.toSingleEventOrNull(): SingleEvent? = when (this) {
+      is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(user)
+      is PartialStateChange.AddUser.AddUserFailure -> SingleEvent.AddUserFailure(
+        user = user,
+        error = error
+      )
+      PartialStateChange.FirstChange.EmailChangedFirstTime,
+      PartialStateChange.FirstChange.FirstNameChangedFirstTime,
+      PartialStateChange.FirstChange.LastNameChangedFirstTime,
+      is PartialStateChange.UserFormState,
+      PartialStateChange.AddUser.Loading,
+      -> null
+    }
   }
 }
