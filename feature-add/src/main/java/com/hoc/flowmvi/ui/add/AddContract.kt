@@ -1,6 +1,8 @@
 package com.hoc.flowmvi.ui.add
 
+import android.os.Bundle
 import android.os.Parcelable
+import androidx.core.os.bundleOf
 import arrow.core.ValidatedNel
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
@@ -8,6 +10,7 @@ import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
+import com.hoc.flowmvi.mvi_base.MviViewStateSaver
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -24,6 +27,8 @@ data class ViewState(
   val lastName: String,
 ) : MviViewState, Parcelable {
   companion object {
+    private const val VIEW_STATE_KEY = "com.hoc.flowmvi.ui.add.StateSaver"
+
     fun initial() = ViewState(
       errors = UserValidationError.VALUES_SET,
       isLoading = false,
@@ -34,6 +39,15 @@ data class ViewState(
       firstName = "",
       lastName = "",
     )
+  }
+
+  class StateSaver : MviViewStateSaver<ViewState> {
+    override fun ViewState.save() = bundleOf(VIEW_STATE_KEY to this)
+
+    override fun restore(bundle: Bundle?) = bundle
+      ?.getParcelable<ViewState?>(VIEW_STATE_KEY)
+      ?.copy(isLoading = false)
+      ?: initial()
   }
 }
 

@@ -1,10 +1,13 @@
 package com.hoc.flowmvi.ui.search
 
+import android.os.Bundle
+import androidx.core.os.bundleOf
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
+import com.hoc.flowmvi.mvi_base.MviViewStateSaver
 import dev.ahmedmourad.nocopy.annotations.NoCopy
 
 @Suppress("DataClassPrivateConstructor")
@@ -40,6 +43,8 @@ data class ViewState(
   val originalQuery: String,
 ) : MviViewState {
   companion object Factory {
+    private const val ORIGINAL_QUERY_KEY = "com.hoc.flowmvi.ui.search.original_query"
+
     fun initial(originalQuery: String): ViewState {
       return ViewState(
         users = emptyList(),
@@ -49,6 +54,16 @@ data class ViewState(
         originalQuery = originalQuery,
       )
     }
+  }
+
+  class StateSaver : MviViewStateSaver<ViewState> {
+    override fun ViewState.save() = bundleOf(ORIGINAL_QUERY_KEY to originalQuery)
+
+    override fun restore(bundle: Bundle?) = initial(
+      originalQuery = bundle
+        ?.getString(ORIGINAL_QUERY_KEY, "")
+        .orEmpty(),
+    )
   }
 }
 

@@ -33,7 +33,8 @@ import kotlinx.coroutines.flow.stateIn
 @ExperimentalCoroutinesApi
 class SearchVM(
   private val searchUsersUseCase: SearchUsersUseCase,
-  private val savedStateHandle: SavedStateHandle,
+  savedStateHandle: SavedStateHandle,
+  private val stateSaver: ViewState.StateSaver,
 ) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
   override val rawLogTag get() = "SearchVM[${System.identityHashCode(this)}]"
@@ -41,9 +42,7 @@ class SearchVM(
   override val viewState: StateFlow<ViewState>
 
   init {
-    val initialVS = ViewState.initial(
-      originalQuery = savedStateHandle.get<String?>(QUERY_KEY).orEmpty(),
-    )
+    val initialVS = stateSaver.restore(savedStateHandle[VIEW_STATE_BUNDLE_KEY])
 
     viewState = intentSharedFlow
       .debugLog("ViewIntent")
@@ -52,8 +51,11 @@ class SearchVM(
       .onEach { sendEvent(it.toSingleEventOrNull() ?: return@onEach) }
       .scan(initialVS) { state, change -> change.reduce(state) }
       .debugLog("ViewState")
-      .onEach { savedStateHandle[QUERY_KEY] = it.originalQuery }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
+
+    savedStateHandle.setSavedStateProvider(VIEW_STATE_BUNDLE_KEY) {
+      stateSaver.run { viewState.value.save() }
+    }
   }
 
   private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> {
@@ -109,7 +111,7 @@ class SearchVM(
     .startWith(PartialStateChange.Loading)
 
   internal companion object {
-    private const val QUERY_KEY = "com.hoc.flowmvi.ui.search.query"
+    private const val VIEW_STATE_BUNDLE_KEY = "com.hoc.flowmvi.ui.search.view_state"
     internal val SEARCH_DEBOUNCE_DURATION = 400.milliseconds
 
     private fun PartialStateChange.toSingleEventOrNull(): SingleEvent? = when (this) {

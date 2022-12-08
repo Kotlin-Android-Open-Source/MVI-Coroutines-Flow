@@ -32,6 +32,7 @@ import timber.log.Timber
 class AddVM(
   private val addUser: AddUserUseCase,
   savedStateHandle: SavedStateHandle,
+  stateSaver: ViewState.StateSaver,
 ) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
 
   override val rawLogTag get() = "AddVM[${System.identityHashCode(this)}]"
@@ -39,10 +40,8 @@ class AddVM(
   override val viewState: StateFlow<ViewState>
 
   init {
-    val initialVS = savedStateHandle.get<ViewState?>(VIEW_STATE)
-      ?.copy(isLoading = false)
-      ?: ViewState.initial()
-    Timber.tag(logTag).d("[ADD_VM] initialVS: $initialVS")
+    val initialVS = stateSaver.restore(savedStateHandle[VIEW_STATE_BUNDLE_KEY])
+    Timber.tag(logTag).d("initialVS=$initialVS")
 
     viewState = intentSharedFlow
       .debugLog("ViewIntent")
@@ -51,8 +50,11 @@ class AddVM(
       .onEach { sendEvent(it.toSingleEventOrNull() ?: return@onEach) }
       .scan(initialVS) { state, change -> change.reduce(state) }
       .debugLog("ViewState")
-      .onEach { savedStateHandle[VIEW_STATE] = it }
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
+
+    savedStateHandle.setSavedStateProvider(VIEW_STATE_BUNDLE_KEY) {
+      stateSaver.run { viewState.value.save() }
+    }
   }
 
   private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(initialVS: ViewState): Flow<PartialStateChange> {
@@ -132,7 +134,7 @@ class AddVM(
   //endregion
 
   private companion object {
-    private const val VIEW_STATE = "com.hoc.flowmvi.ui.add.view_state"
+    private const val VIEW_STATE_BUNDLE_KEY = "com.hoc.flowmvi.ui.add.view_state"
 
     private fun PartialStateChange.toSingleEventOrNull(): SingleEvent? = when (this) {
       is PartialStateChange.AddUser.AddUserSuccess -> SingleEvent.AddUserSuccess(user)
