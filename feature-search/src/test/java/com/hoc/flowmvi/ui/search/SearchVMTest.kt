@@ -67,7 +67,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         .onEach { delay(SEMI_TIMEOUT) }
         .onCompletion { timeout() },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -128,7 +128,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         .onEach { delay(SEMI_TIMEOUT) }
         .onCompletion { timeout() },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -176,7 +176,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         .concatWith(timer(ViewIntent.Search(query), TOTAL_TIMEOUT))
         .onCompletion { timeout() },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -249,7 +249,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
           ).onCompletion { timeout() }, // (2)
         ),
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -321,7 +321,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         timeout()
       },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -363,7 +363,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         timeout()
       },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -400,7 +400,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
       ).mapRight(),
       expectedEvents = emptyList(),
     )
