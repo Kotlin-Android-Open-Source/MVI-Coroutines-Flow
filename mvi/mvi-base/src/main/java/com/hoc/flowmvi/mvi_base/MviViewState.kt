@@ -11,6 +11,6 @@ interface MviViewState
  * An interface that converts a [MviViewState] to a [Bundle] and vice versa.
  */
 interface MviViewStateSaver<S : MviViewState> {
-  fun S.save(): Bundle
+  fun S.toBundle(): Bundle
   fun restore(bundle: Bundle?): S
 }

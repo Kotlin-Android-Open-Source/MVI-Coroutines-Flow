@@ -57,7 +57,7 @@ data class ViewState(
   }
 
   class StateSaver : MviViewStateSaver<ViewState> {
-    override fun ViewState.save() = bundleOf(ORIGINAL_QUERY_KEY to originalQuery)
+    override fun ViewState.toBundle() = bundleOf(ORIGINAL_QUERY_KEY to originalQuery)
 
     override fun restore(bundle: Bundle?) = initial(
       originalQuery = bundle

@@ -54,7 +54,7 @@ class SearchVM(
       .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
 
     savedStateHandle.setSavedStateProvider(VIEW_STATE_BUNDLE_KEY) {
-      stateSaver.run { viewState.value.save() }
+      stateSaver.run { viewState.value.toBundle() }
     }
   }
 

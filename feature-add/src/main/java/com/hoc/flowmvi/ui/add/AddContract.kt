@@ -42,7 +42,7 @@ data class ViewState(
   }
 
   class StateSaver : MviViewStateSaver<ViewState> {
-    override fun ViewState.save() = bundleOf(VIEW_STATE_KEY to this)
+    override fun ViewState.toBundle() = bundleOf(VIEW_STATE_KEY to this)
 
     override fun restore(bundle: Bundle?) = bundle
       ?.getParcelable<ViewState?>(VIEW_STATE_KEY)
