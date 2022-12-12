@@ -3,7 +3,8 @@ package com.hoc.flowmvi.ui.add
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.core.os.bundleOf
-import arrow.core.ValidatedNel
+import arrow.core.identity
+import com.hoc.flowmvi.core.ValidatedNes
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
@@ -70,14 +71,14 @@ internal sealed interface PartialStateChange {
     val email: String,
     val firstName: String,
     val lastName: String,
-    val userValidatedNel: ValidatedNel<UserValidationError, User>,
+    val userValidatedNes: ValidatedNes<UserValidationError, User>,
   ) : PartialStateChange {
     override fun reduce(viewState: ViewState): ViewState = viewState.copy(
       email = email,
       firstName = firstName,
       lastName = lastName,
-      errors = userValidatedNel.fold(
-        fe = { it.toSet() },
+      errors = userValidatedNes.fold(
+        fe = ::identity,
         fa = { emptySet() },
       ),
     )

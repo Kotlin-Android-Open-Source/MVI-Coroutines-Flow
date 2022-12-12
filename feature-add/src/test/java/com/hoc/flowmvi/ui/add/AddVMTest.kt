@@ -42,6 +42,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     vm = AddVM(
       addUser = addUser,
       savedStateHandle = savedStateHandle,
+      stateSaver = ViewState.StateSaver(),
     )
   }
 

@@ -1,14 +1,16 @@
 package com.hoc.flowmvi.domain.model
 
-import arrow.core.ValidatedNel
-import arrow.core.invalidNel
+import com.hoc.flowmvi.core.NonEmptySet
+import com.hoc.flowmvi.core.NonEmptySet.Companion.toNonEmptySetOrNull
+import com.hoc.flowmvi.core.ValidatedNes
+import com.hoc.flowmvi.core.invalidNes
 
 enum class UserValidationError {
   INVALID_EMAIL_ADDRESS,
   TOO_SHORT_FIRST_NAME,
   TOO_SHORT_LAST_NAME;
 
-  val asInvalidNel: ValidatedNel<UserValidationError, Nothing> = invalidNel()
+  val asInvalidNel: ValidatedNes<UserValidationError, Nothing> = invalidNes()
 
   companion object {
     /**
@@ -17,6 +19,6 @@ enum class UserValidationError {
      */
     val VALUES: List<UserValidationError> = values().asList()
 
-    val VALUES_SET: Set<UserValidationError> = VALUES.toSet()
+    val VALUES_SET: NonEmptySet<UserValidationError> = VALUES.toNonEmptySetOrNull()!!
   }
 }

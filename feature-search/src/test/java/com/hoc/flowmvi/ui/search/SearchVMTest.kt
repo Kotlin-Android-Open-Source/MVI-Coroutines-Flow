@@ -45,6 +45,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     vm = SearchVM(
       searchUsersUseCase = searchUsersUseCase,
       savedStateHandle = savedStateHandle,
+      stateSaver = ViewState.StateSaver(),
     )
   }
 

@@ -82,7 +82,7 @@ class AddVM(
         email = email,
         firstName = firstName,
         lastName = lastName,
-        userValidatedNel = User.create(
+        userValidatedNes = User.create(
           email = email,
           firstName = firstName,
           lastName = lastName,
@@ -118,7 +118,7 @@ class AddVM(
     )
 
   private fun Flow<ViewIntent.Submit>.toAddUserChangeFlow(userFormFlow: SharedFlow<PartialStateChange.UserFormState>): Flow<PartialStateChange.AddUser> =
-    withLatestFrom(userFormFlow) { _, userForm -> userForm.userValidatedNel }
+    withLatestFrom(userFormFlow) { _, userForm -> userForm.userValidatedNes }
       .debugLog("toAddUserChangeFlow::userValidatedNel")
       .mapNotNull { it.orNull() }
       .flatMapFirst { user ->

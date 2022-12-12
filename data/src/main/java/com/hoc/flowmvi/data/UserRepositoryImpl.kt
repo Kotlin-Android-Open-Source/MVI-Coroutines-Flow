@@ -1,13 +1,13 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.Either.Companion.catch as catchEither
-import arrow.core.ValidatedNel
 import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.leftWiden
 import arrow.core.right
 import arrow.core.valueOr
 import com.hoc.flowmvi.core.Mapper
+import com.hoc.flowmvi.core.ValidatedNes
 import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
@@ -40,7 +40,7 @@ import timber.log.Timber
 internal class UserRepositoryImpl(
   private val userApiService: UserApiService,
   private val dispatchers: AppCoroutineDispatchers,
-  private val responseToDomain: Mapper<UserResponse, ValidatedNel<UserValidationError, User>>,
+  private val responseToDomain: Mapper<UserResponse, ValidatedNes<UserValidationError, User>>,
   private val domainToBody: Mapper<User, UserBody>,
   private val errorMapper: Mapper<Throwable, UserError>,
 ) : UserRepository {
