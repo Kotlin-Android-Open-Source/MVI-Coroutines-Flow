@@ -10,7 +10,7 @@ enum class UserValidationError {
   TOO_SHORT_FIRST_NAME,
   TOO_SHORT_LAST_NAME;
 
-  val asInvalidNel: ValidatedNes<UserValidationError, Nothing> = invalidNes()
+  val asInvalidNes: ValidatedNes<UserValidationError, Nothing> = invalidNes()
 
   companion object {
     /**

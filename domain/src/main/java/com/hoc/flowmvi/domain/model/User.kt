@@ -39,7 +39,7 @@ data class User(
 
 internal fun validateFirstName(firstName: String?): ValidatedNes<UserValidationError, String> {
   if (firstName == null || firstName.length < MIN_LENGTH_FIRST_NAME) {
-    return UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel
+    return UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNes
   }
   // more validations here
   return firstName.validNes()
@@ -47,7 +47,7 @@ internal fun validateFirstName(firstName: String?): ValidatedNes<UserValidationE
 
 internal fun validateLastName(lastName: String?): ValidatedNes<UserValidationError, String> {
   if (lastName == null || lastName.length < MIN_LENGTH_LAST_NAME) {
-    return UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel
+    return UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNes
   }
   // more validations here
   return lastName.validNes()
@@ -55,7 +55,7 @@ internal fun validateLastName(lastName: String?): ValidatedNes<UserValidationErr
 
 internal fun validateEmail(email: String?): ValidatedNes<UserValidationError, String> {
   if (email == null || !EMAIL_ADDRESS_REGEX.matches(email)) {
-    return UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel
+    return UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNes
   }
   // more validations here
   return email.validNes()
