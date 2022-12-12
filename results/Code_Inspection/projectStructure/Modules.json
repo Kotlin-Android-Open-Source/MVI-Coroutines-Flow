@@ -343,6 +343,10 @@
           "type": "Library"
         },
         {
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+          "type": "Library"
+        },
+        {
           "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
           "type": "Library"
         },
@@ -379,11 +383,23 @@
           "type": "Library"
         },
         {
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+          "type": "Library"
+        },
+        {
           "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
           "type": "Library"
         },
         {
           "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.21",
           "type": "Library"
         },
         {
@@ -440,6 +456,10 @@
           "type": "Library"
         },
         {
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+          "type": "Library"
+        },
+        {
           "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
           "type": "Library"
         },
@@ -453,6 +473,18 @@
         },
         {
           "name": "Gradle: org.jetbrains:annotations:13.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.21",
           "type": "Library"
         }
       ]
@@ -482,6 +514,10 @@
         },
         {
           "name": "MVI_Coroutines_Flow.domain.main",
+          "type": "Module"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.core.main",
           "type": "Module"
         },
         {
@@ -565,10 +601,6 @@
           "type": "Library"
         },
         {
-          "name": "MVI_Coroutines_Flow.core.main",
-          "type": "Module"
-        },
-        {
           "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
           "type": "Library"
         },
@@ -624,6 +656,10 @@
         {
           "name": "<Module source>",
           "type": "Own sources"
+        },
+        {
+          "name": "MVI_Coroutines_Flow.core.main",
+          "type": "Module"
         },
         {
           "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",

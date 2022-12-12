@@ -55,9 +55,9 @@
       ]
     },
     {
-      "name": "Gradle: io.insert-koin:koin-core-jvm:3.2.0",
+      "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.insert-koin/koin-core-jvm/3.2.0/ab77b9faefb87ddb5801b9ccfe70d7faff943192/koin-core-jvm-3.2.0.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-core-jvm/1.1.3/dffbdbb8174d1db74907578e0ecfa395432ea397/arrow-core-jvm-1.1.3.jar!/"
       ]
     },
     {
@@ -70,12 +70,6 @@
       "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
       "roots": [
         "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.7.20/726594ea9ba2beb2ee113647fefa9a10f9fabe52/kotlin-stdlib-1.7.20.jar!/"
-      ]
-    },
-    {
-      "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
-      "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-core-jvm/1.1.3/dffbdbb8174d1db74907578e0ecfa395432ea397/arrow-core-jvm-1.1.3.jar!/"
       ]
     },
     {
@@ -198,6 +192,12 @@
       "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
       "roots": [
         "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.12.6/22ef9744303f8b243f9c465d24ef236f52d8ba67/byte-buddy-agent-1.12.6.jar!/"
+      ]
+    },
+    {
+      "name": "Gradle: io.insert-koin:koin-core-jvm:3.2.0",
+      "roots": [
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.insert-koin/koin-core-jvm/3.2.0/ab77b9faefb87ddb5801b9ccfe70d7faff943192/koin-core-jvm-3.2.0.jar!/"
       ]
     },
     {
