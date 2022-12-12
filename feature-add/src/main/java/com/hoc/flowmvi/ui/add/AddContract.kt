@@ -1,12 +1,17 @@
 package com.hoc.flowmvi.ui.add
 
+import android.os.Bundle
 import android.os.Parcelable
+import androidx.core.os.bundleOf
+import arrow.core.identity
+import com.hoc.flowmvi.core.ValidatedNes
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
+import com.hoc.flowmvi.mvi_base.MviViewStateSaver
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,28 +23,39 @@ data class ViewState(
   val firstNameChanged: Boolean,
   val lastNameChanged: Boolean,
   // form values
-  val email: String?,
-  val firstName: String?,
-  val lastName: String?,
+  val email: String,
+  val firstName: String,
+  val lastName: String,
 ) : MviViewState, Parcelable {
   companion object {
+    private const val VIEW_STATE_KEY = "com.hoc.flowmvi.ui.add.StateSaver"
+
     fun initial() = ViewState(
-      errors = emptySet(),
+      errors = UserValidationError.VALUES_SET,
       isLoading = false,
       emailChanged = false,
       firstNameChanged = false,
       lastNameChanged = false,
-      email = null,
-      firstName = null,
-      lastName = null,
+      email = "",
+      firstName = "",
+      lastName = "",
     )
+  }
+
+  class StateSaver : MviViewStateSaver<ViewState> {
+    override fun ViewState.toBundle() = bundleOf(VIEW_STATE_KEY to this)
+
+    override fun restore(bundle: Bundle?) = bundle
+      ?.getParcelable<ViewState?>(VIEW_STATE_KEY)
+      ?.copy(isLoading = false)
+      ?: initial()
   }
 }
 
 sealed interface ViewIntent : MviIntent {
-  data class EmailChanged(val email: String?) : ViewIntent
-  data class FirstNameChanged(val firstName: String?) : ViewIntent
-  data class LastNameChanged(val lastName: String?) : ViewIntent
+  data class EmailChanged(val email: String) : ViewIntent
+  data class FirstNameChanged(val firstName: String) : ViewIntent
+  data class LastNameChanged(val lastName: String) : ViewIntent
 
   object Submit : ViewIntent
 
@@ -51,15 +67,27 @@ sealed interface ViewIntent : MviIntent {
 internal sealed interface PartialStateChange {
   fun reduce(viewState: ViewState): ViewState
 
-  data class ErrorsChanged(val errors: Set<UserValidationError>) : PartialStateChange {
-    override fun reduce(viewState: ViewState) =
-      if (viewState.errors == errors) viewState else viewState.copy(errors = errors)
+  data class UserFormState(
+    val email: String,
+    val firstName: String,
+    val lastName: String,
+    val userValidatedNes: ValidatedNes<UserValidationError, User>,
+  ) : PartialStateChange {
+    override fun reduce(viewState: ViewState): ViewState = viewState.copy(
+      email = email,
+      firstName = firstName,
+      lastName = lastName,
+      errors = userValidatedNes.fold(
+        fe = ::identity,
+        fa = { emptySet() },
+      ),
+    )
   }
 
-  sealed class AddUser : PartialStateChange {
-    object Loading : AddUser()
-    data class AddUserSuccess(val user: User) : AddUser()
-    data class AddUserFailure(val user: User, val error: UserError) : AddUser()
+  sealed interface AddUser : PartialStateChange {
+    object Loading : AddUser
+    data class AddUserSuccess(val user: User) : AddUser
+    data class AddUserFailure(val user: User, val error: UserError) : AddUser
 
     override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
@@ -70,41 +98,27 @@ internal sealed interface PartialStateChange {
     }
   }
 
-  sealed class FirstChange : PartialStateChange {
-    object EmailChangedFirstTime : FirstChange()
-    object FirstNameChangedFirstTime : FirstChange()
-    object LastNameChangedFirstTime : FirstChange()
+  sealed interface FirstChange : PartialStateChange {
+    object EmailChangedFirstTime : FirstChange
+    object FirstNameChangedFirstTime : FirstChange
+    object LastNameChangedFirstTime : FirstChange
 
     override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
-        EmailChangedFirstTime -> viewState.copy(emailChanged = true)
-        FirstNameChangedFirstTime -> viewState.copy(firstNameChanged = true)
-        LastNameChangedFirstTime -> viewState.copy(lastNameChanged = true)
-      }
-    }
-  }
-
-  sealed class FormValueChange : PartialStateChange {
-    override fun reduce(viewState: ViewState): ViewState {
-      return when (this) {
-        is EmailChanged -> {
-          if (viewState.email == email) viewState
-          else viewState.copy(email = email)
+        EmailChangedFirstTime -> {
+          if (viewState.emailChanged) viewState
+          else viewState.copy(emailChanged = true)
         }
-        is FirstNameChanged -> {
-          if (viewState.firstName == firstName) viewState
-          else viewState.copy(firstName = firstName)
+        FirstNameChangedFirstTime -> {
+          if (viewState.firstNameChanged) viewState
+          else viewState.copy(firstNameChanged = true)
         }
-        is LastNameChanged -> {
-          if (viewState.lastName == lastName) viewState
-          else viewState.copy(lastName = lastName)
+        LastNameChangedFirstTime -> {
+          if (viewState.lastNameChanged) viewState
+          else viewState.copy(lastNameChanged = true)
         }
       }
     }
-
-    data class EmailChanged(val email: String?) : FormValueChange()
-    data class FirstNameChanged(val firstName: String?) : FormValueChange()
-    data class LastNameChanged(val lastName: String?) : FormValueChange()
   }
 }
 

@@ -1,11 +1,13 @@
 package com.hoc.flowmvi.ui.main
 
+import androidx.annotation.MainThread
 import arrow.core.Either
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
+import kotlin.LazyThreadSafetyMode.NONE
 
 data class UserItem(
   val id: String,
@@ -14,7 +16,8 @@ data class UserItem(
   val firstName: String,
   val lastName: String
 ) {
-  val fullName get() = "$firstName $lastName"
+  @get:MainThread
+  val fullName by lazy(NONE) { "$firstName $lastName" }
 
   constructor(domain: User) : this(
     id = domain.id,
@@ -46,6 +49,8 @@ data class ViewState(
   val error: UserError?,
   val isRefreshing: Boolean
 ) : MviViewState {
+  inline val canRefresh get() = !isLoading && error === null
+
   companion object {
     fun initial() = ViewState(
       userItems = emptyList(),
@@ -56,52 +61,52 @@ data class ViewState(
   }
 }
 
-internal sealed interface PartialChange {
-  fun reduce(vs: ViewState): ViewState
+internal sealed interface PartialStateChange {
+  fun reduce(viewState: ViewState): ViewState
 
-  sealed class GetUser : PartialChange {
-    override fun reduce(vs: ViewState): ViewState {
+  sealed interface Users : PartialStateChange {
+    override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
-        Loading -> vs.copy(
+        Loading -> viewState.copy(
           isLoading = true,
           error = null
         )
-        is Data -> vs.copy(
+        is Data -> viewState.copy(
           isLoading = false,
           error = null,
           userItems = users
         )
-        is Error -> vs.copy(
+        is Error -> viewState.copy(
           isLoading = false,
           error = error
         )
       }
     }
 
-    object Loading : GetUser()
-    data class Data(val users: List<UserItem>) : GetUser()
-    data class Error(val error: UserError) : GetUser()
+    object Loading : Users
+    data class Data(val users: List<UserItem>) : Users
+    data class Error(val error: UserError) : Users
   }
 
-  sealed class Refresh : PartialChange {
-    override fun reduce(vs: ViewState): ViewState {
+  sealed interface Refresh : PartialStateChange {
+    override fun reduce(viewState: ViewState): ViewState {
       return when (this) {
-        is Success -> vs.copy(isRefreshing = false)
-        is Failure -> vs.copy(isRefreshing = false)
-        Loading -> vs.copy(isRefreshing = true)
+        is Success -> viewState.copy(isRefreshing = false)
+        is Failure -> viewState.copy(isRefreshing = false)
+        Loading -> viewState.copy(isRefreshing = true)
       }
     }
 
-    object Loading : Refresh()
-    object Success : Refresh()
-    data class Failure(val error: UserError) : Refresh()
+    object Loading : Refresh
+    object Success : Refresh
+    data class Failure(val error: UserError) : Refresh
   }
 
-  sealed class RemoveUser : PartialChange {
-    data class Success(val user: UserItem) : RemoveUser()
-    data class Failure(val user: UserItem, val error: UserError) : RemoveUser()
+  sealed interface RemoveUser : PartialStateChange {
+    data class Success(val user: UserItem) : RemoveUser
+    data class Failure(val user: UserItem, val error: UserError) : RemoveUser
 
-    override fun reduce(vs: ViewState) = vs
+    override fun reduce(viewState: ViewState) = viewState
   }
 }
 

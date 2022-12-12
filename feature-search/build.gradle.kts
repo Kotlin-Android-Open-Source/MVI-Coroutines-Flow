@@ -1,7 +1,7 @@
 plugins {
   androidLib
   kotlinAndroid
-  id("dev.ahmedmourad.nocopy.nocopy-gradle-plugin")
+  nocopyPlugin
 }
 
 android {

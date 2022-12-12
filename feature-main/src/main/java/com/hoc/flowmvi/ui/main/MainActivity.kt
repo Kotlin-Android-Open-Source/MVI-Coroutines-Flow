@@ -130,7 +130,7 @@ class MainActivity :
         swipeRefreshLayout.isRefreshing = false
       }
 
-      swipeRefreshLayout.isEnabled = !viewState.isLoading && viewState.error === null
+      swipeRefreshLayout.isEnabled = viewState.canRefresh
     }
   }
 }

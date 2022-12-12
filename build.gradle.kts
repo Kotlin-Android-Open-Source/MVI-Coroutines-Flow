@@ -157,6 +157,7 @@ allprojects {
     kotlinOptions {
       val version = JavaVersion.VERSION_11.toString()
       jvmTarget = version
+      languageVersion = "1.8"
     }
   }
 

@@ -12,6 +12,8 @@ dependencies {
   implementation(deps.koin.core)
   implementation(deps.arrow.core)
 
+  implementation(core)
+
   addUnitTest()
   testImplementation(testUtils)
 }

@@ -26,19 +26,19 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateEmail_withInvalidEmail_returnsInvalid() {
     assertEquals(
-      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
+      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNes,
       Email.create(null),
     )
     assertEquals(
-      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
+      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNes,
       Email.create(""),
     )
     assertEquals(
-      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
+      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNes,
       Email.create("a"),
     )
     assertEquals(
-      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNel,
+      UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNes,
       Email.create("a@"),
     )
   }
@@ -56,19 +56,19 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateFirstName_withInvalidFirstName_returnsInvalid() {
     assertEquals(
-      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNes,
       FirstName.create(null),
     )
     assertEquals(
-      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNes,
       FirstName.create(""),
     )
     assertEquals(
-      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNes,
       FirstName.create("a"),
     )
     assertEquals(
-      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNes,
       FirstName.create("ab"),
     )
   }
@@ -86,19 +86,19 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateLastName_withInvalidLastName_returnsInvalid() {
     assertEquals(
-      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNes,
       LastName.create(null),
     )
     assertEquals(
-      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNes,
       LastName.create(""),
     )
     assertEquals(
-      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNes,
       LastName.create("a"),
     )
     assertEquals(
-      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNel,
+      UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNes,
       LastName.create("ab"),
     )
   }

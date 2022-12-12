@@ -8,6 +8,7 @@ java {
 }
 
 dependencies {
-  implementation(deps.coroutines.core)
+  api(deps.coroutines.core)
+  api(deps.arrow.core)
   addUnitTest()
 }

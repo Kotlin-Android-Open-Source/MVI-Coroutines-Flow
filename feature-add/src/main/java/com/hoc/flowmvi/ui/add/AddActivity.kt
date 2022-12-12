@@ -96,15 +96,15 @@ class AddActivity :
       emailEditText
         .editText!!
         .textChanges()
-        .map { ViewIntent.EmailChanged(it?.toString()) },
+        .map { ViewIntent.EmailChanged(it?.toString().orEmpty()) },
       firstNameEditText
         .editText!!
         .textChanges()
-        .map { ViewIntent.FirstNameChanged(it?.toString()) },
+        .map { ViewIntent.FirstNameChanged(it?.toString().orEmpty()) },
       lastNameEditText
         .editText!!
         .textChanges()
-        .map { ViewIntent.LastNameChanged(it?.toString()) },
+        .map { ViewIntent.LastNameChanged(it?.toString().orEmpty()) },
       addButton
         .clicks()
         .map { ViewIntent.Submit },

@@ -3,7 +3,9 @@ package com.hoc.flowmvi
 import androidx.lifecycle.SavedStateHandle
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,6 +28,7 @@ class CheckModulesTest : AutoCloseKoinTest() {
       SavedStateHandle::class -> {
         mockk<SavedStateHandle> {
           every { get<Any?>(any()) } returns null
+          every { setSavedStateProvider(any(), any()) } just runs
         }
       }
       else -> error("Unknown class: $clazz")

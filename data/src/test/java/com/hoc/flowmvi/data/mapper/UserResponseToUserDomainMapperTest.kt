@@ -50,7 +50,7 @@ class UserResponseToUserDomainMapperTest {
     assertTrue(validated.isInvalid)
     assertEquals(
       UserValidationError.INVALID_EMAIL_ADDRESS,
-      validated.invalidValueOrThrow.head,
+      validated.invalidValueOrThrow.single(),
     )
   }
 }

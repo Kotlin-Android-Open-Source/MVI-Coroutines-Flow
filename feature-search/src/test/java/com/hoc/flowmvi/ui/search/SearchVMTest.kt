@@ -9,7 +9,6 @@ import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.mvi_testing.returnsManyWithDelay
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
-import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.ui.search.SearchVM.Companion.SEARCH_DEBOUNCE_DURATION
 import com.hoc081098.flowext.concatWith
 import com.hoc081098.flowext.timer
@@ -46,7 +45,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     vm = SearchVM(
       searchUsersUseCase = searchUsersUseCase,
       savedStateHandle = savedStateHandle,
-      appCoroutineDispatchers = TestAppCoroutineDispatchers(coroutineRule.testDispatcher),
+      stateSaver = ViewState.StateSaver(),
     )
   }
 
@@ -69,7 +68,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         .onEach { delay(SEMI_TIMEOUT) }
         .onCompletion { timeout() },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -130,7 +129,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         .onEach { delay(SEMI_TIMEOUT) }
         .onCompletion { timeout() },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -178,7 +177,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         .concatWith(timer(ViewIntent.Search(query), TOTAL_TIMEOUT))
         .onCompletion { timeout() },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -251,7 +250,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
           ).onCompletion { timeout() }, // (2)
         ),
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -323,7 +322,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         timeout()
       },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -365,7 +364,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
         timeout()
       },
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
         ViewState(
           users = emptyList(),
           isLoading = false,
@@ -402,7 +401,7 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Retry),
       expectedStates = listOf(
-        ViewState.initial(null),
+        ViewState.initial(""),
       ).mapRight(),
       expectedEvents = emptyList(),
     )

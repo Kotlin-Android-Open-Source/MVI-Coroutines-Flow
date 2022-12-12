@@ -12,7 +12,6 @@ import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
-import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.test_utils.valueOrThrow
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -23,7 +22,7 @@ import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 
-private val ALL_ERRORS = UserValidationError.values().toSet()
+private val ALL_ERRORS = UserValidationError.VALUES_SET
 private const val EMAIL = "hoc081098@gmail.com"
 private const val NAME = "hoc081098"
 
@@ -43,7 +42,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     vm = AddVM(
       addUser = addUser,
       savedStateHandle = savedStateHandle,
-      appCoroutineDispatchers = TestAppCoroutineDispatchers(coroutineRule.testDispatcher)
+      stateSaver = ViewState.StateSaver(),
     )
   }
 
@@ -70,47 +69,6 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       ),
       expectedStates = listOf(
         ViewState.initial(),
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = null,
-          lastName = null
-        ),
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = null
-        ),
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = ""
-        ),
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = ""
-        ),
-        // all fields changed.
         ViewState(
           errors = ALL_ERRORS,
           isLoading = false,
@@ -162,58 +120,8 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       ),
       expectedStates = listOf(
         ViewState.initial(),
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = null,
-          lastName = null
-        ),
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = null
-        ),
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = ""
-        ),
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = ""
-        ),
         // all fields changed.
         ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = "",
-          lastName = ""
-        ),
-        ViewState(
           errors = setOf(TOO_SHORT_FIRST_NAME, TOO_SHORT_LAST_NAME),
           isLoading = false,
           emailChanged = false,
@@ -221,16 +129,6 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
           lastNameChanged = false,
           email = EMAIL,
           firstName = "",
-          lastName = ""
-        ),
-        ViewState(
-          errors = setOf(TOO_SHORT_FIRST_NAME, TOO_SHORT_LAST_NAME),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
           lastName = ""
         ),
         ViewState(
@@ -242,16 +140,6 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
           email = EMAIL,
           firstName = NAME,
           lastName = ""
-        ),
-        ViewState(
-          errors = setOf(TOO_SHORT_LAST_NAME),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = NAME
         ),
         // valid state
         ViewState(
@@ -428,34 +316,34 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       expectedStates = listOf(
         ViewState.initial(),
         ViewState(
-          errors = setOf(),
+          errors = ALL_ERRORS,
           isLoading = false,
           emailChanged = true,
           firstNameChanged = false,
           lastNameChanged = false,
-          email = null,
-          firstName = null,
-          lastName = null
+          email = "",
+          firstName = "",
+          lastName = ""
         ),
         ViewState(
-          errors = setOf(),
+          errors = ALL_ERRORS,
           isLoading = false,
           emailChanged = true,
           firstNameChanged = true,
           lastNameChanged = false,
-          email = null,
-          firstName = null,
-          lastName = null
+          email = "",
+          firstName = "",
+          lastName = ""
         ),
         ViewState(
-          errors = setOf(),
+          errors = ALL_ERRORS,
           isLoading = false,
           emailChanged = true,
           firstNameChanged = true,
           lastNameChanged = true,
-          email = null,
-          firstName = null,
-          lastName = null
+          email = "",
+          firstName = "",
+          lastName = ""
         )
       ).mapRight(),
       expectedEvents = emptyList()
