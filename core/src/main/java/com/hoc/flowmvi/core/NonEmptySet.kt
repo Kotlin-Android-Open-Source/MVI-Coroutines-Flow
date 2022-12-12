@@ -3,7 +3,9 @@ package com.hoc.flowmvi.core
 /**
  * `NonEmptySet` is a data type used to model sets that guarantee to have at least one value.
  */
-class NonEmptySet<out T> private constructor(val set: Set<T>) : AbstractSet<T>() {
+class NonEmptySet<out T>
+@Throws(IllegalArgumentException::class)
+private constructor(val set: Set<T>) : AbstractSet<T>() {
   init {
     require(set.isNotEmpty()) { "Set must not be empty" }
     require(set !is NonEmptySet<T>) { "Set must not be NonEmptySet" }
@@ -47,10 +49,16 @@ class NonEmptySet<out T> private constructor(val set: Set<T>) : AbstractSet<T>()
      */
     @JvmStatic
     fun <T> of(element: T, vararg elements: T): NonEmptySet<T> = NonEmptySet(
-      LinkedHashSet<T>(1 + elements.size).apply {
+      buildSet(capacity = 1 + elements.size) {
         add(element)
         addAll(elements)
       }
     )
+
+    /**
+     * Creates a [NonEmptySet] that contains only the specified [element].
+     */
+    @JvmStatic
+    fun <T> of(element: T): NonEmptySet<T> = NonEmptySet(setOf(element))
   }
 }
