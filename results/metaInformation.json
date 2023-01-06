@@ -5,9 +5,14 @@
   },
   "attributes": {
     "vcs": {
-      "sarifIdea": {}
+      "sarifIdea": {
+        "repositoryUri": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow",
+        "revisionId": "ebaabfb192d4a6c5408ff876218b4b7ba23c1301",
+        "branch": "master"
+      }
     },
     "deviceId": "200820300000000-66a6-5f0a-fc38-da9785da4efd",
-    "jobUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/runs/3821073535"
+    "jobUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/runs/3853075926",
+    "repoUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow"
   }
 }
