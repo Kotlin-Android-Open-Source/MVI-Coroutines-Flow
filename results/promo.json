@@ -3,27 +3,195 @@
   "category": "Redundant constructs",
   "type": "Unused symbol",
   "severity": "High",
-  "comment": "Type alias \"Mapper\" is never used",
+  "comment": "Property \"getOrThrow\" is never used",
   "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
   "sources": [
     {
       "type": "file",
-      "path": "core/src/main/java/com/hoc/flowmvi/core/Mapper.kt",
+      "path": "test-utils/src/main/java/com/hoc/flowmvi/test_utils/utils.kt",
       "language": "kotlin",
-      "line": 3,
-      "offset": 11,
-      "length": 6,
+      "line": 18,
+      "offset": 32,
+      "length": 10,
       "code": {
-        "startLine": 1,
-        "length": 6,
-        "offset": 40,
-        "surroundingCode": "package com.hoc.flowmvi.core\n\ntypealias Mapper<T, R> = (T) -> R\n"
+        "startLine": 16,
+        "length": 10,
+        "offset": 73,
+        "surroundingCode": "  get() = fold(::identity, this::throws)\n\ninline val <L, R> Either<L, R>.getOrThrow: R\n  get() = getOrHandle(this::throws)\n"
       }
     }
   ],
   "attributes": {
-    "module": "MVI_Coroutines_Flow.core.main",
+    "module": "MVI_Coroutines_Flow.test-utils.main",
     "inspectionName": "UnusedSymbol"
   },
-  "hash": "d360bb0f895d6d3fda4e76101743183d9f5aaad6adae113dca04bb8686ab2376"
+  "hash": "23fbac73f8e036becb6c78fb02a8ef36dad122e2345bdb7dd8cf7f3bb2849167"
+},{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Property \"leftOrThrow\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "test-utils/src/main/java/com/hoc/flowmvi/test_utils/utils.kt",
+      "language": "kotlin",
+      "line": 15,
+      "offset": 32,
+      "length": 11,
+      "code": {
+        "startLine": 13,
+        "length": 11,
+        "offset": 73,
+        "surroundingCode": "  get() = fold(::identity, this::throws)\n\ninline val <L, R> Either<L, R>.leftOrThrow: L\n  get() = fold(::identity, this::throws)\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.test-utils.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "685ca2a7682a6013500f522a84a4b7c325fd131292d004fff53283eed1c11483"
+},{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Object \"Unexpected\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
+      "language": "kotlin",
+      "line": 9,
+      "offset": 10,
+      "length": 10,
+      "code": {
+        "startLine": 7,
+        "length": 10,
+        "offset": 126,
+        "surroundingCode": "  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()\n  object ServerError : UserError()\n  object Unexpected : UserError()\n}\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.domain.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "7da87f4dd71e51343ef4c24fbb6c861c87329762f8b925d977847186d11bb65d"
+},{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Class \"UserNotFound\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
+      "language": "kotlin",
+      "line": 5,
+      "offset": 14,
+      "length": 12,
+      "code": {
+        "startLine": 3,
+        "length": 12,
+        "offset": 88,
+        "surroundingCode": "sealed class UserError : Throwable() {\n  object NetworkError : UserError()\n  data class UserNotFound(val id: String) : UserError()\n  data class InvalidId(val id: String) : UserError()\n  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.domain.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "7f7fe8135f5a969a397c414bc8ee9979bdebd08bc059823ab55a32e55376a30e"
+},{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Class \"ValidationFailed\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
+      "language": "kotlin",
+      "line": 7,
+      "offset": 14,
+      "length": 16,
+      "code": {
+        "startLine": 5,
+        "length": 16,
+        "offset": 122,
+        "surroundingCode": "  data class UserNotFound(val id: String) : UserError()\n  data class InvalidId(val id: String) : UserError()\n  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()\n  object ServerError : UserError()\n  object Unexpected : UserError()"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.domain.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "fc2b9b37161cebac2863a25c8e9e1d9e2df8d90fd3da129ac636e981c6b22528"
+},{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Class \"InvalidId\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
+      "language": "kotlin",
+      "line": 6,
+      "offset": 14,
+      "length": 9,
+      "code": {
+        "startLine": 4,
+        "length": 9,
+        "offset": 105,
+        "surroundingCode": "  object NetworkError : UserError()\n  data class UserNotFound(val id: String) : UserError()\n  data class InvalidId(val id: String) : UserError()\n  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()\n  object ServerError : UserError()"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.domain.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "7051705e763b87b1f01c54c0f3c4b96673f0ed1f9d063b0c71094b5f0c9ab01c"
+},{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Object \"ServerError\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
+      "language": "kotlin",
+      "line": 8,
+      "offset": 10,
+      "length": 11,
+      "code": {
+        "startLine": 6,
+        "length": 11,
+        "offset": 144,
+        "surroundingCode": "  data class InvalidId(val id: String) : UserError()\n  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()\n  object ServerError : UserError()\n  object Unexpected : UserError()\n}"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.domain.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "efbe54359c63c35d42b65fa1d1218c72da8f03f1f6ef40e4777e8a3b8bdfec96"
 }]}
