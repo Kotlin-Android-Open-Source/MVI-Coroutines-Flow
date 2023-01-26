@@ -1,29 +1,29 @@
 {"version":"3","listProblem":[{
   "tool": "Code Inspection",
   "category": "Naming conventions",
-  "type": "Local variable naming convention",
+  "type": "Private property naming convention",
   "severity": "Moderate",
-  "comment": "Local variable name 'EDITOR_CONFIG_KEYS' should start with a lowercase letter",
-  "detailsInfo": "Reports local variables that do not follow the naming conventions.\n\nYou can specify the required pattern in the inspection options.\n\n[Recommended naming conventions](https://kotlinlang.org/docs/coding-conventions.html#function-names): it has to start with a lowercase letter, use camel case and no underscores.\n\n**Example:**\n\n\n      fun fibonacciNumber(index: Int): Long = when(index) {\n          0 -> 0\n          else -> {\n              // does not follow naming conventions: contains underscore symbol (`_`)\n              var number_one: Long = 0\n              // does not follow naming conventions: starts with an uppercase letter\n              var NUMBER_TWO: Long = 1\n              // follow naming conventions: starts with a lowercase letter, use camel case and no underscores.\n              var numberThree: Long = number_one + NUMBER_TWO\n\n              for(currentIndex in 2..index) {\n                  numberThree = number_one + NUMBER_TWO\n                  number_one = NUMBER_TWO\n                  NUMBER_TWO = numberThree\n              }\n              numberThree\n          }\n      }\n",
+  "comment": "Private property name 'EMAIL_ADDRESS_REGEX' should not contain underscores in the middle or the end",
+  "detailsInfo": "Reports private property names that do not follow the recommended naming conventions.\n\n\nConsistent naming allows for easier code reading and understanding.\nAccording to the [Kotlin official style guide](https://kotlinlang.org/docs/coding-conventions.html#naming-rules),\nprivate property names should start with a lowercase letter and use camel case.\nOptionally, underscore prefix is allowed but only for **private** properties.\n\nIt is possible to introduce other naming rules by changing the \"Pattern\" regular expression.\n\n**Example:**\n\n\n      val _My_Cool_Property = \"\"\n\nA quick-fix renames the class according to the Kotlin naming conventions:\n\n\n      val _myCoolProperty = \"\"\n",
   "sources": [
     {
       "type": "file",
-      "path": "build.gradle.kts",
+      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/User.kt",
       "language": "kotlin",
-      "line": 53,
-      "offset": 9,
-      "length": 18,
+      "line": 66,
+      "offset": 13,
+      "length": 19,
       "code": {
-        "startLine": 51,
-        "length": 18,
-        "offset": 71,
-        "surroundingCode": "\n  configure<com.diffplug.gradle.spotless.SpotlessExtension> {\n    val EDITOR_CONFIG_KEYS: Set<String> = hashSetOf(\n      \"ij_kotlin_imports_layout\",\n      \"indent_size\","
+        "startLine": 64,
+        "length": 19,
+        "offset": 99,
+        "surroundingCode": "private const val MIN_LENGTH_FIRST_NAME = 3\nprivate const val MIN_LENGTH_LAST_NAME = 3\nprivate val EMAIL_ADDRESS_REGEX =\n  Regex(\"\"\"[a-zA-Z0-9+._%\\-']{1,256}@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+\"\"\")\n"
       }
     }
   ],
   "attributes": {
-    "module": "MVI_Coroutines_Flow",
-    "inspectionName": "LocalVariableName"
+    "module": "MVI_Coroutines_Flow.domain.main",
+    "inspectionName": "PrivatePropertyName"
   },
-  "hash": "afdc2335270c6d99b0ae13295632efc7cfec74daab44e91e4002932b89218e8d"
+  "hash": "fce99ae1d648a68bc9c854445a82858521fdd6006bd3258b7805d6bb45370a15"
 }]}
