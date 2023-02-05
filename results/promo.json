@@ -1,57 +1,57 @@
 {"version":"3","listProblem":[{
   "tool": "Code Inspection",
   "category": "Redundant constructs",
-  "type": "Unused symbol",
+  "type": "Unused receiver parameter",
   "severity": "High",
-  "comment": "Property \"getOrThrow\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "comment": "Receiver parameter is never used",
+  "detailsInfo": "Reports receiver parameter of extension functions and properties that is not used.\n\n**Remove redundant receiver parameter** can be used to amend the code automatically.",
   "sources": [
     {
       "type": "file",
-      "path": "test-utils/src/main/java/com/hoc/flowmvi/test_utils/utils.kt",
+      "path": "core/src/main/java/com/hoc/flowmvi/core/Extensions.kt",
       "language": "kotlin",
-      "line": 18,
-      "offset": 32,
-      "length": 10,
+      "line": 4,
+      "offset": 12,
+      "length": 4,
       "code": {
-        "startLine": 16,
-        "length": 10,
-        "offset": 73,
-        "surroundingCode": "  get() = fold(::identity, this::throws)\n\ninline val <L, R> Either<L, R>.getOrThrow: R\n  get() = getOrHandle(this::throws)\n"
+        "startLine": 2,
+        "length": 4,
+        "offset": 32,
+        "surroundingCode": "\n@Suppress(\"unused\")\ninline val Any?.unit\n  get() = Unit\n"
       }
     }
   ],
   "attributes": {
-    "module": "MVI_Coroutines_Flow.test-utils.main",
-    "inspectionName": "UnusedSymbol"
+    "module": "MVI_Coroutines_Flow.core.main",
+    "inspectionName": "UnusedReceiverParameter"
   },
-  "hash": "23fbac73f8e036becb6c78fb02a8ef36dad122e2345bdb7dd8cf7f3bb2849167"
+  "hash": "79dd62ef7821540552d44301e2f60ee16e37c8d20fc3d58787cae2223c010928"
 },{
   "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused symbol",
-  "severity": "High",
-  "comment": "Property \"leftOrThrow\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "category": "Style issues",
+  "type": "Class member can have 'private' visibility",
+  "severity": "Moderate",
+  "comment": "Property 'value' could be private",
+  "detailsInfo": "Reports declarations that can be made `private` to follow the encapsulation principle.\n\n**Example:**\n\n\n    class Service(val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n\nAfter the quick-fix is applied (considering there are no usages of `url` outside of `Service` class):\n\n\n    class Service(private val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n",
   "sources": [
     {
       "type": "file",
-      "path": "test-utils/src/main/java/com/hoc/flowmvi/test_utils/utils.kt",
+      "path": "core/src/main/java/com/hoc/flowmvi/core/selfReference.kt",
       "language": "kotlin",
-      "line": 15,
-      "offset": 32,
-      "length": 11,
+      "line": 11,
+      "offset": 34,
+      "length": 5,
       "code": {
-        "startLine": 13,
-        "length": 11,
-        "offset": 73,
-        "surroundingCode": "  get() = fold(::identity, this::throws)\n\ninline val <L, R> Either<L, R>.leftOrThrow: L\n  get() = fold(::identity, this::throws)\n"
+        "startLine": 9,
+        "length": 5,
+        "offset": 121,
+        "surroundingCode": "// See https://kotlinlang.org/docs/inline-classes.html for more information.\n@JvmInline\nvalue class SelfReference<T>(val value: T) : ReadOnlyProperty<Any?, T> {\n  override fun getValue(thisRef: Any?, property: KProperty<*>): T = value\n}"
       }
     }
   ],
   "attributes": {
-    "module": "MVI_Coroutines_Flow.test-utils.main",
-    "inspectionName": "UnusedSymbol"
+    "module": "MVI_Coroutines_Flow.core.main",
+    "inspectionName": "MemberVisibilityCanBePrivate"
   },
-  "hash": "685ca2a7682a6013500f522a84a4b7c325fd131292d004fff53283eed1c11483"
+  "hash": "288152ba8348cacc8e9b07ea11d3061b198d0ee50d59596311cdee2048af96b5"
 }]}
