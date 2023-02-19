@@ -4,6 +4,7 @@ import arrow.core.nonFatalOrThrow
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.ErrorResponse
 import com.hoc.flowmvi.domain.model.UserError
+import com.hoc.flowmvi.domain.model.UserValidationError
 import com.squareup.moshi.JsonAdapter
 import java.io.IOException
 import java.net.SocketException
@@ -48,7 +49,9 @@ internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter
       "internal-error" -> UserError.ServerError
       "invalid-id" -> UserError.InvalidId(id = errorResponse.data as String)
       "user-not-found" -> UserError.UserNotFound(id = errorResponse.data as String)
-      "validation-failed" -> UserError.ValidationFailed(errors = emptySet())
+      "validation-failed" -> UserError.ValidationFailed(
+        errors = UserValidationError.VALUES_SET // TODO(hoc081098): Map validation errors from server response
+      )
       else -> UserError.Unexpected
     }
   }

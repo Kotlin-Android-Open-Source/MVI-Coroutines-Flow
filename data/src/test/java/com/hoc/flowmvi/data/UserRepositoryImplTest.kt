@@ -1,9 +1,9 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.Either
+import com.hoc.flowmvi.core.EitherNes
 import com.hoc.flowmvi.core.Mapper
-import com.hoc.flowmvi.core.ValidatedNes
-import com.hoc.flowmvi.core.validNes
+import com.hoc.flowmvi.core.rightNes
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
@@ -97,7 +97,7 @@ private val USERS = listOf(
   ),
 ).map { it.valueOrThrow }
 
-private val VALID_NES_USERS = USERS.map(User::validNes)
+private val VALID_NES_USERS = USERS.map(User::rightNes)
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -108,7 +108,7 @@ class UserRepositoryImplTest {
 
   private lateinit var repo: UserRepositoryImpl
   private lateinit var userApiService: UserApiService
-  private lateinit var responseToDomain: Mapper<UserResponse, ValidatedNes<UserValidationError, User>>
+  private lateinit var responseToDomain: Mapper<UserResponse, EitherNes<UserValidationError, User>>
   private lateinit var domainToBody: Mapper<User, UserBody>
   private lateinit var errorMapper: Mapper<Throwable, UserError>
 
@@ -177,7 +177,7 @@ class UserRepositoryImplTest {
     val userResponse = USER_RESPONSES[0]
 
     coEvery { userApiService.remove(user.id) } returns userResponse
-    every { responseToDomain(userResponse) } returns user.validNes()
+    every { responseToDomain(userResponse) } returns user.rightNes()
 
     val result = repo.remove(user)
 
@@ -209,7 +209,7 @@ class UserRepositoryImplTest {
 
     coEvery { userApiService.add(USER_BODY) } returns userResponse
     every { domainToBody(user) } returns USER_BODY
-    every { responseToDomain(userResponse) } returns user.validNes()
+    every { responseToDomain(userResponse) } returns user.rightNes()
 
     val result = repo.add(user)
 
@@ -331,7 +331,7 @@ class UserRepositoryImplTest {
       coEvery { userApiService.remove(user.id) } returns userResponse
       every { domainToBody(user) } returns USER_BODY
       USER_RESPONSES.zip(USERS)
-        .forEach { (r, u) -> every { responseToDomain(r) } returns u.validNes() }
+        .forEach { (r, u) -> every { responseToDomain(r) } returns u.rightNes() }
 
       val events = mutableListOf<Either<UserError, List<User>>>()
       val job = launch(start = CoroutineStart.UNDISPATCHED) {

@@ -2,7 +2,6 @@ package com.hoc.flowmvi.ui.add
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import arrow.core.orNull
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
@@ -82,7 +81,7 @@ class AddVM(
         email = email,
         firstName = firstName,
         lastName = lastName,
-        userValidatedNes = User.create(
+        userEitherNes = User.create(
           email = email,
           firstName = firstName,
           lastName = lastName,
@@ -118,7 +117,7 @@ class AddVM(
     )
 
   private fun Flow<ViewIntent.Submit>.toAddUserChangeFlow(userFormFlow: SharedFlow<PartialStateChange.UserFormState>): Flow<PartialStateChange.AddUser> =
-    withLatestFrom(userFormFlow) { _, userForm -> userForm.userValidatedNes }
+    withLatestFrom(userFormFlow) { _, userForm -> userForm.userEitherNes }
       .debugLog("toAddUserChangeFlow::userValidatedNel")
       .mapNotNull { it.orNull() }
       .flatMapFirst { user ->

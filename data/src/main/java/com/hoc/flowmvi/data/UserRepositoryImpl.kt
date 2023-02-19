@@ -1,13 +1,13 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.Either.Companion.catch as catchEither
-import arrow.core.continuations.either
+import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.leftWiden
+import arrow.core.raise.either
 import arrow.core.right
-import arrow.core.valueOr
+import com.hoc.flowmvi.core.EitherNes
 import com.hoc.flowmvi.core.Mapper
-import com.hoc.flowmvi.core.ValidatedNes
 import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
@@ -40,7 +40,7 @@ import timber.log.Timber
 internal class UserRepositoryImpl(
   private val userApiService: UserApiService,
   private val dispatchers: AppCoroutineDispatchers,
-  private val responseToDomain: Mapper<UserResponse, ValidatedNes<UserValidationError, User>>,
+  private val responseToDomain: Mapper<UserResponse, EitherNes<UserValidationError, User>>,
   private val domainToBody: Mapper<User, UserBody>,
   private val errorMapper: Mapper<Throwable, UserError>,
 ) : UserRepository {
@@ -53,8 +53,8 @@ internal class UserRepositoryImpl(
 
   private val responseToDomainThrows: (UserResponse) -> User = { response ->
     responseToDomain(response).let { validated ->
-      validated.valueOr {
-        val t = UserError.ValidationFailed(it.toSet())
+      validated.getOrElse {
+        val t = UserError.ValidationFailed(it)
         logError(t, "Map $response to user")
         throw t
       }
@@ -100,21 +100,21 @@ internal class UserRepositoryImpl(
     }
 
   override suspend fun refresh() = catchEither { getUsersFromRemote().first() }
-    .tap { sendChange(Change.Refreshed(it)) }
+    .onRight { sendChange(Change.Refreshed(it)) }
     .map { }
-    .tapLeft { logError(it, "refresh") }
+    .onLeft { logError(it, "refresh") }
     .mapLeft(errorMapper)
 
-  override suspend fun remove(user: User) = either<UserError, Unit> {
+  override suspend fun remove(user: User) = either {
     withContext(dispatchers.io) {
       val response = catchEither { userApiService.remove(user.id) }
-        .tapLeft { logError(it, "remove user=$user") }
+        .onLeft { logError(it, "remove user=$user") }
         .mapLeft(errorMapper)
         .bind()
 
       val deleted = responseToDomain(response)
-        .mapLeft { UserError.ValidationFailed(it.toSet()) }
-        .tapInvalid { logError(it, "remove user=$user") }
+        .mapLeft { UserError.ValidationFailed(it) }
+        .onLeft { logError(it, "remove user=$user") }
         .bind()
 
       sendChange(Change.Removed(deleted))
@@ -124,13 +124,13 @@ internal class UserRepositoryImpl(
   override suspend fun add(user: User) = either<UserError, Unit> {
     withContext(dispatchers.io) {
       val response = catchEither { userApiService.add(domainToBody(user)) }
-        .tapLeft { logError(it, "add user=$user") }
+        .onLeft { logError(it, "add user=$user") }
         .mapLeft(errorMapper)
         .bind()
 
       val added = responseToDomain(response)
-        .mapLeft { UserError.ValidationFailed(it.toSet()) }
-        .tapInvalid { logError(it, "add user=$user") }
+        .mapLeft { UserError.ValidationFailed(it) }
+        .onLeft { logError(it, "add user=$user") }
         .bind()
 
       sendChange(Change.Added(added))
@@ -139,7 +139,7 @@ internal class UserRepositoryImpl(
 
   override suspend fun search(query: String) = withContext(dispatchers.io) {
     catchEither { userApiService.search(query).map(responseToDomainThrows) }
-      .tapLeft { logError(it, "search query=$query") }
+      .onLeft { logError(it, "search query=$query") }
       .mapLeft(errorMapper)
   }
 

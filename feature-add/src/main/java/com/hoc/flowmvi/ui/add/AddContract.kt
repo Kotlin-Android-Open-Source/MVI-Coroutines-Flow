@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.core.os.bundleOf
 import arrow.core.identity
-import com.hoc.flowmvi.core.ValidatedNes
+import com.hoc.flowmvi.core.EitherNes
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
@@ -71,15 +71,15 @@ internal sealed interface PartialStateChange {
     val email: String,
     val firstName: String,
     val lastName: String,
-    val userValidatedNes: ValidatedNes<UserValidationError, User>,
+    val userEitherNes: EitherNes<UserValidationError, User>,
   ) : PartialStateChange {
     override fun reduce(viewState: ViewState): ViewState = viewState.copy(
       email = email,
       firstName = firstName,
       lastName = lastName,
-      errors = userValidatedNes.fold(
-        fe = ::identity,
-        fa = { emptySet() },
+      errors = userEitherNes.fold(
+        ifLeft = ::identity,
+        ifRight = { emptySet() },
       ),
     )
   }

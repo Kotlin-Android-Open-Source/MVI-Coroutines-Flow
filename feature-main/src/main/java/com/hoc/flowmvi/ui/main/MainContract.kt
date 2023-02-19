@@ -33,7 +33,7 @@ data class UserItem(
     firstName = firstName,
     avatar = avatar,
     email = email
-  ).toEither().mapLeft { UserError.ValidationFailed(it.toSet()) }
+  ).mapLeft { UserError.ValidationFailed(it) }
 }
 
 sealed interface ViewIntent : MviIntent {

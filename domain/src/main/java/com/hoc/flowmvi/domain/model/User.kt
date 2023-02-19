@@ -1,10 +1,9 @@
 package com.hoc.flowmvi.domain.model
 
-import arrow.core.zip
-import arrow.typeclasses.Semigroup
-import com.hoc.flowmvi.core.ValidatedNes
-import com.hoc.flowmvi.core.nonEmptySet
-import com.hoc.flowmvi.core.validNes
+import arrow.core.Either
+import com.hoc.flowmvi.core.EitherNes
+import com.hoc.flowmvi.core.rightNes
+import com.hoc.flowmvi.core.zipOrAccumulateNonEmptySet
 
 data class User(
   val id: String,
@@ -20,45 +19,44 @@ data class User(
       firstName: String?,
       lastName: String?,
       avatar: String,
-    ): ValidatedNes<UserValidationError, User> = Email.create(email)
-      .zip(
-        Semigroup.nonEmptySet(),
-        FirstName.create(firstName),
-        LastName.create(lastName),
-      ) { e, f, l ->
-        User(
-          firstName = f,
-          email = e,
-          lastName = l,
-          id = id,
-          avatar = avatar
-        )
-      }
+    ): EitherNes<UserValidationError, User> = Either.zipOrAccumulateNonEmptySet(
+      Email.create(email),
+      FirstName.create(firstName),
+      LastName.create(lastName)
+    ) { e, f, l ->
+      User(
+        firstName = f,
+        email = e,
+        lastName = l,
+        id = id,
+        avatar = avatar
+      )
+    }
   }
 }
 
-internal fun validateFirstName(firstName: String?): ValidatedNes<UserValidationError, String> {
+internal fun validateFirstName(firstName: String?): EitherNes<UserValidationError, String> {
   if (firstName == null || firstName.length < MIN_LENGTH_FIRST_NAME) {
     return UserValidationError.TOO_SHORT_FIRST_NAME.asInvalidNes
   }
   // more validations here
-  return firstName.validNes()
+  return firstName.rightNes()
 }
 
-internal fun validateLastName(lastName: String?): ValidatedNes<UserValidationError, String> {
+internal fun validateLastName(lastName: String?): EitherNes<UserValidationError, String> {
   if (lastName == null || lastName.length < MIN_LENGTH_LAST_NAME) {
     return UserValidationError.TOO_SHORT_LAST_NAME.asInvalidNes
   }
   // more validations here
-  return lastName.validNes()
+  return lastName.rightNes()
 }
 
-internal fun validateEmail(email: String?): ValidatedNes<UserValidationError, String> {
+internal fun validateEmail(email: String?): EitherNes<UserValidationError, String> {
   if (email == null || !EMAIL_ADDRESS_REGEX.matches(email)) {
     return UserValidationError.INVALID_EMAIL_ADDRESS.asInvalidNes
   }
   // more validations here
-  return email.validNes()
+  return email.rightNes()
 }
 
 private const val MIN_LENGTH_FIRST_NAME = 3

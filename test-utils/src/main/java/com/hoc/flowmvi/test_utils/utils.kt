@@ -2,7 +2,7 @@ package com.hoc.flowmvi.test_utils
 
 import arrow.core.Either
 import arrow.core.Validated
-import arrow.core.getOrHandle
+import arrow.core.getOrElse
 import arrow.core.identity
 import arrow.core.valueOr
 
@@ -16,7 +16,7 @@ inline val <L, R> Either<L, R>.leftOrThrow: L
   get() = fold(::identity, this::throws)
 
 inline val <L, R> Either<L, R>.getOrThrow: R
-  get() = getOrHandle(this::throws)
+  get() = getOrElse(this::throws)
 
 @PublishedApi
 internal fun <E> Any.throws(it: E): Nothing =
