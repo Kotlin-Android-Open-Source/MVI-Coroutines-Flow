@@ -119,7 +119,7 @@ class AddVM(
   private fun Flow<ViewIntent.Submit>.toAddUserChangeFlow(userFormFlow: SharedFlow<PartialStateChange.UserFormState>): Flow<PartialStateChange.AddUser> =
     withLatestFrom(userFormFlow) { _, userForm -> userForm.userEitherNes }
       .debugLog("toAddUserChangeFlow::userValidatedNel")
-      .mapNotNull { it.orNull() }
+      .mapNotNull { it.getOrNull() }
       .flatMapFirst { user ->
         flowFromSuspend { addUser(user) }
           .map { result ->

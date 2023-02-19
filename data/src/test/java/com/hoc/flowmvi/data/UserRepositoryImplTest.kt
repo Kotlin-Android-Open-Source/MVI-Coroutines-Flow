@@ -146,7 +146,7 @@ class UserRepositoryImplTest {
     val result = repo.refresh()
 
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
+    assertNotNull(result.getOrNull())
 
     coVerify { userApiService.getUsers() }
     verifySequence {
@@ -181,7 +181,7 @@ class UserRepositoryImplTest {
     val result = repo.remove(user)
 
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
+    assertNotNull(result.getOrNull())
 
     coVerify { userApiService.remove(user.id) }
     coVerify { responseToDomain(userResponse) }
@@ -213,7 +213,7 @@ class UserRepositoryImplTest {
     val result = repo.add(user)
 
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
+    assertNotNull(result.getOrNull())
 
     coVerify { userApiService.add(USER_BODY) }
     verify { domainToBody(user) }
@@ -246,7 +246,7 @@ class UserRepositoryImplTest {
     val result = repo.search(q)
 
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
+    assertNotNull(result.getOrNull())
     assertContentEquals(USERS, result.rightValueOrThrow)
 
     coVerify { userApiService.search(q) }
@@ -287,7 +287,7 @@ class UserRepositoryImplTest {
     assertEquals(1, events.size)
     val result = events.single()
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
+    assertNotNull(result.getOrNull())
     assertEquals(USERS, result.rightValueOrThrow)
 
     coVerify { userApiService.getUsers() }
@@ -313,7 +313,7 @@ class UserRepositoryImplTest {
     assertEquals(1, events.size)
     val result = events.single()
     assertTrue(result.isLeft())
-    assertNull(result.orNull())
+    assertNull(result.getOrNull())
     assertEquals(UserError.NetworkError, result.leftValueOrThrow)
 
     coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times.
