@@ -319,19 +319,15 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.8.10",
           "type": "Library"
         },
         {
           "name": "Gradle: junit:junit:4.13.2",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: io.mockk:mockk:1.12.4",
           "type": "Library"
         },
         {
@@ -343,19 +339,23 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
+          "name": "Gradle: io.mockk:mockk-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.8.10",
           "type": "Library"
         },
         {
@@ -363,15 +363,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-common:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
           "type": "Library"
         },
         {
@@ -379,23 +371,55 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-dsl:1.12.4",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "name": "Gradle: io.mockk:mockk-agent-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-api-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-core-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.objenesis:objenesis:3.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.20",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.20",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.8.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.slf4j:slf4j-api:2.0.5",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.junit.jupiter:junit-jupiter:5.8.2",
           "type": "Library"
         },
         {
@@ -403,23 +427,27 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-params:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-engine:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.objenesis:objenesis:3.2",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-api:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+          "name": "Gradle: org.junit.platform:junit-platform-engine:1.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+          "name": "Gradle: org.junit.platform:junit-platform-commons:1.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.opentest4j:opentest4j:1.2.0",
           "type": "Library"
         }
       ]
@@ -448,7 +476,7 @@
           "type": "Own sources"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
           "type": "Library"
         },
         {
@@ -456,19 +484,19 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
           "type": "Library"
         },
         {
@@ -476,11 +504,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.28",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
@@ -525,19 +557,15 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.8.10",
           "type": "Library"
         },
         {
           "name": "Gradle: junit:junit:4.13.2",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: io.mockk:mockk:1.12.4",
           "type": "Library"
         },
         {
@@ -549,23 +577,27 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.insert-koin:koin-core-jvm:3.2.0",
+          "name": "Gradle: io.insert-koin:koin-core-jvm:3.3.3",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
+          "name": "Gradle: io.mockk:mockk-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.28",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.8.10",
           "type": "Library"
         },
         {
@@ -573,15 +605,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-common:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
           "type": "Library"
         },
         {
@@ -589,23 +613,55 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-dsl:1.12.4",
+          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+          "name": "Gradle: io.mockk:mockk-agent-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+          "name": "Gradle: io.mockk:mockk-agent-api-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+          "name": "Gradle: io.mockk:mockk-core-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.28",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.28",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.28",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.objenesis:objenesis:3.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.20",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.20",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.8.0",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.slf4j:slf4j-api:2.0.5",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.junit.jupiter:junit-jupiter:5.8.2",
           "type": "Library"
         },
         {
@@ -613,23 +669,27 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-params:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-engine:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.objenesis:objenesis:3.2",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-api:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+          "name": "Gradle: org.junit.platform:junit-platform-engine:1.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+          "name": "Gradle: org.junit.platform:junit-platform-commons:1.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.opentest4j:opentest4j:1.2.0",
           "type": "Library"
         }
       ]
@@ -662,7 +722,7 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
           "type": "Library"
         },
         {
@@ -670,23 +730,23 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.insert-koin:koin-core-jvm:3.2.0",
+          "name": "Gradle: io.insert-koin:koin-core-jvm:3.3.3",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
           "type": "Library"
         },
         {
@@ -694,11 +754,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.28",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
@@ -733,11 +797,11 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.8.10",
           "type": "Library"
         },
         {
@@ -745,11 +809,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
@@ -761,15 +821,19 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
+          "name": "Gradle: io.mockk:mockk-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.8.10",
           "type": "Library"
         },
         {
@@ -777,15 +841,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-common:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
           "type": "Library"
         },
         {
@@ -793,23 +849,43 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-dsl:1.12.4",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "name": "Gradle: io.mockk:mockk-agent-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-api-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-core-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.objenesis:objenesis:3.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.20",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.20",
           "type": "Library"
         },
         {
@@ -817,23 +893,39 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.8.0",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+          "name": "Gradle: org.slf4j:slf4j-api:2.0.5",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.objenesis:objenesis:3.2",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-params:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-engine:5.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-api:5.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.junit.platform:junit-platform-engine:1.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.junit.platform:junit-platform-commons:1.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.opentest4j:opentest4j:1.2.0",
           "type": "Library"
         }
       ]
@@ -866,11 +958,11 @@
           "type": "Module"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.8.10",
           "type": "Library"
         },
         {
@@ -878,11 +970,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
@@ -894,15 +982,19 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
+          "name": "Gradle: io.mockk:mockk-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-test:1.8.10",
           "type": "Library"
         },
         {
@@ -910,15 +1002,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-common:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
-          "type": "Library"
-        },
-        {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
           "type": "Library"
         },
         {
@@ -926,23 +1010,43 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-dsl:1.12.4",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.28",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+          "name": "Gradle: io.mockk:mockk-dsl-jvm:1.13.4",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+          "name": "Gradle: io.mockk:mockk-agent-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-agent-api-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: io.mockk:mockk-core-jvm:1.13.4",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.objenesis:objenesis:3.3",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.20",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.20",
           "type": "Library"
         },
         {
@@ -950,23 +1054,39 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+          "name": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.8.0",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+          "name": "Gradle: org.slf4j:slf4j-api:2.0.5",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.objenesis:objenesis:3.2",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-params:5.8.2",
           "type": "Library"
         },
         {
-          "name": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-engine:5.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.junit.jupiter:junit-jupiter-api:5.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.junit.platform:junit-platform-engine:1.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.junit.platform:junit-platform-commons:1.8.2",
+          "type": "Library"
+        },
+        {
+          "name": "Gradle: org.opentest4j:opentest4j:1.2.0",
           "type": "Library"
         }
       ]

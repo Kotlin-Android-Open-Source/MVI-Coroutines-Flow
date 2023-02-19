@@ -1,19 +1,19 @@
 {
-  "total": 19,
+  "total": 46,
   "tools inspection": {
-    "Code Inspection": 19
+    "Code Inspection": 46
   },
   "linter": "QDJVMC",
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow.git",
-        "revisionId": "2e94f9e2dc39b4ca796b8e5279e1cd447a979382",
-        "branch": "renovate/all-deps"
+        "revisionId": "3ac92fe62908aadb57af2c8a9cb5116ed644385c",
+        "branch": "deps_arrow_kotlin_others"
       }
     },
     "deviceId": "200820300000000-66a6-5f0a-fc38-da9785da4efd",
-    "jobUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/runs/4187611019",
+    "jobUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/runs/4216802437",
     "repoUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow.git"
   }
 }
