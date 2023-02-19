@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.ui.search
 
 import com.hoc.flowmvi.domain.model.User
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -44,6 +44,6 @@ class SearchContractTest {
       avatar = AVATAR,
       firstName = FIRST_NAME,
       lastName = LAST_NAME
-    ).valueOrThrow
+    ).rightValueOrThrow
   }
 }

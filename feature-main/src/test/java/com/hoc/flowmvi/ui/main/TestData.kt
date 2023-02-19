@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.ui.main
 
 import com.hoc.flowmvi.domain.model.User
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 
 internal val USERS = listOf(
   User.create(
@@ -25,6 +25,6 @@ internal val USERS = listOf(
     lastName = "last3",
     avatar = "3.png"
   ),
-).map { it.valueOrThrow }
+).map { it.rightValueOrThrow }
 
 internal val USER_ITEMS = USERS.map(::UserItem)

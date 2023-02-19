@@ -3,7 +3,7 @@ package com.hoc.flowmvi.data
 import android.util.Log
 import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
 import com.hoc.flowmvi.domain.repository.UserRepository
-import com.hoc.flowmvi.test_utils.getOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.test.Test
@@ -61,7 +61,7 @@ class UserRepositoryImplRealAPITest : KoinTest {
         .getUsers()
         .first()
       assertTrue(result.isRight())
-      assertTrue(result.getOrThrow.isNotEmpty())
+      assertTrue(result.rightValueOrThrow.isNotEmpty())
     }
     Unit
   }

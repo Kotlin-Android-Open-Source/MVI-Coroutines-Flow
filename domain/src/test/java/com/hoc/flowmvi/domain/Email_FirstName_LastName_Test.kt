@@ -1,10 +1,10 @@
 package com.hoc.flowmvi.ui.add
 
-import arrow.core.orNull
 import com.hoc.flowmvi.domain.model.Email
 import com.hoc.flowmvi.domain.model.FirstName
 import com.hoc.flowmvi.domain.model.LastName
 import com.hoc.flowmvi.domain.model.UserValidationError
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -16,10 +16,10 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateEmail_withValidEmail_returnsValid() {
     val validated = Email.create("hoc081098@gmail.com")
-    assertTrue(validated.isValid)
+    assertTrue(validated.isRight())
     assertEquals(
       "hoc081098@gmail.com",
-      validated.orNull()?.value,
+      validated.rightValueOrThrow.value,
     )
   }
 
@@ -46,10 +46,10 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateFirstName_withValidFirstName_returnsValid() {
     val validated = FirstName.create("hoc081098")
-    assertTrue(validated.isValid)
+    assertTrue(validated.isRight())
     assertEquals(
       "hoc081098",
-      validated.orNull()?.value,
+      validated.rightValueOrThrow.value,
     )
   }
 
@@ -76,10 +76,10 @@ class Email_FirstName_LastName_Test {
   @Test
   fun testCreateLastName_withValidLastName_returnsValid() {
     val validated = LastName.create("hoc081098")
-    assertTrue(validated.isValid)
+    assertTrue(validated.isRight())
     assertEquals(
       "hoc081098",
-      validated.orNull()?.value,
+      validated.rightValueOrThrow.value,
     )
   }
 

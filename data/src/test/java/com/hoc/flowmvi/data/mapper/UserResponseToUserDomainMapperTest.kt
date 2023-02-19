@@ -3,8 +3,8 @@ package com.hoc.flowmvi.data.mapper
 import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserValidationError
-import com.hoc.flowmvi.test_utils.invalidValueOrThrow
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.leftValueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -23,7 +23,7 @@ class UserResponseToUserDomainMapperTest {
         avatar = "avatar",
       )
     )
-    assertTrue(validated.isValid)
+    assertTrue(validated.isRight())
     assertEquals(
       User.create(
         id = "id",
@@ -31,8 +31,8 @@ class UserResponseToUserDomainMapperTest {
         firstName = "first",
         lastName = "last",
         avatar = "avatar",
-      ).valueOrThrow,
-      validated.valueOrThrow,
+      ).rightValueOrThrow,
+      validated.rightValueOrThrow,
     )
   }
 
@@ -47,10 +47,10 @@ class UserResponseToUserDomainMapperTest {
         avatar = "avatar",
       )
     )
-    assertTrue(validated.isInvalid)
+    assertTrue(validated.isLeft())
     assertEquals(
       UserValidationError.INVALID_EMAIL_ADDRESS,
-      validated.invalidValueOrThrow.single(),
+      validated.leftValueOrThrow.single(),
     )
   }
 }

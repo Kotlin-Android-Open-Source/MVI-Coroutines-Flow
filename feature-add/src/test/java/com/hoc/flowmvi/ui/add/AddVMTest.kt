@@ -12,7 +12,7 @@ import com.hoc.flowmvi.domain.usecase.AddUserUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
 import com.hoc.flowmvi.mvi_testing.mapRight
 import com.hoc.flowmvi.mvi_testing.returnsWithDelay
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
@@ -165,7 +165,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       firstName = NAME,
       lastName = NAME,
       avatar = ""
-    ).valueOrThrow
+    ).rightValueOrThrow
 
     coEvery { addUser(user) } returnsWithDelay Unit.right()
 
@@ -225,7 +225,7 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
       firstName = NAME,
       lastName = NAME,
       avatar = ""
-    ).valueOrThrow
+    ).rightValueOrThrow
     val networkError = UserError.NetworkError
 
     coEvery { addUser(user) } returnsWithDelay networkError.left()

@@ -12,9 +12,8 @@ import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
-import com.hoc.flowmvi.test_utils.getOrThrow
-import com.hoc.flowmvi.test_utils.leftOrThrow
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.leftValueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -95,7 +94,7 @@ private val USERS = listOf(
     lastName = "last",
     avatar = "avatar3",
   ),
-).map { it.valueOrThrow }
+).map { it.rightValueOrThrow }
 
 private val VALID_NES_USERS = USERS.map(User::rightNes)
 
@@ -166,7 +165,7 @@ class UserRepositoryImplTest {
     val result = repo.refresh()
 
     assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
     coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
@@ -197,7 +196,7 @@ class UserRepositoryImplTest {
     val result = repo.remove(user)
 
     assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
     coVerify(exactly = 1) { userApiService.remove(user.id) }
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
@@ -231,7 +230,7 @@ class UserRepositoryImplTest {
     val result = repo.add(user)
 
     assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
 
     coVerify(exactly = 1) { userApiService.add(USER_BODY) }
     verify(exactly = 1) { domainToBody(user) }
@@ -248,7 +247,7 @@ class UserRepositoryImplTest {
 
     assertTrue(result.isRight())
     assertNotNull(result.orNull())
-    assertContentEquals(USERS, result.getOrThrow)
+    assertContentEquals(USERS, result.rightValueOrThrow)
 
     coVerify { userApiService.search(q) }
     coVerifySequence {
@@ -267,7 +266,7 @@ class UserRepositoryImplTest {
     val result = repo.search(q)
 
     assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
 
     coVerify(exactly = 1) { userApiService.search(q) }
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
@@ -289,7 +288,7 @@ class UserRepositoryImplTest {
     val result = events.single()
     assertTrue(result.isRight())
     assertNotNull(result.orNull())
-    assertEquals(USERS, result.getOrThrow)
+    assertEquals(USERS, result.rightValueOrThrow)
 
     coVerify { userApiService.getUsers() }
     verifySequence {
@@ -315,7 +314,7 @@ class UserRepositoryImplTest {
     val result = events.single()
     assertTrue(result.isLeft())
     assertNull(result.orNull())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
 
     coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times.
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
@@ -343,7 +342,7 @@ class UserRepositoryImplTest {
       job.cancel()
 
       assertContentEquals(
-        events.map { it.getOrThrow },
+        events.map { it.rightValueOrThrow },
         listOf(
           USERS.dropLast(1),
           USERS,
