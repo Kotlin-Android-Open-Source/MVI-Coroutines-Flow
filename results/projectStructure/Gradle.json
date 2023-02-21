@@ -2,20 +2,20 @@
   "gradleJvm": "13",
   "libraries": [
     {
-      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
-      "gradleName": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
+      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
+      "gradleName": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlin",
       "artifactId": "kotlin-stdlib-jdk8",
-      "version": "1.8.10"
+      "version": "1.7.20"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.8.10",
-      "gradleName": "org.jetbrains.kotlin:kotlin-test-junit:1.8.10",
+      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
+      "gradleName": "org.jetbrains.kotlin:kotlin-test-junit:1.7.20",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlin",
       "artifactId": "kotlin-test-junit",
-      "version": "1.8.10"
+      "version": "1.7.20"
     },
     {
       "ideaName": "Gradle: junit:junit:4.13.2",
@@ -26,12 +26,20 @@
       "version": "4.13.2"
     },
     {
-      "ideaName": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.28",
-      "gradleName": "io.arrow-kt:arrow-core-jvm:1.1.6-alpha.28",
+      "ideaName": "Gradle: io.mockk:mockk:1.12.4",
+      "gradleName": "io.mockk:mockk:1.12.4",
+      "unresolved": false,
+      "groupId": "io.mockk",
+      "artifactId": "mockk",
+      "version": "1.12.4"
+    },
+    {
+      "ideaName": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.3",
+      "gradleName": "io.arrow-kt:arrow-core-jvm:1.1.3",
       "unresolved": false,
       "groupId": "io.arrow-kt",
       "artifactId": "arrow-core-jvm",
-      "version": "1.1.6-alpha.28"
+      "version": "1.1.3"
     },
     {
       "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.4",
@@ -50,36 +58,28 @@
       "version": "1.6.4"
     },
     {
-      "ideaName": "Gradle: io.mockk:mockk-jvm:1.13.4",
-      "gradleName": "io.mockk:mockk-jvm:1.13.4",
-      "unresolved": false,
-      "groupId": "io.mockk",
-      "artifactId": "mockk-jvm",
-      "version": "1.13.4"
-    },
-    {
-      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
-      "gradleName": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
+      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
+      "gradleName": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlin",
       "artifactId": "kotlin-stdlib-jdk7",
-      "version": "1.8.10"
+      "version": "1.7.20"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
-      "gradleName": "org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
+      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
+      "gradleName": "org.jetbrains.kotlin:kotlin-stdlib:1.7.20",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlin",
       "artifactId": "kotlin-stdlib",
-      "version": "1.8.10"
+      "version": "1.7.20"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-test:1.8.10",
-      "gradleName": "org.jetbrains.kotlin:kotlin-test:1.8.10",
+      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-test:1.7.20",
+      "gradleName": "org.jetbrains.kotlin:kotlin-test:1.7.20",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlin",
       "artifactId": "kotlin-test",
-      "version": "1.8.10"
+      "version": "1.7.20"
     },
     {
       "ideaName": "Gradle: org.hamcrest:hamcrest-core:1.3",
@@ -90,12 +90,28 @@
       "version": "1.3"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
-      "gradleName": "org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
+      "ideaName": "Gradle: io.mockk:mockk-common:1.12.4",
+      "gradleName": "io.mockk:mockk-common:1.12.4",
+      "unresolved": false,
+      "groupId": "io.mockk",
+      "artifactId": "mockk-common",
+      "version": "1.12.4"
+    },
+    {
+      "ideaName": "Gradle: io.mockk:mockk-dsl-jvm:1.12.4",
+      "gradleName": "io.mockk:mockk-dsl-jvm:1.12.4",
+      "unresolved": false,
+      "groupId": "io.mockk",
+      "artifactId": "mockk-dsl-jvm",
+      "version": "1.12.4"
+    },
+    {
+      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
+      "gradleName": "org.jetbrains.kotlin:kotlin-stdlib-common:1.7.20",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlin",
       "artifactId": "kotlin-stdlib-common",
-      "version": "1.8.10"
+      "version": "1.7.20"
     },
     {
       "ideaName": "Gradle: org.jetbrains:annotations:13.0",
@@ -106,84 +122,44 @@
       "version": "13.0"
     },
     {
-      "ideaName": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.28",
-      "gradleName": "io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.28",
+      "ideaName": "Gradle: io.mockk:mockk-dsl:1.12.4",
+      "gradleName": "io.mockk:mockk-dsl:1.12.4",
       "unresolved": false,
-      "groupId": "io.arrow-kt",
-      "artifactId": "arrow-atomic-jvm",
-      "version": "1.1.6-alpha.28"
+      "groupId": "io.mockk",
+      "artifactId": "mockk-dsl",
+      "version": "1.12.4"
     },
     {
-      "ideaName": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.28",
-      "gradleName": "io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.28",
+      "ideaName": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.3",
+      "gradleName": "io.arrow-kt:arrow-continuations-jvm:1.1.3",
       "unresolved": false,
       "groupId": "io.arrow-kt",
       "artifactId": "arrow-continuations-jvm",
-      "version": "1.1.6-alpha.28"
+      "version": "1.1.3"
     },
     {
-      "ideaName": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.28",
-      "gradleName": "io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.28",
+      "ideaName": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.3",
+      "gradleName": "io.arrow-kt:arrow-annotations-jvm:1.1.3",
       "unresolved": false,
       "groupId": "io.arrow-kt",
       "artifactId": "arrow-annotations-jvm",
-      "version": "1.1.6-alpha.28"
+      "version": "1.1.3"
     },
     {
-      "ideaName": "Gradle: io.mockk:mockk-dsl-jvm:1.13.4",
-      "gradleName": "io.mockk:mockk-dsl-jvm:1.13.4",
-      "unresolved": false,
-      "groupId": "io.mockk",
-      "artifactId": "mockk-dsl-jvm",
-      "version": "1.13.4"
-    },
-    {
-      "ideaName": "Gradle: io.mockk:mockk-agent-jvm:1.13.4",
-      "gradleName": "io.mockk:mockk-agent-jvm:1.13.4",
+      "ideaName": "Gradle: io.mockk:mockk-agent-jvm:1.12.4",
+      "gradleName": "io.mockk:mockk-agent-jvm:1.12.4",
       "unresolved": false,
       "groupId": "io.mockk",
       "artifactId": "mockk-agent-jvm",
-      "version": "1.13.4"
+      "version": "1.12.4"
     },
     {
-      "ideaName": "Gradle: io.mockk:mockk-agent-api-jvm:1.13.4",
-      "gradleName": "io.mockk:mockk-agent-api-jvm:1.13.4",
+      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.6.0",
+      "gradleName": "org.jetbrains.kotlin:kotlin-reflect:1.6.0",
       "unresolved": false,
-      "groupId": "io.mockk",
-      "artifactId": "mockk-agent-api-jvm",
-      "version": "1.13.4"
-    },
-    {
-      "ideaName": "Gradle: io.mockk:mockk-core-jvm:1.13.4",
-      "gradleName": "io.mockk:mockk-core-jvm:1.13.4",
-      "unresolved": false,
-      "groupId": "io.mockk",
-      "artifactId": "mockk-core-jvm",
-      "version": "1.13.4"
-    },
-    {
-      "ideaName": "Gradle: org.objenesis:objenesis:3.3",
-      "gradleName": "org.objenesis:objenesis:3.3",
-      "unresolved": false,
-      "groupId": "org.objenesis",
-      "artifactId": "objenesis",
-      "version": "3.3"
-    },
-    {
-      "ideaName": "Gradle: net.bytebuddy:byte-buddy:1.12.20",
-      "gradleName": "net.bytebuddy:byte-buddy:1.12.20",
-      "unresolved": false,
-      "groupId": "net.bytebuddy",
-      "artifactId": "byte-buddy",
-      "version": "1.12.20"
-    },
-    {
-      "ideaName": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.20",
-      "gradleName": "net.bytebuddy:byte-buddy-agent:1.12.20",
-      "unresolved": false,
-      "groupId": "net.bytebuddy",
-      "artifactId": "byte-buddy-agent",
-      "version": "1.12.20"
+      "groupId": "org.jetbrains.kotlin",
+      "artifactId": "kotlin-reflect",
+      "version": "1.6.0"
     },
     {
       "ideaName": "Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.21",
@@ -194,84 +170,52 @@
       "version": "1.21"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-reflect:1.8.0",
-      "gradleName": "org.jetbrains.kotlin:kotlin-reflect:1.8.0",
+      "ideaName": "Gradle: io.mockk:mockk-agent-common:1.12.4",
+      "gradleName": "io.mockk:mockk-agent-common:1.12.4",
       "unresolved": false,
-      "groupId": "org.jetbrains.kotlin",
-      "artifactId": "kotlin-reflect",
-      "version": "1.8.0"
+      "groupId": "io.mockk",
+      "artifactId": "mockk-agent-common",
+      "version": "1.12.4"
     },
     {
-      "ideaName": "Gradle: org.slf4j:slf4j-api:2.0.5",
-      "gradleName": "org.slf4j:slf4j-api:2.0.5",
+      "ideaName": "Gradle: io.mockk:mockk-agent-api:1.12.4",
+      "gradleName": "io.mockk:mockk-agent-api:1.12.4",
       "unresolved": false,
-      "groupId": "org.slf4j",
-      "artifactId": "slf4j-api",
-      "version": "2.0.5"
+      "groupId": "io.mockk",
+      "artifactId": "mockk-agent-api",
+      "version": "1.12.4"
     },
     {
-      "ideaName": "Gradle: org.junit.jupiter:junit-jupiter:5.8.2",
-      "gradleName": "org.junit.jupiter:junit-jupiter:5.8.2",
+      "ideaName": "Gradle: org.objenesis:objenesis:3.2",
+      "gradleName": "org.objenesis:objenesis:3.2",
       "unresolved": false,
-      "groupId": "org.junit.jupiter",
-      "artifactId": "junit-jupiter",
-      "version": "5.8.2"
+      "groupId": "org.objenesis",
+      "artifactId": "objenesis",
+      "version": "3.2"
     },
     {
-      "ideaName": "Gradle: org.junit.jupiter:junit-jupiter-params:5.8.2",
-      "gradleName": "org.junit.jupiter:junit-jupiter-params:5.8.2",
+      "ideaName": "Gradle: net.bytebuddy:byte-buddy:1.12.6",
+      "gradleName": "net.bytebuddy:byte-buddy:1.12.6",
       "unresolved": false,
-      "groupId": "org.junit.jupiter",
-      "artifactId": "junit-jupiter-params",
-      "version": "5.8.2"
+      "groupId": "net.bytebuddy",
+      "artifactId": "byte-buddy",
+      "version": "1.12.6"
     },
     {
-      "ideaName": "Gradle: org.junit.jupiter:junit-jupiter-engine:5.8.2",
-      "gradleName": "org.junit.jupiter:junit-jupiter-engine:5.8.2",
+      "ideaName": "Gradle: net.bytebuddy:byte-buddy-agent:1.12.6",
+      "gradleName": "net.bytebuddy:byte-buddy-agent:1.12.6",
       "unresolved": false,
-      "groupId": "org.junit.jupiter",
-      "artifactId": "junit-jupiter-engine",
-      "version": "5.8.2"
+      "groupId": "net.bytebuddy",
+      "artifactId": "byte-buddy-agent",
+      "version": "1.12.6"
     },
     {
-      "ideaName": "Gradle: org.junit.jupiter:junit-jupiter-api:5.8.2",
-      "gradleName": "org.junit.jupiter:junit-jupiter-api:5.8.2",
-      "unresolved": false,
-      "groupId": "org.junit.jupiter",
-      "artifactId": "junit-jupiter-api",
-      "version": "5.8.2"
-    },
-    {
-      "ideaName": "Gradle: org.junit.platform:junit-platform-engine:1.8.2",
-      "gradleName": "org.junit.platform:junit-platform-engine:1.8.2",
-      "unresolved": false,
-      "groupId": "org.junit.platform",
-      "artifactId": "junit-platform-engine",
-      "version": "1.8.2"
-    },
-    {
-      "ideaName": "Gradle: org.junit.platform:junit-platform-commons:1.8.2",
-      "gradleName": "org.junit.platform:junit-platform-commons:1.8.2",
-      "unresolved": false,
-      "groupId": "org.junit.platform",
-      "artifactId": "junit-platform-commons",
-      "version": "1.8.2"
-    },
-    {
-      "ideaName": "Gradle: org.opentest4j:opentest4j:1.2.0",
-      "gradleName": "org.opentest4j:opentest4j:1.2.0",
-      "unresolved": false,
-      "groupId": "org.opentest4j",
-      "artifactId": "opentest4j",
-      "version": "1.2.0"
-    },
-    {
-      "ideaName": "Gradle: io.insert-koin:koin-core-jvm:3.3.3",
-      "gradleName": "io.insert-koin:koin-core-jvm:3.3.3",
+      "ideaName": "Gradle: io.insert-koin:koin-core-jvm:3.2.0",
+      "gradleName": "io.insert-koin:koin-core-jvm:3.2.0",
       "unresolved": false,
       "groupId": "io.insert-koin",
       "artifactId": "koin-core-jvm",
-      "version": "3.3.3"
+      "version": "3.2.0"
     },
     {
       "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
