@@ -1,79 +1,79 @@
 {"version":"3","listProblem":[{
   "tool": "Code Inspection",
-  "category": "Naming conventions",
-  "type": "Local variable naming convention",
-  "severity": "Moderate",
-  "comment": "Local variable name 'EDITOR_CONFIG_KEYS' should start with a lowercase letter",
-  "detailsInfo": "Reports local variables that do not follow the naming conventions.\n\nYou can specify the required pattern in the inspection options.\n\n[Recommended naming conventions](https://kotlinlang.org/docs/coding-conventions.html#function-names): it has to start with a lowercase letter, use camel case and no underscores.\n\n**Example:**\n\n\n      fun fibonacciNumber(index: Int): Long = when(index) {\n          0 -> 0\n          else -> {\n              // does not follow naming conventions: contains underscore symbol (`_`)\n              var number_one: Long = 0\n              // does not follow naming conventions: starts with an uppercase letter\n              var NUMBER_TWO: Long = 1\n              // follow naming conventions: starts with a lowercase letter, use camel case and no underscores.\n              var numberThree: Long = number_one + NUMBER_TWO\n\n              for(currentIndex in 2..index) {\n                  numberThree = number_one + NUMBER_TWO\n                  number_one = NUMBER_TWO\n                  NUMBER_TWO = numberThree\n              }\n              numberThree\n          }\n      }\n",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Class \"TestAppCoroutineDispatchers\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
   "sources": [
     {
       "type": "file",
-      "path": "build.gradle.kts",
+      "path": "test-utils/src/main/java/com/hoc/flowmvi/test_utils/TestAppCoroutineDispatchers.kt",
       "language": "kotlin",
-      "line": 53,
-      "offset": 9,
-      "length": 18,
+      "line": 8,
+      "offset": 7,
+      "length": 27,
       "code": {
-        "startLine": 51,
-        "length": 18,
-        "offset": 71,
-        "surroundingCode": "\n  configure<com.diffplug.gradle.spotless.SpotlessExtension> {\n    val EDITOR_CONFIG_KEYS: Set<String> = hashSetOf(\n      \"ij_kotlin_imports_layout\",\n      \"indent_size\","
+        "startLine": 6,
+        "length": 27,
+        "offset": 34,
+        "surroundingCode": "\n@ExperimentalCoroutinesApi\nclass TestAppCoroutineDispatchers(private val testCoroutineDispatcher: TestDispatcher) :\n  AppCoroutineDispatchers {\n  override val main get() = testCoroutineDispatcher"
       }
     }
   ],
   "attributes": {
-    "module": "MVI_Coroutines_Flow",
-    "inspectionName": "LocalVariableName"
+    "module": "MVI_Coroutines_Flow.test-utils.main",
+    "inspectionName": "UnusedSymbol"
   },
-  "hash": "afdc2335270c6d99b0ae13295632efc7cfec74daab44e91e4002932b89218e8d"
+  "hash": "985a3dfcac53eb57aa62a9c9aff656101f90c21ddcb0646ea17e7196665c5837"
 },{
   "tool": "Code Inspection",
-  "category": "Style issues",
-  "type": "Class member can have 'private' visibility",
-  "severity": "Moderate",
-  "comment": "Property 'VALUES' could be private",
-  "detailsInfo": "Reports declarations that can be made `private` to follow the encapsulation principle.\n\n**Example:**\n\n\n    class Service(val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n\nAfter the quick-fix is applied (considering there are no usages of `url` outside of `Service` class):\n\n\n    class Service(private val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Type alias \"Mapper\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "core/src/main/java/com/hoc/flowmvi/core/Mapper.kt",
+      "language": "kotlin",
+      "line": 3,
+      "offset": 11,
+      "length": 6,
+      "code": {
+        "startLine": 1,
+        "length": 6,
+        "offset": 40,
+        "surroundingCode": "package com.hoc.flowmvi.core\n\ntypealias Mapper<T, R> = (T) -> R\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.core.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "d360bb0f895d6d3fda4e76101743183d9f5aaad6adae113dca04bb8686ab2376"
+},{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Property \"VALUES_SET\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
   "sources": [
     {
       "type": "file",
       "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserValidationError.kt",
       "language": "kotlin",
-      "line": 20,
+      "line": 22,
       "offset": 9,
-      "length": 6,
-      "code": {
-        "startLine": 18,
-        "length": 6,
-        "offset": 85,
-        "surroundingCode": "     * See [KT-48872](https://youtrack.jetbrains.com/issue/KT-48872)\n     */\n    val VALUES: List<UserValidationError> = values().asList()\n\n    val VALUES_SET: NonEmptySet<UserValidationError> = VALUES.toNonEmptySetOrNull()!!"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.domain.main",
-    "inspectionName": "MemberVisibilityCanBePrivate"
-  },
-  "hash": "8e03fba3ef3d35170437c1e67d429b0bb1b37b9d77c17ed42250f04e7c372e42"
-},{
-  "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused symbol",
-  "severity": "High",
-  "comment": "Object \"Unexpected\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
-      "language": "kotlin",
-      "line": 9,
-      "offset": 10,
       "length": 10,
       "code": {
-        "startLine": 7,
+        "startLine": 20,
         "length": 10,
-        "offset": 126,
-        "surroundingCode": "  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()\n  object ServerError : UserError()\n  object Unexpected : UserError()\n}\n"
+        "offset": 71,
+        "surroundingCode": "    val VALUES: List<UserValidationError> = values().asList()\n\n    val VALUES_SET: NonEmptySet<UserValidationError> = VALUES.toNonEmptySetOrNull()!!\n  }\n}"
       }
     }
   ],
@@ -81,117 +81,5 @@
     "module": "MVI_Coroutines_Flow.domain.main",
     "inspectionName": "UnusedSymbol"
   },
-  "hash": "7da87f4dd71e51343ef4c24fbb6c861c87329762f8b925d977847186d11bb65d"
-},{
-  "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused symbol",
-  "severity": "High",
-  "comment": "Class \"ValidationFailed\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
-      "language": "kotlin",
-      "line": 7,
-      "offset": 14,
-      "length": 16,
-      "code": {
-        "startLine": 5,
-        "length": 16,
-        "offset": 122,
-        "surroundingCode": "  data class UserNotFound(val id: String) : UserError()\n  data class InvalidId(val id: String) : UserError()\n  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()\n  object ServerError : UserError()\n  object Unexpected : UserError()"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.domain.main",
-    "inspectionName": "UnusedSymbol"
-  },
-  "hash": "fc2b9b37161cebac2863a25c8e9e1d9e2df8d90fd3da129ac636e981c6b22528"
-},{
-  "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused symbol",
-  "severity": "High",
-  "comment": "Class \"InvalidId\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
-      "language": "kotlin",
-      "line": 6,
-      "offset": 14,
-      "length": 9,
-      "code": {
-        "startLine": 4,
-        "length": 9,
-        "offset": 105,
-        "surroundingCode": "  object NetworkError : UserError()\n  data class UserNotFound(val id: String) : UserError()\n  data class InvalidId(val id: String) : UserError()\n  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()\n  object ServerError : UserError()"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.domain.main",
-    "inspectionName": "UnusedSymbol"
-  },
-  "hash": "7051705e763b87b1f01c54c0f3c4b96673f0ed1f9d063b0c71094b5f0c9ab01c"
-},{
-  "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused symbol",
-  "severity": "High",
-  "comment": "Class \"UserNotFound\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
-      "language": "kotlin",
-      "line": 5,
-      "offset": 14,
-      "length": 12,
-      "code": {
-        "startLine": 3,
-        "length": 12,
-        "offset": 88,
-        "surroundingCode": "sealed class UserError : Throwable() {\n  object NetworkError : UserError()\n  data class UserNotFound(val id: String) : UserError()\n  data class InvalidId(val id: String) : UserError()\n  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.domain.main",
-    "inspectionName": "UnusedSymbol"
-  },
-  "hash": "7f7fe8135f5a969a397c414bc8ee9979bdebd08bc059823ab55a32e55376a30e"
-},{
-  "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused symbol",
-  "severity": "High",
-  "comment": "Object \"ServerError\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/UserError.kt",
-      "language": "kotlin",
-      "line": 8,
-      "offset": 10,
-      "length": 11,
-      "code": {
-        "startLine": 6,
-        "length": 11,
-        "offset": 144,
-        "surroundingCode": "  data class InvalidId(val id: String) : UserError()\n  data class ValidationFailed(val errors: Set<UserValidationError>) : UserError()\n  object ServerError : UserError()\n  object Unexpected : UserError()\n}"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.domain.main",
-    "inspectionName": "UnusedSymbol"
-  },
-  "hash": "efbe54359c63c35d42b65fa1d1218c72da8f03f1f6ef40e4777e8a3b8bdfec96"
+  "hash": "f420504ba2c3f670130b0a38651f0d59b80e5dd7fc7c825266b7ed460af3d8b7"
 }]}
