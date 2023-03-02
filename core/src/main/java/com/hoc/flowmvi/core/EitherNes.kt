@@ -8,6 +8,9 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+/**
+ * A typealias for [Either] with [NonEmptySet] as the left side.
+ */
 typealias EitherNes<E, A> = Either<NonEmptySet<E>, A>
 
 @Suppress("NOTHING_TO_INLINE")
