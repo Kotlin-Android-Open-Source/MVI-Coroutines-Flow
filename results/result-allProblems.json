@@ -1237,7 +1237,7 @@
     "module": "MVI_Coroutines_Flow.feature-search",
     "inspectionName": "UnstableApiUsage"
   },
-  "hash": "7b0e8d86e0ac59649c90d574b59a148cc77cbb1689d899138384cbfc49a3ab94"
+  "hash": "87f925b06dcbe405780727932ae95a800fbf4292a8fc7db26704c1080cfba860"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -1268,7 +1268,7 @@
     "module": "MVI_Coroutines_Flow.feature-search",
     "inspectionName": "UnstableApiUsage"
   },
-  "hash": "68beebe6a7afa7b025850ceeb48a54c09cf202a7493b1e436d6f5defb953f572"
+  "hash": "f234a036d6dcd020bc8b9f067457b47e765507c00067de73db856131f8c416e8"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -1299,7 +1299,7 @@
     "module": "MVI_Coroutines_Flow.feature-search",
     "inspectionName": "UnstableApiUsage"
   },
-  "hash": "77fe7ff8a7b5a9f8faa2424bd5126bdffdd327926e4b9f65600bcc218fd0e210"
+  "hash": "8e57db0ac98346f78e37830d13b4c22a713280306d9e187833afd3d5fbf26ade"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -1330,7 +1330,7 @@
     "module": "MVI_Coroutines_Flow.feature-search",
     "inspectionName": "UnstableApiUsage"
   },
-  "hash": "85870118f479321b23d5c09e9d8582e0767ef07983057850cf9defb27339db53"
+  "hash": "4ba9c7ba38d54439b8c400fcc9a7feaff0aeb2655704355cdd967f2b9cdddd8a"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -1361,7 +1361,7 @@
     "module": "MVI_Coroutines_Flow.feature-search",
     "inspectionName": "UnstableApiUsage"
   },
-  "hash": "d85d2b827b8b1350c2115d4286b65af2b16a28f08d6205de13f9af9e2c20f12f"
+  "hash": "5020031b653abc9244df30044d3e7623f15656748285021432aeae4042a9abfa"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -1392,7 +1392,7 @@
     "module": "MVI_Coroutines_Flow.feature-search",
     "inspectionName": "UnstableApiUsage"
   },
-  "hash": "71f88fee7f719a227a02b85a40fb506f12bad2102e6bbf479a3da18c30527c4e"
+  "hash": "52df381703811b7ea40b78426def9629c39234903abffaeba7e98efae262a904"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
@@ -1423,5 +1423,5 @@
     "module": "MVI_Coroutines_Flow.feature-search",
     "inspectionName": "UnstableApiUsage"
   },
-  "hash": "e07222da1c6a41bee12ed237165ee2fbdb799cee02052c1532600139f4cbb761"
+  "hash": "e56bb8c6769e5e715ad252571c491234ea018123111c5ff4e4d5daaa78ab8e65"
 }]}
