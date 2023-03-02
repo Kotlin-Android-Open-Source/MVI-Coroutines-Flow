@@ -2,7 +2,7 @@
   "libraries": [
     {
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/7.6/generated-gradle-jars/gradle-api-7.6.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/7.6.1/generated-gradle-jars/gradle-api-7.6.1.jar!/"
       ]
     },
     {
