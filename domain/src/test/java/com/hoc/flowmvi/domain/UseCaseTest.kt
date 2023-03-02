@@ -11,7 +11,7 @@ import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -51,7 +51,7 @@ private val USERS = listOf(
     lastName = "last3",
     avatar = "3.png"
   ),
-).map { it.valueOrThrow }
+).map { it.rightValueOrThrow }
 
 @ExperimentalCoroutinesApi
 class UseCaseTest {

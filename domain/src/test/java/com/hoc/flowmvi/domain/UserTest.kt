@@ -2,8 +2,8 @@ package com.hoc.flowmvi.domain
 
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserValidationError
-import com.hoc.flowmvi.test_utils.invalidValueOrThrow
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.leftValueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -23,8 +23,8 @@ class UserTest {
       lastName = VALID_NAME,
       avatar = AVATAR,
     )
-    assertTrue(validated.isValid)
-    validated.valueOrThrow.let { user ->
+    assertTrue(validated.isRight())
+    validated.rightValueOrThrow.let { user ->
       assertEquals(ID, user.id)
       assertEquals(VALID_EMAIL, user.email.value)
       assertEquals(VALID_NAME, user.firstName.value)
@@ -42,8 +42,8 @@ class UserTest {
       lastName = VALID_NAME,
       avatar = AVATAR,
     )
-    assertTrue(validated.isInvalid)
-    assertEquals(UserValidationError.INVALID_EMAIL_ADDRESS, validated.invalidValueOrThrow.single())
+    assertTrue(validated.isLeft())
+    assertEquals(UserValidationError.INVALID_EMAIL_ADDRESS, validated.leftValueOrThrow.single())
   }
 
   @Test
@@ -55,8 +55,8 @@ class UserTest {
       lastName = VALID_NAME,
       avatar = AVATAR,
     )
-    assertTrue(validated.isInvalid)
-    assertEquals(UserValidationError.TOO_SHORT_FIRST_NAME, validated.invalidValueOrThrow.single())
+    assertTrue(validated.isLeft())
+    assertEquals(UserValidationError.TOO_SHORT_FIRST_NAME, validated.leftValueOrThrow.single())
   }
 
   @Test
@@ -68,8 +68,8 @@ class UserTest {
       lastName = "h",
       avatar = AVATAR,
     )
-    assertTrue(validated.isInvalid)
-    assertEquals(UserValidationError.TOO_SHORT_LAST_NAME, validated.invalidValueOrThrow.single())
+    assertTrue(validated.isLeft())
+    assertEquals(UserValidationError.TOO_SHORT_LAST_NAME, validated.leftValueOrThrow.single())
   }
 
   @Test
@@ -81,13 +81,13 @@ class UserTest {
       lastName = VALID_NAME,
       avatar = AVATAR,
     )
-    assertTrue(validated.isInvalid)
+    assertTrue(validated.isLeft())
     assertEquals(
       setOf(
         UserValidationError.INVALID_EMAIL_ADDRESS,
         UserValidationError.TOO_SHORT_FIRST_NAME,
       ),
-      validated.invalidValueOrThrow.toSet()
+      validated.leftValueOrThrow.toSet()
     )
   }
 
@@ -100,13 +100,13 @@ class UserTest {
       lastName = "h",
       avatar = AVATAR,
     )
-    assertTrue(validated.isInvalid)
+    assertTrue(validated.isLeft())
     assertEquals(
       setOf(
         UserValidationError.INVALID_EMAIL_ADDRESS,
         UserValidationError.TOO_SHORT_LAST_NAME,
       ),
-      validated.invalidValueOrThrow.toSet()
+      validated.leftValueOrThrow.toSet()
     )
   }
 
@@ -119,13 +119,13 @@ class UserTest {
       lastName = "h",
       avatar = AVATAR,
     )
-    assertTrue(validated.isInvalid)
+    assertTrue(validated.isLeft())
     assertEquals(
       setOf(
         UserValidationError.TOO_SHORT_FIRST_NAME,
         UserValidationError.TOO_SHORT_LAST_NAME,
       ),
-      validated.invalidValueOrThrow.toSet()
+      validated.leftValueOrThrow.toSet()
     )
   }
 
@@ -138,10 +138,10 @@ class UserTest {
       lastName = "h",
       avatar = AVATAR,
     )
-    assertTrue(validated.isInvalid)
+    assertTrue(validated.isLeft())
     assertEquals(
       UserValidationError.values().toSet(),
-      validated.invalidValueOrThrow.toSet()
+      validated.leftValueOrThrow.toSet()
     )
   }
 }

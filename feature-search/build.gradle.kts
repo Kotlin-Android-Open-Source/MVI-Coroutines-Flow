@@ -1,7 +1,7 @@
 plugins {
   androidLib
   kotlinAndroid
-  nocopyPlugin
+  pokoPlugin
 }
 
 android {

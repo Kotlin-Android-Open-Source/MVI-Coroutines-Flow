@@ -7,16 +7,16 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "0.46.1"
-const val kotlinVersion = "1.7.20"
+const val kotlinVersion = "1.8.10"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
 
-  const val compileSdkVersion = 32
-  const val buildToolsVersion = "32.0.0"
+  const val compileSdkVersion = 33
+  const val buildToolsVersion = "33.0.1"
 
   const val minSdkVersion = 21
-  const val targetSdkVersion = 32
+  const val targetSdkVersion = 33
 
   private const val MAJOR = 2
   private const val MINOR = 1
@@ -28,16 +28,16 @@ object appConfig {
 object deps {
   object androidx {
     const val appCompat = "androidx.appcompat:appcompat:1.4.2"
-    const val coreKtx = "androidx.core:core-ktx:1.8.0"
+    const val coreKtx = "androidx.core:core-ktx:1.9.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-    const val material = "com.google.android.material:material:1.6.1"
+    const val material = "com.google.android.material:material:1.8.0"
     const val startup = "androidx.startup:startup-runtime:1.1.1"
   }
 
   object lifecycle {
-    private const val version = "2.5.0"
+    private const val version = "2.5.1"
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
@@ -49,7 +49,7 @@ object deps {
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.13.0"
-    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.9.1"
+    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.10"
   }
 
   object coroutines {
@@ -61,7 +61,7 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.2.0"
+    private const val version = "3.3.3"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
@@ -75,7 +75,7 @@ object deps {
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
-    private const val version = "1.1.3"
+    private const val version = "1.1.6-alpha.28"
     const val core = "io.arrow-kt:arrow-core:$version"
   }
 
@@ -91,7 +91,7 @@ object deps {
       }
     }
 
-    const val mockk = "io.mockk:mockk:1.12.4"
+    const val mockk = "io.mockk:mockk:1.13.4"
     const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
   }
 }
@@ -105,7 +105,7 @@ inline val PDsS.kotlinAndroid: PDS get() = id("kotlin-android")
 inline val PDsS.kotlin: PDS get() = id("kotlin")
 inline val PDsS.kotlinKapt: PDS get() = id("kotlin-kapt")
 inline val PDsS.kotlinParcelize: PDS get() = id("kotlin-parcelize")
-inline val PDsS.nocopyPlugin: PDS get() = id("dev.ahmedmourad.nocopy.nocopy-gradle-plugin")
+inline val PDsS.pokoPlugin: PDS get() = id("dev.drewhamilton.poko")
 
 inline val DependencyHandler.domain get() = project(":domain")
 inline val DependencyHandler.core get() = project(":core")

@@ -2,7 +2,7 @@ package com.hoc.flowmvi.data.mapper
 
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.domain.model.User
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -18,7 +18,7 @@ class UserDomainToUserBodyMapperTest {
         firstName = "first",
         lastName = "last",
         avatar = "avatar",
-      ).valueOrThrow
+      ).rightValueOrThrow
     )
 
     assertEquals(

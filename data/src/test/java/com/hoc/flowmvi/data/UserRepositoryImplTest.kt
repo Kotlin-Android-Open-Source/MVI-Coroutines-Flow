@@ -1,9 +1,9 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.Either
+import com.hoc.flowmvi.core.EitherNes
 import com.hoc.flowmvi.core.Mapper
-import com.hoc.flowmvi.core.ValidatedNes
-import com.hoc.flowmvi.core.validNes
+import com.hoc.flowmvi.core.rightNes
 import com.hoc.flowmvi.data.remote.UserApiService
 import com.hoc.flowmvi.data.remote.UserBody
 import com.hoc.flowmvi.data.remote.UserResponse
@@ -12,9 +12,8 @@ import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.test_utils.TestAppCoroutineDispatchers
 import com.hoc.flowmvi.test_utils.TestCoroutineDispatcherRule
-import com.hoc.flowmvi.test_utils.getOrThrow
-import com.hoc.flowmvi.test_utils.leftOrThrow
-import com.hoc.flowmvi.test_utils.valueOrThrow
+import com.hoc.flowmvi.test_utils.leftValueOrThrow
+import com.hoc.flowmvi.test_utils.rightValueOrThrow
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -95,9 +94,9 @@ private val USERS = listOf(
     lastName = "last",
     avatar = "avatar3",
   ),
-).map { it.valueOrThrow }
+).map { it.rightValueOrThrow }
 
-private val VALID_NES_USERS = USERS.map(User::validNes)
+private val VALID_NES_USERS = USERS.map(User::rightNes)
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -108,7 +107,7 @@ class UserRepositoryImplTest {
 
   private lateinit var repo: UserRepositoryImpl
   private lateinit var userApiService: UserApiService
-  private lateinit var responseToDomain: Mapper<UserResponse, ValidatedNes<UserValidationError, User>>
+  private lateinit var responseToDomain: Mapper<UserResponse, EitherNes<UserValidationError, User>>
   private lateinit var domainToBody: Mapper<User, UserBody>
   private lateinit var errorMapper: Mapper<Throwable, UserError>
 
@@ -147,7 +146,7 @@ class UserRepositoryImplTest {
     val result = repo.refresh()
 
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
+    assertNotNull(result.getOrNull())
 
     coVerify { userApiService.getUsers() }
     verifySequence {
@@ -166,7 +165,7 @@ class UserRepositoryImplTest {
     val result = repo.refresh()
 
     assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
     coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
@@ -177,12 +176,12 @@ class UserRepositoryImplTest {
     val userResponse = USER_RESPONSES[0]
 
     coEvery { userApiService.remove(user.id) } returns userResponse
-    every { responseToDomain(userResponse) } returns user.validNes()
+    every { responseToDomain(userResponse) } returns user.rightNes()
 
     val result = repo.remove(user)
 
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
+    assertNotNull(result.getOrNull())
 
     coVerify { userApiService.remove(user.id) }
     coVerify { responseToDomain(userResponse) }
@@ -197,7 +196,7 @@ class UserRepositoryImplTest {
     val result = repo.remove(user)
 
     assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
     coVerify(exactly = 1) { userApiService.remove(user.id) }
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
   }
@@ -209,12 +208,12 @@ class UserRepositoryImplTest {
 
     coEvery { userApiService.add(USER_BODY) } returns userResponse
     every { domainToBody(user) } returns USER_BODY
-    every { responseToDomain(userResponse) } returns user.validNes()
+    every { responseToDomain(userResponse) } returns user.rightNes()
 
     val result = repo.add(user)
 
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
+    assertNotNull(result.getOrNull())
 
     coVerify { userApiService.add(USER_BODY) }
     verify { domainToBody(user) }
@@ -231,7 +230,7 @@ class UserRepositoryImplTest {
     val result = repo.add(user)
 
     assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
 
     coVerify(exactly = 1) { userApiService.add(USER_BODY) }
     verify(exactly = 1) { domainToBody(user) }
@@ -247,8 +246,8 @@ class UserRepositoryImplTest {
     val result = repo.search(q)
 
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
-    assertContentEquals(USERS, result.getOrThrow)
+    assertNotNull(result.getOrNull())
+    assertContentEquals(USERS, result.rightValueOrThrow)
 
     coVerify { userApiService.search(q) }
     coVerifySequence {
@@ -267,7 +266,7 @@ class UserRepositoryImplTest {
     val result = repo.search(q)
 
     assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
 
     coVerify(exactly = 1) { userApiService.search(q) }
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
@@ -288,8 +287,8 @@ class UserRepositoryImplTest {
     assertEquals(1, events.size)
     val result = events.single()
     assertTrue(result.isRight())
-    assertNotNull(result.orNull())
-    assertEquals(USERS, result.getOrThrow)
+    assertNotNull(result.getOrNull())
+    assertEquals(USERS, result.rightValueOrThrow)
 
     coVerify { userApiService.getUsers() }
     verifySequence {
@@ -314,8 +313,8 @@ class UserRepositoryImplTest {
     assertEquals(1, events.size)
     val result = events.single()
     assertTrue(result.isLeft())
-    assertNull(result.orNull())
-    assertEquals(UserError.NetworkError, result.leftOrThrow)
+    assertNull(result.getOrNull())
+    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
 
     coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times.
     verify(exactly = 1) { errorMapper(ofType<IOException>()) }
@@ -331,7 +330,7 @@ class UserRepositoryImplTest {
       coEvery { userApiService.remove(user.id) } returns userResponse
       every { domainToBody(user) } returns USER_BODY
       USER_RESPONSES.zip(USERS)
-        .forEach { (r, u) -> every { responseToDomain(r) } returns u.validNes() }
+        .forEach { (r, u) -> every { responseToDomain(r) } returns u.rightNes() }
 
       val events = mutableListOf<Either<UserError, List<User>>>()
       val job = launch(start = CoroutineStart.UNDISPATCHED) {
@@ -343,7 +342,7 @@ class UserRepositoryImplTest {
       job.cancel()
 
       assertContentEquals(
-        events.map { it.getOrThrow },
+        events.map { it.rightValueOrThrow },
         listOf(
           USERS.dropLast(1),
           USERS,

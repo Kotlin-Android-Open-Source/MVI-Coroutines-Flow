@@ -8,11 +8,9 @@ import com.hoc.flowmvi.mvi_base.MviIntent
 import com.hoc.flowmvi.mvi_base.MviSingleEvent
 import com.hoc.flowmvi.mvi_base.MviViewState
 import com.hoc.flowmvi.mvi_base.MviViewStateSaver
-import dev.ahmedmourad.nocopy.annotations.NoCopy
+import dev.drewhamilton.poko.Poko
 
-@Suppress("DataClassPrivateConstructor")
-@NoCopy
-data class UserItem private constructor(
+@Poko class UserItem private constructor(
   val id: String,
   val email: String,
   val avatar: String,
