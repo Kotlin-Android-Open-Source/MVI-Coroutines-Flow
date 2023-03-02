@@ -20,7 +20,7 @@ buildscript {
     classpath("dev.drewhamilton.poko:poko-gradle-plugin:0.11.0")
     classpath("org.jacoco:org.jacoco.core:0.8.8")
     classpath("com.vanniktech:gradle-android-junit-jacoco-plugin:0.17.0-SNAPSHOT")
-    classpath("com.github.ben-manes:gradle-versions-plugin:0.45.0")
+    classpath("com.github.ben-manes:gradle-versions-plugin:0.46.0")
   }
 }
 
