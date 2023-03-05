@@ -3,27 +3,27 @@
   "category": "Redundant constructs",
   "type": "Unused symbol",
   "severity": "High",
-  "comment": "Class \"TestAppCoroutineDispatchers\" is never used",
+  "comment": "Property \"domainModule\" is never used",
   "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
   "sources": [
     {
       "type": "file",
-      "path": "test-utils/src/main/java/com/hoc/flowmvi/test_utils/TestAppCoroutineDispatchers.kt",
+      "path": "domain/src/main/java/com/hoc/flowmvi/domain/DomainModule.kt",
       "language": "kotlin",
-      "line": 8,
-      "offset": 7,
-      "length": 27,
+      "line": 12,
+      "offset": 5,
+      "length": 12,
       "code": {
-        "startLine": 6,
-        "length": 27,
-        "offset": 34,
-        "surroundingCode": "\n@ExperimentalCoroutinesApi\nclass TestAppCoroutineDispatchers(private val testCoroutineDispatcher: TestDispatcher) :\n  AppCoroutineDispatchers {\n  override val main get() = testCoroutineDispatcher"
+        "startLine": 10,
+        "length": 12,
+        "offset": 15,
+        "surroundingCode": "\n@JvmField\nval domainModule = module {\n  factoryOf(::GetUsersUseCase)\n"
       }
     }
   ],
   "attributes": {
-    "module": "MVI_Coroutines_Flow.test-utils.main",
+    "module": "MVI_Coroutines_Flow.domain.main",
     "inspectionName": "UnusedSymbol"
   },
-  "hash": "985a3dfcac53eb57aa62a9c9aff656101f90c21ddcb0646ea17e7196665c5837"
+  "hash": "894266b4fd12ddfb0994b088dad3b1729af5118f5867144a1740adb380534cea"
 }]}
