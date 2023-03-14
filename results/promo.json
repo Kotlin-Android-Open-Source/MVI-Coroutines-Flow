@@ -1,1 +1,29 @@
-{"version":"3","listProblem":[]}
+{"version":"3","listProblem":[{
+  "tool": "Code Inspection",
+  "category": "Style issues",
+  "type": "Class member can have 'private' visibility",
+  "severity": "Moderate",
+  "comment": "Property 'testDispatcher' could be private",
+  "detailsInfo": "Reports declarations that can be made `private` to follow the encapsulation principle.\n\n**Example:**\n\n\n    class Service(val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n\nAfter the quick-fix is applied (considering there are no usages of `url` outside of `Service` class):\n\n\n    class Service(private val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "test-utils/src/main/java/com/hoc/flowmvi/test_utils/TestCoroutineDispatcherRule.kt",
+      "language": "kotlin",
+      "line": 17,
+      "offset": 7,
+      "length": 14,
+      "code": {
+        "startLine": 15,
+        "length": 14,
+        "offset": 68,
+        "surroundingCode": "@ExperimentalCoroutinesApi\nclass TestCoroutineDispatcherRule(\n  val testDispatcher: TestDispatcher = StandardTestDispatcher(),\n) : TestWatcher() {\n  override fun starting(description: Description) {"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.test-utils.main",
+    "inspectionName": "MemberVisibilityCanBePrivate"
+  },
+  "hash": "5dadc8f8484076a239c1127f2d33e978497e4f3be17de99f1bba09baf0ff721e"
+}]}
