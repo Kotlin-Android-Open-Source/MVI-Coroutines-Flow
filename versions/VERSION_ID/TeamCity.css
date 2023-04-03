@@ -1,4 +1,5 @@
 /*This is a TeamCity global styles mock*/
+/* TODO(QD-1218): remove global styles from Standalone version, use it only for testing */
 
 /*body {*/
 /*    background: #fff;*/
@@ -128,4 +129,14 @@ input[disabled] {
 	background-color: #f9f9f9;
 	color: #999;
 	border-color: #ccc #ddd #ddd;
+}
+
+/* Introduced in https://youtrack.jetbrains.com/issue/TW-75902 */
+@media (prefers-reduced-motion) {
+	:not(.resize-triggers),
+	:not(.resize-triggers)::before,
+	:not(.resize-triggers)::after {
+		transition: none !important;
+		animation: none !important;
+	}
 }

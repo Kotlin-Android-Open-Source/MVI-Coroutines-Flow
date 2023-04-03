@@ -8,12 +8,12 @@
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow.git",
-        "revisionId": "a2b173828ddf1d433530d4d1e7f914e0a2b155e4",
-        "branch": "master"
+        "revisionId": "71142c98565f7cbf3f11e3602a0aeb9201ca9f5e",
+        "branch": "renovate/all-deps"
       }
     },
     "deviceId": "200820300000000-66a6-5f0a-fc38-da9785da4efd",
-    "jobUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/runs/4486537657",
+    "jobUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/actions/runs/4595179725",
     "repoUrl": "https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow.git"
   }
 }
