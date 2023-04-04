@@ -43,9 +43,9 @@
       ]
     },
     {
-      "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
+      "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.8.10/7c002ac41f547a82e81dfebd2a20577a738dbf3f/kotlin-stdlib-jdk8-1.8.10.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.8.20/73576ddf378c5b4f1f6b449fe6b119b8183fc078/kotlin-stdlib-jdk8-1.8.20.jar!/"
       ]
     },
     {
@@ -61,21 +61,21 @@
       ]
     },
     {
-      "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10",
+      "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.8.10/cb726a23c808a850a43e7d6b9d1ba91b02fe9f05/kotlin-stdlib-jdk7-1.8.10.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.8.20/3aa51faf20aae8b31e1a4bc54f8370673d7b7df4/kotlin-stdlib-jdk7-1.8.20.jar!/"
       ]
     },
     {
-      "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.10",
+      "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.8.20",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.8.10/6d5560a229477df9406943d5feda5618e98eb64c/kotlin-stdlib-1.8.10.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.8.20/e72fc5e03ec6c064c678a6bd0d955c88d55b0c4a/kotlin-stdlib-1.8.20.jar!/"
       ]
     },
     {
-      "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.10",
+      "name": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.8.20",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.8.10/a61b182458550492c12aee66157d7b524a63a5ec/kotlin-stdlib-common-1.8.10.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.8.20/5eddaaf234c8c49d03eebeb6a14feb7f90faca71/kotlin-stdlib-common-1.8.20.jar!/"
       ],
       "properties": {}
     },
