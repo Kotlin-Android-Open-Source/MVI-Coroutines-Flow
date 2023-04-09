@@ -1,7 +1,8 @@
-# MVI-Coroutines-Flow
-## MVI-Coroutines-Flow-Clean-Architecture
-## MVI-Coroutines-Flow-Clean-Architecture-ArrowKt
-## MVI-Coroutines-Flow-Clean-Architecture-ArrowKt-KoinDI
+## MVI-Coroutines-Flow
+- MVI-Coroutines-Flow-Clean-Architecture
+- MVI-Coroutines-Flow-Clean-Architecture-ArrowKt
+- MVI-Coroutines-Flow-Clean-Architecture-ArrowKt-KoinDI
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -32,15 +33,10 @@ Liked some of my work? Buy me a coffee (or more likely a beer)
 
 ## More
 
-### 1. Jetpack Compose Version
+- [Jetpack Compose Version](https://github.com/Kotlin-Android-Open-Source/Jetpack-Compose-MVI-Coroutines-Flow)
+- [Pagination Horizontal List in Vertical List](https://github.com/Kotlin-Android-Open-Source/Pagination-MVI-Flow)
 
-👉 https://github.com/Kotlin-Android-Open-Source/Jetpack-Compose-MVI-Coroutines-Flow
-
-### 2. Pagination Horizontal List in Vertical List
-
-👉 https://github.com/Kotlin-Android-Open-Source/Pagination-MVI-Flow
-
-### Light theme
+<details><summary> Light theme Screenshots </summary>
 
 | List view state | Error view state |
 | --------------- | ---------------- |
@@ -50,7 +46,10 @@ Liked some of my work? Buy me a coffee (or more likely a beer)
 | ------------ | ------------ |
 | <img src="screenshots/Screenshot_03.png" height="480"> | <img src="screenshots/Screenshot_04.png" height="480"> |
 
-### Dark theme
+</details>
+
+
+<details><summary> Dark theme Screenshots </summary> 
 
 | List view state | Error view state |
 | --------------- | ---------------- |
@@ -61,10 +60,13 @@ Liked some of my work? Buy me a coffee (or more likely a beer)
 | <img src="screenshots/Screenshot_dark_03.png" height="480"> | <img src="screenshots/Screenshot_dark_04.png" height="480"> |
 
 <!-- Pixel 3 XL API 30 -->
+</details>
+
+<br>
 
 ## MVI pattern
 
-This pattern was specified by [André Medeiros (Staltz)](https://twitter.com/andrestaltz) for a JavaScript framework he has written called [cycle.js](https://cycle.js.org/). From a theoretical (and mathematical) point of view we could describe Model-View-Intent as follows [^1]
+This pattern was specified by [André Medeiros (Staltz)](https://twitter.com/andrestaltz) for a JavaScript framework he has written called [cycle.js](https://cycle.js.org/)
 
 <p align="center">
   <img src="MVI_diagram.png">
@@ -86,24 +88,8 @@ This pattern was specified by [André Medeiros (Staltz)](https://twitter.com/and
 - [Model-View-Intent Design Pattern on Android](https://xizzhu.me/post/2021-06-21-android-mvi-kotlin-coroutines-flow-compose/)
 - [Reactive Apps with Model-View-Intent](https://hannesdorfmann.com/android/mosby3-mvi-1/)
 
-## Contributors ✨
+## Contributors 
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://www.linkedin.com/in/hoc081098/"><img src="https://avatars.githubusercontent.com/u/36917223?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Petrus Nguyễn Thái Học</b></sub></a><br /><a href="https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/commits?author=hoc081098" title="Code">💻</a> <a href="#maintenance-hoc081098" title="Maintenance">🚧</a> <a href="#ideas-hoc081098" title="Ideas, Planning, & Feedback">🤔</a> <a href="#design-hoc081098" title="Design">🎨</a> <a href="https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/issues?q=author%3Ahoc081098" title="Bug reports">🐛</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-
-[^1]: https://hannesdorfmann.com/android/mosby3-mvi-2/
+<a href="https://github.com/Kotlin-Android-Open-Source/MVI-Coroutines-Flow/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Kotlin-Android-Open-Source/MVI-Coroutines-Flow" />
+</a>
