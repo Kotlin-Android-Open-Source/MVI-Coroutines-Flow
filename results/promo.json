@@ -1,1 +1,29 @@
-{"version":"3","listProblem":[]}
+{"version":"3","listProblem":[{
+  "tool": "Code Inspection",
+  "category": "Redundant constructs",
+  "type": "Unused symbol",
+  "severity": "High",
+  "comment": "Type alias \"Mapper\" is never used",
+  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "core/src/main/java/com/hoc/flowmvi/core/Mapper.kt",
+      "language": "kotlin",
+      "line": 3,
+      "offset": 11,
+      "length": 6,
+      "code": {
+        "startLine": 1,
+        "length": 6,
+        "offset": 40,
+        "surroundingCode": "package com.hoc.flowmvi.core\n\ntypealias Mapper<T, R> = (T) -> R\n"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.core.main",
+    "inspectionName": "UnusedSymbol"
+  },
+  "hash": "d360bb0f895d6d3fda4e76101743183d9f5aaad6adae113dca04bb8686ab2376"
+}]}
