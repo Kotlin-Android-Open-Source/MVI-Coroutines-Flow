@@ -7,7 +7,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "0.46.1"
-const val kotlinVersion = "1.8.10"
+const val kotlinVersion = "1.8.21"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -27,17 +27,17 @@ object appConfig {
 
 object deps {
   object androidx {
-    const val appCompat = "androidx.appcompat:appcompat:1.4.2"
-    const val coreKtx = "androidx.core:core-ktx:1.9.0"
+    const val appCompat = "androidx.appcompat:appcompat:1.6.1"
+    const val coreKtx = "androidx.core:core-ktx:1.10.1"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
-    const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
+    const val recyclerView = "androidx.recyclerview:recyclerview:1.3.0"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-    const val material = "com.google.android.material:material:1.8.0"
+    const val material = "com.google.android.material:material:1.9.0"
     const val startup = "androidx.startup:startup-runtime:1.1.1"
   }
 
   object lifecycle {
-    private const val version = "2.5.1"
+    private const val version = "2.6.1"
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
@@ -47,13 +47,13 @@ object deps {
   object squareup {
     const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
-    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10"
-    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.13.0"
-    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.10"
+    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-SNAPSHOT"
+    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.15.0"
+    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.11"
   }
 
   object coroutines {
-    private const val version = "1.6.4"
+    private const val version = "1.7.1"
 
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
@@ -61,7 +61,7 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.3.3"
+    private const val version = "3.4.0"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
@@ -69,13 +69,13 @@ object deps {
     const val test = "io.insert-koin:koin-test:$version"
   }
 
-  const val coil = "io.coil-kt:coil:2.1.0"
+  const val coil = "io.coil-kt:coil:2.3.0"
   const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.4.0"
-  const val flowExt = "io.github.hoc081098:FlowExt:0.5.0"
+  const val flowExt = "io.github.hoc081098:FlowExt:0.6.1"
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
-    private const val version = "1.1.6-alpha.28"
+    private const val version = "1.1.6-alpha.91"
     const val core = "io.arrow-kt:arrow-core:$version"
   }
 
@@ -83,15 +83,15 @@ object deps {
     const val junit = "junit:junit:4.13.2"
 
     object androidx {
-      const val core = "androidx.test:core-ktx:1.4.0"
-      const val junit = "androidx.test.ext:junit-ktx:1.1.3"
+      const val core = "androidx.test:core-ktx:1.5.0"
+      const val junit = "androidx.test.ext:junit-ktx:1.1.5"
 
       object espresso {
         const val core = "androidx.test.espresso:espresso-core:3.4.0"
       }
     }
 
-    const val mockk = "io.mockk:mockk:1.13.4"
+    const val mockk = "io.mockk:mockk:1.13.5"
     const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
   }
 }
