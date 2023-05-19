@@ -1,57 +1,29 @@
 {"version":"3","listProblem":[{
   "tool": "Code Inspection",
-  "category": "Style issues",
-  "type": "Class member can have 'private' visibility",
+  "category": "Naming conventions",
+  "type": "Local variable naming convention",
   "severity": "Moderate",
-  "comment": "Property 'value' could be private",
-  "detailsInfo": "Reports declarations that can be made `private` to follow the encapsulation principle.\n\n**Example:**\n\n\n    class Service(val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n\nAfter the quick-fix is applied (considering there are no usages of `url` outside of `Service` class):\n\n\n    class Service(private val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n",
+  "comment": "Local variable name 'EDITOR_CONFIG_KEYS' should start with a lowercase letter",
+  "detailsInfo": "Reports local variables that do not follow the naming conventions.\n\nYou can specify the required pattern in the inspection options.\n\n[Recommended naming conventions](https://kotlinlang.org/docs/coding-conventions.html#function-names): it has to start with a lowercase letter, use camel case and no underscores.\n\n**Example:**\n\n\n      fun fibonacciNumber(index: Int): Long = when(index) {\n          0 -> 0\n          else -> {\n              // does not follow naming conventions: contains underscore symbol (`_`)\n              var number_one: Long = 0\n              // does not follow naming conventions: starts with an uppercase letter\n              var NUMBER_TWO: Long = 1\n              // follow naming conventions: starts with a lowercase letter, use camel case and no underscores.\n              var numberThree: Long = number_one + NUMBER_TWO\n\n              for(currentIndex in 2..index) {\n                  numberThree = number_one + NUMBER_TWO\n                  number_one = NUMBER_TWO\n                  NUMBER_TWO = numberThree\n              }\n              numberThree\n          }\n      }\n",
   "sources": [
     {
       "type": "file",
-      "path": "core/src/main/java/com/hoc/flowmvi/core/selfReference.kt",
+      "path": "build.gradle.kts",
       "language": "kotlin",
-      "line": 11,
-      "offset": 34,
-      "length": 5,
+      "line": 53,
+      "offset": 9,
+      "length": 18,
       "code": {
-        "startLine": 9,
-        "length": 5,
-        "offset": 121,
-        "surroundingCode": "// See https://kotlinlang.org/docs/inline-classes.html for more information.\n@JvmInline\nvalue class SelfReference<T>(val value: T) : ReadOnlyProperty<Any?, T> {\n  override fun getValue(thisRef: Any?, property: KProperty<*>): T = value\n}"
+        "startLine": 51,
+        "length": 18,
+        "offset": 71,
+        "surroundingCode": "\n  configure<com.diffplug.gradle.spotless.SpotlessExtension> {\n    val EDITOR_CONFIG_KEYS: Set<String> = hashSetOf(\n      \"ij_kotlin_imports_layout\",\n      \"indent_size\","
       }
     }
   ],
   "attributes": {
-    "module": "MVI_Coroutines_Flow.core.main",
-    "inspectionName": "MemberVisibilityCanBePrivate"
+    "module": "MVI_Coroutines_Flow",
+    "inspectionName": "LocalVariableName"
   },
-  "hash": "288152ba8348cacc8e9b07ea11d3061b198d0ee50d59596311cdee2048af96b5"
-},{
-  "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused symbol",
-  "severity": "High",
-  "comment": "Class \"TestAppCoroutineDispatchers\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "test-utils/src/main/java/com/hoc/flowmvi/test_utils/TestAppCoroutineDispatchers.kt",
-      "language": "kotlin",
-      "line": 8,
-      "offset": 7,
-      "length": 27,
-      "code": {
-        "startLine": 6,
-        "length": 27,
-        "offset": 34,
-        "surroundingCode": "\n@ExperimentalCoroutinesApi\nclass TestAppCoroutineDispatchers(private val testCoroutineDispatcher: TestDispatcher) :\n  AppCoroutineDispatchers {\n  override val main get() = testCoroutineDispatcher"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.test-utils.main",
-    "inspectionName": "UnusedSymbol"
-  },
-  "hash": "985a3dfcac53eb57aa62a9c9aff656101f90c21ddcb0646ea17e7196665c5837"
+  "hash": "de9ca0a696ea9656a4b1578b55c324b6bae9a8437363115783835165a2c50979"
 }]}
