@@ -26,28 +26,28 @@
       "version": "4.13.2"
     },
     {
-      "ideaName": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
-      "gradleName": "io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
+      "ideaName": "Gradle: io.arrow-kt:arrow-core-jvm:1.2.0-RC",
+      "gradleName": "io.arrow-kt:arrow-core-jvm:1.2.0-RC",
       "unresolved": false,
       "groupId": "io.arrow-kt",
       "artifactId": "arrow-core-jvm",
-      "version": "1.1.6-alpha.91"
+      "version": "1.2.0-RC"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0",
-      "gradleName": "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0",
+      "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
+      "gradleName": "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlinx",
       "artifactId": "kotlinx-coroutines-test-jvm",
-      "version": "1.7.0"
+      "version": "1.7.1"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
-      "gradleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
+      "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
+      "gradleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlinx",
       "artifactId": "kotlinx-coroutines-core-jvm",
-      "version": "1.7.0"
+      "version": "1.7.1"
     },
     {
       "ideaName": "Gradle: io.mockk:mockk-jvm:1.13.5",
@@ -106,28 +106,28 @@
       "version": "23.0.0"
     },
     {
-      "ideaName": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
-      "gradleName": "io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
+      "ideaName": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
+      "gradleName": "io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
       "unresolved": false,
       "groupId": "io.arrow-kt",
       "artifactId": "arrow-atomic-jvm",
-      "version": "1.1.6-alpha.91"
+      "version": "1.2.0-RC"
     },
     {
-      "ideaName": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
-      "gradleName": "io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
+      "ideaName": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
+      "gradleName": "io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
       "unresolved": false,
       "groupId": "io.arrow-kt",
       "artifactId": "arrow-continuations-jvm",
-      "version": "1.1.6-alpha.91"
+      "version": "1.2.0-RC"
     },
     {
-      "ideaName": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
-      "gradleName": "io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
+      "ideaName": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
+      "gradleName": "io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
       "unresolved": false,
       "groupId": "io.arrow-kt",
       "artifactId": "arrow-annotations-jvm",
-      "version": "1.1.6-alpha.91"
+      "version": "1.2.0-RC"
     },
     {
       "ideaName": "Gradle: io.mockk:mockk-dsl-jvm:1.13.5",

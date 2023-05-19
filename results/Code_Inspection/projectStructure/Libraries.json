@@ -49,15 +49,15 @@
       ]
     },
     {
-      "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
+      "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.7.0/239d3e685a54ae7c75a03708b78f3a810b5fb360/kotlinx-coroutines-core-jvm-1.7.0.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.7.1/63a0779cf668e2a47d13fda7c3b0c4f8dc7762f4/kotlinx-coroutines-core-jvm-1.7.1.jar!/"
       ]
     },
     {
-      "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
+      "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.2.0-RC",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-core-jvm/1.1.6-alpha.91/815591a96f11786ae0ff746a4931fee9c0e46ac4/arrow-core-jvm-1.1.6-alpha.91.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-core-jvm/1.2.0-RC/815591a96f11786ae0ff746a4931fee9c0e46ac4/arrow-core-jvm-1.2.0-RC.jar!/"
       ]
     },
     {
@@ -86,21 +86,21 @@
       "properties": {}
     },
     {
-      "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
+      "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-atomic-jvm/1.1.6-alpha.91/6ca5a781fba611690cd0ee0a47b0d8ad7861a442/arrow-atomic-jvm-1.1.6-alpha.91.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-atomic-jvm/1.2.0-RC/6ca5a781fba611690cd0ee0a47b0d8ad7861a442/arrow-atomic-jvm-1.2.0-RC.jar!/"
       ]
     },
     {
-      "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
+      "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-continuations-jvm/1.1.6-alpha.91/c794899f71b9aefdabbc11babb899fc5b44a9996/arrow-continuations-jvm-1.1.6-alpha.91.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-continuations-jvm/1.2.0-RC/c794899f71b9aefdabbc11babb899fc5b44a9996/arrow-continuations-jvm-1.2.0-RC.jar!/"
       ]
     },
     {
-      "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
+      "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-annotations-jvm/1.1.6-alpha.91/6e45cca708862a364b0df4ac8b7296d187ec551f/arrow-annotations-jvm-1.1.6-alpha.91.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.arrow-kt/arrow-annotations-jvm/1.2.0-RC/6e45cca708862a364b0df4ac8b7296d187ec551f/arrow-annotations-jvm-1.2.0-RC.jar!/"
       ]
     },
     {
@@ -122,9 +122,9 @@
       ]
     },
     {
-      "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0",
+      "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-test-jvm/1.7.0/78caf36355ea7198b4bc5e328a2ebed4e3358936/kotlinx-coroutines-test-jvm-1.7.0.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-test-jvm/1.7.1/46877b802bede2a4b97ad2abe770685190ad8706/kotlinx-coroutines-test-jvm-1.7.1.jar!/"
       ]
     },
     {

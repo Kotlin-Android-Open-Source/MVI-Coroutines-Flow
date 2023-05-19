@@ -335,15 +335,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -375,15 +375,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -484,11 +484,11 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -508,15 +508,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -577,11 +577,11 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
           "type": "Library"
         },
         {
@@ -601,7 +601,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -637,15 +637,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -734,7 +734,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
           "type": "Library"
         },
         {
@@ -750,7 +750,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -762,15 +762,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -821,15 +821,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
           "type": "Library"
         },
         {
@@ -861,15 +861,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
@@ -982,15 +982,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-core-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
           "type": "Library"
         },
         {
-          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.0",
+          "name": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
           "type": "Library"
         },
         {
@@ -1022,15 +1022,15 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-atomic-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-continuations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
-          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.1.6-alpha.91",
+          "name": "Gradle: io.arrow-kt:arrow-annotations-jvm:1.2.0-RC",
           "type": "Library"
         },
         {
