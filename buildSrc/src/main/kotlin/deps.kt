@@ -47,7 +47,7 @@ object deps {
   object squareup {
     const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
-    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-SNAPSHOT"
+    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.11.0"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.15.0"
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.11"
   }
