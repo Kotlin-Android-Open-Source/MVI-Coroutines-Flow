@@ -242,9 +242,9 @@
       ]
     },
     {
-      "name": "Gradle: io.insert-koin:koin-core-jvm:3.4.0",
+      "name": "Gradle: io.insert-koin:koin-core-jvm:3.4.1",
       "roots": [
-        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.insert-koin/koin-core-jvm/3.4.0/6cc0aace8b12422cdb9e95b95ae7e2176cce1470/koin-core-jvm-3.4.0.jar!/"
+        "jar://$PROJECT_DIR$/../cache/gradle/caches/modules-2/files-2.1/io.insert-koin/koin-core-jvm/3.4.1/8dbf51f93465864fd51a9e29da008d9ab7b953f/koin-core-jvm-3.4.1.jar!/"
       ]
     },
     {

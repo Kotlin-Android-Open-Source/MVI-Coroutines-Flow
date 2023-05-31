@@ -585,7 +585,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.insert-koin:koin-core-jvm:3.4.0",
+          "name": "Gradle: io.insert-koin:koin-core-jvm:3.4.1",
           "type": "Library"
         },
         {
@@ -738,7 +738,7 @@
           "type": "Library"
         },
         {
-          "name": "Gradle: io.insert-koin:koin-core-jvm:3.4.0",
+          "name": "Gradle: io.insert-koin:koin-core-jvm:3.4.1",
           "type": "Library"
         },
         {

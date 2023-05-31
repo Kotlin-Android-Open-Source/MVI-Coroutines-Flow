@@ -266,12 +266,12 @@
       "version": "1.2.0"
     },
     {
-      "ideaName": "Gradle: io.insert-koin:koin-core-jvm:3.4.0",
-      "gradleName": "io.insert-koin:koin-core-jvm:3.4.0",
+      "ideaName": "Gradle: io.insert-koin:koin-core-jvm:3.4.1",
+      "gradleName": "io.insert-koin:koin-core-jvm:3.4.1",
       "unresolved": false,
       "groupId": "io.insert-koin",
       "artifactId": "koin-core-jvm",
-      "version": "3.4.0"
+      "version": "3.4.1"
     },
     {
       "ideaName": "Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10",
