@@ -3,27 +3,27 @@
     {
       "name": "1.8",
       "roots": [
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/charsets.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/cldrdata.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/dnsns.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/jaccess.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/jfxrt.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/localedata.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/nashorn.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/sunec.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/sunjce_provider.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/sunpkcs11.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/ext/zipfs.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/jce.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/jfr.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/jfxswt.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/jsse.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/management-agent.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/resources.jar!/",
-        "jar://$USER_HOME$/.jdks/corretto-1.8.0_372/jre/lib/rt.jar!/"
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/charsets.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/cldrdata.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/dnsns.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/dtfj.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/dtfjview.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/jaccess.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/localedata.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/nashorn.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/sunec.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/sunjce_provider.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/sunpkcs11.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/traceformat.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/ext/zipfs.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/jce.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/jsse.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/management-agent.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/resources.jar!/",
+        "jar://$USER_HOME$/.jdks/semeru-1.8.0_382/jre/lib/rt.jar!/"
       ],
       "sdkType": "JavaSDK",
-      "sdkVersion": "Amazon Corretto version 1.8.0_372"
+      "sdkVersion": "IBM JDK version 1.8.0_382"
     }
   ]
 }
