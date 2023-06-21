@@ -1,1 +1,29 @@
-{"version":"3","listProblem":[]}
+{"version":"3","listProblem":[{
+  "tool": "Code Inspection",
+  "category": "Style issues",
+  "type": "Class member can have 'private' visibility",
+  "severity": "Moderate",
+  "comment": "Property 'value' could be private",
+  "detailsInfo": "Reports declarations that can be made `private` to follow the encapsulation principle.\n\n**Example:**\n\n\n    class Service(val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n\nAfter the quick-fix is applied (considering there are no usages of `url` outside of `Service` class):\n\n\n    class Service(private val url: String) {\n        fun connect(): URLConnection = URL(url).openConnection()\n    }\n",
+  "sources": [
+    {
+      "type": "file",
+      "path": "core/src/main/java/com/hoc/flowmvi/core/selfReference.kt",
+      "language": "kotlin",
+      "line": 11,
+      "offset": 34,
+      "length": 5,
+      "code": {
+        "startLine": 9,
+        "length": 5,
+        "offset": 121,
+        "surroundingCode": "// See https://kotlinlang.org/docs/inline-classes.html for more information.\n@JvmInline\nvalue class SelfReference<T>(val value: T) : ReadOnlyProperty<Any?, T> {\n  override fun getValue(thisRef: Any?, property: KProperty<*>): T = value\n}"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "MVI_Coroutines_Flow.core.main",
+    "inspectionName": "MemberVisibilityCanBePrivate"
+  },
+  "hash": "288152ba8348cacc8e9b07ea11d3061b198d0ee50d59596311cdee2048af96b5"
+}]}
