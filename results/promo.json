@@ -1,57 +1,29 @@
 {"version":"3","listProblem":[{
   "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused receiver parameter",
-  "severity": "High",
-  "comment": "Receiver parameter is never used",
-  "detailsInfo": "Reports receiver parameter of extension functions and properties that is not used.\n\n**Remove redundant receiver parameter** can be used to amend the code automatically.",
+  "category": "Naming conventions",
+  "type": "Private property naming convention",
+  "severity": "Moderate",
+  "comment": "Private property name 'EMAIL_ADDRESS_REGEX' should not contain underscores in the middle or the end",
+  "detailsInfo": "Reports private property names that do not follow the recommended naming conventions.\n\n\nConsistent naming allows for easier code reading and understanding.\nAccording to the [Kotlin official style guide](https://kotlinlang.org/docs/coding-conventions.html#naming-rules),\nprivate property names should start with a lowercase letter and use camel case.\nOptionally, underscore prefix is allowed but only for **private** properties.\n\nIt is possible to introduce other naming rules by changing the \"Pattern\" regular expression.\n\n**Example:**\n\n\n      val _My_Cool_Property = \"\"\n\nA quick-fix renames the class according to the Kotlin naming conventions:\n\n\n      val _myCoolProperty = \"\"\n",
   "sources": [
     {
       "type": "file",
-      "path": "core/src/main/java/com/hoc/flowmvi/core/Extensions.kt",
+      "path": "domain/src/main/java/com/hoc/flowmvi/domain/model/User.kt",
       "language": "kotlin",
-      "line": 4,
-      "offset": 12,
-      "length": 4,
+      "line": 64,
+      "offset": 13,
+      "length": 19,
       "code": {
-        "startLine": 2,
-        "length": 4,
-        "offset": 32,
-        "surroundingCode": "\n@Suppress(\"unused\")\ninline val Any?.unit\n  get() = Unit\n"
+        "startLine": 62,
+        "length": 19,
+        "offset": 99,
+        "surroundingCode": "private const val MIN_LENGTH_FIRST_NAME = 3\nprivate const val MIN_LENGTH_LAST_NAME = 3\nprivate val EMAIL_ADDRESS_REGEX =\n  Regex(\"\"\"[a-zA-Z0-9+._%\\-']{1,256}@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+\"\"\")\n"
       }
     }
   ],
   "attributes": {
-    "module": "MVI_Coroutines_Flow.core.main",
-    "inspectionName": "UnusedReceiverParameter"
+    "module": "MVI_Coroutines_Flow.domain.main",
+    "inspectionName": "PrivatePropertyName"
   },
-  "hash": "79dd62ef7821540552d44301e2f60ee16e37c8d20fc3d58787cae2223c010928"
-},{
-  "tool": "Code Inspection",
-  "category": "Redundant constructs",
-  "type": "Unused symbol",
-  "severity": "High",
-  "comment": "Type alias \"Mapper\" is never used",
-  "detailsInfo": "Reports symbols that are not used or not reachable from entry points.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "core/src/main/java/com/hoc/flowmvi/core/Mapper.kt",
-      "language": "kotlin",
-      "line": 3,
-      "offset": 11,
-      "length": 6,
-      "code": {
-        "startLine": 1,
-        "length": 6,
-        "offset": 40,
-        "surroundingCode": "package com.hoc.flowmvi.core\n\ntypealias Mapper<T, R> = (T) -> R\n"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "MVI_Coroutines_Flow.core.main",
-    "inspectionName": "UnusedSymbol"
-  },
-  "hash": "d360bb0f895d6d3fda4e76101743183d9f5aaad6adae113dca04bb8686ab2376"
+  "hash": "456c53fe737cbda6ea9233329fb57cec28d4f92bf0937ac36c46b0823ef1feed"
 }]}
