@@ -34,20 +34,20 @@
       "version": "1.2.0-RC"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
-      "gradleName": "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.1",
+      "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.2",
+      "gradleName": "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.7.2",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlinx",
       "artifactId": "kotlinx-coroutines-test-jvm",
-      "version": "1.7.1"
+      "version": "1.7.2"
     },
     {
-      "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
-      "gradleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.1",
+      "ideaName": "Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.2",
+      "gradleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.2",
       "unresolved": false,
       "groupId": "org.jetbrains.kotlinx",
       "artifactId": "kotlinx-coroutines-core-jvm",
-      "version": "1.7.1"
+      "version": "1.7.2"
     },
     {
       "ideaName": "Gradle: io.mockk:mockk-jvm:1.13.5",
