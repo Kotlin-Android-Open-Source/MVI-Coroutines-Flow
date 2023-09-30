@@ -32,22 +32,23 @@ import timber.log.Timber
 @ExperimentalStdlibApi
 class UserRepositoryImplRealAPITest : KoinTest {
   @get:Rule
-  val koinRuleTest = KoinTestRule.create {
-    printLogger(Level.DEBUG)
+  val koinRuleTest =
+    KoinTestRule.create {
+      printLogger(Level.DEBUG)
 
-    modules(
-      dataModule,
-      module {
-        factory<AppCoroutineDispatchers> {
-          object : AppCoroutineDispatchers {
-            override val main: CoroutineDispatcher get() = Main
-            override val io: CoroutineDispatcher get() = IO
-            override val mainImmediate: CoroutineDispatcher get() = Main.immediate
+      modules(
+        dataModule,
+        module {
+          factory<AppCoroutineDispatchers> {
+            object : AppCoroutineDispatchers {
+              override val main: CoroutineDispatcher get() = Main
+              override val io: CoroutineDispatcher get() = IO
+              override val mainImmediate: CoroutineDispatcher get() = Main.immediate
+            }
           }
-        }
-      }
-    )
-  }
+        },
+      )
+    }
 
   @get:Rule
   val timberRule = TimberRule()
@@ -55,16 +56,18 @@ class UserRepositoryImplRealAPITest : KoinTest {
   private val userRepo by inject<UserRepository>()
 
   @Test
-  fun getUsers() = runBlocking {
-    kotlin.runCatching {
-      val result = userRepo
-        .getUsers()
-        .first()
-      assertTrue(result.isRight())
-      assertTrue(result.rightValueOrThrow.isNotEmpty())
+  fun getUsers() =
+    runBlocking {
+      kotlin.runCatching {
+        val result =
+          userRepo
+            .getUsers()
+            .first()
+        assertTrue(result.isRight())
+        assertTrue(result.rightValueOrThrow.isNotEmpty())
+      }
+      Unit
     }
-    Unit
-  }
 }
 
 class TimberRule : TestWatcher() {
@@ -84,28 +87,35 @@ class ConsoleTree : Timber.DebugTree() {
 
   private val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
 
-  override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+  override fun log(
+    priority: Int,
+    tag: String?,
+    message: String,
+    t: Throwable?,
+  ) {
     val dateTime = LocalDateTime.now().format(dateTimeFormatter)
-    val priorityChar = when (priority) {
-      Log.VERBOSE -> 'V'
-      Log.DEBUG -> 'D'
-      Log.INFO -> 'I'
-      Log.WARN -> 'W'
-      Log.ERROR -> 'E'
-      Log.ASSERT -> 'A'
-      else -> '?'
-    }
+    val priorityChar =
+      when (priority) {
+        Log.VERBOSE -> 'V'
+        Log.DEBUG -> 'D'
+        Log.INFO -> 'I'
+        Log.WARN -> 'W'
+        Log.ERROR -> 'E'
+        Log.ASSERT -> 'A'
+        else -> '?'
+      }
 
     println("$dateTime $priorityChar/$tag: $message")
   }
 
   override fun createStackElementTag(element: StackTraceElement): String {
     val className = element.className
-    val tag = if (anonymousClassPattern.containsMatchIn(className)) {
-      anonymousClassPattern.replace(className, "")
-    } else {
-      className
-    }
+    val tag =
+      if (anonymousClassPattern.containsMatchIn(className)) {
+        anonymousClassPattern.replace(className, "")
+      } else {
+        className
+      }
     return tag.substringAfterLast('.')
   }
 }

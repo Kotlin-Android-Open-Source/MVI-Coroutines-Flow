@@ -29,29 +29,30 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 
-private val USERS = listOf(
-  User.create(
-    id = "1",
-    email = "email1@gmail.com",
-    firstName = "first1",
-    lastName = "last1",
-    avatar = "1.png"
-  ),
-  User.create(
-    id = "2",
-    email = "email1@gmail.com",
-    firstName = "first2",
-    lastName = "last2",
-    avatar = "2.png"
-  ),
-  User.create(
-    id = "3",
-    email = "email1@gmail.com",
-    firstName = "first3",
-    lastName = "last3",
-    avatar = "3.png"
-  ),
-).map { it.rightValueOrThrow }
+private val USERS =
+  listOf(
+    User.create(
+      id = "1",
+      email = "email1@gmail.com",
+      firstName = "first1",
+      lastName = "last1",
+      avatar = "1.png",
+    ),
+    User.create(
+      id = "2",
+      email = "email1@gmail.com",
+      firstName = "first2",
+      lastName = "last2",
+      avatar = "2.png",
+    ),
+    User.create(
+      id = "3",
+      email = "email1@gmail.com",
+      firstName = "first3",
+      lastName = "last3",
+      avatar = "3.png",
+    ),
+  ).map { it.rightValueOrThrow }
 
 @ExperimentalCoroutinesApi
 class UseCaseTest {
@@ -85,105 +86,115 @@ class UseCaseTest {
   }
 
   @Test
-  fun test_getUsersUseCase_whenSuccess_emitsUsers() = runTest {
-    val usersRight = USERS.right()
-    every { userRepository.getUsers() } returns flowOf(usersRight)
+  fun test_getUsersUseCase_whenSuccess_emitsUsers() =
+    runTest {
+      val usersRight = USERS.right()
+      every { userRepository.getUsers() } returns flowOf(usersRight)
 
-    val result = getUsersUseCase()
+      val result = getUsersUseCase()
 
-    verify { userRepository.getUsers() }
-    assertEquals(usersRight, result.first())
-  }
-
-  @Test
-  fun test_getUsersUseCase_whenError_throwsError() = runTest {
-    every { userRepository.getUsers() } returns flowOf(errorLeft)
-
-    val result = getUsersUseCase()
-
-    verify { userRepository.getUsers() }
-    assertEquals(errorLeft, result.first())
-  }
+      verify { userRepository.getUsers() }
+      assertEquals(usersRight, result.first())
+    }
 
   @Test
-  fun test_refreshUseCase_whenSuccess_returnsUnit() = runTest {
-    coEvery { userRepository.refresh() } returns Unit.right()
+  fun test_getUsersUseCase_whenError_throwsError() =
+    runTest {
+      every { userRepository.getUsers() } returns flowOf(errorLeft)
 
-    val result = refreshUseCase()
+      val result = getUsersUseCase()
 
-    coVerify { userRepository.refresh() }
-    assertEquals(Unit.right(), result)
-  }
-
-  @Test
-  fun test_refreshUseCase_whenError_throwsError() = runTest {
-    coEvery { userRepository.refresh() } returns errorLeft
-
-    val result = refreshUseCase()
-
-    coVerify { userRepository.refresh() }
-    assertEquals(errorLeft, result)
-  }
+      verify { userRepository.getUsers() }
+      assertEquals(errorLeft, result.first())
+    }
 
   @Test
-  fun test_removeUserUseCase_whenSuccess_returnsUnit() = runTest {
-    coEvery { userRepository.remove(any()) } returns Unit.right()
+  fun test_refreshUseCase_whenSuccess_returnsUnit() =
+    runTest {
+      coEvery { userRepository.refresh() } returns Unit.right()
 
-    val result = removeUserUseCase(USERS[0])
+      val result = refreshUseCase()
 
-    coVerify { userRepository.remove(USERS[0]) }
-    assertEquals(Unit.right(), result)
-  }
-
-  @Test
-  fun test_removeUserUseCase_whenError_throwsError() = runTest {
-    coEvery { userRepository.remove(any()) } returns errorLeft
-
-    val result = removeUserUseCase(USERS[0])
-
-    coVerify { userRepository.remove(USERS[0]) }
-    assertEquals(errorLeft, result)
-  }
+      coVerify { userRepository.refresh() }
+      assertEquals(Unit.right(), result)
+    }
 
   @Test
-  fun test_addUserUseCase_whenSuccess_returnsUnit() = runTest {
-    coEvery { userRepository.add(any()) } returns Unit.right()
+  fun test_refreshUseCase_whenError_throwsError() =
+    runTest {
+      coEvery { userRepository.refresh() } returns errorLeft
 
-    val result = addUserUseCase(USERS[0])
+      val result = refreshUseCase()
 
-    coVerify { userRepository.add(USERS[0]) }
-    assertEquals(Unit.right(), result)
-  }
-
-  @Test
-  fun test_addUserUseCase_whenError_throwsError() = runTest {
-    coEvery { userRepository.add(any()) } returns errorLeft
-
-    val result = addUserUseCase(USERS[0])
-
-    coVerify { userRepository.add(USERS[0]) }
-    assertEquals(errorLeft, result)
-  }
+      coVerify { userRepository.refresh() }
+      assertEquals(errorLeft, result)
+    }
 
   @Test
-  fun test_searchUsersUseCase_whenSuccess_returnsUsers() = runTest {
-    coEvery { userRepository.search(any()) } returns USERS.right()
+  fun test_removeUserUseCase_whenSuccess_returnsUnit() =
+    runTest {
+      coEvery { userRepository.remove(any()) } returns Unit.right()
 
-    val query = "hoc081098"
-    val result = searchUsersUseCase(query)
+      val result = removeUserUseCase(USERS[0])
 
-    coVerify { userRepository.search(query) }
-    assertEquals(USERS.right(), result)
-  }
+      coVerify { userRepository.remove(USERS[0]) }
+      assertEquals(Unit.right(), result)
+    }
 
   @Test
-  fun test_searchUsersUseCase_whenError_throwsError() = runTest {
-    coEvery { userRepository.search(any()) } returns errorLeft
+  fun test_removeUserUseCase_whenError_throwsError() =
+    runTest {
+      coEvery { userRepository.remove(any()) } returns errorLeft
 
-    val query = "hoc081098"
-    val result = searchUsersUseCase(query)
+      val result = removeUserUseCase(USERS[0])
 
-    coVerify { userRepository.search(query) }
-    assertEquals(errorLeft, result)
-  }
+      coVerify { userRepository.remove(USERS[0]) }
+      assertEquals(errorLeft, result)
+    }
+
+  @Test
+  fun test_addUserUseCase_whenSuccess_returnsUnit() =
+    runTest {
+      coEvery { userRepository.add(any()) } returns Unit.right()
+
+      val result = addUserUseCase(USERS[0])
+
+      coVerify { userRepository.add(USERS[0]) }
+      assertEquals(Unit.right(), result)
+    }
+
+  @Test
+  fun test_addUserUseCase_whenError_throwsError() =
+    runTest {
+      coEvery { userRepository.add(any()) } returns errorLeft
+
+      val result = addUserUseCase(USERS[0])
+
+      coVerify { userRepository.add(USERS[0]) }
+      assertEquals(errorLeft, result)
+    }
+
+  @Test
+  fun test_searchUsersUseCase_whenSuccess_returnsUsers() =
+    runTest {
+      coEvery { userRepository.search(any()) } returns USERS.right()
+
+      val query = "hoc081098"
+      val result = searchUsersUseCase(query)
+
+      coVerify { userRepository.search(query) }
+      assertEquals(USERS.right(), result)
+    }
+
+  @Test
+  fun test_searchUsersUseCase_whenError_throwsError() =
+    runTest {
+      coEvery { userRepository.search(any()) } returns errorLeft
+
+      val query = "hoc081098"
+      val result = searchUsersUseCase(query)
+
+      coVerify { userRepository.search(query) }
+      assertEquals(errorLeft, result)
+    }
 }

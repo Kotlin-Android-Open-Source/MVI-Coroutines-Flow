@@ -21,14 +21,15 @@ import org.koin.core.logger.Level
 @ExperimentalStdlibApi
 @ExperimentalTime
 @JvmField
-val allModules = listOf(
-  coreModule,
-  dataModule,
-  domainModule,
-  mainModule,
-  addModule,
-  searchModule,
-)
+val allModules =
+  listOf(
+    coreModule,
+    dataModule,
+    domainModule,
+    mainModule,
+    addModule,
+    searchModule,
+  )
 
 @Suppress("unused")
 @ExperimentalStdlibApi

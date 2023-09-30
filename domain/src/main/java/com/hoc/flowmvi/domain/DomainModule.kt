@@ -9,14 +9,15 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 @JvmField
-val domainModule = module {
-  factoryOf(::GetUsersUseCase)
+val domainModule =
+  module {
+    factoryOf(::GetUsersUseCase)
 
-  factoryOf(::RefreshGetUsersUseCase)
+    factoryOf(::RefreshGetUsersUseCase)
 
-  factoryOf(::RemoveUserUseCase)
+    factoryOf(::RemoveUserUseCase)
 
-  factoryOf(::AddUserUseCase)
+    factoryOf(::AddUserUseCase)
 
-  factoryOf(::SearchUsersUseCase)
-}
+    factoryOf(::SearchUsersUseCase)
+  }

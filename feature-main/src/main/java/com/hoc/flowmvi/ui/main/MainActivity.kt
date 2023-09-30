@@ -31,8 +31,7 @@ import timber.log.Timber
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class MainActivity :
-  AbstractMviActivity<ViewIntent, ViewState, SingleEvent, MainVM>(R.layout.activity_main) {
+class MainActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, MainVM>(R.layout.activity_main) {
   override val vm by viewModel<MainVM>()
   private val navigator by inject<Navigator>()
 
@@ -41,8 +40,8 @@ class MainActivity :
 
   private val removeChannel = Channel<UserItem>(Channel.BUFFERED)
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean =
+    when (item.itemId) {
       R.id.add_action -> {
         navigator.run { navigateToAdd() }
         true
@@ -53,10 +52,8 @@ class MainActivity :
       }
       else -> super.onOptionsItemSelected(item)
     }
-  }
 
-  override fun onCreateOptionsMenu(menu: Menu) =
-    menuInflater.inflate(R.menu.menu_main, menu).let { true }
+  override fun onCreateOptionsMenu(menu: Menu) = menuInflater.inflate(R.menu.menu_main, menu).let { true }
 
   override fun setupViews() {
     mainBinding.usersRecycler.run {
@@ -69,24 +66,25 @@ class MainActivity :
           dividerInsetEnd = dpToPx(8f)
           isLastItemDecorated = false
           dividerThickness = dpToPx(0.8f)
-        }
+        },
       )
 
       ItemTouchHelper(
         SwipeLeftToDeleteCallback(context) cb@{ position ->
           val userItem = vm.viewState.value.userItems[position]
           removeChannel.trySend(userItem)
-        }
+        },
       ).attachToRecyclerView(this)
     }
   }
 
-  override fun viewIntents(): Flow<ViewIntent> = merge(
-    flowOf(ViewIntent.Initial),
-    mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
-    mainBinding.retryButton.clicks().map { ViewIntent.Retry },
-    removeChannel.consumeAsFlow().map { ViewIntent.RemoveUser(it) }
-  )
+  override fun viewIntents(): Flow<ViewIntent> =
+    merge(
+      flowOf(ViewIntent.Initial),
+      mainBinding.swipeRefreshLayout.refreshes().map { ViewIntent.Refresh },
+      mainBinding.retryButton.clicks().map { ViewIntent.Retry },
+      removeChannel.consumeAsFlow().map { ViewIntent.RemoveUser(it) },
+    )
 
   override fun handleSingleEvent(event: SingleEvent) {
     Timber.d("handleSingleEvent $event")
@@ -109,16 +107,17 @@ class MainActivity :
 
     mainBinding.run {
       errorGroup.isVisible = viewState.error !== null
-      errorMessageTextView.text = viewState.error?.let {
-        when (it) {
-          is UserError.InvalidId -> "Invalid id"
-          UserError.NetworkError -> "Network error"
-          UserError.ServerError -> "Server error"
-          UserError.Unexpected -> "Unexpected error"
-          is UserError.UserNotFound -> "User not found"
-          is UserError.ValidationFailed -> "Validation failed"
+      errorMessageTextView.text =
+        viewState.error?.let {
+          when (it) {
+            is UserError.InvalidId -> "Invalid id"
+            UserError.NetworkError -> "Network error"
+            UserError.ServerError -> "Server error"
+            UserError.Unexpected -> "Unexpected error"
+            is UserError.UserNotFound -> "User not found"
+            is UserError.ValidationFailed -> "Validation failed"
+          }
         }
-      }
 
       progressBar.isVisible = viewState.isLoading
 

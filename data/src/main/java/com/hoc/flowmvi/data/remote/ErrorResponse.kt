@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:discouraged-comment-location")
+
 package com.hoc.flowmvi.data.remote
 
 import com.squareup.moshi.Json

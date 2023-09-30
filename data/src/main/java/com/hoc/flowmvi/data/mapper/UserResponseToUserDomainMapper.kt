@@ -6,15 +6,13 @@ import com.hoc.flowmvi.data.remote.UserResponse
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserValidationError
 
-internal class UserResponseToUserDomainMapper :
-  Mapper<UserResponse, EitherNes<UserValidationError, User>> {
-  override fun invoke(response: UserResponse): EitherNes<UserValidationError, User> {
-    return User.create(
+internal class UserResponseToUserDomainMapper : Mapper<UserResponse, EitherNes<UserValidationError, User>> {
+  override fun invoke(response: UserResponse): EitherNes<UserValidationError, User> =
+    User.create(
       id = response.id,
       avatar = response.avatar,
       email = response.email,
       firstName = response.firstName,
-      lastName = response.lastName
+      lastName = response.lastName,
     )
-  }
 }

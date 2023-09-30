@@ -8,6 +8,7 @@ import org.koin.dsl.module
 @JvmField
 @ExperimentalCoroutinesApi
 @FlowPreview
-val mainModule = module {
-  viewModelOf(::MainVM)
-}
+val mainModule =
+  module {
+    viewModelOf(::MainVM)
+  }

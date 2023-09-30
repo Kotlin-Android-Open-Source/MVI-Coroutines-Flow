@@ -11,15 +11,17 @@ class UserDomainToUserBodyMapperTest {
 
   @Test
   fun test_UserDomainToUserBodyMapper() {
-    val body = mapper(
-      User.create(
-        id = "id",
-        email = "email@gmail.com",
-        firstName = "first",
-        lastName = "last",
-        avatar = "avatar",
-      ).rightValueOrThrow
-    )
+    val body =
+      mapper(
+        User
+          .create(
+            id = "id",
+            email = "email@gmail.com",
+            firstName = "first",
+            lastName = "last",
+            avatar = "avatar",
+          ).rightValueOrThrow,
+      )
 
     assertEquals(
       UserBody(
@@ -27,7 +29,7 @@ class UserDomainToUserBodyMapperTest {
         firstName = "first",
         lastName = "last",
       ),
-      body
+      body,
     )
   }
 }

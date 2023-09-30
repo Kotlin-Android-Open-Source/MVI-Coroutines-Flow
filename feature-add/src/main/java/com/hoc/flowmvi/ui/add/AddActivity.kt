@@ -25,17 +25,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
-class AddActivity :
-  AbstractMviActivity<ViewIntent, ViewState, SingleEvent, AddVM>(R.layout.activity_add) {
+class AddActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, AddVM>(R.layout.activity_add) {
   override val vm by viewModel<AddVM>()
   private val addBinding by viewBinding<ActivityAddBinding>()
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean =
+    when (item.itemId) {
       android.R.id.home -> true.also { finish() }
       else -> super.onOptionsItemSelected(item)
     }
-  }
 
   override fun handleSingleEvent(event: SingleEvent) {
     Timber.d("Event=$event")
@@ -55,16 +53,25 @@ class AddActivity :
     Timber.d("viewState=$viewState")
 
     addBinding.emailEditText.setErrorIfChanged(viewState.emailChanged) {
-      if (UserValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) "Invalid email"
-      else null
+      if (UserValidationError.INVALID_EMAIL_ADDRESS in viewState.errors) {
+        "Invalid email"
+      } else {
+        null
+      }
     }
     addBinding.firstNameEditText.setErrorIfChanged(viewState.firstNameChanged) {
-      if (UserValidationError.TOO_SHORT_FIRST_NAME in viewState.errors) "Too short first name"
-      else null
+      if (UserValidationError.TOO_SHORT_FIRST_NAME in viewState.errors) {
+        "Too short first name"
+      } else {
+        null
+      }
     }
     addBinding.lastNameEditText.setErrorIfChanged(viewState.lastNameChanged) {
-      if (UserValidationError.TOO_SHORT_LAST_NAME in viewState.errors) "Too short last name"
-      else null
+      if (UserValidationError.TOO_SHORT_LAST_NAME in viewState.errors) {
+        "Too short last name"
+      } else {
+        null
+      }
     }
 
     TransitionManager.endTransitions(addBinding.root)
@@ -73,7 +80,7 @@ class AddActivity :
       AutoTransition()
         .addTarget(addBinding.progressBar)
         .addTarget(addBinding.addButton)
-        .setDuration(200)
+        .setDuration(200),
     )
     addBinding.progressBar.isInvisible = !viewState.isLoading
     addBinding.addButton.isInvisible = viewState.isLoading
@@ -91,41 +98,41 @@ class AddActivity :
     }
   }
 
-  override fun viewIntents(): Flow<ViewIntent> = addBinding.run {
-    merge(
-      emailEditText
-        .editText!!
-        .textChanges()
-        .map { ViewIntent.EmailChanged(it?.toString().orEmpty()) },
-      firstNameEditText
-        .editText!!
-        .textChanges()
-        .map { ViewIntent.FirstNameChanged(it?.toString().orEmpty()) },
-      lastNameEditText
-        .editText!!
-        .textChanges()
-        .map { ViewIntent.LastNameChanged(it?.toString().orEmpty()) },
-      addButton
-        .clicks()
-        .map { ViewIntent.Submit },
-      emailEditText
-        .editText!!
-        .firstChange()
-        .mapTo(ViewIntent.EmailChangedFirstTime),
-      firstNameEditText
-        .editText!!
-        .firstChange()
-        .mapTo(ViewIntent.FirstNameChangedFirstTime),
-      lastNameEditText
-        .editText!!
-        .firstChange()
-        .mapTo(ViewIntent.LastNameChangedFirstTime),
-    )
-  }
+  override fun viewIntents(): Flow<ViewIntent> =
+    addBinding.run {
+      merge(
+        emailEditText
+          .editText!!
+          .textChanges()
+          .map { ViewIntent.EmailChanged(it?.toString().orEmpty()) },
+        firstNameEditText
+          .editText!!
+          .textChanges()
+          .map { ViewIntent.FirstNameChanged(it?.toString().orEmpty()) },
+        lastNameEditText
+          .editText!!
+          .textChanges()
+          .map { ViewIntent.LastNameChanged(it?.toString().orEmpty()) },
+        addButton
+          .clicks()
+          .map { ViewIntent.Submit },
+        emailEditText
+          .editText!!
+          .firstChange()
+          .mapTo(ViewIntent.EmailChangedFirstTime),
+        firstNameEditText
+          .editText!!
+          .firstChange()
+          .mapTo(ViewIntent.FirstNameChangedFirstTime),
+        lastNameEditText
+          .editText!!
+          .firstChange()
+          .mapTo(ViewIntent.LastNameChangedFirstTime),
+      )
+    }
 
   internal class IntentProvider : IntentProviders.Add {
-    override fun makeIntent(context: Context): Intent =
-      Intent(context, AddActivity::class.java)
+    override fun makeIntent(context: Context): Intent = Intent(context, AddActivity::class.java)
   }
 }
 

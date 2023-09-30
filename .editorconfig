@@ -1,14 +1,19 @@
-root = true
-
+root=true
 [*]
-indent_size = 2
-end_of_line = lf
-charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
-
+indent_size=2
+end_of_line=lf
+charset=utf-8
+trim_trailing_whitespace=true
+insert_final_newline=true
 [*.{kt,kts}]
-ij_kotlin_imports_layout = *
-
+ij_kotlin_imports_layout=*
+ij_continuation_indent_size=4
+ktlint_standard_filename=disabled
+ktlint_standard_package-name=disabled
+ktlint_standard_property-naming=disabled
+ktlint_standard_function-naming=disabled
+ktlint_standard_no-empty-file=disabled
+filename=disabled
+ktlint_experimental=enabled
 [*.xml]
-indent_size = 4
+indent_size=4

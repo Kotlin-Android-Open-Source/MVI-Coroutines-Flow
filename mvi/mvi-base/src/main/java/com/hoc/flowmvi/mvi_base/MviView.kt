@@ -13,9 +13,11 @@ import kotlinx.coroutines.flow.Flow
  * @param S Top class of the [MviViewState] the [MviView] will be subscribing to.
  * @param E Top class of the [MviSingleEvent] the [MviView] will be subscribing to.
  */
-interface MviView<I : MviIntent,
+interface MviView<
+  I : MviIntent,
   S : MviViewState,
-  E : MviSingleEvent,> {
+  E : MviSingleEvent,
+  > {
   /**
    * Entry point for the [MviView] to render itself based on a [MviViewState].
    */

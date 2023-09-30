@@ -36,7 +36,6 @@ class SearchVM(
   savedStateHandle: SavedStateHandle,
   private val stateSaver: ViewState.StateSaver,
 ) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
-
   override val rawLogTag get() = "SearchVM[${System.identityHashCode(this)}]"
 
   override val viewState: StateFlow<ViewState>
@@ -44,14 +43,15 @@ class SearchVM(
   init {
     val initialVS = stateSaver.restore(savedStateHandle[VIEW_STATE_BUNDLE_KEY])
 
-    viewState = intentSharedFlow
-      .debugLog("ViewIntent")
-      .toPartialStateChangeFlow()
-      .debugLog("PartialStateChange")
-      .onEach { sendEvent(it.toSingleEventOrNull() ?: return@onEach) }
-      .scan(initialVS) { state, change -> change.reduce(state) }
-      .debugLog("ViewState")
-      .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
+    viewState =
+      intentSharedFlow
+        .debugLog("ViewIntent")
+        .toPartialStateChangeFlow()
+        .debugLog("PartialStateChange")
+        .onEach { sendEvent(it.toSingleEventOrNull() ?: return@onEach) }
+        .scan(initialVS) { state, change -> change.reduce(state) }
+        .debugLog("ViewState")
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialVS)
 
     savedStateHandle.setSavedStateProvider(VIEW_STATE_BUNDLE_KEY) {
       stateSaver.run { viewState.value.toBundle() }
@@ -59,15 +59,17 @@ class SearchVM(
   }
 
   private fun SharedFlow<ViewIntent>.toPartialStateChangeFlow(): Flow<PartialStateChange> {
-    val queryFlow = filterIsInstance<ViewIntent.Search>()
-      .map { it.query }
-      .shareWhileSubscribed()
+    val queryFlow =
+      filterIsInstance<ViewIntent.Search>()
+        .map { it.query }
+        .shareWhileSubscribed()
 
-    val searchableQueryFlow = queryFlow
-      .debounce(SEARCH_DEBOUNCE_DURATION)
-      .filter { it.isNotBlank() }
-      .distinctUntilChanged()
-      .shareWhileSubscribed()
+    val searchableQueryFlow =
+      queryFlow
+        .debounce(SEARCH_DEBOUNCE_DURATION)
+        .filter { it.isNotBlank() }
+        .distinctUntilChanged()
+        .shareWhileSubscribed()
 
     return merge(
       // Search change
@@ -95,30 +97,31 @@ class SearchVM(
     }
   //endregion
 
-  private fun executeSearch(query: String) = flowFromSuspend { searchUsersUseCase(query) }
-    .map { result ->
-      result.fold(
-        ifLeft = { PartialStateChange.Failure(it, query) },
-        ifRight = {
-          PartialStateChange.Success(
-            it.map(UserItem::from),
-            query
-          )
-        }
-      )
-    }
-    .startWith(PartialStateChange.Loading)
+  private fun executeSearch(query: String) =
+    flowFromSuspend { searchUsersUseCase(query) }
+      .map { result ->
+        result.fold(
+          ifLeft = { PartialStateChange.Failure(it, query) },
+          ifRight = {
+            PartialStateChange.Success(
+              it.map(UserItem::from),
+              query,
+            )
+          },
+        )
+      }.startWith(PartialStateChange.Loading)
 
   internal companion object {
     private const val VIEW_STATE_BUNDLE_KEY = "com.hoc.flowmvi.ui.search.view_state"
     internal val SEARCH_DEBOUNCE_DURATION = 400.milliseconds
 
-    private fun PartialStateChange.toSingleEventOrNull(): SingleEvent? = when (this) {
-      is PartialStateChange.Failure -> SingleEvent.SearchFailure(error)
-      PartialStateChange.Loading,
-      is PartialStateChange.Success,
-      is PartialStateChange.QueryChange,
-      -> null
-    }
+    private fun PartialStateChange.toSingleEventOrNull(): SingleEvent? =
+      when (this) {
+        is PartialStateChange.Failure -> SingleEvent.SearchFailure(error)
+        PartialStateChange.Loading,
+        is PartialStateChange.Success,
+        is PartialStateChange.QueryChange,
+        -> null
+      }
   }
 }

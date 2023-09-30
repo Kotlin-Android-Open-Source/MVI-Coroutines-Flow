@@ -17,19 +17,20 @@ import dev.drewhamilton.poko.Poko
   val fullName: String,
 ) {
   companion object Factory {
-    fun from(domain: User): UserItem {
-      return UserItem(
+    fun from(domain: User): UserItem =
+      UserItem(
         id = domain.id,
         email = domain.email.value,
         avatar = domain.avatar,
         fullName = "${domain.firstName.value} ${domain.lastName.value}",
       )
-    }
   }
 }
 
 sealed interface ViewIntent : MviIntent {
-  data class Search(val query: String) : ViewIntent
+  data class Search(
+    val query: String,
+  ) : ViewIntent
   object Retry : ViewIntent
 }
 
@@ -43,59 +44,80 @@ data class ViewState(
   companion object Factory {
     private const val ORIGINAL_QUERY_KEY = "com.hoc.flowmvi.ui.search.original_query"
 
-    fun initial(originalQuery: String): ViewState {
-      return ViewState(
+    fun initial(originalQuery: String): ViewState =
+      ViewState(
         users = emptyList(),
         isLoading = false,
         error = null,
         submittedQuery = "",
         originalQuery = originalQuery,
       )
-    }
   }
 
   class StateSaver : MviViewStateSaver<ViewState> {
     override fun ViewState.toBundle() = bundleOf(ORIGINAL_QUERY_KEY to originalQuery)
 
-    override fun restore(bundle: Bundle?) = initial(
-      originalQuery = bundle
-        ?.getString(ORIGINAL_QUERY_KEY, "")
-        .orEmpty(),
-    )
+    override fun restore(bundle: Bundle?) =
+      initial(
+        originalQuery =
+          bundle
+            ?.getString(ORIGINAL_QUERY_KEY, "")
+            .orEmpty(),
+      )
   }
 }
 
 internal sealed interface PartialStateChange {
   object Loading : PartialStateChange
-  data class Success(val users: List<UserItem>, val submittedQuery: String) : PartialStateChange
-  data class Failure(val error: UserError, val submittedQuery: String) : PartialStateChange
-  data class QueryChange(val query: String) : PartialStateChange
 
-  fun reduce(state: ViewState): ViewState = when (this) {
-    is Failure -> state.copy(
-      isLoading = false,
-      error = error,
-      submittedQuery = submittedQuery,
-      users = emptyList()
-    )
-    Loading -> state.copy(
-      isLoading = true,
-      error = null,
-      users = emptyList()
-    )
-    is Success -> state.copy(
-      isLoading = false,
-      error = null,
-      users = users,
-      submittedQuery = submittedQuery,
-    )
-    is QueryChange -> {
-      if (state.originalQuery == query) state
-      else state.copy(originalQuery = query)
+  data class Success(
+    val users: List<UserItem>,
+    val submittedQuery: String,
+  ) : PartialStateChange
+
+  data class Failure(
+    val error: UserError,
+    val submittedQuery: String,
+  ) : PartialStateChange
+
+  data class QueryChange(
+    val query: String,
+  ) : PartialStateChange
+
+  fun reduce(state: ViewState): ViewState =
+    when (this) {
+      is Failure ->
+        state.copy(
+          isLoading = false,
+          error = error,
+          submittedQuery = submittedQuery,
+          users = emptyList(),
+        )
+      Loading ->
+        state.copy(
+          isLoading = true,
+          error = null,
+          users = emptyList(),
+        )
+      is Success ->
+        state.copy(
+          isLoading = false,
+          error = null,
+          users = users,
+          submittedQuery = submittedQuery,
+        )
+      is QueryChange -> {
+        if (state.originalQuery == query) {
+          state
+        } else {
+          state.copy(originalQuery = query)
+        }
+      }
     }
-  }
 }
 
 sealed interface SingleEvent : MviSingleEvent {
-  data class SearchFailure(val error: UserError) : SingleEvent
+  data class SearchFailure(
+    val error: UserError,
+  ) : SingleEvent
 }

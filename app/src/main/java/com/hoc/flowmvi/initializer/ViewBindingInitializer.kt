@@ -18,6 +18,5 @@ class ViewBindingInitializer : Initializer<Unit> {
     Timber.d("ViewBindingInitializer...")
   }
 
-  override fun dependencies(): List<Class<out Initializer<*>>> =
-    listOf(TimberInitializer::class.java)
+  override fun dependencies(): List<Class<out Initializer<*>>> = listOf(TimberInitializer::class.java)
 }

@@ -25,7 +25,7 @@ android {
       isShrinkResources = true
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules.pro"
+        "proguard-rules.pro",
       )
     }
 
@@ -56,9 +56,9 @@ dependencies {
     fileTree(
       mapOf(
         "dir" to "libs",
-        "include" to listOf("*.jar")
-      )
-    )
+        "include" to listOf("*.jar"),
+      ),
+    ),
   )
 
   implementation(domain)
@@ -81,7 +81,13 @@ dependencies {
   testImplementation(deps.test.junit)
   androidTestImplementation(deps.test.androidx.junit)
   androidTestImplementation(deps.test.androidx.core)
-  androidTestImplementation(deps.test.androidx.espresso.core)
+  androidTestImplementation(
+    deps
+      .test
+      .androidx
+      .espresso
+      .core,
+  )
 
   addUnitTest()
   testImplementation(testUtils)
@@ -106,7 +112,7 @@ koverReport {
     excludes {
       classes(
         "*.databinding.*",
-        "*.BuildConfig"
+        "*.BuildConfig",
       )
     }
   }

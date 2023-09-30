@@ -10,10 +10,11 @@ import org.koin.dsl.module
 
 @JvmField
 @ExperimentalCoroutinesApi
-val addModule = module {
-  viewModelOf(::AddVM)
+val addModule =
+  module {
+    viewModelOf(::AddVM)
 
-  singleOf(AddActivity::IntentProvider) { bind<IntentProviders.Add>() }
+    singleOf(AddActivity::IntentProvider) { bind<IntentProviders.Add>() }
 
-  factoryOf(ViewState::StateSaver)
-}
+    factoryOf(ViewState::StateSaver)
+  }

@@ -14,10 +14,11 @@ import org.koin.dsl.module
 @ExperimentalCoroutinesApi
 @FlowPreview
 @ExperimentalTime
-val searchModule = module {
-  singleOf(SearchActivity::IntentProvider) { bind<IntentProviders.Search>() }
+val searchModule =
+  module {
+    singleOf(SearchActivity::IntentProvider) { bind<IntentProviders.Search>() }
 
-  viewModelOf(::SearchVM)
+    viewModelOf(::SearchVM)
 
-  factoryOf(ViewState::StateSaver)
-}
+    factoryOf(ViewState::StateSaver)
+  }

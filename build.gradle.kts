@@ -1,6 +1,5 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.util.EnumSet
-import java.util.Locale
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -9,6 +8,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   id("org.jetbrains.kotlinx.kover") version "0.7.3" apply false
+  id("com.diffplug.spotless") version "6.22.0" apply false
 }
 
 buildscript {
@@ -28,12 +28,12 @@ buildscript {
 }
 
 subprojects {
-  apply(plugin = "com.diffplug.spotless")
   apply(plugin = "com.github.ben-manes.versions")
 
   fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA")
-      .any { version.uppercase().contains(it) }
+    val stableKeyword =
+      listOf("RELEASE", "FINAL", "GA")
+        .any { version.uppercase().contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     val isStable = stableKeyword || regex.matches(version)
     return !isStable
@@ -51,6 +51,40 @@ subprojects {
     }
   }
 
+  afterEvaluate {
+    tasks.withType<Test> {
+      maxParallelForks =
+        (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1).also {
+          println("Setting maxParallelForks to $it")
+        }
+      testLogging {
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        showStandardStreams = true
+        events =
+          EnumSet.of(
+            TestLogEvent.PASSED,
+            TestLogEvent.FAILED,
+            TestLogEvent.SKIPPED,
+            TestLogEvent.STANDARD_OUT,
+            TestLogEvent.STANDARD_ERROR,
+          )
+        exceptionFormat = TestExceptionFormat.FULL
+      }
+    }
+  }
+}
+
+allprojects {
+  tasks.withType<KotlinCompile> {
+    kotlinOptions {
+      val version = JavaVersion.VERSION_11.toString()
+      jvmTarget = version
+    }
+  }
+
+  apply<com.diffplug.gradle.spotless.SpotlessPlugin>()
   configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
       target("**/*.kt")
@@ -80,46 +114,4 @@ subprojects {
       endWithNewline()
     }
   }
-
-  afterEvaluate {
-    tasks.withType<Test> {
-      maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1).also {
-        println("Setting maxParallelForks to $it")
-      }
-      testLogging {
-        showExceptions = true
-        showCauses = true
-        showStackTraces = true
-        showStandardStreams = true
-        events = EnumSet.of(
-          TestLogEvent.PASSED,
-          TestLogEvent.FAILED,
-          TestLogEvent.SKIPPED,
-          TestLogEvent.STANDARD_OUT,
-          TestLogEvent.STANDARD_ERROR
-        )
-        exceptionFormat = TestExceptionFormat.FULL
-      }
-    }
-  }
-}
-
-allprojects {
-  tasks.withType<KotlinCompile> {
-    kotlinOptions {
-      val version = JavaVersion.VERSION_11.toString()
-      jvmTarget = version
-    }
-  }
-
-  repositories {
-    google()
-    mavenCentral()
-    maven(url = "https://jitpack.io")
-    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
-  }
-}
-
-tasks.register("clean", Delete::class) {
-  delete(rootProject.buildDir)
 }

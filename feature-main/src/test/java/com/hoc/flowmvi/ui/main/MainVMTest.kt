@@ -32,10 +32,13 @@ import kotlinx.coroutines.flow.update
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 @FlowPreview
-class MainVMTest : BaseMviViewModelTest<ViewIntent,
-  ViewState,
-  SingleEvent,
-  MainVM>() {
+class MainVMTest :
+  BaseMviViewModelTest<
+    ViewIntent,
+    ViewState,
+    SingleEvent,
+    MainVM,
+    >() {
   private lateinit var vm: MainVM
   private lateinit var getUserUseCase: GetUsersUseCase
   private lateinit var refreshGetUsersUseCase: RefreshGetUsersUseCase
@@ -48,11 +51,12 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
     refreshGetUsersUseCase = mockk()
     removeUser = mockk()
 
-    vm = MainVM(
-      getUsersUseCase = getUserUseCase,
-      refreshGetUsers = refreshGetUsersUseCase,
-      removeUser = removeUser,
-    )
+    vm =
+      MainVM(
+        getUsersUseCase = getUserUseCase,
+        refreshGetUsers = refreshGetUsersUseCase,
+        removeUser = removeUser,
+      )
   }
 
   override fun tearDown() {
@@ -73,15 +77,16 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
         vm
       },
       intents = flowOf(ViewIntent.Initial),
-      expectedStates = listOf(
-        ViewState.initial(),
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false
-        )
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState.initial(),
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
     ) { verify(exactly = 1) { getUserUseCase() } }
   }
@@ -96,20 +101,22 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
         vm
       },
       intents = flowOf(ViewIntent.Initial),
-      expectedStates = listOf(
-        ViewState.initial(),
-        ViewState(
-          userItems = emptyList(),
-          isLoading = false,
-          error = userError,
-          isRefreshing = false
-        )
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.GetUsersError(
-          error = userError,
-        ),
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState.initial(),
+          ViewState(
+            userItems = emptyList(),
+            isLoading = false,
+            error = userError,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.GetUsersError(
+            error = userError,
+          ),
+        ).mapRight(),
     ) { verify(exactly = 1) { getUserUseCase() } }
   }
 
@@ -122,29 +129,31 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
         vm
       },
       intents = flowOf(ViewIntent.Refresh),
-      expectedStates = listOf(
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false
-        ),
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = true,
-        ),
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false
-        ),
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.Refresh.Success
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = true,
+          ),
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.Refresh.Success,
+        ).mapRight(),
       preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
@@ -163,29 +172,31 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
         vm
       },
       intents = flowOf(ViewIntent.Refresh),
-      expectedStates = listOf(
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false
-        ),
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = true,
-        ),
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false
-        ),
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.Refresh.Failure(userError)
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = true,
+          ),
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.Refresh.Failure(userError),
+        ).mapRight(),
       preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
@@ -217,14 +228,15 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
         vm
       },
       intents = flowOf(ViewIntent.Refresh),
-      expectedStates = listOf(
-        ViewState(
-          userItems = emptyList(),
-          isLoading = false,
-          error = userError,
-          isRefreshing = false,
-        )
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState(
+            userItems = emptyList(),
+            isLoading = false,
+            error = userError,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
       preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
@@ -252,33 +264,35 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
 
     runVMTest(
       vmProducer = {
-        every { getUserUseCase() } returnsMany listOf(
-          flowOf(userError.left()).delayEach(),
-          flowOf(USERS.right()).delayEach(),
-        )
+        every { getUserUseCase() } returnsMany
+          listOf(
+            flowOf(userError.left()).delayEach(),
+            flowOf(USERS.right()).delayEach(),
+          )
         vm
       },
       intents = flowOf(ViewIntent.Retry),
-      expectedStates = listOf(
-        ViewState(
-          userItems = emptyList(),
-          isLoading = false,
-          error = userError,
-          isRefreshing = false,
-        ),
-        ViewState(
-          userItems = emptyList(),
-          isLoading = true,
-          error = null,
-          isRefreshing = false,
-        ),
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false,
-        )
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState(
+            userItems = emptyList(),
+            isLoading = false,
+            error = userError,
+            isRefreshing = false,
+          ),
+          ViewState(
+            userItems = emptyList(),
+            isLoading = true,
+            error = null,
+            isRefreshing = false,
+          ),
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
       preProcessingIntents = flowOf(ViewIntent.Initial),
     ) { verify(exactly = 2) { getUserUseCase() } }
@@ -291,36 +305,39 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
 
     runVMTest(
       vmProducer = {
-        every { getUserUseCase() } returnsMany listOf(
-          flowOf(userError1.left()).delayEach(),
-          flowOf(userError2.left()).delayEach(),
-        )
+        every { getUserUseCase() } returnsMany
+          listOf(
+            flowOf(userError1.left()).delayEach(),
+            flowOf(userError2.left()).delayEach(),
+          )
         vm
       },
       intents = flowOf(ViewIntent.Retry),
-      expectedStates = listOf(
-        ViewState(
-          userItems = emptyList(),
-          isLoading = false,
-          error = userError1,
-          isRefreshing = false,
-        ),
-        ViewState(
-          userItems = emptyList(),
-          isLoading = true,
-          error = null,
-          isRefreshing = false,
-        ),
-        ViewState(
-          userItems = emptyList(),
-          isLoading = false,
-          error = userError2,
-          isRefreshing = false,
-        )
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.GetUsersError(userError2),
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState(
+            userItems = emptyList(),
+            isLoading = false,
+            error = userError1,
+            isRefreshing = false,
+          ),
+          ViewState(
+            userItems = emptyList(),
+            isLoading = true,
+            error = null,
+            isRefreshing = false,
+          ),
+          ViewState(
+            userItems = emptyList(),
+            isLoading = false,
+            error = userError2,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.GetUsersError(userError2),
+        ).mapRight(),
       preProcessingIntents = flowOf(ViewIntent.Initial),
     ) { verify(exactly = 2) { getUserUseCase() } }
   }
@@ -346,38 +363,42 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
         }
         vm
       },
-      intents = flowOf(
-        ViewIntent.RemoveUser(item1),
-        ViewIntent.RemoveUser(item2),
-      ),
-      expectedStates = listOf(
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false,
+      intents =
+        flowOf(
+          ViewIntent.RemoveUser(item1),
+          ViewIntent.RemoveUser(item2),
         ),
-        ViewState(
-          userItems = USER_ITEMS.toMutableList().apply { remove(item1) },
-          isLoading = false,
-          error = null,
-          isRefreshing = false,
-        ),
-        ViewState(
-          userItems = USER_ITEMS.toMutableList().apply {
-            remove(item1)
-            remove(item2)
-          },
-          isLoading = false,
-          error = null,
-          isRefreshing = false,
-        ),
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.RemoveUser.Success(item1),
-        SingleEvent.RemoveUser.Success(item2),
-      ).mapRight(),
-      preProcessingIntents = flowOf(ViewIntent.Initial)
+      expectedStates =
+        listOf(
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+          ViewState(
+            userItems = USER_ITEMS.toMutableList().apply { remove(item1) },
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+          ViewState(
+            userItems =
+              USER_ITEMS.toMutableList().apply {
+                remove(item1)
+                remove(item2)
+              },
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.RemoveUser.Success(item1),
+          SingleEvent.RemoveUser.Success(item2),
+        ).mapRight(),
+      preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerifySequence {
@@ -400,23 +421,25 @@ class MainVMTest : BaseMviViewModelTest<ViewIntent,
         vm
       },
       intents = flowOf(ViewIntent.RemoveUser(item)),
-      expectedStates = listOf(
-        ViewState(
-          userItems = USER_ITEMS,
-          isLoading = false,
-          error = null,
-          isRefreshing = false,
+      expectedStates =
+        listOf(
+          ViewState(
+            userItems = USER_ITEMS,
+            isLoading = false,
+            error = null,
+            isRefreshing = false,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          { event: SingleEvent ->
+            val removed = assertIs<SingleEvent.RemoveUser.Failure>(event)
+            assertEquals(item, removed.user)
+            assertEquals(userError, removed.error)
+            assertEquals(removed.indexProducer(), 0)
+          }.left(),
         ),
-      ).mapRight(),
-      expectedEvents = listOf(
-        { event: SingleEvent ->
-          val removed = assertIs<SingleEvent.RemoveUser.Failure>(event)
-          assertEquals(item, removed.user)
-          assertEquals(userError, removed.error)
-          assertEquals(removed.indexProducer(), 0)
-        }.left(),
-      ),
-      preProcessingIntents = flowOf(ViewIntent.Initial)
+      preProcessingIntents = flowOf(ViewIntent.Initial),
     ) {
       coVerify(exactly = 1) { getUserUseCase() }
       coVerify(exactly = 1) { removeUser(user) }

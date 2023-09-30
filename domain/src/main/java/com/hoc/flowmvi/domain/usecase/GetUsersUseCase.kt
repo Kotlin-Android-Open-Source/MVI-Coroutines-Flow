@@ -6,6 +6,8 @@ import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetUsersUseCase(private val userRepository: UserRepository) {
+class GetUsersUseCase(
+  private val userRepository: UserRepository,
+) {
   operator fun invoke(): Flow<Either<UserError, List<User>>> = userRepository.getUsers()
 }

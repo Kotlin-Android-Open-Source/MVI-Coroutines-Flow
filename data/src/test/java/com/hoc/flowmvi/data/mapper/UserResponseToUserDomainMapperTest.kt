@@ -14,39 +14,42 @@ class UserResponseToUserDomainMapperTest {
 
   @Test
   fun testUserDomainToUserResponseMapper_withValidResponse_returnsValid() {
-    val validated = mapper(
-      UserResponse(
-        id = "id",
-        email = "email@gmail.com",
-        firstName = "first",
-        lastName = "last",
-        avatar = "avatar",
+    val validated =
+      mapper(
+        UserResponse(
+          id = "id",
+          email = "email@gmail.com",
+          firstName = "first",
+          lastName = "last",
+          avatar = "avatar",
+        ),
       )
-    )
     assertTrue(validated.isRight())
     assertEquals(
-      User.create(
-        id = "id",
-        email = "email@gmail.com",
-        firstName = "first",
-        lastName = "last",
-        avatar = "avatar",
-      ).rightValueOrThrow,
+      User
+        .create(
+          id = "id",
+          email = "email@gmail.com",
+          firstName = "first",
+          lastName = "last",
+          avatar = "avatar",
+        ).rightValueOrThrow,
       validated.rightValueOrThrow,
     )
   }
 
   @Test
   fun testUserDomainToUserResponseMapper_withInvalidResponse_returnsInvalid() {
-    val validated = mapper(
-      UserResponse(
-        id = "id",
-        email = "email@",
-        firstName = "first",
-        lastName = "last",
-        avatar = "avatar",
+    val validated =
+      mapper(
+        UserResponse(
+          id = "id",
+          email = "email@",
+          firstName = "first",
+          lastName = "last",
+          avatar = "avatar",
+        ),
       )
-    )
     assertTrue(validated.isLeft())
     assertEquals(
       UserValidationError.INVALID_EMAIL_ADDRESS,

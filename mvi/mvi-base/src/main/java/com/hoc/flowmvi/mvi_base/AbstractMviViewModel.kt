@@ -20,7 +20,8 @@ import kotlinx.coroutines.flow.shareIn
 import timber.log.Timber
 
 abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSingleEvent> :
-  MviViewModel<I, S, E>, ViewModel() {
+  ViewModel(),
+  MviViewModel<I, S, E> {
   protected open val rawLogTag: String? = null
 
   protected val logTag by lazy(PUBLICATION) {
@@ -38,6 +39,7 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
   private val intentMutableFlow = MutableSharedFlow<I>(extraBufferCapacity = SubscriberBufferSize)
 
   final override val singleEvent: Flow<E> = eventChannel.receiveAsFlow()
+
   final override suspend fun processIntent(intent: I) = intentMutableFlow.emit(intent)
 
   @CallSuper
@@ -59,13 +61,13 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
   protected suspend fun sendEvent(event: E) {
     debugCheckImmediateMainDispatcher()
 
-    eventChannel.trySend(event)
+    eventChannel
+      .trySend(event)
       .onFailure {
         Timber
           .tag(logTag)
           .e(it, "Failed to send event: $event")
-      }
-      .getOrThrow()
+      }.getOrThrow()
   }
 
   protected val intentSharedFlow: SharedFlow<I> get() = intentMutableFlow
@@ -104,13 +106,12 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
    * start when the first subscriber arrives,
    * and stop when the last subscriber leaves.
    */
-  protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> =
-    shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+  protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> = shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
   @Deprecated(
     message = "This Flow is already shared in viewModelScope, so you don't need to share it again.",
     replaceWith = ReplaceWith("this"),
-    level = DeprecationLevel.ERROR
+    level = DeprecationLevel.ERROR,
   )
   protected fun <T> SharedFlow<T>.shareWhileSubscribed(): SharedFlow<T> = this
 

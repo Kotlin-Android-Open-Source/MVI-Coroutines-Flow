@@ -23,27 +23,31 @@ import retrofit2.Response
 
 @ExperimentalStdlibApi
 class UserErrorMapperTest {
-  private val moshi = Moshi
-    .Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
+  private val moshi =
+    Moshi
+      .Builder()
+      .add(KotlinJsonAdapterFactory())
+      .build()
   private val errorResponseJsonAdapter = moshi.adapter<ErrorResponse>()
   private val errorMapper = UserErrorMapper(errorResponseJsonAdapter)
 
-  private fun buildHttpException(error: String, data: Any?) =
-    HttpException(
-      Response.error<Any>(
-        400,
-        errorResponseJsonAdapter.toJson(
+  private fun buildHttpException(
+    error: String,
+    data: Any?,
+  ) = HttpException(
+    Response.error<Any>(
+      400,
+      errorResponseJsonAdapter
+        .toJson(
           ErrorResponse(
             statusCode = 400,
             error = error,
             message = "error=$error",
             data = data,
-          )
-        ).toResponseBody("application/json".toMediaType())
-      )
-    )
+          ),
+        ).toResponseBody("application/json".toMediaType()),
+    ),
+  )
 
   @Test
   fun test_withUserError_returnsItself() {
@@ -94,8 +98,8 @@ class UserErrorMapperTest {
       UserError.Unexpected,
       errorMapper(
         HttpException(
-          Response.success(null)
-        )
+          Response.success(null),
+        ),
       ),
     )
 
@@ -105,9 +109,9 @@ class UserErrorMapperTest {
         HttpException(
           Response.error<Any>(
             400,
-            "{}".toResponseBody("application/json".toMediaType())
-          )
-        )
+            "{}".toResponseBody("application/json".toMediaType()),
+          ),
+        ),
       ),
     )
 
@@ -117,18 +121,20 @@ class UserErrorMapperTest {
         buildHttpException(
           "hello",
           mapOf(
-            "1" to mapOf(
-              "2" to 3,
-              "3" to listOf("4", "5"),
-              "6" to "7"
-            ),
+            "1" to
+              mapOf(
+                "2" to 3,
+                "3" to listOf("4", "5"),
+                "6" to "7",
+              ),
             "2" to null,
-            "3" to listOf(
-              hashMapOf("1" to "2"),
-              hashMapOf("2" to "3"),
-            )
+            "3" to
+              listOf(
+                hashMapOf("1" to "2"),
+                hashMapOf("2" to "3"),
+              ),
           ),
-        )
+        ),
       ),
     )
 

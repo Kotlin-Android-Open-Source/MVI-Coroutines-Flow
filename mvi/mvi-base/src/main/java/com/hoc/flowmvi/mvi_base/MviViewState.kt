@@ -12,5 +12,6 @@ interface MviViewState
  */
 interface MviViewStateSaver<S : MviViewState> {
   fun S.toBundle(): Bundle
+
   fun restore(bundle: Bundle?): S
 }

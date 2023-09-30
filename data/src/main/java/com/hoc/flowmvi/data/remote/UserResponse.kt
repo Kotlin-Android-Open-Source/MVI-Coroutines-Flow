@@ -12,5 +12,5 @@ internal data class UserResponse(
   @Json(name = "last_name")
   val lastName: String,
   @Json(name = "avatar")
-  val avatar: String
+  val avatar: String,
 )
