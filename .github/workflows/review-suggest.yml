@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
       - name: Cache gradle, wrapper and buildSrc
         uses: actions/cache@v3
         with:
