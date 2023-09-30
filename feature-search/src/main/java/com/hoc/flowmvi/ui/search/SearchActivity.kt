@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
@@ -40,7 +40,7 @@ import timber.log.Timber
 class SearchActivity :
   AbstractMviActivity<ViewIntent, ViewState, SingleEvent, SearchVM>(R.layout.activity_search) {
   private val binding by viewBinding<ActivitySearchBinding>()
-  override val vm by stateViewModel<SearchVM>()
+  override val vm by viewModel<SearchVM>()
 
   private val searchViewQueryTextEventChannel = Channel<SearchViewQueryTextEvent>()
   private val searchAdapter = SearchAdapter()

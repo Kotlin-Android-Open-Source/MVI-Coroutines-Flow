@@ -85,7 +85,7 @@ internal class UserRepositoryImpl(
         }
     }
     .onEach { Timber.d("[USER_REPO] Emit users.size=${it.size} ") }
-    .map { it.right().leftWiden<UserError, Nothing, List<User>>() }
+    .map { it.right().leftWiden<UserError, _, _>() }
     .catch {
       logError(it, "getUsers")
       emit(errorMapper(it).left())

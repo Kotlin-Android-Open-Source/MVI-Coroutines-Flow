@@ -39,7 +39,11 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
-  buildFeatures { viewBinding = true }
+
+  buildFeatures {
+    viewBinding = true
+    buildConfig = true
+  }
 
   testOptions {
     unitTests.isIncludeAndroidResources = true

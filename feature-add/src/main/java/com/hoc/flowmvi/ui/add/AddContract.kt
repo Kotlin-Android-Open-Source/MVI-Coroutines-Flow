@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.core.os.bundleOf
 import arrow.core.identity
 import com.hoc.flowmvi.core.EitherNes
+import com.hoc.flowmvi.core_ui.parcelable
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
@@ -46,7 +47,7 @@ data class ViewState(
     override fun ViewState.toBundle() = bundleOf(VIEW_STATE_KEY to this)
 
     override fun restore(bundle: Bundle?) = bundle
-      ?.getParcelable<ViewState?>(VIEW_STATE_KEY)
+      ?.parcelable<ViewState>(VIEW_STATE_KEY)
       ?.copy(isLoading = false)
       ?: initial()
   }

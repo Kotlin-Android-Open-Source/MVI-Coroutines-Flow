@@ -21,13 +21,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class AddActivity :
   AbstractMviActivity<ViewIntent, ViewState, SingleEvent, AddVM>(R.layout.activity_add) {
-  override val vm by stateViewModel<AddVM>()
+  override val vm by viewModel<AddVM>()
   private val addBinding by viewBinding<ActivityAddBinding>()
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
