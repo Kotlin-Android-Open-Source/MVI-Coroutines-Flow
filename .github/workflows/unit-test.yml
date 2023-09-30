@@ -38,10 +38,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run Android Debug Unit Test
-        run: ./gradlew jacocoTestReportDebug --warning-mode all --stacktrace
-
-      - name: Run Java/Kotlin Unit Test
-        run: ./gradlew jacocoTestReport --warning-mode all --stacktrace
+        run: ./gradlew :app:koverHtmlReport --warning-mode all --stacktrace
 
       - name: Upload Test Report
         uses: codecov/codecov-action@v3.1.4

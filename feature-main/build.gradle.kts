@@ -1,6 +1,7 @@
 plugins {
   androidLib
   kotlinAndroid
+  id("org.jetbrains.kotlinx.kover")
 }
 
 android {
@@ -10,7 +11,6 @@ android {
 
   defaultConfig {
     minSdk = appConfig.minSdkVersion
-    targetSdk = appConfig.targetSdkVersion
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")

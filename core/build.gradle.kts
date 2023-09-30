@@ -1,5 +1,6 @@
 plugins {
   kotlin
+  id("org.jetbrains.kotlinx.kover")
 }
 
 java {

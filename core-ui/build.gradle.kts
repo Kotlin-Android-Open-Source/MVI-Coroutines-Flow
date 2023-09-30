@@ -1,6 +1,7 @@
 plugins {
   androidLib
   kotlinAndroid
+  id("org.jetbrains.kotlinx.kover")
 }
 
 android {

@@ -2,6 +2,7 @@ plugins {
   androidLib
   kotlinAndroid
   kotlinKapt
+  id("org.jetbrains.kotlinx.kover")
 }
 
 android {

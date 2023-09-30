@@ -1,7 +1,7 @@
 plugins {
   androidApplication
   kotlinAndroid
-  jacoco
+  id("org.jetbrains.kotlinx.kover")
 }
 
 android {
@@ -87,4 +87,33 @@ dependencies {
   testImplementation(testUtils)
   testImplementation(deps.koin.testJunit4)
   testImplementation(deps.koin.test)
+}
+
+dependencies {
+  kover(project(":feature-main"))
+  kover(project(":feature-add"))
+  kover(project(":feature-search"))
+  kover(project(":domain"))
+  kover(project(":data"))
+  kover(project(":core"))
+  kover(project(":core-ui"))
+  kover(project(":mvi-base"))
+}
+
+koverReport {
+  // filters for all report types of all build variants
+  filters {
+    excludes {
+      classes(
+        "*.databinding.*",
+        "*.BuildConfig"
+      )
+    }
+  }
+
+  defaults {
+    // Tests, sources, classes, and compilation tasks of the 'debug' build variant will be included in the default report.
+    // Thus, information from the 'app1AppDebug' variant will be included in the default report for this project and any project that specifies this project as a dependency.
+    mergeWith("debug") // or the name of any build variant needed
+  }
 }
