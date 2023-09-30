@@ -15,6 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
       - uses: JetBrains/qodana-action@v2023.2.6
         with:
           linter: jetbrains/qodana-jvm-android:latest
