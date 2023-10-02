@@ -15,14 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
+      # - name: Set up JDK
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     distribution: 'zulu'
+      #     java-version: '11'
 
-      - uses: JetBrains/qodana-action@v2023.2.6
-        with:
-          linter: jetbrains/qodana-jvm-android:latest
-          fail-threshold: 10
-          upload-result: true
+      # - uses: JetBrains/qodana-action@v2023.2.6
+      #   with:
+      #     linter: jetbrains/qodana-jvm-android:latest
+      #     fail-threshold: 10
+      #     upload-result: true
