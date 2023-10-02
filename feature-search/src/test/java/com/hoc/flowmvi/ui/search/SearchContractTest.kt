@@ -10,7 +10,7 @@ class SearchContractTest {
   fun test_userItem_equals() {
     assertEquals(
       UserItem.from(createUser()),
-      UserItem.from(createUser())
+      UserItem.from(createUser()),
     )
   }
 
@@ -18,7 +18,7 @@ class SearchContractTest {
   fun test_userItem_hashCode() {
     assertEquals(
       UserItem.from(createUser()).hashCode(),
-      UserItem.from(createUser()).hashCode()
+      UserItem.from(createUser()).hashCode(),
     )
   }
 
@@ -38,12 +38,14 @@ class SearchContractTest {
     private const val FIRST_NAME = "first"
     private const val LAST_NAME = "last"
 
-    private fun createUser(): User = User.create(
-      id = ID,
-      email = EMAIL,
-      avatar = AVATAR,
-      firstName = FIRST_NAME,
-      lastName = LAST_NAME
-    ).rightValueOrThrow
+    private fun createUser(): User =
+      User
+        .create(
+          id = ID,
+          email = EMAIL,
+          avatar = AVATAR,
+          firstName = FIRST_NAME,
+          lastName = LAST_NAME,
+        ).rightValueOrThrow
   }
 }

@@ -31,16 +31,15 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @FlowPreview
 @ExperimentalTime
-class SearchActivity :
-  AbstractMviActivity<ViewIntent, ViewState, SingleEvent, SearchVM>(R.layout.activity_search) {
+class SearchActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, SearchVM>(R.layout.activity_search) {
   private val binding by viewBinding<ActivitySearchBinding>()
-  override val vm by stateViewModel<SearchVM>()
+  override val vm by viewModel<SearchVM>()
 
   private val searchViewQueryTextEventChannel = Channel<SearchViewQueryTextEvent>()
   private val searchAdapter = SearchAdapter()
@@ -66,34 +65,36 @@ class SearchActivity :
         AutoTransition()
           .addTarget(errorGroup)
           .addTarget(progressBar)
-          .setDuration(200)
+          .setDuration(200),
       )
 
       errorGroup.isVisible = viewState.error !== null
       if (errorGroup.isVisible) {
-        errorMessageTextView.text = viewState.error?.let {
-          when (it) {
-            is UserError.InvalidId -> "Invalid id"
-            UserError.NetworkError -> "Network error"
-            UserError.ServerError -> "Server error"
-            UserError.Unexpected -> "Unexpected error"
-            is UserError.UserNotFound -> "User not found"
-            is UserError.ValidationFailed -> "Validation failed"
+        errorMessageTextView.text =
+          viewState.error?.let {
+            when (it) {
+              is UserError.InvalidId -> "Invalid id"
+              UserError.NetworkError -> "Network error"
+              UserError.ServerError -> "Server error"
+              UserError.Unexpected -> "Unexpected error"
+              is UserError.UserNotFound -> "User not found"
+              is UserError.ValidationFailed -> "Validation failed"
+            }
           }
-        }
       }
 
       progressBar.isVisible = viewState.isLoading
     }
   }
 
-  override fun viewIntents(): Flow<ViewIntent> = merge(
-    searchViewQueryTextEventChannel
-      .consumeAsFlow()
-      .onEach { Timber.d(">>> Query $it") }
-      .map { ViewIntent.Search(it.query.toString()) },
-    binding.retryButton.clicks().map { ViewIntent.Retry },
-  )
+  override fun viewIntents(): Flow<ViewIntent> =
+    merge(
+      searchViewQueryTextEventChannel
+        .consumeAsFlow()
+        .onEach { Timber.d(">>> Query $it") }
+        .map { ViewIntent.Search(it.query.toString()) },
+      binding.retryButton.clicks().map { ViewIntent.Retry },
+    )
 
   override fun setupViews() {
     supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -101,21 +102,21 @@ class SearchActivity :
     binding.run {
       usersRecycler.run {
         setHasFixedSize(true)
-        layoutManager = GridLayoutManager(
-          context,
-          if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 3 else 4,
-        )
+        layoutManager =
+          GridLayoutManager(
+            context,
+            if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 3 else 4,
+          )
         adapter = searchAdapter
       }
     }
   }
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean =
+    when (item.itemId) {
       android.R.id.home -> finish().let { true }
       else -> super.onOptionsItemSelected(item)
     }
-  }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_search, menu)
@@ -126,7 +127,9 @@ class SearchActivity :
         queryHint = "Search user..."
 
         Timber.d("onCreateOptionsMenu: originalQuery=${ vm.viewState.value.originalQuery}")
-        vm.viewState.value
+        vm
+          .viewState
+          .value
           .originalQuery
           .takeIf { it.isNotBlank() }
           ?.let {
@@ -145,7 +148,6 @@ class SearchActivity :
   }
 
   internal class IntentProvider : IntentProviders.Search {
-    override fun makeIntent(context: Context): Intent =
-      Intent(context, SearchActivity::class.java)
+    override fun makeIntent(context: Context): Intent = Intent(context, SearchActivity::class.java)
   }
 }

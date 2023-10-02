@@ -42,59 +42,62 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 
-private val USER_BODY = UserBody(
-  email = "email1@gmail.com",
-  firstName = "first",
-  lastName = "last",
-)
-
-private val USER_RESPONSES = listOf(
-  UserResponse(
-    id = "1",
+private val USER_BODY =
+  UserBody(
     email = "email1@gmail.com",
     firstName = "first",
     lastName = "last",
-    avatar = "avatar1",
-  ),
-  UserResponse(
-    id = "2",
-    email = "email2@gmail.com",
-    firstName = "first",
-    lastName = "last",
-    avatar = "avatar2",
-  ),
-  UserResponse(
-    id = "3",
-    email = "email3@gmail.com",
-    firstName = "first",
-    lastName = "last",
-    avatar = "avatar3",
-  ),
-)
+  )
 
-private val USERS = listOf(
-  User.create(
-    id = "1",
-    email = "email1@gmail.com",
-    firstName = "first",
-    lastName = "last",
-    avatar = "avatar1",
-  ),
-  User.create(
-    id = "2",
-    email = "email2@gmail.com",
-    firstName = "first",
-    lastName = "last",
-    avatar = "avatar2",
-  ),
-  User.create(
-    id = "3",
-    email = "email3@gmail.com",
-    firstName = "first",
-    lastName = "last",
-    avatar = "avatar3",
-  ),
-).map { it.rightValueOrThrow }
+private val USER_RESPONSES =
+  listOf(
+    UserResponse(
+      id = "1",
+      email = "email1@gmail.com",
+      firstName = "first",
+      lastName = "last",
+      avatar = "avatar1",
+    ),
+    UserResponse(
+      id = "2",
+      email = "email2@gmail.com",
+      firstName = "first",
+      lastName = "last",
+      avatar = "avatar2",
+    ),
+    UserResponse(
+      id = "3",
+      email = "email3@gmail.com",
+      firstName = "first",
+      lastName = "last",
+      avatar = "avatar3",
+    ),
+  )
+
+private val USERS =
+  listOf(
+    User.create(
+      id = "1",
+      email = "email1@gmail.com",
+      firstName = "first",
+      lastName = "last",
+      avatar = "avatar1",
+    ),
+    User.create(
+      id = "2",
+      email = "email2@gmail.com",
+      firstName = "first",
+      lastName = "last",
+      avatar = "avatar2",
+    ),
+    User.create(
+      id = "3",
+      email = "email3@gmail.com",
+      firstName = "first",
+      lastName = "last",
+      avatar = "avatar3",
+    ),
+  ).map { it.rightValueOrThrow }
 
 private val VALID_NES_USERS = USERS.map(User::rightNes)
 
@@ -118,13 +121,14 @@ class UserRepositoryImplTest {
     domainToBody = mockk()
     errorMapper = mockk()
 
-    repo = UserRepositoryImpl(
-      userApiService = userApiService,
-      dispatchers = TestAppCoroutineDispatchers(coroutineRule.testDispatcher),
-      responseToDomain = responseToDomain,
-      domainToBody = domainToBody,
-      errorMapper = errorMapper
-    )
+    repo =
+      UserRepositoryImpl(
+        userApiService = userApiService,
+        dispatchers = TestAppCoroutineDispatchers(coroutineRule.testDispatcher),
+        responseToDomain = responseToDomain,
+        domainToBody = domainToBody,
+        errorMapper = errorMapper,
+      )
   }
 
   @AfterTest
@@ -139,186 +143,198 @@ class UserRepositoryImplTest {
   }
 
   @Test
-  fun test_refresh_withApiCallSuccess_returnsRight() = runTest {
-    coEvery { userApiService.getUsers() } returns USER_RESPONSES
-    every { responseToDomain(any()) } returnsMany VALID_NES_USERS
+  fun test_refresh_withApiCallSuccess_returnsRight() =
+    runTest {
+      coEvery { userApiService.getUsers() } returns USER_RESPONSES
+      every { responseToDomain(any()) } returnsMany VALID_NES_USERS
 
-    val result = repo.refresh()
+      val result = repo.refresh()
 
-    assertTrue(result.isRight())
-    assertNotNull(result.getOrNull())
+      assertTrue(result.isRight())
+      assertNotNull(result.getOrNull())
 
-    coVerify { userApiService.getUsers() }
-    verifySequence {
-      USER_RESPONSES.forEach {
-        responseToDomain(it)
+      coVerify { userApiService.getUsers() }
+      verifySequence {
+        USER_RESPONSES.forEach {
+          responseToDomain(it)
+        }
       }
     }
-  }
 
   @Test
-  fun test_refresh_withApiCallError_returnsLeft() = runTest {
-    val ioException = IOException()
-    coEvery { userApiService.getUsers() } throws ioException
-    every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
+  fun test_refresh_withApiCallError_returnsLeft() =
+    runTest {
+      val ioException = IOException()
+      coEvery { userApiService.getUsers() } throws ioException
+      every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
-    val result = repo.refresh()
+      val result = repo.refresh()
 
-    assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
-    coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times
-    verify(exactly = 1) { errorMapper(ofType<IOException>()) }
-  }
-
-  @Test
-  fun test_remove_withApiCallSuccess_returnsRight() = runTest {
-    val user = USERS[0]
-    val userResponse = USER_RESPONSES[0]
-
-    coEvery { userApiService.remove(user.id) } returns userResponse
-    every { responseToDomain(userResponse) } returns user.rightNes()
-
-    val result = repo.remove(user)
-
-    assertTrue(result.isRight())
-    assertNotNull(result.getOrNull())
-
-    coVerify { userApiService.remove(user.id) }
-    coVerify { responseToDomain(userResponse) }
-  }
+      assertTrue(result.isLeft())
+      assertEquals(UserError.NetworkError, result.leftValueOrThrow)
+      coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times
+      verify(exactly = 1) { errorMapper(ofType<IOException>()) }
+    }
 
   @Test
-  fun test_remove_withApiCallError_returnsLeft() = runTest {
-    val user = USERS[0]
-    coEvery { userApiService.remove(user.id) } throws IOException()
-    every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
+  fun test_remove_withApiCallSuccess_returnsRight() =
+    runTest {
+      val user = USERS[0]
+      val userResponse = USER_RESPONSES[0]
 
-    val result = repo.remove(user)
+      coEvery { userApiService.remove(user.id) } returns userResponse
+      every { responseToDomain(userResponse) } returns user.rightNes()
 
-    assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
-    coVerify(exactly = 1) { userApiService.remove(user.id) }
-    verify(exactly = 1) { errorMapper(ofType<IOException>()) }
-  }
+      val result = repo.remove(user)
 
-  @Test
-  fun test_add_withApiCallSuccess_returnsRight() = runTest {
-    val user = USERS[0]
-    val userResponse = USER_RESPONSES[0]
+      assertTrue(result.isRight())
+      assertNotNull(result.getOrNull())
 
-    coEvery { userApiService.add(USER_BODY) } returns userResponse
-    every { domainToBody(user) } returns USER_BODY
-    every { responseToDomain(userResponse) } returns user.rightNes()
-
-    val result = repo.add(user)
-
-    assertTrue(result.isRight())
-    assertNotNull(result.getOrNull())
-
-    coVerify { userApiService.add(USER_BODY) }
-    verify { domainToBody(user) }
-    coVerify { responseToDomain(userResponse) }
-  }
+      coVerify { userApiService.remove(user.id) }
+      coVerify { responseToDomain(userResponse) }
+    }
 
   @Test
-  fun test_add_withApiCallError_returnsLeft() = runTest {
-    val user = USERS[0]
-    coEvery { userApiService.add(USER_BODY) } throws IOException()
-    every { domainToBody(user) } returns USER_BODY
-    every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
+  fun test_remove_withApiCallError_returnsLeft() =
+    runTest {
+      val user = USERS[0]
+      coEvery { userApiService.remove(user.id) } throws IOException()
+      every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
-    val result = repo.add(user)
+      val result = repo.remove(user)
 
-    assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
-
-    coVerify(exactly = 1) { userApiService.add(USER_BODY) }
-    verify(exactly = 1) { domainToBody(user) }
-    verify(exactly = 1) { errorMapper(ofType<IOException>()) }
-  }
+      assertTrue(result.isLeft())
+      assertEquals(UserError.NetworkError, result.leftValueOrThrow)
+      coVerify(exactly = 1) { userApiService.remove(user.id) }
+      verify(exactly = 1) { errorMapper(ofType<IOException>()) }
+    }
 
   @Test
-  fun test_search_withApiCallSuccess_returnsRight() = runTest {
-    val q = "hoc081098"
-    coEvery { userApiService.search(q) } returns USER_RESPONSES
-    every { responseToDomain(any()) } returnsMany VALID_NES_USERS
+  fun test_add_withApiCallSuccess_returnsRight() =
+    runTest {
+      val user = USERS[0]
+      val userResponse = USER_RESPONSES[0]
 
-    val result = repo.search(q)
+      coEvery { userApiService.add(USER_BODY) } returns userResponse
+      every { domainToBody(user) } returns USER_BODY
+      every { responseToDomain(userResponse) } returns user.rightNes()
 
-    assertTrue(result.isRight())
-    assertNotNull(result.getOrNull())
-    assertContentEquals(USERS, result.rightValueOrThrow)
+      val result = repo.add(user)
 
-    coVerify { userApiService.search(q) }
-    coVerifySequence {
-      USER_RESPONSES.forEach {
-        responseToDomain(it)
+      assertTrue(result.isRight())
+      assertNotNull(result.getOrNull())
+
+      coVerify { userApiService.add(USER_BODY) }
+      verify { domainToBody(user) }
+      coVerify { responseToDomain(userResponse) }
+    }
+
+  @Test
+  fun test_add_withApiCallError_returnsLeft() =
+    runTest {
+      val user = USERS[0]
+      coEvery { userApiService.add(USER_BODY) } throws IOException()
+      every { domainToBody(user) } returns USER_BODY
+      every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
+
+      val result = repo.add(user)
+
+      assertTrue(result.isLeft())
+      assertEquals(UserError.NetworkError, result.leftValueOrThrow)
+
+      coVerify(exactly = 1) { userApiService.add(USER_BODY) }
+      verify(exactly = 1) { domainToBody(user) }
+      verify(exactly = 1) { errorMapper(ofType<IOException>()) }
+    }
+
+  @Test
+  fun test_search_withApiCallSuccess_returnsRight() =
+    runTest {
+      val q = "hoc081098"
+      coEvery { userApiService.search(q) } returns USER_RESPONSES
+      every { responseToDomain(any()) } returnsMany VALID_NES_USERS
+
+      val result = repo.search(q)
+
+      assertTrue(result.isRight())
+      assertNotNull(result.getOrNull())
+      assertContentEquals(USERS, result.rightValueOrThrow)
+
+      coVerify { userApiService.search(q) }
+      coVerifySequence {
+        USER_RESPONSES.forEach {
+          responseToDomain(it)
+        }
       }
     }
-  }
 
   @Test
-  fun test_search_withApiCallError_returnsLeft() = runTest {
-    val q = "hoc081098"
-    coEvery { userApiService.search(q) } throws IOException()
-    every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
+  fun test_search_withApiCallError_returnsLeft() =
+    runTest {
+      val q = "hoc081098"
+      coEvery { userApiService.search(q) } throws IOException()
+      every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
-    val result = repo.search(q)
+      val result = repo.search(q)
 
-    assertTrue(result.isLeft())
-    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
+      assertTrue(result.isLeft())
+      assertEquals(UserError.NetworkError, result.leftValueOrThrow)
 
-    coVerify(exactly = 1) { userApiService.search(q) }
-    verify(exactly = 1) { errorMapper(ofType<IOException>()) }
-  }
-
-  @Test
-  fun test_getUsers_withApiCallSuccess_emitsInitial() = runTest {
-    coEvery { userApiService.getUsers() } returns USER_RESPONSES
-    every { responseToDomain(any()) } returnsMany VALID_NES_USERS
-
-    val events = mutableListOf<Either<UserError, List<User>>>()
-    val job = launch(start = CoroutineStart.UNDISPATCHED) {
-      repo.getUsers().toList(events)
+      coVerify(exactly = 1) { userApiService.search(q) }
+      verify(exactly = 1) { errorMapper(ofType<IOException>()) }
     }
-    delay(5_000)
-    job.cancel()
 
-    assertEquals(1, events.size)
-    val result = events.single()
-    assertTrue(result.isRight())
-    assertNotNull(result.getOrNull())
-    assertEquals(USERS, result.rightValueOrThrow)
+  @Test
+  fun test_getUsers_withApiCallSuccess_emitsInitial() =
+    runTest {
+      coEvery { userApiService.getUsers() } returns USER_RESPONSES
+      every { responseToDomain(any()) } returnsMany VALID_NES_USERS
 
-    coVerify { userApiService.getUsers() }
-    verifySequence {
-      USER_RESPONSES.forEach {
-        responseToDomain(it)
+      val events = mutableListOf<Either<UserError, List<User>>>()
+      val job =
+        launch(start = CoroutineStart.UNDISPATCHED) {
+          repo.getUsers().toList(events)
+        }
+      delay(5_000)
+      job.cancel()
+
+      assertEquals(1, events.size)
+      val result = events.single()
+      assertTrue(result.isRight())
+      assertNotNull(result.getOrNull())
+      assertEquals(USERS, result.rightValueOrThrow)
+
+      coVerify { userApiService.getUsers() }
+      verifySequence {
+        USER_RESPONSES.forEach {
+          responseToDomain(it)
+        }
       }
     }
-  }
 
   @Test
-  fun test_getUsers_withApiCallError_rethrows() = runTest {
-    coEvery { userApiService.getUsers() } throws IOException()
-    every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
+  fun test_getUsers_withApiCallError_rethrows() =
+    runTest {
+      coEvery { userApiService.getUsers() } throws IOException()
+      every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
 
-    val events = mutableListOf<Either<UserError, List<User>>>()
-    val job = launch(start = CoroutineStart.UNDISPATCHED) {
-      repo.getUsers().toList(events)
+      val events = mutableListOf<Either<UserError, List<User>>>()
+      val job =
+        launch(start = CoroutineStart.UNDISPATCHED) {
+          repo.getUsers().toList(events)
+        }
+      delay(20_000)
+      job.cancel()
+
+      assertEquals(1, events.size)
+      val result = events.single()
+      assertTrue(result.isLeft())
+      assertNull(result.getOrNull())
+      assertEquals(UserError.NetworkError, result.leftValueOrThrow)
+
+      coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times.
+      verify(exactly = 1) { errorMapper(ofType<IOException>()) }
     }
-    delay(20_000)
-    job.cancel()
-
-    assertEquals(1, events.size)
-    val result = events.single()
-    assertTrue(result.isLeft())
-    assertNull(result.getOrNull())
-    assertEquals(UserError.NetworkError, result.leftValueOrThrow)
-
-    coVerify(exactly = 3) { userApiService.getUsers() } // retry 2 times.
-    verify(exactly = 1) { errorMapper(ofType<IOException>()) }
-  }
 
   @Test
   fun test_getUsers_withApiCallSuccess_emitsInitialAndUpdatedUsers() =
@@ -329,13 +345,15 @@ class UserRepositoryImplTest {
       coEvery { userApiService.add(USER_BODY) } returns userResponse
       coEvery { userApiService.remove(user.id) } returns userResponse
       every { domainToBody(user) } returns USER_BODY
-      USER_RESPONSES.zip(USERS)
+      USER_RESPONSES
+        .zip(USERS)
         .forEach { (r, u) -> every { responseToDomain(r) } returns u.rightNes() }
 
       val events = mutableListOf<Either<UserError, List<User>>>()
-      val job = launch(start = CoroutineStart.UNDISPATCHED) {
-        repo.getUsers().toList(events)
-      }
+      val job =
+        launch(start = CoroutineStart.UNDISPATCHED) {
+          repo.getUsers().toList(events)
+        }
       repo.add(user)
       repo.remove(user)
       delay(120_000)
@@ -347,7 +365,7 @@ class UserRepositoryImplTest {
           USERS.dropLast(1),
           USERS,
           USERS.dropLast(1),
-        )
+        ),
       )
 
       coVerify { userApiService.getUsers() }

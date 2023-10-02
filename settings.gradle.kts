@@ -1,9 +1,30 @@
 rootProject.name = "MVI Coroutines Flow"
 
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    google()
+    mavenCentral()
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
+  }
+}
+
+dependencyResolutionManagement {
+  repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+  repositories {
+    google()
+    mavenCentral()
+    maven(url = "https://jitpack.io")
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
+  }
+}
+
 val copyToBuildSrc = { sourcePath: String ->
   rootDir.resolve(sourcePath).copyRecursively(
     target = rootDir.resolve("buildSrc").resolve(sourcePath),
-    overwrite = true
+    overwrite = true,
   )
   println("[DONE] copied $sourcePath")
 }
@@ -21,7 +42,10 @@ include(":test-utils")
 includeProject(":mvi-base", "mvi/mvi-base")
 includeProject(":mvi-testing", "mvi/mvi-testing")
 
-fun includeProject(name: String, filePath: String) {
+fun includeProject(
+  name: String,
+  filePath: String,
+) {
   include(name)
   project(name).projectDir = File(filePath)
 }

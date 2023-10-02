@@ -17,8 +17,8 @@ abstract class AbstractMviActivity<
   VM : MviViewModel<I, S, E>,
   >(
   @LayoutRes contentLayoutId: Int,
-) :
-  AppCompatActivity(contentLayoutId), MviView<I, S, E> {
+) : AppCompatActivity(contentLayoutId),
+  MviView<I, S, E> {
   protected abstract val vm: VM
 
   @CallSuper
@@ -31,11 +31,13 @@ abstract class AbstractMviActivity<
 
   private fun bindVM() {
     // observe view model
-    vm.viewState
+    vm
+      .viewState
       .collectIn(this) { render(it) }
 
     // observe single event
-    vm.singleEvent
+    vm
+      .singleEvent
       .collectIn(this) {
         debugCheckImmediateMainDispatcher()
         handleSingleEvent(it)

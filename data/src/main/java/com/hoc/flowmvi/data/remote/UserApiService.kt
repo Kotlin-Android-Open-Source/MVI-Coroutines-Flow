@@ -15,14 +15,20 @@ internal interface UserApiService {
   suspend fun getUsers(): List<UserResponse>
 
   @DELETE("users/{id}")
-  suspend fun remove(@Path("id") userId: String): UserResponse
+  suspend fun remove(
+    @Path("id") userId: String,
+  ): UserResponse
 
   @Headers("Content-Type: application/json")
   @POST("users")
-  suspend fun add(@Body user: UserBody): UserResponse
+  suspend fun add(
+    @Body user: UserBody,
+  ): UserResponse
 
   @GET("users/search")
-  suspend fun search(@Query("q") query: String): List<UserResponse>
+  suspend fun search(
+    @Query("q") query: String,
+  ): List<UserResponse>
 
   companion object {
     operator fun invoke(retrofit: Retrofit) = retrofit.create<UserApiService>()

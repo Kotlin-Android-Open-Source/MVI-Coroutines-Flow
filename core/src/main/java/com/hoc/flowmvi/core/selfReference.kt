@@ -8,8 +8,13 @@ import kotlin.reflect.KProperty
 // Opt-in is required with the -language-version 1.8 compiler option.
 // See https://kotlinlang.org/docs/inline-classes.html for more information.
 @JvmInline
-value class SelfReference<T>(val value: T) : ReadOnlyProperty<Any?, T> {
-  override fun getValue(thisRef: Any?, property: KProperty<*>): T = value
+value class SelfReference<T>(
+  val value: T,
+) : ReadOnlyProperty<Any?, T> {
+  override fun getValue(
+    thisRef: Any?,
+    property: KProperty<*>,
+  ): T = value
 }
 
 /**

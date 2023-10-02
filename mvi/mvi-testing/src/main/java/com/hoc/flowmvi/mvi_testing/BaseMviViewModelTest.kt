@@ -70,11 +70,13 @@ abstract class BaseMviViewModelTest<
   VM : MviViewModel<I, S, E>,
   > {
   @get:Rule
-  val coroutineRule = TestCoroutineDispatcherRule(
-    testDispatcher = UnconfinedTestDispatcher(
-      name = "${this::class.java.simpleName}-UnconfinedTestDispatcher",
+  val coroutineRule =
+    TestCoroutineDispatcherRule(
+      testDispatcher =
+        UnconfinedTestDispatcher(
+          name = "${this::class.java.simpleName}-UnconfinedTestDispatcher",
+        ),
     )
-  )
 
   @CallSuper
   @BeforeTest
@@ -101,13 +103,14 @@ abstract class BaseMviViewModelTest<
 
     // ------------------------------------- RUN -------------------------------------
 
-    val (states, events, stateJob, eventJob) = run(
-      vm = vm,
-      intents = intents,
-      expectedStates = expectedStates,
-      expectedEvents = expectedEvents,
-      loggingEnabled = loggingEnabled,
-    )
+    val (states, events, stateJob, eventJob) =
+      run(
+        vm = vm,
+        intents = intents,
+        expectedStates = expectedStates,
+        expectedEvents = expectedEvents,
+        loggingEnabled = loggingEnabled,
+      )
 
     // ------------------------------------- DONE -------------------------------------
 
@@ -144,43 +147,45 @@ abstract class BaseMviViewModelTest<
     var stateIndex = 0
     var eventIndex = 0
 
-    val stateJob = vm.viewState
-      .onEach { state ->
-        logIfEnabled(loggingEnabled) { "[STATE] <- $state" }
+    val stateJob =
+      vm
+        .viewState
+        .onEach { state ->
+          logIfEnabled(loggingEnabled) { "[STATE] <- $state" }
 
-        states += state
-        expectedStates[stateIndex].fold(
-          ifRight = {
-            assertEquals(
-              expected = it,
-              actual = state,
-              message = "[State index=$stateIndex]"
-            )
-          },
-          ifLeft = { it(state) }
-        )
-        ++stateIndex
-      }
-      .launchIn(this)
+          states += state
+          expectedStates[stateIndex].fold(
+            ifRight = {
+              assertEquals(
+                expected = it,
+                actual = state,
+                message = "[State index=$stateIndex]",
+              )
+            },
+            ifLeft = { it(state) },
+          )
+          ++stateIndex
+        }.launchIn(this)
 
-    val eventJob = vm.singleEvent
-      .onEach { event ->
-        logIfEnabled(loggingEnabled) { "[EVENT] <- $event" }
+    val eventJob =
+      vm
+        .singleEvent
+        .onEach { event ->
+          logIfEnabled(loggingEnabled) { "[EVENT] <- $event" }
 
-        events += event
-        expectedEvents[eventIndex].fold(
-          ifRight = {
-            assertEquals(
-              expected = it,
-              actual = event,
-              message = "[Event index=$eventIndex]"
-            )
-          },
-          ifLeft = { it(event) }
-        )
-        ++eventIndex
-      }
-      .launchIn(this)
+          events += event
+          expectedEvents[eventIndex].fold(
+            ifRight = {
+              assertEquals(
+                expected = it,
+                actual = event,
+                message = "[Event index=$eventIndex]",
+              )
+            },
+            ifLeft = { it(event) },
+          )
+          ++eventIndex
+        }.launchIn(this)
 
     intents.collect {
       logIfEnabled(loggingEnabled) { "[DISPATCH] Dispatch $it -> $vm" }
@@ -211,8 +216,7 @@ abstract class BaseMviViewModelTest<
         job1.cancelAndJoin()
         job2.cancelAndJoin()
         logIfEnabled(loggingEnabled) { DIVIDER }
-      }
-      .collect {
+      }.collect {
         vm.processIntent(it)
         logIfEnabled(loggingEnabled) { "[BEFORE] Dispatch $it -> $vm" }
       }
@@ -228,7 +232,10 @@ private data class RunResult<S, E>(
 
 private val DIVIDER = "-".repeat(32)
 
-private fun logIfEnabled(logging: Boolean, s: () -> String) = if (logging) println(s()) else Unit
+private fun logIfEnabled(
+  logging: Boolean,
+  s: () -> String,
+) = if (logging) println(s()) else Unit
 
 private fun <S, E> doAssertions(
   expectedStates: List<Either<(S) -> Unit, S>>,
@@ -243,10 +250,10 @@ private fun <S, E> doAssertions(
         assertEquals(
           expected = it,
           actual = state,
-          message = "[State index=$index]"
+          message = "[State index=$index]",
         )
       },
-      ifLeft = { it(state) }
+      ifLeft = { it(state) },
     )
   }
 
@@ -257,20 +264,23 @@ private fun <S, E> doAssertions(
         assertEquals(
           expected = it,
           actual = event,
-          message = "[Event index=$index]"
+          message = "[Event index=$index]",
         )
       },
-      ifLeft = { it(event) }
+      ifLeft = { it(event) },
     )
   }
 }
 
-private fun <T> List<T>.joinToStringWithIndex(): String {
-  return if (isEmpty()) "[]" else withIndex().joinToString(
-    separator = ",\n",
-    prefix = "[\n",
-    postfix = "\n]",
-  ) { (i, v) ->
-    "   [$i]: $v"
+private fun <T> List<T>.joinToStringWithIndex(): String =
+  if (isEmpty()) {
+    "[]"
+  } else {
+    withIndex().joinToString(
+      separator = ",\n",
+      prefix = "[\n",
+      postfix = "\n]",
+    ) { (i, v) ->
+      "   [$i]: $v"
+    }
   }
-}

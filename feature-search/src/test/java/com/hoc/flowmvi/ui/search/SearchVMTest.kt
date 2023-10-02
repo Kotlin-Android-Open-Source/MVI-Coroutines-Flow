@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:discouraged-comment-location")
+
 package com.hoc.flowmvi.ui.search
 
 import androidx.lifecycle.SavedStateHandle
@@ -42,11 +44,12 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     searchUsersUseCase = mockk()
     savedStateHandle = SavedStateHandle()
-    vm = SearchVM(
-      searchUsersUseCase = searchUsersUseCase,
-      savedStateHandle = savedStateHandle,
-      stateSaver = ViewState.StateSaver(),
-    )
+    vm =
+      SearchVM(
+        searchUsersUseCase = searchUsersUseCase,
+        savedStateHandle = savedStateHandle,
+        stateSaver = ViewState.StateSaver(),
+      )
   }
 
   override fun tearDown() {
@@ -63,55 +66,57 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     runVMTest(
       vmProducer = { vm },
-      intents = flowOf("a", "b", "c", query)
-        .map { ViewIntent.Search(it) }
-        .onEach { delay(SEMI_TIMEOUT) }
-        .onCompletion { timeout() },
-      expectedStates = listOf(
-        ViewState.initial(""),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "a", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "b", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "c", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = query, // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true, // update isLoading
-          error = null,
-          submittedQuery = "",
-          originalQuery = query,
-        ),
-        ViewState(
-          users = USER_ITEMS, // update users
-          isLoading = false, // update isLoading
-          error = null,
-          submittedQuery = query, // update submittedQuery
-          originalQuery = query,
-        ),
-      ).mapRight(),
+      intents =
+        flowOf("a", "b", "c", query)
+          .map { ViewIntent.Search(it) }
+          .onEach { delay(SEMI_TIMEOUT) }
+          .onCompletion { timeout() },
+      expectedStates =
+        listOf(
+          ViewState.initial(""),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "a", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "b", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "c", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = query, // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true, // update isLoading
+            error = null,
+            submittedQuery = "",
+            originalQuery = query,
+          ),
+          ViewState(
+            users = USER_ITEMS, // update users
+            isLoading = false, // update isLoading
+            error = null,
+            submittedQuery = query, // update submittedQuery
+            originalQuery = query,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
     ) {
       coVerify(exactly = 1) { searchUsersUseCase(query) }
@@ -124,41 +129,43 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     runVMTest(
       vmProducer = { vm },
-      intents = flowOf("a", "b", "c", query)
-        .map { ViewIntent.Search(it) }
-        .onEach { delay(SEMI_TIMEOUT) }
-        .onCompletion { timeout() },
-      expectedStates = listOf(
-        ViewState.initial(""),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "a", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "b", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "c", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = query, // update originalQuery
-        ),
-      ).mapRight(),
+      intents =
+        flowOf("a", "b", "c", query)
+          .map { ViewIntent.Search(it) }
+          .onEach { delay(SEMI_TIMEOUT) }
+          .onCompletion { timeout() },
+      expectedStates =
+        listOf(
+          ViewState.initial(""),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "a", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "b", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "c", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = query, // update originalQuery
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
     )
   }
@@ -170,57 +177,59 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     runVMTest(
       vmProducer = { vm },
-      intents = flowOf("a", "b", "c", query)
-        .map { ViewIntent.Search(it) }
-        .onEach { delay(SEMI_TIMEOUT) }
-        .onCompletion { timeout() }
-        .concatWith(timer(ViewIntent.Search(query), TOTAL_TIMEOUT))
-        .onCompletion { timeout() },
-      expectedStates = listOf(
-        ViewState.initial(""),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "a", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "b", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "c", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = query, // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true, // update isLoading
-          error = null,
-          submittedQuery = "",
-          originalQuery = query,
-        ),
-        ViewState(
-          users = USER_ITEMS, // update users
-          isLoading = false, // update isLoading
-          error = null,
-          submittedQuery = query, // update submittedQuery
-          originalQuery = query,
-        ),
-      ).mapRight(),
+      intents =
+        flowOf("a", "b", "c", query)
+          .map { ViewIntent.Search(it) }
+          .onEach { delay(SEMI_TIMEOUT) }
+          .onCompletion { timeout() }
+          .concatWith(timer(ViewIntent.Search(query), TOTAL_TIMEOUT))
+          .onCompletion { timeout() },
+      expectedStates =
+        listOf(
+          ViewState.initial(""),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "a", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "b", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "c", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = query, // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true, // update isLoading
+            error = null,
+            submittedQuery = "",
+            originalQuery = query,
+          ),
+          ViewState(
+            users = USER_ITEMS, // update users
+            isLoading = false, // update isLoading
+            error = null,
+            submittedQuery = query, // update submittedQuery
+            originalQuery = query,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
     ) {
       coVerify(exactly = 1) { searchUsersUseCase(query) }
@@ -239,68 +248,70 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     runVMTest(
       vmProducer = { vm },
-      intents = flowOf("a", "b", "c", query1)
-        .map { ViewIntent.Search(it) }
-        .onEach { delay(SEMI_TIMEOUT) }
-        .onCompletion { timeout() }
-        .concatWith(
-          timer(
-            ViewIntent.Search(query2),
-            TOTAL_TIMEOUT,
-          ).onCompletion { timeout() }, // (2)
-        ),
-      expectedStates = listOf(
-        ViewState.initial(""),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "a", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "b", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = "c", // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = query1, // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true, // update isLoading
-          error = null,
-          submittedQuery = "",
-          originalQuery = query1,
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true,
-          error = null,
-          submittedQuery = "",
-          originalQuery = query2, // update originalQuery
-        ),
-        ViewState(
-          users = USER_ITEMS, // update users
-          isLoading = false, // update isLoading
-          error = null,
-          submittedQuery = query2, // update submittedQuery
-          originalQuery = query2,
-        ),
-      ).mapRight(),
+      intents =
+        flowOf("a", "b", "c", query1)
+          .map { ViewIntent.Search(it) }
+          .onEach { delay(SEMI_TIMEOUT) }
+          .onCompletion { timeout() }
+          .concatWith(
+            timer(
+              ViewIntent.Search(query2),
+              TOTAL_TIMEOUT,
+            ).onCompletion { timeout() }, // (2)
+          ),
+      expectedStates =
+        listOf(
+          ViewState.initial(""),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "a", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "b", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = "c", // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = query1, // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true, // update isLoading
+            error = null,
+            submittedQuery = "",
+            originalQuery = query1,
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true,
+            error = null,
+            submittedQuery = "",
+            originalQuery = query2, // update originalQuery
+          ),
+          ViewState(
+            users = USER_ITEMS, // update users
+            isLoading = false, // update isLoading
+            error = null,
+            submittedQuery = query2, // update submittedQuery
+            originalQuery = query2,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
     ) {
       coVerifySequence {
@@ -317,34 +328,36 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     runVMTest(
       vmProducer = { vm },
-      intents = flow {
-        emit(ViewIntent.Search(query))
-        timeout()
-      },
-      expectedStates = listOf(
-        ViewState.initial(""),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = query, // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true, // update isLoading
-          error = null,
-          submittedQuery = "",
-          originalQuery = query,
-        ),
-        ViewState(
-          users = USER_ITEMS, // update users
-          isLoading = false, // update isLoading
-          error = null,
-          submittedQuery = query, // update submittedQuery
-          originalQuery = query,
-        ),
-      ).mapRight(),
+      intents =
+        flow {
+          emit(ViewIntent.Search(query))
+          timeout()
+        },
+      expectedStates =
+        listOf(
+          ViewState.initial(""),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = query, // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true, // update isLoading
+            error = null,
+            submittedQuery = "",
+            originalQuery = query,
+          ),
+          ViewState(
+            users = USER_ITEMS, // update users
+            isLoading = false, // update isLoading
+            error = null,
+            submittedQuery = query, // update submittedQuery
+            originalQuery = query,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
     ) {
       coVerify(exactly = 1) { searchUsersUseCase(query) }
@@ -359,37 +372,40 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     runVMTest(
       vmProducer = { vm },
-      intents = flow {
-        emit(ViewIntent.Search(query))
-        timeout()
-      },
-      expectedStates = listOf(
-        ViewState.initial(""),
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = null,
-          submittedQuery = "",
-          originalQuery = query, // update originalQuery
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true, // update isLoading
-          error = null,
-          submittedQuery = "",
-          originalQuery = query,
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false, // update isLoading
-          error = networkError, // update error
-          submittedQuery = query, // update submittedQuery
-          originalQuery = query,
-        ),
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.SearchFailure(networkError)
-      ).mapRight(),
+      intents =
+        flow {
+          emit(ViewIntent.Search(query))
+          timeout()
+        },
+      expectedStates =
+        listOf(
+          ViewState.initial(""),
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = null,
+            submittedQuery = "",
+            originalQuery = query, // update originalQuery
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true, // update isLoading
+            error = null,
+            submittedQuery = "",
+            originalQuery = query,
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false, // update isLoading
+            error = networkError, // update error
+            submittedQuery = query, // update submittedQuery
+            originalQuery = query,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.SearchFailure(networkError),
+        ).mapRight(),
     ) {
       coVerify(exactly = 1) { searchUsersUseCase(query) }
     }
@@ -400,9 +416,10 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Retry),
-      expectedStates = listOf(
-        ViewState.initial(""),
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState.initial(""),
+        ).mapRight(),
       expectedEvents = emptyList(),
     )
   }
@@ -411,42 +428,45 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
   fun test_withRetryIntentWhenError_returnsUserItemsWithProperLoadingState() {
     val query = "#hoc081098"
     val networkError = UserError.NetworkError
-    coEvery { searchUsersUseCase(query) } returnsManyWithDelay listOf(
-      networkError.left(),
-      USERS.right(),
-    )
+    coEvery { searchUsersUseCase(query) } returnsManyWithDelay
+      listOf(
+        networkError.left(),
+        USERS.right(),
+      )
 
     runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Retry),
-      expectedStates = listOf(
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = networkError,
-          submittedQuery = query,
-          originalQuery = query,
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true, // update isLoading
-          error = null, // update error
-          submittedQuery = query,
-          originalQuery = query,
-        ),
-        ViewState(
-          users = USER_ITEMS, // update users
-          isLoading = false, // update isLoading
-          error = null,
-          submittedQuery = query,
-          originalQuery = query,
-        ),
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = networkError,
+            submittedQuery = query,
+            originalQuery = query,
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true, // update isLoading
+            error = null, // update error
+            submittedQuery = query,
+            originalQuery = query,
+          ),
+          ViewState(
+            users = USER_ITEMS, // update users
+            isLoading = false, // update isLoading
+            error = null,
+            submittedQuery = query,
+            originalQuery = query,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
-      preProcessingIntents = flow {
-        emit(ViewIntent.Search(query))
-        timeout()
-      },
+      preProcessingIntents =
+        flow {
+          emit(ViewIntent.Search(query))
+          timeout()
+        },
     ) {
       coVerify(exactly = 2) { searchUsersUseCase(query) }
     }
@@ -461,36 +481,39 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
     runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Retry),
-      expectedStates = listOf(
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = networkError,
-          submittedQuery = query,
-          originalQuery = query,
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true, // update isLoading
-          error = null, // update error
-          submittedQuery = query,
-          originalQuery = query,
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = false, // update isLoading
-          error = networkError, // update error
-          submittedQuery = query,
-          originalQuery = query,
-        ),
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.SearchFailure(networkError),
-      ).mapRight(),
-      preProcessingIntents = flow {
-        emit(ViewIntent.Search(query))
-        timeout()
-      },
+      expectedStates =
+        listOf(
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = networkError,
+            submittedQuery = query,
+            originalQuery = query,
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true, // update isLoading
+            error = null, // update error
+            submittedQuery = query,
+            originalQuery = query,
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = false, // update isLoading
+            error = networkError, // update error
+            submittedQuery = query,
+            originalQuery = query,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.SearchFailure(networkError),
+        ).mapRight(),
+      preProcessingIntents =
+        flow {
+          emit(ViewIntent.Search(query))
+          timeout()
+        },
     ) {
       coVerify(exactly = 2) { searchUsersUseCase(query) }
     }
@@ -517,48 +540,51 @@ class SearchVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, Se
 
     runVMTest(
       vmProducer = { vm },
-      intents = flowOf<ViewIntent>(ViewIntent.Retry).concatWith(
-        flow {
-          delay(SEMI_TIMEOUT) // (2) very short ...
-          emit(ViewIntent.Search(query2))
-          timeout()
-        }
-      ),
-      expectedStates = listOf(
-        ViewState(
-          users = emptyList(),
-          isLoading = false,
-          error = networkError,
-          submittedQuery = query1,
-          originalQuery = query1,
+      intents =
+        flowOf<ViewIntent>(ViewIntent.Retry).concatWith(
+          flow {
+            delay(SEMI_TIMEOUT) // (2) very short ...
+            emit(ViewIntent.Search(query2))
+            timeout()
+          },
         ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true, // update isLoading
-          error = null, // update error
-          submittedQuery = query1,
-          originalQuery = query1,
-        ),
-        ViewState(
-          users = emptyList(),
-          isLoading = true,
-          error = null,
-          submittedQuery = query1,
-          originalQuery = query2, // update originalQuery
-        ),
-        ViewState(
-          users = USER_ITEMS, // update users
-          isLoading = false, // update isLoading
-          error = null,
-          submittedQuery = query2, // update submittedQuery
-          originalQuery = query2,
-        ),
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState(
+            users = emptyList(),
+            isLoading = false,
+            error = networkError,
+            submittedQuery = query1,
+            originalQuery = query1,
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true, // update isLoading
+            error = null, // update error
+            submittedQuery = query1,
+            originalQuery = query1,
+          ),
+          ViewState(
+            users = emptyList(),
+            isLoading = true,
+            error = null,
+            submittedQuery = query1,
+            originalQuery = query2, // update originalQuery
+          ),
+          ViewState(
+            users = USER_ITEMS, // update users
+            isLoading = false, // update isLoading
+            error = null,
+            submittedQuery = query2, // update submittedQuery
+            originalQuery = query2,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
-      preProcessingIntents = flow {
-        emit(ViewIntent.Search(query1))
-        timeout()
-      }
+      preProcessingIntents =
+        flow {
+          emit(ViewIntent.Search(query1))
+          timeout()
+        },
     ) {
       coVerifySequence {
         searchUsersUseCase(query1)

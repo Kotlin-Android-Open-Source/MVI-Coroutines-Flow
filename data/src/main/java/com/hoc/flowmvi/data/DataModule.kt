@@ -30,65 +30,68 @@ internal val ERROR_RESPONSE_JSON_ADAPTER = named("ERROR_RESPONSE_JSON_ADAPTER")
 @ExperimentalStdlibApi
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-val dataModule = module {
-  singleOf(UserApiService::invoke)
+val dataModule =
+  module {
+    singleOf(UserApiService::invoke)
 
-  single {
-    provideRetrofit(
-      baseUrl = get(BASE_URL_QUALIFIER),
-      moshi = get(),
-      client = get()
-    )
+    single {
+      provideRetrofit(
+        baseUrl = get(BASE_URL_QUALIFIER),
+        moshi = get(),
+        client = get(),
+      )
+    }
+
+    single { provideMoshi() }
+
+    single { provideOkHttpClient() }
+
+    factory(BASE_URL_QUALIFIER) { "https://mvi-coroutines-flow-server.onrender.com/" }
+
+    factory { UserResponseToUserDomainMapper() }
+
+    factory { UserDomainToUserBodyMapper() }
+
+    factory(ERROR_RESPONSE_JSON_ADAPTER) { get<Moshi>().adapter<ErrorResponse>() }
+
+    factory { UserErrorMapper(get(ERROR_RESPONSE_JSON_ADAPTER)) }
+
+    single<UserRepository> {
+      UserRepositoryImpl(
+        userApiService = get(),
+        dispatchers = get(),
+        responseToDomain = get<UserResponseToUserDomainMapper>(),
+        domainToBody = get<UserDomainToUserBodyMapper>(),
+        errorMapper = get<UserErrorMapper>(),
+      )
+    }
   }
 
-  single { provideMoshi() }
-
-  single { provideOkHttpClient() }
-
-  factory(BASE_URL_QUALIFIER) { "https://mvi-coroutines-flow-server.onrender.com/" }
-
-  factory { UserResponseToUserDomainMapper() }
-
-  factory { UserDomainToUserBodyMapper() }
-
-  factory(ERROR_RESPONSE_JSON_ADAPTER) { get<Moshi>().adapter<ErrorResponse>() }
-
-  factory { UserErrorMapper(get(ERROR_RESPONSE_JSON_ADAPTER)) }
-
-  single<UserRepository> {
-    UserRepositoryImpl(
-      userApiService = get(),
-      dispatchers = get(),
-      responseToDomain = get<UserResponseToUserDomainMapper>(),
-      domainToBody = get<UserDomainToUserBodyMapper>(),
-      errorMapper = get<UserErrorMapper>(),
-    )
-  }
-}
-
-private fun provideMoshi(): Moshi {
-  return Moshi
+private fun provideMoshi(): Moshi =
+  Moshi
     .Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
-}
 
-private fun provideRetrofit(baseUrl: String, moshi: Moshi, client: OkHttpClient): Retrofit {
-  return Retrofit.Builder()
+private fun provideRetrofit(
+  baseUrl: String,
+  moshi: Moshi,
+  client: OkHttpClient,
+): Retrofit =
+  Retrofit
+    .Builder()
     .client(client)
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(baseUrl)
     .build()
-}
 
-private fun provideOkHttpClient(): OkHttpClient {
-  return OkHttpClient.Builder()
+private fun provideOkHttpClient(): OkHttpClient =
+  OkHttpClient
+    .Builder()
     .connectTimeout(10, TimeUnit.SECONDS)
     .readTimeout(10, TimeUnit.SECONDS)
     .writeTimeout(10, TimeUnit.SECONDS)
     .addInterceptor(
       HttpLoggingInterceptor()
-        .apply { level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE }
-    )
-    .build()
-}
+        .apply { level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE },
+    ).build()

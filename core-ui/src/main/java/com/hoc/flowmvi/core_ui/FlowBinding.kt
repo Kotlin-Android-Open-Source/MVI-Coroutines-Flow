@@ -23,8 +23,8 @@ internal fun checkMainThread() {
 }
 
 @CheckResult
-fun EditText.firstChange(): Flow<Unit> {
-  return callbackFlow {
+fun EditText.firstChange(): Flow<Unit> =
+  callbackFlow {
     checkMainThread()
 
     val listener = doOnTextChanged { _, _, _, _ -> trySend(Unit) }
@@ -35,27 +35,24 @@ fun EditText.firstChange(): Flow<Unit> {
       }
     }
   }.take(1)
-}
 
 @CheckResult
-fun SwipeRefreshLayout.refreshes(): Flow<Unit> {
-  return callbackFlow {
+fun SwipeRefreshLayout.refreshes(): Flow<Unit> =
+  callbackFlow {
     checkMainThread()
 
     setOnRefreshListener { trySend(Unit) }
     awaitClose { setOnRefreshListener(null) }
   }
-}
 
 @CheckResult
-fun View.clicks(): Flow<View> {
-  return callbackFlow {
+fun View.clicks(): Flow<View> =
+  callbackFlow {
     checkMainThread()
 
     setOnClickListener { trySend(it) }
     awaitClose { setOnClickListener(null) }
   }
-}
 
 data class SearchViewQueryTextEvent(
   val view: SearchView,
@@ -64,33 +61,35 @@ data class SearchViewQueryTextEvent(
 )
 
 @CheckResult
-fun SearchView.queryTextEvents(): Flow<SearchViewQueryTextEvent> {
-  return callbackFlow {
+fun SearchView.queryTextEvents(): Flow<SearchViewQueryTextEvent> =
+  callbackFlow {
     checkMainThread()
 
-    setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-      override fun onQueryTextSubmit(query: String): Boolean {
-        trySend(
-          SearchViewQueryTextEvent(
-            view = this@queryTextEvents,
-            query = query,
-            isSubmitted = true,
+    setOnQueryTextListener(
+      object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String): Boolean {
+          trySend(
+            SearchViewQueryTextEvent(
+              view = this@queryTextEvents,
+              query = query,
+              isSubmitted = true,
+            ),
           )
-        )
-        return false
-      }
+          return false
+        }
 
-      override fun onQueryTextChange(newText: String): Boolean {
-        trySend(
-          SearchViewQueryTextEvent(
-            view = this@queryTextEvents,
-            query = newText,
-            isSubmitted = false,
+        override fun onQueryTextChange(newText: String): Boolean {
+          trySend(
+            SearchViewQueryTextEvent(
+              view = this@queryTextEvents,
+              query = newText,
+              isSubmitted = false,
+            ),
           )
-        )
-        return true
-      }
-    })
+          return true
+        }
+      },
+    )
 
     awaitClose { setOnQueryTextListener(null) }
   }.startWith {
@@ -100,14 +99,12 @@ fun SearchView.queryTextEvents(): Flow<SearchViewQueryTextEvent> {
       isSubmitted = false,
     )
   }
-}
 
 @CheckResult
-fun EditText.textChanges(): Flow<CharSequence?> {
-  return callbackFlow {
+fun EditText.textChanges(): Flow<CharSequence?> =
+  callbackFlow {
     checkMainThread()
 
     val listener = doOnTextChanged { text, _, _, _ -> trySend(text) }
     awaitClose { removeTextChangedListener(listener) }
   }.startWith { text }
-}

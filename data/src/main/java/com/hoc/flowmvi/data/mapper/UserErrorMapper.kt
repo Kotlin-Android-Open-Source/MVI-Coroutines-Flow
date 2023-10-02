@@ -13,22 +13,25 @@ import java.net.UnknownHostException
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 
-internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter<ErrorResponse>) :
-  Mapper<Throwable, UserError> {
+internal class UserErrorMapper(
+  private val errorResponseJsonAdapter: JsonAdapter<ErrorResponse>,
+) : Mapper<Throwable, UserError> {
   override fun invoke(throwable: Throwable): UserError {
     throwable.nonFatalOrThrow()
 
     return runCatching {
       when (throwable) {
         is UserError -> throwable
-        is IOException -> when (throwable) {
-          is UnknownHostException -> UserError.NetworkError
-          is SocketTimeoutException -> UserError.NetworkError
-          is SocketException -> UserError.NetworkError
-          else -> UserError.NetworkError
-        }
+        is IOException ->
+          when (throwable) {
+            is UnknownHostException -> UserError.NetworkError
+            is SocketTimeoutException -> UserError.NetworkError
+            is SocketException -> UserError.NetworkError
+            else -> UserError.NetworkError
+          }
         is HttpException ->
-          throwable.response()!!
+          throwable
+            .response()!!
             .takeUnless { it.isSuccessful }!!
             .errorBody()!!
             .use(ResponseBody::string)
@@ -49,9 +52,11 @@ internal class UserErrorMapper(private val errorResponseJsonAdapter: JsonAdapter
       "internal-error" -> UserError.ServerError
       "invalid-id" -> UserError.InvalidId(id = errorResponse.data as String)
       "user-not-found" -> UserError.UserNotFound(id = errorResponse.data as String)
-      "validation-failed" -> UserError.ValidationFailed(
-        errors = UserValidationError.VALUES_SET // TODO(hoc081098): Map validation errors from server response
-      )
+      "validation-failed" ->
+        UserError.ValidationFailed(
+          // TODO(hoc081098): Map validation errors from server response
+          errors = UserValidationError.VALUES_SET,
+        )
       else -> UserError.Unexpected
     }
   }

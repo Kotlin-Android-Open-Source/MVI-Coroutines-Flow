@@ -18,7 +18,7 @@ class NonEmptySetTest {
     assertEquals(
       setOf(1),
       assertNotNull(
-        listOf(1).toNonEmptySetOrNull()
+        listOf(1).toNonEmptySetOrNull(),
       ),
     )
 
@@ -32,7 +32,7 @@ class NonEmptySetTest {
     assertEquals(
       setOf(1),
       assertNotNull(
-        listOf(1, 1).toNonEmptySetOrNull()
+        listOf(1, 1).toNonEmptySetOrNull(),
       ),
     )
   }
@@ -47,22 +47,22 @@ class NonEmptySetTest {
     assertEquals(
       setOf(1),
       assertNotNull(
-        setOf(1).toNonEmptySetOrNull()
-      )
+        setOf(1).toNonEmptySetOrNull(),
+      ),
     )
 
     assertEquals(
       setOf(1, 2),
       assertNotNull(
-        setOf(1, 2).toNonEmptySetOrNull()
-      )
+        setOf(1, 2).toNonEmptySetOrNull(),
+      ),
     )
 
     assertEquals(
       setOf(1),
       assertNotNull(
-        setOf(1, 1).toNonEmptySetOrNull()
-      )
+        setOf(1, 1).toNonEmptySetOrNull(),
+      ),
     )
   }
 
@@ -72,7 +72,7 @@ class NonEmptySetTest {
 
     assertSame(
       input,
-      input.toNonEmptySetOrNull()
+      input.toNonEmptySetOrNull(),
     )
   }
 

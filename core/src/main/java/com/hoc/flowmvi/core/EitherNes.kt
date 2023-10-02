@@ -17,8 +17,7 @@ typealias EitherNes<E, A> = Either<NonEmptySet<E>, A>
 inline fun <A> A.rightNes(): EitherNes<Nothing, A> = this.right()
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun <E> E.leftNes(): EitherNes<E, Nothing> =
-  NonEmptySet.of(this).left()
+inline fun <E> E.leftNes(): EitherNes<E, Nothing> = NonEmptySet.of(this).left()
 
 @OptIn(ExperimentalContracts::class)
 inline fun <E, A, B, C, Z> Either.Companion.zipOrAccumulateNonEmptySet(
@@ -39,7 +38,7 @@ inline fun <E, A, B, C, Z> Either.Companion.zipOrAccumulateNonEmptySet(
         a.value,
         b.value,
         c.value,
-      )
+      ),
     )
   } else {
     Either.Left(
@@ -47,7 +46,7 @@ inline fun <E, A, B, C, Z> Either.Companion.zipOrAccumulateNonEmptySet(
         if (a is Either.Left) this.addAll(a.value)
         if (b is Either.Left) this.addAll(b.value)
         if (c is Either.Left) this.addAll(c.value)
-      }.toNonEmptySetOrNull()!!
+      }.toNonEmptySetOrNull()!!,
     )
   }
 }

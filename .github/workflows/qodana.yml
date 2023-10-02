@@ -15,14 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: JetBrains/qodana-action@v2022.3.4
-        with:
-          linter: jetbrains/qodana-jvm-android:latest
-          fail-threshold: 10
-      
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ runner.temp }}/qodana/results/report
-          destination_dir: ./
+      # - name: Set up JDK
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     distribution: 'zulu'
+      #     java-version: '11'
+
+      # - uses: JetBrains/qodana-action@v2023.2.6
+      #   with:
+      #     linter: jetbrains/qodana-jvm-android:latest
+      #     fail-threshold: 10
+      #     upload-result: true

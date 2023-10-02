@@ -39,11 +39,12 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     addUser = mockk()
     savedStateHandle = SavedStateHandle()
 
-    vm = AddVM(
-      addUser = addUser,
-      savedStateHandle = savedStateHandle,
-      stateSaver = ViewState.StateSaver(),
-    )
+    vm =
+      AddVM(
+        addUser = addUser,
+        savedStateHandle = savedStateHandle,
+        stateSaver = ViewState.StateSaver(),
+      )
   }
 
   override fun tearDown() {
@@ -58,49 +59,51 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
   fun test_withFormValueIntents_returnsStateWithChangedValuesAndErrors() {
     runVMTest(
       vmProducer = { vm },
-      intents = flowOf(
-        ViewIntent.EmailChanged(""),
-        ViewIntent.FirstNameChanged(""),
-        ViewIntent.LastNameChanged(""),
-        // all fields changed
-        ViewIntent.EmailChanged("a"),
-        ViewIntent.FirstNameChanged("b"),
-        ViewIntent.LastNameChanged("c"),
-      ),
-      expectedStates = listOf(
-        ViewState.initial(),
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "a",
-          firstName = "",
-          lastName = ""
+      intents =
+        flowOf(
+          ViewIntent.EmailChanged(""),
+          ViewIntent.FirstNameChanged(""),
+          ViewIntent.LastNameChanged(""),
+          // all fields changed
+          ViewIntent.EmailChanged("a"),
+          ViewIntent.FirstNameChanged("b"),
+          ViewIntent.LastNameChanged("c"),
         ),
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "a",
-          firstName = "b",
-          lastName = ""
-        ),
-        // invalid state
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "a",
-          firstName = "b",
-          lastName = "c"
-        )
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState.initial(),
+          ViewState(
+            errors = ALL_ERRORS,
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = "a",
+            firstName = "",
+            lastName = "",
+          ),
+          ViewState(
+            errors = ALL_ERRORS,
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = "a",
+            firstName = "b",
+            lastName = "",
+          ),
+          // invalid state
+          ViewState(
+            errors = ALL_ERRORS,
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = "a",
+            firstName = "b",
+            lastName = "c",
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
     )
   }
@@ -109,109 +112,116 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
   fun test_withFormValueIntents_returnsStateWithChangedValuesAndNoErrors() {
     runVMTest(
       vmProducer = { vm },
-      intents = flowOf(
-        ViewIntent.EmailChanged(""),
-        ViewIntent.FirstNameChanged(""),
-        ViewIntent.LastNameChanged(""),
-        // all fields changed
-        ViewIntent.EmailChanged(EMAIL),
-        ViewIntent.FirstNameChanged(NAME),
-        ViewIntent.LastNameChanged(NAME),
-      ),
-      expectedStates = listOf(
-        ViewState.initial(),
-        // all fields changed.
-        ViewState(
-          errors = setOf(TOO_SHORT_FIRST_NAME, TOO_SHORT_LAST_NAME),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = "",
-          lastName = ""
+      intents =
+        flowOf(
+          ViewIntent.EmailChanged(""),
+          ViewIntent.FirstNameChanged(""),
+          ViewIntent.LastNameChanged(""),
+          // all fields changed
+          ViewIntent.EmailChanged(EMAIL),
+          ViewIntent.FirstNameChanged(NAME),
+          ViewIntent.LastNameChanged(NAME),
         ),
-        ViewState(
-          errors = setOf(TOO_SHORT_LAST_NAME),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = ""
-        ),
-        // valid state
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = NAME
-        ),
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState.initial(),
+          // all fields changed.
+          ViewState(
+            errors = setOf(TOO_SHORT_FIRST_NAME, TOO_SHORT_LAST_NAME),
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = "",
+            lastName = "",
+          ),
+          ViewState(
+            errors = setOf(TOO_SHORT_LAST_NAME),
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = NAME,
+            lastName = "",
+          ),
+          // valid state
+          ViewState(
+            errors = emptySet(),
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = NAME,
+            lastName = NAME,
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
     )
   }
 
   @Test
   fun test_withSubmitIntentWhenFormValidAndAddUserSuccess_callAddUserAndReturnsStateWithLoading() {
-    val user = User.create(
-      id = "",
-      email = EMAIL,
-      firstName = NAME,
-      lastName = NAME,
-      avatar = ""
-    ).rightValueOrThrow
+    val user =
+      User
+        .create(
+          id = "",
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME,
+          avatar = "",
+        ).rightValueOrThrow
 
     coEvery { addUser(user) } returnsWithDelay Unit.right()
 
     runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Submit),
-      expectedStates = listOf(
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = NAME,
+      expectedStates =
+        listOf(
+          ViewState(
+            errors = emptySet(),
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = NAME,
+            lastName = NAME,
+          ),
+          ViewState(
+            errors = emptySet(),
+            isLoading = true,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = NAME,
+            lastName = NAME,
+          ),
+          ViewState(
+            errors = emptySet(),
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = NAME,
+            lastName = NAME,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.AddUserSuccess(user),
+        ).mapRight(),
+      preProcessingIntents =
+        flowOf(
+          ViewIntent.EmailChanged(EMAIL),
+          ViewIntent.FirstNameChanged(NAME),
+          ViewIntent.LastNameChanged(NAME),
         ),
-        ViewState(
-          errors = emptySet(),
-          isLoading = true,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = NAME,
-        ),
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = NAME,
-        ),
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.AddUserSuccess(user),
-      ).mapRight(),
-      preProcessingIntents = flowOf(
-        ViewIntent.EmailChanged(EMAIL),
-        ViewIntent.FirstNameChanged(NAME),
-        ViewIntent.LastNameChanged(NAME),
-      ),
     ) {
       coVerify { addUser(user) }
     }
@@ -219,13 +229,15 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
 
   @Test
   fun test_withSubmitIntentWhenFormValidAndAddUserFailure_callAddUserAndReturnsStateWithLoading() {
-    val user = User.create(
-      id = "",
-      email = EMAIL,
-      firstName = NAME,
-      lastName = NAME,
-      avatar = ""
-    ).rightValueOrThrow
+    val user =
+      User
+        .create(
+          id = "",
+          email = EMAIL,
+          firstName = NAME,
+          lastName = NAME,
+          avatar = "",
+        ).rightValueOrThrow
     val networkError = UserError.NetworkError
 
     coEvery { addUser(user) } returnsWithDelay networkError.left()
@@ -233,46 +245,49 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Submit),
-      expectedStates = listOf(
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = NAME,
+      expectedStates =
+        listOf(
+          ViewState(
+            errors = emptySet(),
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = NAME,
+            lastName = NAME,
+          ),
+          ViewState(
+            errors = emptySet(),
+            isLoading = true,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = NAME,
+            lastName = NAME,
+          ),
+          ViewState(
+            errors = emptySet(),
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = EMAIL,
+            firstName = NAME,
+            lastName = NAME,
+          ),
+        ).mapRight(),
+      expectedEvents =
+        listOf(
+          SingleEvent.AddUserFailure(user = user, error = networkError),
+        ).mapRight(),
+      preProcessingIntents =
+        flowOf(
+          ViewIntent.EmailChanged(EMAIL),
+          ViewIntent.FirstNameChanged(NAME),
+          ViewIntent.LastNameChanged(NAME),
         ),
-        ViewState(
-          errors = emptySet(),
-          isLoading = true,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = NAME,
-        ),
-        ViewState(
-          errors = emptySet(),
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = EMAIL,
-          firstName = NAME,
-          lastName = NAME,
-        ),
-      ).mapRight(),
-      expectedEvents = listOf(
-        SingleEvent.AddUserFailure(user = user, error = networkError),
-      ).mapRight(),
-      preProcessingIntents = flowOf(
-        ViewIntent.EmailChanged(EMAIL),
-        ViewIntent.FirstNameChanged(NAME),
-        ViewIntent.LastNameChanged(NAME),
-      ),
     ) {
       coVerify { addUser(user) }
     }
@@ -283,24 +298,26 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
     runVMTest(
       vmProducer = { vm },
       intents = flowOf(ViewIntent.Submit),
-      expectedStates = listOf(
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = false,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = "",
-        ),
-      ).mapRight(),
+      expectedStates =
+        listOf(
+          ViewState(
+            errors = ALL_ERRORS,
+            isLoading = false,
+            emailChanged = false,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = "",
+            firstName = "",
+            lastName = "",
+          ),
+        ).mapRight(),
       expectedEvents = emptyList(),
-      preProcessingIntents = flowOf(
-        ViewIntent.EmailChanged(""),
-        ViewIntent.FirstNameChanged(""),
-        ViewIntent.LastNameChanged(""),
-      ),
+      preProcessingIntents =
+        flowOf(
+          ViewIntent.EmailChanged(""),
+          ViewIntent.FirstNameChanged(""),
+          ViewIntent.LastNameChanged(""),
+        ),
     )
   }
 
@@ -308,45 +325,47 @@ class AddVMTest : BaseMviViewModelTest<ViewIntent, ViewState, SingleEvent, AddVM
   fun test_withFirstChangeIntents_returnsStateWithFirstChangesSetToTrue() {
     runVMTest(
       vmProducer = { vm },
-      intents = flowOf(
-        ViewIntent.EmailChangedFirstTime,
-        ViewIntent.FirstNameChangedFirstTime,
-        ViewIntent.LastNameChangedFirstTime,
-      ),
-      expectedStates = listOf(
-        ViewState.initial(),
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = true,
-          firstNameChanged = false,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = ""
+      intents =
+        flowOf(
+          ViewIntent.EmailChangedFirstTime,
+          ViewIntent.FirstNameChangedFirstTime,
+          ViewIntent.LastNameChangedFirstTime,
         ),
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = true,
-          firstNameChanged = true,
-          lastNameChanged = false,
-          email = "",
-          firstName = "",
-          lastName = ""
-        ),
-        ViewState(
-          errors = ALL_ERRORS,
-          isLoading = false,
-          emailChanged = true,
-          firstNameChanged = true,
-          lastNameChanged = true,
-          email = "",
-          firstName = "",
-          lastName = ""
-        )
-      ).mapRight(),
-      expectedEvents = emptyList()
+      expectedStates =
+        listOf(
+          ViewState.initial(),
+          ViewState(
+            errors = ALL_ERRORS,
+            isLoading = false,
+            emailChanged = true,
+            firstNameChanged = false,
+            lastNameChanged = false,
+            email = "",
+            firstName = "",
+            lastName = "",
+          ),
+          ViewState(
+            errors = ALL_ERRORS,
+            isLoading = false,
+            emailChanged = true,
+            firstNameChanged = true,
+            lastNameChanged = false,
+            email = "",
+            firstName = "",
+            lastName = "",
+          ),
+          ViewState(
+            errors = ALL_ERRORS,
+            isLoading = false,
+            emailChanged = true,
+            firstNameChanged = true,
+            lastNameChanged = true,
+            email = "",
+            firstName = "",
+            lastName = "",
+          ),
+        ).mapRight(),
+      expectedEvents = emptyList(),
     )
   }
 }

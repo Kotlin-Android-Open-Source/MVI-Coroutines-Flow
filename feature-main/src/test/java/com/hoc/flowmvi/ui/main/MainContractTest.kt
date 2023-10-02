@@ -14,15 +14,15 @@ class MainContractTest {
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
-        lastName = "last"
+        lastName = "last",
       ),
       UserItem(
         id = "0",
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
-        lastName = "last"
-      )
+        lastName = "last",
+      ),
     )
   }
 
@@ -34,15 +34,15 @@ class MainContractTest {
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
-        lastName = "last"
+        lastName = "last",
       ).hashCode(),
       UserItem(
         id = "0",
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
-        lastName = "last"
-      ).hashCode()
+        lastName = "last",
+      ).hashCode(),
     )
   }
 
@@ -54,7 +54,7 @@ class MainContractTest {
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
-        lastName = "last"
+        lastName = "last",
       ).fullName,
       "first last",
     )
@@ -63,19 +63,20 @@ class MainContractTest {
   @Test
   fun test_userItem_toDomain() {
     assertEquals(
-      User.create(
-        id = "0",
-        email = "test@gmail.com",
-        firstName = "first",
-        lastName = "last",
-        avatar = "avatar.png",
-      ).rightValueOrThrow,
+      User
+        .create(
+          id = "0",
+          email = "test@gmail.com",
+          firstName = "first",
+          lastName = "last",
+          avatar = "avatar.png",
+        ).rightValueOrThrow,
       UserItem(
         id = "0",
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
-        lastName = "last"
+        lastName = "last",
       ).toDomain().rightValueOrThrow,
     )
   }
@@ -88,16 +89,18 @@ class MainContractTest {
         email = "test@gmail.com",
         avatar = "avatar.png",
         firstName = "first",
-        lastName = "last"
+        lastName = "last",
       ),
       UserItem(
-        domain = User.create(
-          id = "0",
-          email = "test@gmail.com",
-          firstName = "first",
-          lastName = "last",
-          avatar = "avatar.png",
-        ).rightValueOrThrow
+        domain =
+          User
+            .create(
+              id = "0",
+              email = "test@gmail.com",
+              firstName = "first",
+              lastName = "last",
+              avatar = "avatar.png",
+            ).rightValueOrThrow,
       ),
     )
   }

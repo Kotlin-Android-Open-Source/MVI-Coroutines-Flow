@@ -7,8 +7,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 @JvmField
-val coreModule = module {
-  singleOf(::DefaultAppCoroutineDispatchers) { bind<AppCoroutineDispatchers>() }
+val coreModule =
+  module {
+    singleOf(::DefaultAppCoroutineDispatchers) { bind<AppCoroutineDispatchers>() }
 
-  singleOf(::NavigatorImpl) { bind<Navigator>() }
-}
+    singleOf(::NavigatorImpl) { bind<Navigator>() }
+  }

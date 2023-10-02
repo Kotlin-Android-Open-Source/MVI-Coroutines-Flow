@@ -19,19 +19,20 @@ data class User(
       firstName: String?,
       lastName: String?,
       avatar: String,
-    ): EitherNes<UserValidationError, User> = Either.zipOrAccumulateNonEmptySet(
-      Email.create(email),
-      FirstName.create(firstName),
-      LastName.create(lastName)
-    ) { e, f, l ->
-      User(
-        firstName = f,
-        email = e,
-        lastName = l,
-        id = id,
-        avatar = avatar
-      )
-    }
+    ): EitherNes<UserValidationError, User> =
+      Either.zipOrAccumulateNonEmptySet(
+        Email.create(email),
+        FirstName.create(firstName),
+        LastName.create(lastName),
+      ) { e, f, l ->
+        User(
+          firstName = f,
+          email = e,
+          lastName = l,
+          id = id,
+          avatar = avatar,
+        )
+      }
   }
 }
 

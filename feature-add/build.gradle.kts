@@ -2,6 +2,7 @@ plugins {
   androidLib
   kotlinAndroid
   kotlinParcelize
+  id("org.jetbrains.kotlinx.kover")
 }
 
 android {
@@ -11,7 +12,6 @@ android {
 
   defaultConfig {
     minSdk = appConfig.minSdkVersion
-    targetSdk = appConfig.targetSdkVersion
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -22,7 +22,7 @@ android {
       isMinifyEnabled = false
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules.pro"
+        "proguard-rules.pro",
       )
     }
   }

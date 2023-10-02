@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.LazyThreadSafetyMode.NONE
 
-class SwipeLeftToDeleteCallback(context: Context, private val onSwipedCallback: (Int) -> Unit) :
-  ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+class SwipeLeftToDeleteCallback(
+  context: Context,
+  private val onSwipedCallback: (Int) -> Unit,
+) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
   private val background: ColorDrawable by lazy(NONE) {
     ColorDrawable(getColor(context, R.color.swipe_to_delete_background_color))
   }
@@ -24,7 +26,10 @@ class SwipeLeftToDeleteCallback(context: Context, private val onSwipedCallback: 
     target: RecyclerView.ViewHolder,
   ) = false
 
-  override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+  override fun onSwiped(
+    viewHolder: RecyclerView.ViewHolder,
+    direction: Int,
+  ) {
     val position = viewHolder.bindingAdapterPosition
     if (position != RecyclerView.NO_POSITION) {
       onSwipedCallback(position)
@@ -57,7 +62,7 @@ class SwipeLeftToDeleteCallback(context: Context, private val onSwipedCallback: 
           itemView.right + dX.toInt() - 8,
           itemView.top,
           itemView.right,
-          itemView.bottom
+          itemView.bottom,
         )
       }
       else -> {

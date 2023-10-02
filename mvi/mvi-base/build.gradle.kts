@@ -1,6 +1,7 @@
 plugins {
   androidLib
   kotlinAndroid
+  id("org.jetbrains.kotlinx.kover")
 }
 
 android {
@@ -10,7 +11,6 @@ android {
 
   defaultConfig {
     minSdk = appConfig.minSdkVersion
-    targetSdk = appConfig.targetSdkVersion
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -21,7 +21,7 @@ android {
       isMinifyEnabled = false
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules.pro"
+        "proguard-rules.pro",
       )
     }
   }
@@ -30,6 +30,10 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
+
+  buildFeatures {
+    buildConfig = true
+  }
 }
 
 dependencies {

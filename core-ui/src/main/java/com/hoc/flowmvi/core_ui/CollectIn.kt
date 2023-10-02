@@ -15,12 +15,13 @@ inline fun <T> Flow<T>.collectIn(
   owner: LifecycleOwner,
   minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
   crossinline action: suspend (value: T) -> Unit,
-): Job = owner.lifecycleScope.launch {
-  owner.repeatOnLifecycle(state = minActiveState) {
-    Timber.d("Start collecting $owner $minActiveState...")
-    collect { action(it) }
+): Job =
+  owner.lifecycleScope.launch {
+    owner.repeatOnLifecycle(state = minActiveState) {
+      Timber.d("Start collecting $owner $minActiveState...")
+      collect { action(it) }
+    }
   }
-}
 
 /**
  * Launches a new coroutine and repeats `block` every time the Fragment's viewLifecycleOwner
@@ -31,8 +32,9 @@ inline fun <T> Flow<T>.collectInViewLifecycle(
   fragment: Fragment,
   minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
   crossinline action: suspend (value: T) -> Unit,
-): Job = collectIn(
-  owner = fragment.viewLifecycleOwner,
-  minActiveState = minActiveState,
-  action = action,
-)
+): Job =
+  collectIn(
+    owner = fragment.viewLifecycleOwner,
+    minActiveState = minActiveState,
+    action = action,
+  )

@@ -10,7 +10,6 @@ android {
 
   defaultConfig {
     minSdk = appConfig.minSdkVersion
-    targetSdk = appConfig.targetSdkVersion
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -22,7 +21,7 @@ android {
         buildConfigField(
           type = it::class.java.simpleName,
           name = "ENABLE_LOG_TEST",
-          value = it.toString()
+          value = it.toString(),
         )
       }
     }
@@ -30,13 +29,13 @@ android {
       isMinifyEnabled = false
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules.pro"
+        "proguard-rules.pro",
       )
       false.let {
         buildConfigField(
           type = it::class.java.simpleName,
           name = "ENABLE_LOG_TEST",
-          value = it.toString()
+          value = it.toString(),
         )
       }
     }
@@ -46,6 +45,10 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
   kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
+
+  buildFeatures {
+    buildConfig = true
+  }
 }
 
 dependencies {

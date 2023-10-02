@@ -23,17 +23,18 @@ import org.koin.test.mock.MockProviderRule
 @ExperimentalTime
 class CheckModulesTest : AutoCloseKoinTest() {
   @get:Rule
-  val mockProvider = MockProviderRule.create { clazz ->
-    when (clazz) {
-      SavedStateHandle::class -> {
-        mockk<SavedStateHandle> {
-          every { get<Any?>(any()) } returns null
-          every { setSavedStateProvider(any(), any()) } just runs
+  val mockProvider =
+    MockProviderRule.create { clazz ->
+      when (clazz) {
+        SavedStateHandle::class -> {
+          mockk<SavedStateHandle> {
+            every { get<Any?>(any()) } returns null
+            every { setSavedStateProvider(any(), any()) } just runs
+          }
         }
+        else -> error("Unknown class: $clazz")
       }
-      else -> error("Unknown class: $clazz")
     }
-  }
 
   @get:Rule
   val coroutineRule = TestCoroutineDispatcherRule()
