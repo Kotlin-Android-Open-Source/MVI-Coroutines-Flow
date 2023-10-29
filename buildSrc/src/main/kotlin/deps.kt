@@ -29,7 +29,7 @@ object deps {
     const val appCompat = "androidx.appcompat:appcompat:1.6.1"
     const val coreKtx = "androidx.core:core-ktx:1.12.0"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
-    const val recyclerView = "androidx.recyclerview:recyclerview:1.3.1"
+    const val recyclerView = "androidx.recyclerview:recyclerview:1.3.2"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     const val material = "com.google.android.material:material:1.10.0"
     const val startup = "androidx.startup:startup-runtime:1.1.1"
@@ -46,7 +46,7 @@ object deps {
   object squareup {
     const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
     const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
-    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.11.0"
+    const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.12.0"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.15.0"
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.12"
   }
@@ -70,7 +70,7 @@ object deps {
 
   const val coil = "io.coil-kt:coil:2.4.0"
   const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.4.0"
-  const val flowExt = "io.github.hoc081098:FlowExt:0.7.2"
+  const val flowExt = "io.github.hoc081098:FlowExt:0.7.3"
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
