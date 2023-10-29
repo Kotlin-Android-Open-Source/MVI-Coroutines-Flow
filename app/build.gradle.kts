@@ -106,6 +106,10 @@ dependencies {
   kover(project(":mvi-base"))
 }
 
+kover {
+  useJacoco("0.8.11")
+}
+
 koverReport {
   // filters for all report types of all build variants
   filters {
