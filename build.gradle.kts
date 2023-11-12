@@ -77,7 +77,7 @@ subprojects {
 }
 
 allprojects {
-  extensions.configure<kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension> {
+  extensions.findByType<kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension>()?.run {
     useJacoco("0.8.11")
   }
 
