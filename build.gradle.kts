@@ -19,7 +19,7 @@ buildscript {
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:8.1.2")
+    classpath("com.android.tools.build:gradle:8.1.3")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     classpath("com.diffplug.spotless:spotless-plugin-gradle:6.22.0")
     classpath("dev.drewhamilton.poko:poko-gradle-plugin:0.15.0")
