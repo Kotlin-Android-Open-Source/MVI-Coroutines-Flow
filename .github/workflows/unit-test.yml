@@ -38,7 +38,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run Android Debug Unit Test
-        run: ./gradlew :app:koverXmlReport --warning-mode all --stacktrace
+        run: ./gradlew :app:koverXmlReportDebug --warning-mode all --stacktrace
 
       - name: Upload Test Report
         uses: codecov/codecov-action@v3.1.4
