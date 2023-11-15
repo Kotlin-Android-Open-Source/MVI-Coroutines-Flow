@@ -77,6 +77,10 @@ subprojects {
 }
 
 allprojects {
+  extensions.findByType<kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension>()?.run {
+    useJacoco("0.8.11")
+  }
+
   tasks.withType<KotlinCompile> {
     kotlinOptions {
       val version = JavaVersion.VERSION_11.toString()
