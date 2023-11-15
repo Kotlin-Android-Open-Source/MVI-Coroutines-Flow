@@ -7,7 +7,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "1.0.0"
-const val kotlinVersion = "1.9.10"
+const val kotlinVersion = "1.9.20"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -68,9 +68,9 @@ object deps {
     const val test = "io.insert-koin:koin-test:$version"
   }
 
-  const val coil = "io.coil-kt:coil:2.4.0"
+  const val coil = "io.coil-kt:coil:2.5.0"
   const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.4.0"
-  const val flowExt = "io.github.hoc081098:FlowExt:0.7.3"
+  const val flowExt = "io.github.hoc081098:FlowExt:0.7.4"
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
