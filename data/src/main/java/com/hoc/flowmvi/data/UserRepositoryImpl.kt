@@ -18,19 +18,17 @@ import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.retryWithExponentialBackoff
+import com.hoc081098.flowext.scanWith
 import java.io.IOException
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -44,25 +42,25 @@ internal class UserRepositoryImpl(
   private val domainToBody: Mapper<User, UserBody>,
   private val errorMapper: Mapper<Throwable, UserError>,
 ) : UserRepository {
-  private sealed class Change {
+  private sealed interface Change {
     class Removed(
       val removed: User,
-    ) : Change()
+    ) : Change
 
     class Refreshed(
       val user: List<User>,
-    ) : Change()
+    ) : Change
 
     class Added(
       val user: User,
-    ) : Change()
+    ) : Change
   }
 
   private val changesFlow = MutableSharedFlow<Change>(extraBufferCapacity = 64)
 
   private suspend inline fun sendChange(change: Change) = changesFlow.emit(change)
 
-  private fun getUsersFromRemote(): Flow<List<User>> =
+  private suspend fun getUsersFromRemoteWithRetry(): List<User> =
     flowFromSuspend {
       Timber.d("[USER_REPO] getUsersFromRemote ...")
 
@@ -79,19 +77,17 @@ internal class UserRepositoryImpl(
       initialDelay = 500.milliseconds,
       factor = 2.0,
     ) { it is IOException }
+      .first()
 
   override fun getUsers() =
-    getUsersFromRemote()
-      .flatMapConcat { initial ->
-        changesFlow
-          .onEach { Timber.d("[USER_REPO] Change=$it") }
-          .scan(initial) { acc, change ->
-            when (change) {
-              is Change.Removed -> acc.filter { it.id != change.removed.id }
-              is Change.Refreshed -> change.user
-              is Change.Added -> acc + change.user
-            }
-          }
+    changesFlow
+      .onEach { Timber.d("[USER_REPO] Change=$it") }
+      .scanWith(::getUsersFromRemoteWithRetry) { acc, change ->
+        when (change) {
+          is Change.Removed -> acc.filter { it.id != change.removed.id }
+          is Change.Refreshed -> change.user
+          is Change.Added -> acc + change.user
+        }
       }.onEach { Timber.d("[USER_REPO] Emit users.size=${it.size} ") }
       .map { it.right().leftWiden<UserError, _, _>() }
       .catch {
@@ -100,9 +96,9 @@ internal class UserRepositoryImpl(
       }
 
   override suspend fun refresh() =
-    catchEither { getUsersFromRemote().first() }
+    catchEither { getUsersFromRemoteWithRetry() }
       .onRight { sendChange(Change.Refreshed(it)) }
-      .map { }
+      .map {}
       .onLeft { logError(it, "refresh") }
       .mapLeft(errorMapper)
 
