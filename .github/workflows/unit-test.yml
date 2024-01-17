@@ -25,7 +25,7 @@ jobs:
           java-version: '17'
 
       - name: Cache gradle, wrapper and buildSrc
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
