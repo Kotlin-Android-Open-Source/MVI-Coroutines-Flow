@@ -90,7 +90,7 @@ object deps {
       }
     }
 
-    const val mockk = "io.mockk:mockk:1.13.9"
+    const val mockk = "io.mockk:mockk:1.13.10"
     const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
   }
 }
