@@ -16,6 +16,7 @@ import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
+import com.hoc081098.flowext.catchAndReturn
 import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.retryWithExponentialBackoff
 import com.hoc081098.flowext.scanWith
@@ -25,7 +26,6 @@ import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -90,9 +90,9 @@ internal class UserRepositoryImpl(
         }
       }.onEach { Timber.d("[USER_REPO] Emit users.size=${it.size} ") }
       .map { it.right().leftWiden<UserError, _, _>() }
-      .catch {
+      .catchAndReturn {
         logError(it, "getUsers")
-        emit(errorMapper(it).left())
+        errorMapper(it).left()
       }
 
   override suspend fun refresh() =
