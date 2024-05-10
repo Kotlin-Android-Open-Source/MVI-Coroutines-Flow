@@ -7,7 +7,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "1.0.0"
-const val kotlinVersion = "1.9.23"
+const val kotlinVersion = "1.9.24"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -27,11 +27,11 @@ object appConfig {
 object deps {
   object androidx {
     const val appCompat = "androidx.appcompat:appcompat:1.6.1"
-    const val coreKtx = "androidx.core:core-ktx:1.12.0"
+    const val coreKtx = "androidx.core:core-ktx:1.13.1"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.3.2"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
-    const val material = "com.google.android.material:material:1.11.0"
+    const val material = "com.google.android.material:material:1.12.0"
     const val startup = "androidx.startup:startup-runtime:1.1.1"
   }
 
@@ -44,15 +44,15 @@ object deps {
   }
 
   object squareup {
-    const val retrofit = "com.squareup.retrofit2:retrofit:2.10.0"
-    const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.10.0"
+    const val retrofit = "com.squareup.retrofit2:retrofit:2.11.0"
+    const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.11.0"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.12.0"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.15.1"
-    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.13"
+    const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.14"
   }
 
   object coroutines {
-    private const val version = "1.8.0"
+    private const val version = "1.8.1"
 
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
@@ -60,7 +60,7 @@ object deps {
   }
 
   object koin {
-    private const val version = "3.5.3"
+    private const val version = "3.5.6"
 
     const val core = "io.insert-koin:koin-core:$version"
     const val android = "io.insert-koin:koin-android:$version"
@@ -74,7 +74,7 @@ object deps {
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
-    private const val version = "1.2.3"
+    private const val version = "1.2.4"
     const val core = "io.arrow-kt:arrow-core:$version"
   }
 
