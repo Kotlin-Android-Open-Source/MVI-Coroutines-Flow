@@ -36,7 +36,7 @@ object deps {
   }
 
   object lifecycle {
-    private const val version = "2.7.0"
+    private const val version = "2.8.0"
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
