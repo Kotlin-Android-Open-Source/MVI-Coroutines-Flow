@@ -7,7 +7,7 @@ import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
 const val ktlintVersion = "1.0.0"
-const val kotlinVersion = "1.9.24"
+const val kotlinVersion = "1.9.25"
 
 object appConfig {
   const val applicationId = "com.hoc.flowmvi"
@@ -26,7 +26,7 @@ object appConfig {
 
 object deps {
   object androidx {
-    const val appCompat = "androidx.appcompat:appcompat:1.6.1"
+    const val appCompat = "androidx.appcompat:appcompat:1.7.0"
     const val coreKtx = "androidx.core:core-ktx:1.13.1"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
     const val recyclerView = "androidx.recyclerview:recyclerview:1.3.2"
@@ -36,7 +36,7 @@ object deps {
   }
 
   object lifecycle {
-    private const val version = "2.8.0"
+    private const val version = "2.8.4"
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
@@ -68,9 +68,9 @@ object deps {
     const val test = "io.insert-koin:koin-test:$version"
   }
 
-  const val coil = "io.coil-kt:coil:2.6.0"
+  const val coil = "io.coil-kt:coil:2.7.0"
   const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.4.0"
-  const val flowExt = "io.github.hoc081098:FlowExt:1.0.0-RC"
+  const val flowExt = "io.github.hoc081098:FlowExt:1.0.0-SNAPSHOT"
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
@@ -82,15 +82,15 @@ object deps {
     const val junit = "junit:junit:4.13.2"
 
     object androidx {
-      const val core = "androidx.test:core-ktx:1.5.0"
-      const val junit = "androidx.test.ext:junit-ktx:1.1.5"
+      const val core = "androidx.test:core-ktx:1.6.1"
+      const val junit = "androidx.test.ext:junit-ktx:1.2.1"
 
       object espresso {
-        const val core = "androidx.test.espresso:espresso-core:3.5.1"
+        const val core = "androidx.test.espresso:espresso-core:3.6.1"
       }
     }
 
-    const val mockk = "io.mockk:mockk:1.13.10"
+    const val mockk = "io.mockk:mockk:1.13.12"
     const val kotlinJUnit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
   }
 }
