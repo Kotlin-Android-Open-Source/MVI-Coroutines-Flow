@@ -3,7 +3,6 @@ package com.hoc.flowmvi.data
 import arrow.core.Either.Companion.catch as catchEither
 import arrow.core.getOrElse
 import arrow.core.left
-import arrow.core.leftWiden
 import arrow.core.raise.either
 import arrow.core.right
 import com.hoc.flowmvi.core.EitherNes
@@ -16,6 +15,7 @@ import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
+import com.hoc081098.flowext.FlowExtPreview
 import com.hoc081098.flowext.catchAndReturn
 import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.retryWithExponentialBackoff
@@ -79,6 +79,7 @@ internal class UserRepositoryImpl(
     ) { it is IOException }
       .first()
 
+  @OptIn(FlowExtPreview::class)
   override fun getUsers() =
     changesFlow
       .onEach { Timber.d("[USER_REPO] Change=$it") }
@@ -89,7 +90,7 @@ internal class UserRepositoryImpl(
           is Change.Added -> acc + change.user
         }
       }.onEach { Timber.d("[USER_REPO] Emit users.size=${it.size} ") }
-      .map { it.right().leftWiden<UserError, _, _>() }
+      .map { it.right() }
       .catchAndReturn {
         logError(it, "getUsers")
         errorMapper(it).left()
