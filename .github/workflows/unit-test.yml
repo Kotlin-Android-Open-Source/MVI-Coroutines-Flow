@@ -42,3 +42,7 @@ jobs:
 
       - name: Upload Test Report
         uses: codecov/codecov-action@v4.5.0
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
