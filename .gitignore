@@ -14,3 +14,5 @@
 .cxx
 local.properties
 **/build/
+# Since Kotlin 2.0.0, .kotlin directory is created at compile time
+.kotlin

@@ -106,20 +106,16 @@ dependencies {
   kover(project(":mvi-base"))
 }
 
-koverReport {
-  // filters for all report types of all build variants
-  filters {
-    excludes {
-      classes(
-        "*.databinding.*",
-        "*.BuildConfig",
-      )
+kover {
+  reports {
+    // filters for all report types of all build variants
+    filters {
+      excludes {
+        classes(
+          "*.databinding.*",
+          "*.BuildConfig",
+        )
+      }
     }
-  }
-
-  defaults {
-    // Tests, sources, classes, and compilation tasks of the 'debug' build variant will be included in the default report.
-    // Thus, information from the 'app1AppDebug' variant will be included in the default report for this project and any project that specifies this project as a dependency.
-    mergeWith("debug") // or the name of any build variant needed
   }
 }
