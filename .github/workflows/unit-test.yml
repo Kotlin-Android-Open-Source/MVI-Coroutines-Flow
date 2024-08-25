@@ -43,6 +43,7 @@ jobs:
       - name: Upload Test Report
         uses: codecov/codecov-action@v4.5.0
         with:
+          files: ./app/build/reports/kover/reportDebug.xml
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
