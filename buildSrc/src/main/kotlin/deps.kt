@@ -32,11 +32,11 @@ object deps {
     const val recyclerView = "androidx.recyclerview:recyclerview:1.3.2"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     const val material = "com.google.android.material:material:1.12.0"
-    const val startup = "androidx.startup:startup-runtime:1.1.1"
+    const val startup = "androidx.startup:startup-runtime:1.2.0"
   }
 
   object lifecycle {
-    private const val version = "2.8.5"
+    private const val version = "2.8.6"
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
@@ -70,7 +70,7 @@ object deps {
 
   const val coil = "io.coil-kt:coil:2.7.0"
   const val viewBindingDelegate = "com.github.hoc081098:ViewBindingDelegate:1.4.0"
-  const val flowExt = "io.github.hoc081098:FlowExt:1.0.0-RC"
+  const val flowExt = "io.github.hoc081098:FlowExt:1.0.0-SNAPSHOT"
   const val timber = "com.jakewharton.timber:timber:5.0.1"
 
   object arrow {
