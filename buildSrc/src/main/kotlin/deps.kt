@@ -32,11 +32,11 @@ object deps {
     const val recyclerView = "androidx.recyclerview:recyclerview:1.3.2"
     const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     const val material = "com.google.android.material:material:1.12.0"
-    const val startup = "androidx.startup:startup-runtime:1.1.1"
+    const val startup = "androidx.startup:startup-runtime:1.2.0"
   }
 
   object lifecycle {
-    private const val version = "2.8.5"
+    private const val version = "2.8.6"
 
     const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version" // viewModelScope
     const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version" // lifecycleScope
