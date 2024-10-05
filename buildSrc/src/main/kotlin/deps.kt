@@ -1,12 +1,16 @@
 @file:Suppress("unused", "ClassName", "SpellCheckingInspection")
 
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.project
 import org.gradle.plugin.use.PluginDependenciesSpec
 import org.gradle.plugin.use.PluginDependencySpec
 
+@Deprecated("")
 const val ktlintVersion = "1.0.0"
+
+@Deprecated("")
 const val kotlinVersion = "2.0.20"
 
 object appConfig {
@@ -24,6 +28,7 @@ object appConfig {
   const val versionName = "$MAJOR.$MINOR.$PATCH"
 }
 
+@Deprecated("Use appConfig instead", ReplaceWith("libs"))
 object deps {
   object androidx {
     const val appCompat = "androidx.appcompat:appcompat:1.7.0"
@@ -98,25 +103,76 @@ object deps {
 private typealias PDsS = PluginDependenciesSpec
 private typealias PDS = PluginDependencySpec
 
+@Deprecated("")
 inline val PDsS.androidApplication: PDS get() = id("com.android.application")
+
+@Deprecated("", replaceWith = ReplaceWith("alias(libs.plugins.kotlin.android.library)"))
 inline val PDsS.androidLib: PDS get() = id("com.android.library")
+
+@Deprecated("")
 inline val PDsS.kotlinAndroid: PDS get() = id("kotlin-android")
+
+@Deprecated("")
 inline val PDsS.kotlin: PDS get() = id("kotlin")
+
+@Deprecated("")
 inline val PDsS.kotlinKapt: PDS get() = id("kotlin-kapt")
+
+@Deprecated("")
 inline val PDsS.kotlinParcelize: PDS get() = id("kotlin-parcelize")
+
+@Deprecated("")
 inline val PDsS.pokoPlugin: PDS get() = id("dev.drewhamilton.poko")
 
+@Deprecated("", replaceWith = ReplaceWith("projects.domain"))
 inline val DependencyHandler.domain get() = project(":domain")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.core"))
 inline val DependencyHandler.core get() = project(":core")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.coreUi"))
 inline val DependencyHandler.coreUi get() = project(":core-ui")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.data"))
 inline val DependencyHandler.data get() = project(":data")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.featureMain"))
 inline val DependencyHandler.featureMain get() = project(":feature-main")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.featureAdd"))
 inline val DependencyHandler.featureAdd get() = project(":feature-add")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.featureSearch"))
 inline val DependencyHandler.featureSearch get() = project(":feature-search")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.mviBase"))
 inline val DependencyHandler.mviBase get() = project(":mvi-base")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.mviTesting"))
 inline val DependencyHandler.mviTesting get() = project(":mvi-testing")
+
+@Deprecated("", replaceWith = ReplaceWith("projects.testUtils"))
 inline val DependencyHandler.testUtils get() = project(":test-utils")
 
+val Project.javaTargetVersion: JavaVersion
+  get() = JavaVersion.toVersion(libsVersionCatalog.version("java.target").toString().toInt())
+
+fun DependencyHandler.addUnitTest(
+  project: Project,
+  testImplementation: Boolean = true,
+) {
+  val configName = if (testImplementation) "testImplementation" else "implementation"
+
+  add(configName, project.libsVersionCatalog["junit"])
+  add(configName, deps.test.mockk)
+  add(configName, deps.test.kotlinJUnit)
+  add(configName, deps.coroutines.test)
+}
+
+@Deprecated(
+  "Use addUnitTest(project: Project, testImplementation: Boolean = true) instead",
+  ReplaceWith("addUnitTest(project = project, testImplementation = testImplementation)"),
+)
 fun DependencyHandler.addUnitTest(testImplementation: Boolean = true) {
   val configName = if (testImplementation) "testImplementation" else "implementation"
 

@@ -106,7 +106,8 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
    * start when the first subscriber arrives,
    * and stop when the last subscriber leaves.
    */
-  protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> = shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+  protected fun <T> Flow<T>.shareWhileSubscribed(): SharedFlow<T> =
+    shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
   @Deprecated(
     message = "This Flow is already shared in viewModelScope, so you don't need to share it again.",
