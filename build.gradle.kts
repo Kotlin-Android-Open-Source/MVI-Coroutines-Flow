@@ -2,33 +2,33 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.util.EnumSet
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 plugins {
-  id("org.jetbrains.kotlinx.kover") version "0.8.3" apply false
-  id("com.diffplug.spotless") version "6.25.0" apply false
-}
-
-buildscript {
-  repositories {
-    google()
-    mavenCentral()
-    gradlePluginPortal()
-    maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
-  }
-  dependencies {
-    classpath("com.android.tools.build:gradle:8.7.0")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.25.0")
-    classpath("dev.drewhamilton.poko:poko-gradle-plugin:0.17.1")
-    classpath("com.github.ben-manes:gradle-versions-plugin:0.51.0")
-  }
+  alias(libs.plugins.kotlin.multiplatform) apply false
+  alias(libs.plugins.kotlin.android) apply false
+  alias(libs.plugins.kotlin.jvm) apply false
+  alias(libs.plugins.kotlin.kapt) apply false
+  alias(libs.plugins.kotlin.serialization) apply false
+  alias(libs.plugins.kotlin.cocoapods) apply false
+  alias(libs.plugins.kotlin.compose) apply false
+  alias(libs.plugins.kotlin.parcelize) apply false
+  alias(libs.plugins.jetbrains.compose) apply false
+  alias(libs.plugins.android.app) apply false
+  alias(libs.plugins.android.library) apply false
+  alias(libs.plugins.ben.manes.versions) apply false
+  alias(libs.plugins.gradle.spotless) apply false
+  alias(libs.plugins.detekt) apply false
+  alias(libs.plugins.kotlinx.kover)
+  alias(libs.plugins.poko) apply false
+  alias(libs.plugins.ksp) apply false
 }
 
 subprojects {
-  apply(plugin = "com.github.ben-manes.versions")
+  apply(plugin = rootProject.libs.plugins.ben.manes.versions.get().pluginId)
 
   fun isNonStable(version: String): Boolean {
     val stableKeyword =
@@ -77,21 +77,32 @@ subprojects {
 }
 
 allprojects {
-  extensions.findByType<kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension>()?.run {
-    useJacoco("0.8.11")
-  }
-
-  tasks.withType<KotlinCompile> {
-    kotlinOptions {
-      val version = JavaVersion.VERSION_11.toString()
-      jvmTarget = version
+  afterEvaluate {
+    extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinTopLevelExtension>()?.run {
+      jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(rootProject.libs.versions.java.toolchain.get().toInt())
+        vendor = JvmVendorSpec.AZUL
+      }
     }
   }
 
+  tasks.withType<KotlinCompile> {
+    compilerOptions {
+      jvmTarget = JvmTarget.fromTarget(javaTargetVersion.toString())
+    }
+  }
+
+  val ktlintVersion = rootProject.libs.versions.ktlint.get()
   apply<com.diffplug.gradle.spotless.SpotlessPlugin>()
   configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
       target("**/*.kt")
+      targetExclude(
+        // Compose Multiplatform Res class
+        "**/Res.kt",
+        // Kotlin generated files
+        "**/build/**/*.kt",
+      )
 
       ktlint(ktlintVersion)
 
@@ -102,6 +113,7 @@ allprojects {
 
     format("xml") {
       target("**/res/**/*.xml")
+      targetExclude("**/build/**/*.xml")
 
       trimTrailingWhitespace()
       indentWithSpaces()
@@ -110,6 +122,7 @@ allprojects {
 
     kotlinGradle {
       target("**/*.gradle.kts", "*.gradle.kts")
+      targetExclude("**/build/**/*.kts")
 
       ktlint(ktlintVersion)
 

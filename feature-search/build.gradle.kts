@@ -1,8 +1,8 @@
 plugins {
-  androidLib
-  kotlinAndroid
-  pokoPlugin
-  id("org.jetbrains.kotlinx.kover")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.poko)
+  alias(libs.plugins.kotlinx.kover)
 }
 
 android {
@@ -28,10 +28,10 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = javaTargetVersion
+    targetCompatibility = javaTargetVersion
   }
-  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
+
   buildFeatures { viewBinding = true }
 
   testOptions {
@@ -41,30 +41,30 @@ android {
 }
 
 dependencies {
-  implementation(domain)
-  implementation(core)
-  implementation(coreUi)
-  implementation(mviBase)
+  implementation(projects.domain)
+  implementation(projects.core)
+  implementation(projects.coreUi)
+  implementation(projects.mviBase)
 
-  implementation(deps.androidx.appCompat)
-  implementation(deps.androidx.coreKtx)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.core.ktx)
 
-  implementation(deps.lifecycle.viewModelKtx)
-  implementation(deps.lifecycle.runtimeKtx)
+  implementation(libs.androidx.lifecycle.viewmodel.ktx)
+  implementation(libs.androidx.lifecycle.runtime.ktx)
 
-  implementation(deps.androidx.recyclerView)
-  implementation(deps.androidx.constraintLayout)
-  implementation(deps.androidx.swipeRefreshLayout)
-  implementation(deps.androidx.material)
+  implementation(libs.androidx.recyclerview)
+  implementation(libs.androidx.constraintlayout)
+  implementation(libs.androidx.swiperefreshlayout)
+  implementation(libs.androidx.material)
 
-  implementation(deps.coroutines.core)
-  implementation(deps.koin.android)
-  implementation(deps.coil)
-  implementation(deps.viewBindingDelegate)
-  implementation(deps.flowExt)
-  implementation(deps.arrow.core)
-  implementation(deps.timber)
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.koin.android)
+  implementation(libs.coil)
+  implementation(libs.viewBindingDelegate)
+  implementation(libs.flowExt)
+  implementation(libs.arrow.core)
+  implementation(libs.timber)
 
-  addUnitTest()
-  testImplementation(mviTesting)
+  addUnitTest(project = project)
+  testImplementation(projects.mviTesting)
 }

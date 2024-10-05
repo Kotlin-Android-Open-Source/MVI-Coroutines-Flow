@@ -1,7 +1,7 @@
 plugins {
-  androidLib
-  kotlinAndroid
-  id("org.jetbrains.kotlinx.kover")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlinx.kover)
 }
 
 android {
@@ -27,10 +27,9 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = javaTargetVersion
+    targetCompatibility = javaTargetVersion
   }
-  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
 
   testOptions {
     unitTests.isIncludeAndroidResources = true
@@ -43,19 +42,19 @@ android {
 }
 
 dependencies {
-  implementation(deps.coroutines.core)
-  implementation(deps.coroutines.android)
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.kotlinx.coroutines.android)
 
-  implementation(deps.androidx.coreKtx)
-  implementation(deps.androidx.swipeRefreshLayout)
-  implementation(deps.androidx.recyclerView)
-  implementation(deps.androidx.material)
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.swiperefreshlayout)
+  implementation(libs.androidx.recyclerview)
+  implementation(libs.androidx.material)
 
-  implementation(deps.lifecycle.commonJava8)
-  implementation(deps.lifecycle.runtimeKtx)
+  implementation(libs.androidx.lifecycle.common.java8)
+  implementation(libs.androidx.lifecycle.runtime.ktx)
 
-  implementation(deps.timber)
-  implementation(deps.flowExt)
+  implementation(libs.timber)
+  implementation(libs.flowExt)
 
-  addUnitTest()
+  addUnitTest(project = project)
 }

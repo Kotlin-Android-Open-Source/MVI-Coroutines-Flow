@@ -1,16 +1,16 @@
 plugins {
-  kotlin
+  alias(libs.plugins.kotlin.jvm)
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
+  sourceCompatibility = javaTargetVersion
+  targetCompatibility = javaTargetVersion
 }
 
 dependencies {
-  implementation(deps.coroutines.core)
-  implementation(core)
-  api(deps.arrow.core)
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(projects.core)
+  api(libs.arrow.core)
 
-  addUnitTest(testImplementation = false)
+  addUnitTest(project = project, testImplementation = false)
 }

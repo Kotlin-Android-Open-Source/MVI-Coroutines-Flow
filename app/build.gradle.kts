@@ -1,7 +1,7 @@
 plugins {
-  androidApplication
-  kotlinAndroid
-  id("org.jetbrains.kotlinx.kover")
+  alias(libs.plugins.android.app)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlinx.kover)
 }
 
 android {
@@ -28,17 +28,12 @@ android {
         "proguard-rules.pro",
       )
     }
-
-//    getByName("debug") {
-//      isTestCoverageEnabled = true
-//    }
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = javaTargetVersion
+    targetCompatibility = javaTargetVersion
   }
-  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
 
   buildFeatures {
     viewBinding = true
@@ -61,49 +56,43 @@ dependencies {
     ),
   )
 
-  implementation(domain)
-  implementation(data)
-  implementation(core)
-  implementation(coreUi)
-  implementation(featureMain)
-  implementation(featureAdd)
-  implementation(featureSearch)
+  implementation(projects.domain)
+  implementation(projects.data)
+  implementation(projects.core)
+  implementation(projects.coreUi)
+  implementation(projects.featureMain)
+  implementation(projects.featureAdd)
+  implementation(projects.featureSearch)
 
-  implementation(deps.coroutines.android)
-  implementation(deps.koin.android)
-  implementation(deps.androidx.material)
-  implementation(deps.androidx.startup)
+  implementation(libs.kotlinx.coroutines.android)
+  implementation(libs.koin.android)
+  implementation(libs.androidx.material)
+  implementation(libs.androidx.startup)
 
-  debugImplementation(deps.squareup.leakCanary)
-  implementation(deps.timber)
-  implementation(deps.viewBindingDelegate)
+  debugImplementation(libs.squareup.leakcanary)
+  implementation(libs.timber)
+  implementation(libs.viewBindingDelegate)
 
-  testImplementation(deps.test.junit)
-  androidTestImplementation(deps.test.androidx.junit)
-  androidTestImplementation(deps.test.androidx.core)
-  androidTestImplementation(
-    deps
-      .test
-      .androidx
-      .espresso
-      .core,
-  )
+  testImplementation(libs.junit)
+  androidTestImplementation(libs.androidx.test.junit.ktx)
+  androidTestImplementation(libs.androidx.test.core.ktx)
+  androidTestImplementation(libs.androidx.test.espresso.core)
 
-  addUnitTest()
-  testImplementation(testUtils)
-  testImplementation(deps.koin.testJunit4)
-  testImplementation(deps.koin.test)
+  addUnitTest(project = project)
+  testImplementation(projects.testUtils)
+  testImplementation(libs.koin.test.junit4)
+  testImplementation(libs.koin.test)
 }
 
 dependencies {
-  kover(project(":feature-main"))
-  kover(project(":feature-add"))
-  kover(project(":feature-search"))
-  kover(project(":domain"))
-  kover(project(":data"))
-  kover(project(":core"))
-  kover(project(":core-ui"))
-  kover(project(":mvi-base"))
+  kover(projects.featureMain)
+  kover(projects.featureAdd)
+  kover(projects.featureSearch)
+  kover(projects.domain)
+  kover(projects.data)
+  kover(projects.core)
+  kover(projects.coreUi)
+  kover(projects.mviBase)
 }
 
 kover {

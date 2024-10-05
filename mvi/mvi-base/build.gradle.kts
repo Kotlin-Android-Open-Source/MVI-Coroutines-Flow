@@ -1,7 +1,7 @@
 plugins {
-  androidLib
-  kotlinAndroid
-  id("org.jetbrains.kotlinx.kover")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlinx.kover)
 }
 
 android {
@@ -26,10 +26,9 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = javaTargetVersion
+    targetCompatibility = javaTargetVersion
   }
-  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
 
   buildFeatures {
     buildConfig = true
@@ -37,14 +36,14 @@ android {
 }
 
 dependencies {
-  implementation(deps.androidx.appCompat)
-  implementation(deps.lifecycle.viewModelKtx)
-  implementation(deps.lifecycle.runtimeKtx)
-  implementation(deps.coroutines.core)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.lifecycle.viewmodel.ktx)
+  implementation(libs.androidx.lifecycle.runtime.ktx)
+  implementation(libs.kotlinx.coroutines.core)
 
-  implementation(coreUi)
-  implementation(core)
-  implementation(deps.timber)
+  implementation(projects.coreUi)
+  implementation(projects.core)
+  implementation(libs.timber)
 
-  addUnitTest()
+  addUnitTest(project = project)
 }
