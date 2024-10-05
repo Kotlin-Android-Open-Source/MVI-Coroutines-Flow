@@ -1,8 +1,8 @@
 plugins {
-  androidLib
-  kotlinAndroid
-  kotlinKapt
-  id("org.jetbrains.kotlinx.kover")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.kapt)
+  alias(libs.plugins.kotlinx.kover)
 }
 
 android {
@@ -28,10 +28,9 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = javaTargetVersion
+    targetCompatibility = javaTargetVersion
   }
-  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
 
   testOptions {
     unitTests.isIncludeAndroidResources = true
@@ -44,24 +43,24 @@ android {
 }
 
 dependencies {
-  implementation(core)
-  implementation(domain)
+  implementation(projects.core)
+  implementation(projects.domain)
 
-  implementation(deps.coroutines.core)
-  implementation(deps.flowExt)
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.flowExt)
 
-  implementation(deps.squareup.retrofit)
-  implementation(deps.squareup.moshiKotlin)
-  implementation(deps.squareup.converterMoshi)
-  implementation(deps.squareup.loggingInterceptor)
+  implementation(libs.squareup.retrofit)
+  implementation(libs.squareup.moshi.kotlin)
+  implementation(libs.squareup.retrofit.converter.moshi)
+  implementation(libs.squareup.logging.interceptor)
 
-  implementation(deps.koin.core)
-  implementation(deps.arrow.core)
+  implementation(libs.koin.core)
+  implementation(libs.arrow.core)
 
-  implementation(deps.timber)
+  implementation(libs.timber)
 
-  addUnitTest()
-  testImplementation(testUtils)
-  testImplementation(deps.koin.testJunit4)
-  testImplementation(deps.koin.test)
+  addUnitTest(project = project)
+  testImplementation(projects.testUtils)
+  testImplementation(libs.koin.test.junit4)
+  testImplementation(libs.koin.test)
 }

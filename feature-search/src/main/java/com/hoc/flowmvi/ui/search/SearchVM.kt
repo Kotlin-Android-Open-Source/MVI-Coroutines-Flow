@@ -85,7 +85,9 @@ class SearchVM(
   }
 
   //region Processors
-  private fun Flow<ViewIntent.Retry>.toPartialStateChangeFlow(searchableQueryFlow: SharedFlow<String>): Flow<PartialStateChange> =
+  private fun Flow<ViewIntent.Retry>.toPartialStateChangeFlow(
+    searchableQueryFlow: SharedFlow<String>,
+  ): Flow<PartialStateChange> =
     flatMapFirst {
       viewState.value.let { vs ->
         if (vs.error !== null) {
