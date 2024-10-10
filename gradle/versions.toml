@@ -1,6 +1,6 @@
 [versions]
 ktlint = "1.0.0"
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 androidx-lifecycle = "2.8.6"
 squareup-retrofit = "2.11.0"
 squareup-logging-interceptor = "4.12.0"
@@ -17,7 +17,7 @@ junit = "4.13.2"
 androidx-test-core = "1.6.1"
 androidx-test-junit = "1.2.1"
 espresso-core = "3.6.1"
-mockk = "1.13.12"
+mockk = "1.13.13"
 
 [libraries]
 androidx-app-compat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-app-compat" }
