@@ -19,7 +19,7 @@ jobs:
       #   uses: actions/setup-java@v3
       #   with:
       #     distribution: 'zulu'
-      #     java-version: '11'
+      #     java-version: '21'
 
       # - uses: JetBrains/qodana-action@v2023.2.6
       #   with:

@@ -1,8 +1,8 @@
 plugins {
-  androidLib
-  kotlinAndroid
-  kotlinParcelize
-  id("org.jetbrains.kotlinx.kover")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.parcelize)
+  alias(libs.plugins.kotlinx.kover)
 }
 
 android {
@@ -28,10 +28,10 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = javaTargetVersion
+    targetCompatibility = javaTargetVersion
   }
-  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
+
   buildFeatures { viewBinding = true }
 
   testOptions {
@@ -41,28 +41,28 @@ android {
 }
 
 dependencies {
-  implementation(domain)
-  implementation(core)
-  implementation(coreUi)
-  implementation(mviBase)
+  implementation(projects.domain)
+  implementation(projects.core)
+  implementation(projects.coreUi)
+  implementation(projects.mviBase)
 
-  implementation(deps.androidx.appCompat)
-  implementation(deps.androidx.coreKtx)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.core.ktx)
 
-  implementation(deps.lifecycle.viewModelKtx)
-  implementation(deps.lifecycle.runtimeKtx)
+  implementation(libs.androidx.lifecycle.viewmodel.ktx)
+  implementation(libs.androidx.lifecycle.runtime.ktx)
 
-  implementation(deps.androidx.constraintLayout)
-  implementation(deps.androidx.material)
+  implementation(libs.androidx.constraintlayout)
+  implementation(libs.androidx.material)
 
-  implementation(deps.coroutines.core)
-  implementation(deps.koin.android)
-  implementation(deps.arrow.core)
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.koin.android)
+  implementation(libs.arrow.core)
 
-  implementation(deps.viewBindingDelegate)
-  implementation(deps.flowExt)
-  implementation(deps.timber)
+  implementation(libs.viewBindingDelegate)
+  implementation(libs.flowExt)
+  implementation(libs.timber)
 
-  addUnitTest()
-  testImplementation(mviTesting)
+  addUnitTest(project = project)
+  testImplementation(projects.mviTesting)
 }

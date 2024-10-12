@@ -1,4 +1,4 @@
-rootProject.name = "MVI Coroutines Flow"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
   repositories {
@@ -28,8 +28,9 @@ val copyToBuildSrc = { sourcePath: String ->
   )
   println("[DONE] copied $sourcePath")
 }
-arrayOf("gradle.properties", "gradle").forEach(copyToBuildSrc)
+arrayOf("gradle.properties", "gradle/wrapper").forEach(copyToBuildSrc)
 
+rootProject.name = "MVI-Coroutines-Flow"
 include(":app")
 include(":feature-main")
 include(":feature-add")
@@ -48,4 +49,8 @@ fun includeProject(
 ) {
   include(name)
   project(name).projectDir = File(filePath)
+}
+
+plugins {
+  id("org.gradle.toolchains.foojay-resolver-convention") version("0.8.0")
 }

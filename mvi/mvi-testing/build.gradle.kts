@@ -1,6 +1,6 @@
 plugins {
-  androidLib
-  kotlinAndroid
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -17,11 +17,11 @@ android {
 
   buildTypes {
     debug {
-      (!isCiBuild).let {
+      (!isCiBuild).let { enabledLogTest ->
         buildConfigField(
-          type = it::class.java.simpleName,
+          type = enabledLogTest::class.java.simpleName,
           name = "ENABLE_LOG_TEST",
-          value = it.toString(),
+          value = enabledLogTest.toString(),
         )
       }
     }
@@ -41,10 +41,9 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = javaTargetVersion
+    targetCompatibility = javaTargetVersion
   }
-  kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
 
   buildFeatures {
     buildConfig = true
@@ -52,14 +51,14 @@ android {
 }
 
 dependencies {
-  implementation(deps.lifecycle.viewModelKtx)
-  implementation(deps.coroutines.core)
+  implementation(libs.androidx.lifecycle.viewmodel.ktx)
+  implementation(libs.kotlinx.coroutines.core)
 
-  implementation(mviBase)
-  api(testUtils)
-  implementation(deps.timber)
+  implementation(projects.mviBase)
+  api(projects.testUtils)
+  implementation(libs.timber)
 
-  implementation(deps.arrow.core)
+  implementation(libs.arrow.core)
 
-  addUnitTest(testImplementation = false)
+  addUnitTest(project = project, testImplementation = false)
 }

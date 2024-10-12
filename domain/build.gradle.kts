@@ -1,20 +1,20 @@
 plugins {
-  kotlin
-  id("org.jetbrains.kotlinx.kover")
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.kotlinx.kover)
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
+  sourceCompatibility = javaTargetVersion
+  targetCompatibility = javaTargetVersion
 }
 
 dependencies {
-  implementation(deps.coroutines.core)
-  implementation(deps.koin.core)
-  implementation(deps.arrow.core)
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.koin.core)
+  implementation(libs.arrow.core)
 
-  implementation(core)
+  implementation(projects.core)
 
-  addUnitTest()
-  testImplementation(testUtils)
+  addUnitTest(project = project)
+  testImplementation(projects.testUtils)
 }
