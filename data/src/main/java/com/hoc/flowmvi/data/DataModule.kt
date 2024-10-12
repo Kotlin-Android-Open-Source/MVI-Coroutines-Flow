@@ -63,6 +63,21 @@ val dataModule =
         responseToDomain = get<UserResponseToUserDomainMapper>(),
         domainToBody = get<UserDomainToUserBodyMapper>(),
         errorMapper = get<UserErrorMapper>(),
+        userRepositoryStore = get(),
+      )
+    }
+
+    single<UserRepositoryStore> {
+      DefaultUserRepositoryStore(
+        errorMapper = get<UserErrorMapper>(),
+        fetcher = get(),
+      )
+    }
+
+    factory<UserRepositoryStore.Fetcher> {
+      UserFetcherWithExponentialBackoffRetry(
+        userApiService = get(),
+        responseToDomain = get<UserResponseToUserDomainMapper>(),
       )
     }
   }

@@ -113,6 +113,7 @@ class UserRepositoryImplTest {
   private lateinit var responseToDomain: Mapper<UserResponse, EitherNes<UserValidationError, User>>
   private lateinit var domainToBody: Mapper<User, UserBody>
   private lateinit var errorMapper: Mapper<Throwable, UserError>
+  private lateinit var userRepositoryStore: UserRepositoryStore
 
   @BeforeTest
   fun setup() {
@@ -120,6 +121,7 @@ class UserRepositoryImplTest {
     responseToDomain = mockk()
     domainToBody = mockk()
     errorMapper = mockk()
+    userRepositoryStore = mockk()
 
     repo =
       UserRepositoryImpl(
@@ -128,6 +130,7 @@ class UserRepositoryImplTest {
         responseToDomain = responseToDomain,
         domainToBody = domainToBody,
         errorMapper = errorMapper,
+        userRepositoryStore = userRepositoryStore,
       )
   }
 
@@ -138,6 +141,7 @@ class UserRepositoryImplTest {
       responseToDomain,
       domainToBody,
       errorMapper,
+      userRepositoryStore,
     )
     clearAllMocks()
   }

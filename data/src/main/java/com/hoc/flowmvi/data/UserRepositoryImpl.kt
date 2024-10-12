@@ -1,10 +1,7 @@
 package com.hoc.flowmvi.data
 
 import arrow.core.Either.Companion.catch as catchEither
-import arrow.core.getOrElse
-import arrow.core.left
 import arrow.core.raise.either
-import arrow.core.right
 import com.hoc.flowmvi.core.EitherNes
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.core.dispatchers.AppCoroutineDispatchers
@@ -15,93 +12,28 @@ import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
 import com.hoc.flowmvi.domain.repository.UserRepository
-import com.hoc081098.flowext.FlowExtPreview
-import com.hoc081098.flowext.catchAndReturn
-import com.hoc081098.flowext.flowFromSuspend
-import com.hoc081098.flowext.retryWithExponentialBackoff
-import com.hoc081098.flowext.scanWith
-import java.io.IOException
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @FlowPreview
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-internal class UserRepositoryImpl(
+internal class UserRepositoryImpl constructor(
   private val userApiService: UserApiService,
   private val dispatchers: AppCoroutineDispatchers,
   private val responseToDomain: Mapper<UserResponse, EitherNes<UserValidationError, User>>,
   private val domainToBody: Mapper<User, UserBody>,
   private val errorMapper: Mapper<Throwable, UserError>,
+  private val userRepositoryStore: UserRepositoryStore,
 ) : UserRepository {
-  private sealed interface Change {
-    class Removed(
-      val removed: User,
-    ) : Change
-
-    class Refreshed(
-      val user: List<User>,
-    ) : Change
-
-    class Added(
-      val user: User,
-    ) : Change
-  }
-
-  private val changesFlow = MutableSharedFlow<Change>(extraBufferCapacity = 64)
-
-  private suspend inline fun sendChange(change: Change) = changesFlow.emit(change)
-
-  private suspend fun getUsersFromRemoteWithRetry(): List<User> =
-    flowFromSuspend {
-      Timber.d("[USER_REPO] getUsersFromRemote ...")
-
-      userApiService
-        .getUsers()
-        .map { response ->
-          responseToDomain(response)
-            .mapLeft(UserError::ValidationFailed)
-            .onLeft { logError(it, "Map $response to user") }
-            .getOrElse { throw it }
-        }
-    }.retryWithExponentialBackoff(
-      maxAttempt = 2,
-      initialDelay = 500.milliseconds,
-      factor = 2.0,
-    ) { it is IOException }
-      .first()
-
-  @OptIn(FlowExtPreview::class)
   override fun getUsers() =
-    changesFlow
-      .onEach { Timber.d("[USER_REPO] Change=$it") }
-      .scanWith(::getUsersFromRemoteWithRetry) { acc, change ->
-        when (change) {
-          is Change.Removed -> acc.filter { it.id != change.removed.id }
-          is Change.Refreshed -> change.user
-          is Change.Added -> acc + change.user
-        }
-      }.onEach { Timber.d("[USER_REPO] Emit users.size=${it.size} ") }
-      .map { it.right() }
-      .catchAndReturn {
-        logError(it, "getUsers")
-        errorMapper(it).left()
-      }
+    userRepositoryStore.observeUsersFlow()
 
   override suspend fun refresh() =
-    catchEither { getUsersFromRemoteWithRetry() }
-      .onRight { sendChange(Change.Refreshed(it)) }
-      .map {}
-      .onLeft { logError(it, "refresh") }
-      .mapLeft(errorMapper)
+    userRepositoryStore.refresh()
 
   override suspend fun remove(user: User) =
     either {
@@ -118,7 +50,7 @@ internal class UserRepositoryImpl(
             .onLeft { logError(it, "remove user=$user") }
             .bind()
 
-        sendChange(Change.Removed(deleted))
+        userRepositoryStore.sendChange(UserRepositoryStore.Change.Removed(deleted))
       }
     }
 
@@ -137,7 +69,7 @@ internal class UserRepositoryImpl(
             .onLeft { logError(it, "add user=$user") }
             .bind()
 
-        sendChange(Change.Added(added))
+        userRepositoryStore.sendChange(UserRepositoryStore.Change.Added(added))
       }
     }
 
