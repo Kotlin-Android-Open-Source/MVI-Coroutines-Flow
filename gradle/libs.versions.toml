@@ -25,7 +25,7 @@ java-toolchain = "21"
 jetbrains-compose = "1.7.1"
 junit = "4.13.2"
 koin = "4.0.0"
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 kotlinx-coroutines = "1.9.0"
 kotlinx-kover = "0.8.3"
 ktlint = "1.0.0"
@@ -38,7 +38,7 @@ squareup-retrofit = "2.11.0"
 spotless = "6.25.0"
 timber = "5.0.1"
 viewBindingDelegate = "1.4.0"
-ksp = "2.0.21-1.0.28"
+ksp = "2.1.0-1.0.29"
 
 [libraries]
 
