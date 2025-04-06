@@ -1,6 +1,6 @@
 package com.hoc.flowmvi.data.mapper
 
-import com.hoc.flowmvi.core.NonEmptySet
+import arrow.core.nonEmptySetOf
 import com.hoc.flowmvi.data.remote.ErrorResponse
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.model.UserValidationError
@@ -55,8 +55,8 @@ class UserErrorMapperTest {
     assertEquals(UserError.UserNotFound("1"), errorMapper(UserError.UserNotFound("1")))
     assertEquals(UserError.InvalidId("1"), errorMapper(UserError.InvalidId("1")))
     assertEquals(
-      UserError.ValidationFailed(NonEmptySet.of(UserValidationError.INVALID_EMAIL_ADDRESS)),
-      errorMapper(UserError.ValidationFailed(NonEmptySet.of(UserValidationError.INVALID_EMAIL_ADDRESS))),
+      UserError.ValidationFailed(nonEmptySetOf(UserValidationError.INVALID_EMAIL_ADDRESS)),
+      errorMapper(UserError.ValidationFailed(nonEmptySetOf(UserValidationError.INVALID_EMAIL_ADDRESS))),
     )
     assertEquals(UserError.ServerError, errorMapper(UserError.ServerError))
     assertEquals(UserError.Unexpected, errorMapper(UserError.Unexpected))

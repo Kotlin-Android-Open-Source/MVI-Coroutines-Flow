@@ -1,9 +1,11 @@
 package com.hoc.flowmvi.core
 
 import arrow.core.Either
+import arrow.core.NonEmptySet
 import arrow.core.left
+import arrow.core.nonEmptySetOf
 import arrow.core.right
-import com.hoc.flowmvi.core.NonEmptySet.Companion.toNonEmptySetOrNull
+import arrow.core.toNonEmptySetOrNull
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -17,7 +19,7 @@ typealias EitherNes<E, A> = Either<NonEmptySet<E>, A>
 inline fun <A> A.rightNes(): EitherNes<Nothing, A> = this.right()
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun <E> E.leftNes(): EitherNes<E, Nothing> = NonEmptySet.of(this).left()
+inline fun <E> E.leftNes(): EitherNes<E, Nothing> = nonEmptySetOf(this).left()
 
 @OptIn(ExperimentalContracts::class)
 inline fun <E, A, B, C, Z> Either.Companion.zipOrAccumulateNonEmptySet(

@@ -1,9 +1,11 @@
 package com.hoc.flowmvi.domain.model
 
-import com.hoc.flowmvi.core.NonEmptySet
+import arrow.core.NonEmptySet
 
 sealed class UserError : Throwable() {
-  object NetworkError : UserError()
+  data object NetworkError : UserError() {
+    private fun readResolve(): Any = NetworkError
+  }
 
   data class UserNotFound(
     val id: String,
@@ -16,6 +18,12 @@ sealed class UserError : Throwable() {
   data class ValidationFailed(
     val errors: NonEmptySet<UserValidationError>,
   ) : UserError()
-  object ServerError : UserError()
-  object Unexpected : UserError()
+
+  data object ServerError : UserError() {
+    private fun readResolve(): Any = ServerError
+  }
+
+  data object Unexpected : UserError() {
+    private fun readResolve(): Any = Unexpected
+  }
 }
