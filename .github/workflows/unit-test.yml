@@ -41,7 +41,7 @@ jobs:
         run: ./gradlew app:koverXmlReportDebug --warning-mode all --stacktrace
 
       - name: Upload Test Report
-        uses: codecov/codecov-action@v5.4.2
+        uses: codecov/codecov-action@v5.4.3
         with:
           files: ./app/build/reports/kover/reportDebug.xml
           fail_ci_if_error: true
