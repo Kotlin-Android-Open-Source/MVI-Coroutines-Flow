@@ -30,7 +30,7 @@ kotlinx-coroutines = "1.10.2"
 kotlinx-kover = "0.9.1"
 ktlint = "1.0.0"
 mockk = "1.14.4"
-poko = "0.18.7"
+poko = "0.19.0"
 squareup-leakcanary = "2.14"
 squareup-logging-interceptor = "4.12.0"
 squareup-moshi = "1.15.2"
@@ -38,7 +38,7 @@ squareup-retrofit = "3.0.0"
 spotless = "7.0.4"
 timber = "5.0.1"
 viewBindingDelegate = "1.4.0"
-ksp = "2.1.21-2.0.2"
+ksp = "2.2.0-2.0.2"
 
 [libraries]
 
