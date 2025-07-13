@@ -16,7 +16,7 @@ suspend inline fun debugCheckImmediateMainDispatcher() {
       dispatcher === Dispatchers.Main.immediate ||
         !dispatcher.isDispatchNeeded(Dispatchers.Main.immediate),
     ) {
-      "Expected ContinuationInterceptor to be Dispatchers.Main.immediate but was $dispatcher"
+      "Expected dispatcher to be Dispatchers.Main.immediate but was $dispatcher"
     }
   }
 }
