@@ -6,7 +6,7 @@ import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
 import com.hoc.flowmvi.domain.repository.UserRepository
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
-import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.ObserveUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
@@ -60,7 +60,7 @@ class UseCaseTest {
   val coroutineRule = TestCoroutineDispatcherRule()
 
   private lateinit var userRepository: UserRepository
-  private lateinit var getUsersUseCase: GetUsersUseCase
+  private lateinit var observeUsersUseCase: ObserveUsersUseCase
   private lateinit var refreshUseCase: RefreshGetUsersUseCase
   private lateinit var removeUserUseCase: RemoveUserUseCase
   private lateinit var addUserUseCase: AddUserUseCase
@@ -72,7 +72,7 @@ class UseCaseTest {
   fun setup() {
     userRepository = mockk()
 
-    getUsersUseCase = GetUsersUseCase(userRepository)
+    observeUsersUseCase = ObserveUsersUseCase(userRepository)
     refreshUseCase = RefreshGetUsersUseCase(userRepository)
     removeUserUseCase = RemoveUserUseCase(userRepository)
     addUserUseCase = AddUserUseCase(userRepository)
@@ -86,25 +86,25 @@ class UseCaseTest {
   }
 
   @Test
-  fun test_getUsersUseCase_whenSuccess_emitsUsers() =
+  fun test_observeUsersUseCase_whenSuccess_emitsUsers() =
     runTest {
       val usersRight = USERS.right()
-      every { userRepository.getUsers() } returns flowOf(usersRight)
+      every { userRepository.observeUsers() } returns flowOf(usersRight)
 
-      val result = getUsersUseCase()
+      val result = observeUsersUseCase()
 
-      verify { userRepository.getUsers() }
+      verify { userRepository.observeUsers() }
       assertEquals(usersRight, result.first())
     }
 
   @Test
-  fun test_getUsersUseCase_whenError_throwsError() =
+  fun test_observeUsersUseCase_whenError_throwsError() =
     runTest {
-      every { userRepository.getUsers() } returns flowOf(errorLeft)
+      every { userRepository.observeUsers() } returns flowOf(errorLeft)
 
-      val result = getUsersUseCase()
+      val result = observeUsersUseCase()
 
-      verify { userRepository.getUsers() }
+      verify { userRepository.observeUsers() }
       assertEquals(errorLeft, result.first())
     }
 
