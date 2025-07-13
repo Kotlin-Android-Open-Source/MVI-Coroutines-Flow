@@ -9,7 +9,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 inline fun <T> Flow<T>.collectIn(
   owner: LifecycleOwner,
@@ -18,7 +17,6 @@ inline fun <T> Flow<T>.collectIn(
 ): Job =
   owner.lifecycleScope.launch {
     owner.repeatOnLifecycle(state = minActiveState) {
-      Timber.d("Start collecting $owner $minActiveState...")
       collect { action(it) }
     }
   }
