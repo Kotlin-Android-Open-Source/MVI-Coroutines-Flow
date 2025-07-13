@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.hoc.flowmvi.core_ui.debugCheckImmediateMainDispatcher
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.LazyThreadSafetyMode.PUBLICATION
+import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.Flow
@@ -36,7 +37,7 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
   }
 
   private val eventChannel = Channel<E>(Channel.UNLIMITED)
-  private val intentMutableFlow = MutableSharedFlow<I>(extraBufferCapacity = SubscriberBufferSize)
+  private val intentMutableFlow = MutableSharedFlow<I>(extraBufferCapacity = SUBSCRIBER_BUFFER_SIZE)
 
   final override val singleEvent: Flow<E> = eventChannel.receiveAsFlow()
 
@@ -85,6 +86,8 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
     if (BuildConfig.DEBUG) {
       val self = this
 
+      @Suppress("UnnecessaryOptInAnnotation")
+      @OptIn(ExperimentalForInheritanceCoroutinesApi::class)
       object : SharedFlow<T> by self {
         val subscriberCount = AtomicInteger(0)
 
@@ -125,7 +128,7 @@ abstract class AbstractMviViewModel<I : MviIntent, S : MviViewState, E : MviSing
      * The internally allocated buffer is replay + extraBufferCapacity but always allocates 2^n space.
      * We use replay=0 so buffer = 64.
      */
-    private const val SubscriberBufferSize = 64
+    private const val SUBSCRIBER_BUFFER_SIZE = 64
 
     private const val MAX_TAG_LENGTH = 23
   }

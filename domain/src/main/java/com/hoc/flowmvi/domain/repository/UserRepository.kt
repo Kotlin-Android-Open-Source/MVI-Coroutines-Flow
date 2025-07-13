@@ -6,7 +6,7 @@ import com.hoc.flowmvi.domain.model.UserError
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-  fun getUsers(): Flow<Either<UserError, List<User>>>
+  fun observeUsers(): Flow<Either<UserError, List<User>>>
 
   suspend fun refresh(): Either<UserError, Unit>
 

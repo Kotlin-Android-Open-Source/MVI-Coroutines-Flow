@@ -11,7 +11,8 @@ import kotlin.reflect.KProperty
 value class SelfReference<T>(
   val value: T,
 ) : ReadOnlyProperty<Any?, T> {
-  override fun getValue(
+  @Suppress("OVERRIDE_BY_INLINE", "NOTHING_TO_INLINE")
+  override inline fun getValue(
     thisRef: Any?,
     property: KProperty<*>,
   ): T = value

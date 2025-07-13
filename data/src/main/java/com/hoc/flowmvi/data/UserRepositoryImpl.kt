@@ -80,7 +80,7 @@ internal class UserRepositoryImpl(
       .first()
 
   @OptIn(FlowExtPreview::class)
-  override fun getUsers() =
+  override fun observeUsers() =
     changesFlow
       .onEach { Timber.d("[USER_REPO] Change=$it") }
       .scanWith(::getUsersFromRemoteWithRetry) { acc, change ->

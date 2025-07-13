@@ -1,17 +1,22 @@
 package com.hoc.flowmvi.core_ui
 
-import kotlin.coroutines.ContinuationInterceptor
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import timber.log.Timber
 
-suspend fun debugCheckImmediateMainDispatcher() {
+@OptIn(ExperimentalStdlibApi::class)
+suspend inline fun debugCheckImmediateMainDispatcher() {
   if (BuildConfig.DEBUG) {
-    val interceptor = currentCoroutineContext()[ContinuationInterceptor]
-    Timber.d("debugCheckImmediateMainDispatcher: interceptor=$interceptor")
+    val dispatcher = checkNotNull(currentCoroutineContext()[CoroutineDispatcher]) {
+      "Expected CoroutineDispatcher in current CoroutineContext but was null"
+    }.also { Timber.d("debugCheckImmediateMainDispatcher: dispatcher=$it") }
 
-    check(interceptor === Dispatchers.Main.immediate) {
-      "Expected ContinuationInterceptor to be Dispatchers.Main.immediate but was $interceptor"
+    check(
+      dispatcher === Dispatchers.Main.immediate ||
+        !dispatcher.isDispatchNeeded(Dispatchers.Main.immediate),
+    ) {
+      "Expected dispatcher to be Dispatchers.Main.immediate but was $dispatcher"
     }
   }
 }
