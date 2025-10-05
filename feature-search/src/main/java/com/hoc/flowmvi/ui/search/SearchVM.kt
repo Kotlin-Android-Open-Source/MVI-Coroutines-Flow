@@ -90,7 +90,7 @@ class SearchVM(
   ): Flow<PartialStateChange> =
     flatMapFirst {
       viewState.value.let { vs ->
-        if (vs.error !== null) {
+        if (vs.error != null) {
           executeSearch(vs.submittedQuery).takeUntil(searchableQueryFlow)
         } else {
           emptyFlow()

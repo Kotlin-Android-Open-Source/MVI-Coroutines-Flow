@@ -68,7 +68,7 @@ class SearchActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, S
           .setDuration(200),
       )
 
-      errorGroup.isVisible = viewState.error !== null
+      errorGroup.isVisible = viewState.error != null
       if (errorGroup.isVisible) {
         errorMessageTextView.text =
           viewState.error?.let {
