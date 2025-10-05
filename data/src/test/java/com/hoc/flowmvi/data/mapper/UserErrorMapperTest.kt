@@ -172,6 +172,52 @@ class UserErrorMapperTest {
   }
 
   @Test
+  fun test_validationErrorMapping_withNullData_returnsAllErrors() {
+    val result = errorMapper(buildHttpException("validation-failed", null))
+    assertEquals(UserError.ValidationFailed(UserValidationError.VALUES_SET), result)
+  }
+
+  @Test
+  fun test_validationErrorMapping_withListOfErrors() {
+    val data = listOf("invalid-email-address", "too-short-first-name")
+    val result = errorMapper(buildHttpException("validation-failed", data))
+    assertEquals(
+      UserError.ValidationFailed(
+        nonEmptySetOf(
+          UserValidationError.INVALID_EMAIL_ADDRESS,
+          UserValidationError.TOO_SHORT_FIRST_NAME,
+        ),
+      ),
+      result,
+    )
+  }
+
+  @Test
+  fun test_validationErrorMapping_withMapContainingErrors() {
+    val data = mapOf("errors" to listOf("TOO_SHORT_LAST_NAME"))
+    val result = errorMapper(buildHttpException("validation-failed", data))
+    assertEquals(
+      UserError.ValidationFailed(nonEmptySetOf(UserValidationError.TOO_SHORT_LAST_NAME)),
+      result,
+    )
+  }
+
+  @Test
+  fun test_validationErrorMapping_withInvalidData_returnsAllErrors() {
+    val data = listOf("unknown-error", "another-unknown")
+    val result = errorMapper(buildHttpException("validation-failed", data))
+    // Falls back to all errors when none can be parsed
+    assertEquals(UserError.ValidationFailed(UserValidationError.VALUES_SET), result)
+  }
+
+  @Test
+  fun test_validationErrorMapping_withMixedCaseErrors() {
+    val data = listOf("INVALID_EMAIL_ADDRESS", "too-short-first-name", "TOO-SHORT-LAST-NAME")
+    val result = errorMapper(buildHttpException("validation-failed", data))
+    assertEquals(UserError.ValidationFailed(UserValidationError.VALUES_SET), result)
+  }
+
+  @Test
   fun test_withOtherwiseExceptions_returnsUnexpectedError() {
     assertEquals(
       UserError.Unexpected,
