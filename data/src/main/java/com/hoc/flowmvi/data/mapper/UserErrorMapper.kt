@@ -1,6 +1,7 @@
 package com.hoc.flowmvi.data.mapper
 
 import arrow.core.nonFatalOrThrow
+import arrow.core.toNonEmptySetOrNull
 import com.hoc.flowmvi.core.Mapper
 import com.hoc.flowmvi.data.remote.ErrorResponse
 import com.hoc.flowmvi.domain.model.UserError
@@ -54,10 +55,54 @@ internal class UserErrorMapper(
       "user-not-found" -> UserError.UserNotFound(id = errorResponse.data as String)
       "validation-failed" ->
         UserError.ValidationFailed(
-          // TODO(hoc081098): Map validation errors from server response
-          errors = UserValidationError.VALUES_SET,
+          errors = mapValidationErrors(errorResponse.data),
         )
       else -> UserError.Unexpected
     }
+  }
+
+  /**
+   * Maps validation errors from server response data to UserValidationError set.
+   * 
+   * Expected data format can be:
+   * - null: returns all validation errors
+   * - List<String>: maps string values to corresponding UserValidationError enum values
+   * - Map with "errors" key containing List<String>: maps the list values
+   * 
+   * String mappings:
+   * - "invalid-email-address" or "INVALID_EMAIL_ADDRESS" -> UserValidationError.INVALID_EMAIL_ADDRESS
+   * - "too-short-first-name" or "TOO_SHORT_FIRST_NAME" -> UserValidationError.TOO_SHORT_FIRST_NAME
+   * - "too-short-last-name" or "TOO_SHORT_LAST_NAME" -> UserValidationError.TOO_SHORT_LAST_NAME
+   */
+  private fun mapValidationErrors(data: Any?): arrow.core.NonEmptySet<UserValidationError> {
+    if (data == null) {
+      // If no specific errors provided, return all validation errors
+      return UserValidationError.VALUES_SET
+    }
+
+    val errorStrings = when (data) {
+      is List<*> -> data.mapNotNull { it?.toString() }
+      is Map<*, *> -> {
+        // Try to extract errors from a map structure like {"errors": ["invalid-email-address"]}
+        val errors = data["errors"]
+        when (errors) {
+          is List<*> -> errors.mapNotNull { it?.toString() }
+          else -> emptyList()
+        }
+      }
+      else -> emptyList()
+    }
+
+    val validationErrors = errorStrings.mapNotNull { errorString ->
+      when (errorString.uppercase().replace("-", "_")) {
+        "INVALID_EMAIL_ADDRESS" -> UserValidationError.INVALID_EMAIL_ADDRESS
+        "TOO_SHORT_FIRST_NAME" -> UserValidationError.TOO_SHORT_FIRST_NAME
+        "TOO_SHORT_LAST_NAME" -> UserValidationError.TOO_SHORT_LAST_NAME
+        else -> null
+      }
+    }.toSet()
+
+    // If we couldn't parse any valid errors, return all validation errors as fallback
+    return validationErrors.toNonEmptySetOrNull() ?: UserValidationError.VALUES_SET
   }
 }

@@ -43,11 +43,11 @@ class MainActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, Mai
   override fun onOptionsItemSelected(item: MenuItem): Boolean =
     when (item.itemId) {
       R.id.add_action -> {
-        navigator.run { navigateToAdd() }
+        navigator.navigateToAdd()
         true
       }
       R.id.search_action -> {
-        navigator.run { navigateToSearch() }
+        navigator.navigateToSearch()
         true
       }
       else -> super.onOptionsItemSelected(item)
@@ -106,7 +106,7 @@ class MainActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, Mai
     userAdapter.submitList(viewState.userItems)
 
     mainBinding.run {
-      errorGroup.isVisible = viewState.error !== null
+      errorGroup.isVisible = viewState.error != null
       errorMessageTextView.text =
         viewState.error?.let {
           when (it) {
