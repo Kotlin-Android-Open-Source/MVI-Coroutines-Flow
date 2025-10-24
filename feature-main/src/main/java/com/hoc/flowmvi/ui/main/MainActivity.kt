@@ -2,6 +2,7 @@ package com.hoc.flowmvi.ui.main
 
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -76,6 +77,10 @@ class MainActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, Mai
         },
       ).attachToRecyclerView(this)
     }
+  }
+
+  override fun rootView(): ViewGroup {
+    return mainBinding.root
   }
 
   override fun viewIntents(): Flow<ViewIntent> =
