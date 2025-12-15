@@ -1,8 +1,8 @@
 [versions]
-android-compile = "35"
-android-gradle = "8.12.0"
+android-compile = "36"
+android-gradle = "8.4.0"
 android-min = "21"
-android-target = "35"
+android-target = "36"
 androidx-appcompat = "1.7.1"
 androidx-constraintlayout = "2.2.1"
 androidx-core-ktx = "1.16.0"
