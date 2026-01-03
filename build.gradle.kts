@@ -57,6 +57,8 @@ subprojects {
         (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1).also {
           println("Setting maxParallelForks to $it")
         }
+      // not all projects actually have tests
+      failOnNoDiscoveredTests.set(false)
       testLogging {
         showExceptions = true
         showCauses = true
