@@ -2,17 +2,6 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
-      <module name="MVI-Coroutines-Flow.app" target="21" />
-      <module name="MVI-Coroutines-Flow.buildSrc" target="21" />
-      <module name="MVI-Coroutines-Flow.buildSrc.main" target="21" />
-      <module name="MVI-Coroutines-Flow.buildSrc.test" target="21" />
-      <module name="MVI-Coroutines-Flow.core-ui" target="21" />
-      <module name="MVI-Coroutines-Flow.data" target="21" />
-      <module name="MVI-Coroutines-Flow.feature-add" target="21" />
-      <module name="MVI-Coroutines-Flow.feature-main" target="21" />
-      <module name="MVI-Coroutines-Flow.feature-search" target="21" />
-      <module name="MVI-Coroutines-Flow.mvi-base" target="21" />
-      <module name="MVI-Coroutines-Flow.mvi-testing" target="21" />
       <module name="MVI_Coroutines_Flow.app" target="21" />
       <module name="MVI_Coroutines_Flow.buildSrc" target="21" />
       <module name="MVI_Coroutines_Flow.buildSrc.main" target="21" />

@@ -56,12 +56,12 @@ class UserRepositoryImplRealAPITest : KoinTest {
   private val userRepo by inject<UserRepository>()
 
   @Test
-  fun getUsers() =
+  fun observeUsers() =
     runBlocking {
       kotlin.runCatching {
         val result =
           userRepo
-            .getUsers()
+            .observeUsers()
             .first()
         assertTrue(result.isRight())
         assertTrue(result.rightValueOrThrow.isNotEmpty())

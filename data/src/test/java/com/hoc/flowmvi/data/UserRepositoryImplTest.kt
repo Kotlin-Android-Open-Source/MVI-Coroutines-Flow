@@ -285,7 +285,7 @@ class UserRepositoryImplTest {
     }
 
   @Test
-  fun test_getUsers_withApiCallSuccess_emitsInitial() =
+  fun test_observeUsers_withApiCallSuccess_emitsInitial() =
     runTest {
       coEvery { userApiService.getUsers() } returns USER_RESPONSES
       every { responseToDomain(any()) } returnsMany VALID_NES_USERS
@@ -293,7 +293,7 @@ class UserRepositoryImplTest {
       val events = mutableListOf<Either<UserError, List<User>>>()
       val job =
         launch(start = CoroutineStart.UNDISPATCHED) {
-          repo.getUsers().toList(events)
+          repo.observeUsers().toList(events)
         }
       delay(5_000)
       job.cancel()
@@ -313,7 +313,7 @@ class UserRepositoryImplTest {
     }
 
   @Test
-  fun test_getUsers_withApiCallError_rethrows() =
+  fun test_observeUsers_withApiCallError_rethrows() =
     runTest {
       coEvery { userApiService.getUsers() } throws IOException()
       every { errorMapper(ofType<IOException>()) } returns UserError.NetworkError
@@ -321,7 +321,7 @@ class UserRepositoryImplTest {
       val events = mutableListOf<Either<UserError, List<User>>>()
       val job =
         launch(start = CoroutineStart.UNDISPATCHED) {
-          repo.getUsers().toList(events)
+          repo.observeUsers().toList(events)
         }
       delay(20_000)
       job.cancel()
@@ -337,7 +337,7 @@ class UserRepositoryImplTest {
     }
 
   @Test
-  fun test_getUsers_withApiCallSuccess_emitsInitialAndUpdatedUsers() =
+  fun test_observeUsers_withApiCallSuccess_emitsInitialAndUpdatedUsers() =
     runTest {
       val user = USERS.last()
       val userResponse = USER_RESPONSES.last()
@@ -352,7 +352,7 @@ class UserRepositoryImplTest {
       val events = mutableListOf<Either<UserError, List<User>>>()
       val job =
         launch(start = CoroutineStart.UNDISPATCHED) {
-          repo.getUsers().toList(events)
+          repo.observeUsers().toList(events)
         }
       repo.add(user)
       repo.remove(user)

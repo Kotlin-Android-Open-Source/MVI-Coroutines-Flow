@@ -4,7 +4,7 @@ import arrow.core.left
 import arrow.core.right
 import com.hoc.flowmvi.domain.model.User
 import com.hoc.flowmvi.domain.model.UserError
-import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.ObserveUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.mvi_testing.BaseMviViewModelTest
@@ -40,7 +40,7 @@ class MainVMTest :
     MainVM,
     >() {
   private lateinit var vm: MainVM
-  private lateinit var getUserUseCase: GetUsersUseCase
+  private lateinit var getUserUseCase: ObserveUsersUseCase
   private lateinit var refreshGetUsersUseCase: RefreshGetUsersUseCase
   private lateinit var removeUser: RemoveUserUseCase
 
@@ -53,7 +53,7 @@ class MainVMTest :
 
     vm =
       MainVM(
-        getUsersUseCase = getUserUseCase,
+        observeUsersUseCase = getUserUseCase,
         refreshGetUsers = refreshGetUsersUseCase,
         removeUser = removeUser,
       )

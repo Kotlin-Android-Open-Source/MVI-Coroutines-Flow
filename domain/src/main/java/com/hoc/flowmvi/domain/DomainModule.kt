@@ -1,7 +1,7 @@
 package com.hoc.flowmvi.domain
 
 import com.hoc.flowmvi.domain.usecase.AddUserUseCase
-import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.ObserveUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.domain.usecase.SearchUsersUseCase
@@ -11,7 +11,7 @@ import org.koin.dsl.module
 @JvmField
 val domainModule =
   module {
-    factoryOf(::GetUsersUseCase)
+    factoryOf(::ObserveUsersUseCase)
 
     factoryOf(::RefreshGetUsersUseCase)
 

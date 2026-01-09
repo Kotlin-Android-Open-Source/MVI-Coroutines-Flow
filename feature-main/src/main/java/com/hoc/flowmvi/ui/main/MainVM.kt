@@ -3,7 +3,7 @@ package com.hoc.flowmvi.ui.main
 import androidx.lifecycle.viewModelScope
 import arrow.core.flatMap
 import com.hoc.flowmvi.core.selfReferenced
-import com.hoc.flowmvi.domain.usecase.GetUsersUseCase
+import com.hoc.flowmvi.domain.usecase.ObserveUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RefreshGetUsersUseCase
 import com.hoc.flowmvi.domain.usecase.RemoveUserUseCase
 import com.hoc.flowmvi.mvi_base.AbstractMviViewModel
@@ -33,7 +33,7 @@ import timber.log.Timber
 @FlowPreview
 @ExperimentalCoroutinesApi
 class MainVM(
-  private val getUsersUseCase: GetUsersUseCase,
+  private val observeUsersUseCase: ObserveUsersUseCase,
   private val refreshGetUsers: RefreshGetUsersUseCase,
   private val removeUser: RemoveUserUseCase,
 ) : AbstractMviViewModel<ViewIntent, ViewState, SingleEvent>() {
@@ -78,7 +78,7 @@ class MainVM(
   //region Processors
   private fun Flow<ViewIntent>.toUserChangeFlow(): Flow<PartialStateChange.Users> {
     val userChanges =
-      defer(getUsersUseCase::invoke)
+      defer { observeUsersUseCase() }
         .onEach { either -> Timber.tag(logTag).d("Emit users.size=${either.map { it.size }}") }
         .map { result ->
           result.fold(

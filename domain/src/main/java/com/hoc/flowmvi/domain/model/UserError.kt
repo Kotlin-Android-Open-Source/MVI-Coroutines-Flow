@@ -2,7 +2,7 @@ package com.hoc.flowmvi.domain.model
 
 import arrow.core.NonEmptySet
 
-sealed class UserError : Throwable() {
+sealed class UserError : RuntimeException() {
   data object NetworkError : UserError() {
     private fun readResolve(): Any = NetworkError
   }
