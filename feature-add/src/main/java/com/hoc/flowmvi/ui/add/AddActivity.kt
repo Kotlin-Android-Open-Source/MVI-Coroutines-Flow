@@ -3,6 +3,7 @@ package com.hoc.flowmvi.ui.add
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
@@ -96,6 +97,10 @@ class AddActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, AddV
       firstNameEditText.editText!!.setText(state.firstName)
       lastNameEditText.editText!!.setText(state.lastName)
     }
+  }
+
+  override fun rootView(): ViewGroup {
+    return addBinding.root
   }
 
   override fun viewIntents(): Flow<ViewIntent> =
