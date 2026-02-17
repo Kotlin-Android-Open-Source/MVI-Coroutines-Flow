@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -110,6 +111,10 @@ class SearchActivity : AbstractMviActivity<ViewIntent, ViewState, SingleEvent, S
         adapter = searchAdapter
       }
     }
+  }
+
+  override fun rootView(): ViewGroup {
+    return binding.root
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean =
