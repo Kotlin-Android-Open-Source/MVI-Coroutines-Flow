@@ -68,4 +68,12 @@ dependencies {
 
   addUnitTest(project = project)
   testImplementation(projects.mviTesting)
+  
+  // UI tests dependencies
+  androidTestImplementation(libs.androidx.test.junit.ktx)
+  androidTestImplementation(libs.androidx.test.core.ktx)
+  androidTestImplementation(libs.androidx.test.rules)
+  androidTestImplementation(libs.androidx.test.espresso.core)
+  androidTestImplementation(libs.androidx.test.espresso.contrib)
+  androidTestImplementation(libs.androidx.test.espresso.intents)
 }
