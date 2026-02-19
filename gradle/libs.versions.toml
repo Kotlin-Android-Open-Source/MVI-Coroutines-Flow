@@ -38,7 +38,7 @@ squareup-retrofit = "3.0.0"
 spotless = "8.2.1"
 timber = "5.0.1"
 viewBindingDelegate = "1.4.0"
-ksp = "2.3.5"
+ksp = "2.3.6"
 
 [libraries]
 
