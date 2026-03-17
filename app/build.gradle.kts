@@ -76,7 +76,10 @@ dependencies {
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.test.junit.ktx)
   androidTestImplementation(libs.androidx.test.core.ktx)
+  androidTestImplementation(libs.androidx.test.rules)
   androidTestImplementation(libs.androidx.test.espresso.core)
+  androidTestImplementation(libs.androidx.test.espresso.contrib)
+  androidTestImplementation(libs.androidx.test.espresso.intents)
 
   addUnitTest(project = project)
   testImplementation(projects.testUtils)
